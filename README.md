@@ -13,13 +13,13 @@ This is a mobile application built with React Native and Expo, and uses Firebase
 
 ## Features
 
-- Browse a list of bicycles and accessories
-- Filter and search for specific products
-- View detailed product information, including photos and descriptions
-- Add products to a cart and complete a purchase
-- View past orders and order history
-- Authentication with Firebase
-- Integration with Firebase Cloud Functions for payment processing
+- 🚲 Browse a list of bicycles and accessories
+- 🔍 Filter and search for specific products
+- 📇 View detailed product information, including photos and descriptions
+- 🛒 Add products to a cart and complete a purchase
+- 📅 View past orders and order history
+- 🔒 Authentication with Firebase
+- 💳 Integration with Stripe for payment processing
 
 ## Getting Started
 
@@ -41,7 +41,7 @@ This will launch the Expo development server and open the application in your de
 
 ## Contributing
 
-Contributions to this project are welcome and encouraged. To contribute, please follow these steps:
+Contributions to this project are welcome and encouraged (and required for a passing grade 😉). To contribute, please follow these steps:
 
 1. Fork the repository
 2. Create a new branch for your changes

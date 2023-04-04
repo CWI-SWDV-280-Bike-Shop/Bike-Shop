@@ -1,6 +1,6 @@
-const database = require('./database.js');
+import database from './database.js';
 
-const users = {
+const userModel = {
   async getAll() {
     const dbo = await database.getDbo();
 
@@ -53,5 +53,5 @@ const users = {
   },
 };
 
-module.exports = users;
+export default userModel;
 

@@ -1,10 +1,9 @@
+import mongo from 'mongodb';
 const { DB_URL } = process.env;
 
-const { MongoClient } = require('mongodb');
+let conn = new mongo.MongoClient(DB_URL, { useUnifiedTopology: true });
 
-let conn = new MongoClient(DB_URL, { useUnifiedTopology: true });
-
-module.exports = {
+const Dbo = {
   /**
    * Singleton-like Database Object that connects to the mongodb database
    */
@@ -13,4 +12,6 @@ module.exports = {
     return conn.db();
   },
 };
+
+export default Dbo;
 

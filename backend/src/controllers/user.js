@@ -1,10 +1,8 @@
-const status = require('http-status');
+import status from 'http-status';
+import userModel from '../models/users.js';
+import has from 'has-keys';
 
-const userModel = require('../models/users.js');
-
-const has = require('has-keys');
-
-module.exports = {
+const UserController = {
   async getUserById(req, res) {
     if (!has(req.params, 'id'))
       throw { code: status.BAD_REQUEST, message: 'You must specify the id' };
@@ -18,7 +16,7 @@ module.exports = {
     res.json({ status: true, message: 'Returning user', data });
   },
   async getUsers(req, res) {
-    let data = await userModel.findAll();
+    let data = await userModel.getAll();
 
     res.json({ status: true, message: 'Returning users', data });
   },
@@ -59,4 +57,6 @@ module.exports = {
     res.json({ status: true, message: 'User deleted' });
   },
 };
+
+export default UserController;
 

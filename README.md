@@ -18,8 +18,6 @@ This is a mobile application built with React Native and Expo, and uses Firebase
 - 📇 View detailed product information, including photos and descriptions
 - 🛒 Add products to a cart and complete a purchase
 - 📅 View past orders and order history
-- 🔒 Authentication with Firebase
-- 💳 Integration with Stripe for payment processing
 
 ## Getting Started
 
@@ -29,13 +27,13 @@ Before you can use the application, you will need to create a Firebase project a
 
 To install the application, you will need to have Node.js and npm installed on your system. You can then clone the repository and run the following command to install the necessary dependencies:
 
-```npm install```
+`npm install`
 
 ## Usage
 
 To start the application, run the following command:
 
-```npm start```
+`npm start`
 
 This will launch the Expo development server and open the application in your default web browser. You can then scan the QR code with your mobile device to open the application in the Expo client.
 

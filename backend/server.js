@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import router from './src/routes/router.js';
+import mongoose from 'mongoose';
+import db from './src/config/database.config.js';
 dotenv.config();
 
 const PORT = process.env.port || 3000;
@@ -20,6 +22,16 @@ app.use('*', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   next();
 });
+
+mongoose
+  .connect(db.MongoDBAtlas, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    ignoreUndefined: true,
+  })
+  .then(() => {
+    console.log('Connected to database');
+  });
 
 // Assign Routes
 app.use('/api', router);

@@ -4,7 +4,7 @@ const UserController = {
   async getUsers(req, res) {
     console.log('Getting all Users');
     try {
-      const users = await User.find();
+      const users = await User.find().populate('orders');
       res.status(200).json(users);
     } catch (error) {
       res.status(400).json({ error: error.message });
@@ -14,7 +14,7 @@ const UserController = {
   async getUserById(req, res) {
     console.log('Getting User by ID');
     try {
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.params.id).populate('orders');
       if (!user) {
         return res.status(404).json({ error: 'User not found' });
       }

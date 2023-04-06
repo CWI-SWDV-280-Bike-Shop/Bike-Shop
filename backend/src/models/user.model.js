@@ -25,6 +25,12 @@ const UserSchema = new Schema(
       type: String,
       enum: ['Admin', 'Customer'],
     },
+    orders: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Order'
+      }
+    ]
   },
   { timestamps: true }
 );

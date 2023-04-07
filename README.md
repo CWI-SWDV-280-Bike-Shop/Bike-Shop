@@ -40,7 +40,7 @@ Contributions to this project are welcome and encouraged (and required for a pas
 1. Create a new branch for your changes: `git branch <new_branch_name>`
 2. Switch to that branch: `git checkout <new_branch_name>`
 3. Make your changes
-4. Add your changes to your "staging area": `git add <file_name>` or simply `git add .` to add all changes.
+4. Add your changes to your "staging area": `git add <file_name>` or simply `git add .`
 5. Commit your changes with descriptive commit messages: `git commit -m "changes you made"`
 6. Push your branch to the remote repository (our code on Github): `git push origin <new_branch_name>`
 7. Submit a pull request to the main repository: Log in to Github, click on Pull Requests, then follow the steps to Compare & pull request. Please delete your branch once it's been merged.
@@ -52,8 +52,8 @@ Note: Steps 1 and 2 can be combined in a single command using the `-b` flag to c
 
 ## Git - Useful Commands
 
-List all branches (Where am I?): `git branch`
-List all changes (What have I done?): `git status`
+List all local branches (Where am I?): `git branch`  
+List all local changes (What have I done?): `git status`
 
 ## License
 

@@ -1,0 +1,18 @@
+Joel 4/7
+    For configuring Icons for Web and IOS this is the package I used for Icons https://www.npmjs.com/package/react-native-vector-icons
+
+    Also note that for getting the fonts working on android I modified the android/app/build.gradle
+    *** THIS LINE
+    apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+    ***
+    
+    For Icons I used this https://ionic.io/ionicons/
+
+    Also here are the hexcodes for the colors we are using     
+
+    White: #FFFFFF 
+    Rich Black: #03312E 
+    Feldgrau: #3E6259 
+    Xanadu: #6A7B76 
+    Artichoke: #8B9D83 
+

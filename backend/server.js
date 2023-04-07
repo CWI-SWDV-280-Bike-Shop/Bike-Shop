@@ -37,7 +37,7 @@ mongoose
 app.use('/api', router);
 
 // Handle not valid route
-app.use('*', (req, res) => {
+app.use(/.*/, (req, res) => {
   res.status(404).json({ status: false, message: 'Endpoint Not Found' });
 });
 

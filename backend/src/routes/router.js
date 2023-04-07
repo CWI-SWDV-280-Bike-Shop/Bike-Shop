@@ -1,10 +1,14 @@
-import userRoute from './user.js';
-import { Router } from 'express';
-const router = Router();
+import express from 'express';
+import UserRoute from './api/user.route.js';
+import ProductRoute from './api/product.route.js';
+import OrderRoute from './api/order.route.js';
 
-// Users routes
+const router = express.Router();
 
-router.use(userRoute);
+router.use('/users', UserRoute);
+
+router.use('/products', ProductRoute);
+
+router.use('/orders', OrderRoute);
 
 export default router;
-

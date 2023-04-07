@@ -37,10 +37,12 @@ This will launch the Expo development server and open the application in your de
 
 Contributions to this project are welcome and encouraged (and required for a passing grade 😉). To contribute, please follow these steps:
 
+IMPORTANT: Please use the following format for your branch names: `firstName/changes-to-be-made`
+
 1. Create a new branch for your changes: `git branch <new_branch_name>`
 2. Switch to that branch: `git checkout <new_branch_name>`
 3. Make your changes
-4. Add your changes to your "staging area": `git add <file_name>` or simply `git add .`
+4. Add your changes to your "staging area": `git add <file_name>` or `git add .` to add everything from your current working directory, or `git add -A` (or `git add --all`) to add ALL changes
 5. Commit your changes with descriptive commit messages: `git commit -m "changes you made"`
 6. Push your branch to the remote repository (our code on Github): `git push origin <new_branch_name>`
 7. Submit a pull request to the main repository: Log in to Github, click on Pull Requests, then follow the steps to Compare & pull request. Please delete your branch once it's been merged.

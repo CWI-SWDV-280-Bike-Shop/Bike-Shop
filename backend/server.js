@@ -5,6 +5,7 @@ import cors from 'cors';
 import router from './src/routes/router.js';
 import mongoose from 'mongoose';
 import db from './src/config/database.config.js';
+import { NotFound, UserError } from './src/errors.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
@@ -38,7 +39,13 @@ app.use('/api', router);
 
 // Handle not valid route
 app.use(/.*/, (req, res) => {
-  res.status(404).json({ status: false, message: 'Endpoint Not Found' });
+  throw new NotFound('Endpoint Not Found');
+});
+
+app.use((err, req, res, next) => {
+  if (err instanceof UserError || err instanceof mongoose.Error.ValidationError) res.status(err.status).json({ error: err.message });
+  else if (err) res.status(500).json({ error: 'Something broke!' });
+  console.error(err.stack);
 });
 
 // Open Server on selected Port

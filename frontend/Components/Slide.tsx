@@ -3,14 +3,14 @@ import {  Text, StyleSheet, View, ImageBackground } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { BounceInLeft } from 'react-native-reanimated';
 
-export const RepairShop = () => {
+export const Slide = ({name, description, imgSrc, btnName}) => {
     return (
-      <ImageBackground source={require('../../Media/Images/repairshopimg.png')} style={[styles.backgroundImage]}>
+      <ImageBackground source={imgSrc} style={[styles.backgroundImage]}>
           <View style={[styles.container]}>
-            <Text style={[styles.heading]}>Repair Shop</Text>
-            <Text style={[styles.bodyText]}>If your bike breaks down, our repair shop has you covered. Give us a call!</Text>
+            <Text style={[styles.heading]}>{name}</Text>
+            <Text style={[styles.bodyText]}>{description}</Text>
             <TouchableOpacity style={[styles.button]}>
-                <Text style={[styles.buttonText]}>Contact</Text>
+                <Text style={[styles.buttonText]}>{btnName}</Text>
             </TouchableOpacity>
           </View>
       </ImageBackground>

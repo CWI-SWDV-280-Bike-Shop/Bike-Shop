@@ -50,7 +50,10 @@ IMPORTANT: Please use the following format for your branch names: `firstName/cha
 9. Pull down the changes: `git pull`
 10. Delete your local branch, you don't need it anymore: `git branch -d <new_branch_name>`
 
-Note: Steps 1 and 2 can be combined in a single command using the `-b` flag to create a new branch and switch to it: `git checkout -b <new_branch_name>`
+Notes and Recommendations:
+
+1. Steps 1 and 2 can be combined into a single command using the `-b` flag with `git checkout` to create a new branch and immediately switch to it: `git checkout -b <new_branch_name>`
+2. For convenience, before deleting your branch in step 10, toss in a `git branch` to have your list of branches right above you in the terminal before deleting. Less scrolling needed in order to remember your branch name.
 
 ## Git - Useful Commands
 

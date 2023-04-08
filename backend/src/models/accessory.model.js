@@ -25,4 +25,4 @@ const AccessorySchema = new Schema(
 );
 
 const AccessoryModel = mongoose.model('Accessory', AccessorySchema);
-export default _Model;
+export default AccessoryModel;

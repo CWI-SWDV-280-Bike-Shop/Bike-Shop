@@ -17,4 +17,4 @@ const ServiceSchema = new Schema(
 );
 
 const ServiceModel = mongoose.model('Service', ServiceSchema);
-export default _Model;
+export default ServiceModel;

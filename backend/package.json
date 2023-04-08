@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "setup": "npm install && npm update",
-    "start": "node server.js"
+    "start": "eslint --cache . && node server.js"
   },
   "keywords": [
     "express",
@@ -25,6 +25,8 @@
     "rotating-file-stream": "^1.4.6"
   },
   "devDependencies": {
-    "@types/mongodb": "^4.0.7"
+    "@types/mongodb": "^4.0.7",
+    "eslint": "^8.37.0",
+    "eslint-plugin-node": "^11.1.0"
   }
 }

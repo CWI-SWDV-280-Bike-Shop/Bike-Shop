@@ -3,8 +3,14 @@ import { NotFound } from '../errors.js';
 
 const UserController = {
   async getUsers(req, res) {
-    console.log('Getting all Users');
-    const users = await User.find().populate('orders');
+    let { name, email, role } = req.query;
+
+    const users = await User.find({
+      name: name,
+      email: email,
+      role: role,
+    }).populate('orders');
+
     res.status(200).json(users);
   },
 

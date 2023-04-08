@@ -9,11 +9,18 @@ const OrderSchema = new Schema(
     },
     items: [
       {
-        name: String,
-        description: String,
-        category: String,
+        item: {
+          type: Schema.Types.ObjectId,
+          required: true,
+          refPath: 'items.itemModel',
+        },
+        itemModel: {
+          type: String,
+          required: true,
+          enum: ['Bike', 'Accessory', 'Service'],
+        },
         price: Number,
-        serviceDate: Date,
+        quantity: Number,
       },
     ],
     total: Number,

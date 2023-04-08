@@ -3,7 +3,16 @@ import { NotFound } from '../errors.js';
 
 const OrderController = {
   async getOrders(req, res) {
-    const orders = await Order.find();
+    let { customer, itemId, itemType } = req.query;
+
+    const orders = await Order.find({
+      'customer': customer,
+      'items.item': itemId,
+      'items.itemModel': itemType,
+    })
+      .populate('customer')
+      .populate('items.item');
+
     res.status(200).json(orders);
   },
 

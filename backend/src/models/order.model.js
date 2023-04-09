@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
+// Dynamic Refs
+// https://mongoosejs.com/docs/populate.html#dynamic-ref
 const ItemSchema = new Schema({
   item: {
     type: Schema.Types.ObjectId,

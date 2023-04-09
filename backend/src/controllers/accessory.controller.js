@@ -3,7 +3,14 @@ import { NotFound } from '../errors.js';
 
 const AccessoryController = {
   async getAccessories(req, res) {
-    const accessories = await Accessory.find();
+    let { name, category, inStock } = req.query;
+
+    const accessories = await Accessory.find({
+      name: name,
+      category: category,
+      inStock: inStock,
+    });
+
     res.status(200).json(accessories);
   },
 

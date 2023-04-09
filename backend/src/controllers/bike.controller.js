@@ -3,7 +3,17 @@ import { NotFound } from '../errors.js';
 
 const BikeController = {
   async getBikes(req, res) {
-    const bikes = await Bike.find();
+    let { name, category, inStock, color, size, gender } = req.query;
+
+    const bikes = await Bike.find({
+      name: name,
+      category: category,
+      inStock: inStock,
+      color: color,
+      size: size,
+      gender: gender,
+    });
+
     res.status(200).json(bikes);
   },
 

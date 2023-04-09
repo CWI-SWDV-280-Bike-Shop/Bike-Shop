@@ -3,7 +3,14 @@ import { NotFound } from '../errors.js';
 
 const ServiceController = {
   async getServices(req, res) {
-    const services = await Service.find();
+    let { name, category, inStock, serviceDate } = req.query;
+
+    const services = await Service.find({
+      name: name,
+      category: category,
+      inStock: inStock,
+      serviceDate: serviceDate,
+    });
     res.status(200).json(services);
   },
 

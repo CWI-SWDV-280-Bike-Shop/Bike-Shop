@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "setup": "npm install && npm update",
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [
     "express",
@@ -25,6 +26,7 @@
     "rotating-file-stream": "^1.4.6"
   },
   "devDependencies": {
-    "@types/mongodb": "^4.0.7"
+    "@types/mongodb": "^4.0.7",
+    "nodemon": "^2.0.22"
   }
 }

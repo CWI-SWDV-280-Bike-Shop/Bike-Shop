@@ -14,9 +14,10 @@ const parseLayer = (item, parentPath=null) => {
     }
 
     //Sub items
-    if (item.name === 'router') {
+    if (item.name == 'router' && item.regexp) {
         //Terrible regex to unregex the regex
-        let parentPath = '/api'+item.regexp.toString().match(/(?<=\/).*(?=\\\/\?)/)[0].replace('^\\', '').replace('^', '');
+        let result = item.regexp.toString().match(/(?<=\\\/).*(?=\(\?\:)/);
+        let parentPath = (result) ? result : '';
         hierarchy[parentPath] = {};
         if (item.handle.stack) {
             item.handle.stack.forEach((subItem) => {
@@ -36,10 +37,12 @@ const EndpointController = {
     
   async getEndpoints(req, res) {
     try {
-        
-      app._router.stack.filter(layer => layer.name == "router").forEach(function (stackItem) {
+      app.router.stack.filter(layer => layer.name == "router").forEach( (stackItem) => {
         parseLayer(stackItem);
       });
+
+      //Example of adding manual documentation to a route.
+      hierarchy['']['Description'] = 'Provides information about available endpoints.';
 
       const endpoints = {
         "API Endpoint Exposition": {

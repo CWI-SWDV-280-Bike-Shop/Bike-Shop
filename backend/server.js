@@ -50,3 +50,5 @@ app.use((err, req, res, next) => {
 
 // Open Server on selected Port
 app.listen(PORT, () => console.info('Server listening on port ', PORT));
+
+export default app;

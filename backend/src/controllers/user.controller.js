@@ -1,64 +1,39 @@
 import User from '../models/user.model.js';
+import { NotFound } from '../errors.js';
 
 const UserController = {
   async getUsers(req, res) {
     console.log('Getting all Users');
-    try {
-      const users = await User.find().populate('orders');
-      res.status(200).json(users);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
+    const users = await User.find().populate('orders');
+    res.status(200).json(users);
   },
 
   async getUserById(req, res) {
     console.log('Getting User by ID');
-    try {
-      const user = await User.findById(req.params.id).populate('orders');
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
+    const user = await User.findById(req.params.id).populate('orders');
+    if (!user) throw new NotFound('User not found');
+    res.status(200).json(user);
   },
 
   async createUser(req, res) {
     console.log('Creating User');
-    try {
-      const user = new User(req.body);
-      const newUser = await user.save();
-      res.status(200).json(newUser);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
+    const user = new User(req.body);
+    const newUser = await user.save();
+    res.status(200).json(newUser);
   },
 
   async updateUser(req, res) {
-    try {
-      const user = await User.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      res.status(200).json(user);
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
+    if (!user) throw new NotFound('User not found');
+    res.status(200).json(user);
   },
 
   async deleteUser(req, res) {
-    try {
-      const user = await User.findByIdAndDelete(req.params.id);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-      res.status(200).json({ message: 'User deleted successfully' });
-    } catch (error) {
-      res.status(400).json({ error: error.message });
-    }
+    const user = await User.findByIdAndDelete(req.params.id);
+    if (!user) throw new NotFound('User not found');
+    res.status(200).json({ message: 'User deleted successfully' });
   },
 };
 

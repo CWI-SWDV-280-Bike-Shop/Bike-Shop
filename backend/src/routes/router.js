@@ -1,6 +1,8 @@
 import express from 'express';
 import UserRoute from './api/user.route.js';
-import ProductRoute from './api/product.route.js';
+import BikeRoute from './api/bike.route.js';
+import AccessoryRoute from './api/accessory.route.js';
+import ServiceRoute from './api/service.route.js';
 import OrderRoute from './api/order.route.js';
 import EndpointsRoute from './api/endpoints.route.js';
 
@@ -10,7 +12,11 @@ router.use('/', EndpointsRoute)
 
 router.use('/users', UserRoute);
 
-router.use('/products', ProductRoute);
+router.use('/bikes', BikeRoute);
+
+router.use('/accessories', AccessoryRoute);
+
+router.use('/services', ServiceRoute);
 
 router.use('/orders', OrderRoute);
 

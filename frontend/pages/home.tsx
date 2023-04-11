@@ -4,7 +4,7 @@ import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import Swiper from 'react-native-swiper/src';
 
 // Slide component imports
-import { Slide } from '../Components/Slide';
+import { Slide } from '../components/Slide';
 
 export const Home = () => {
   return (

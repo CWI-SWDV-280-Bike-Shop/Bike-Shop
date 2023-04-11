@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
-import { retrieveBikes } from '../store/bikeSlice';
+import { useAppDispatch, useAppSelector } from '../hooks/redux.hooks';
+import { retrieveBikes } from '../store/bike.slice';
 import { View, Text, StyleSheet } from 'react-native';
 import Styles from '../Styles';
 

@@ -16,7 +16,7 @@ const parseLayer = (item, parentPath=null) => {
     //Sub items
     if (item.name == 'router' && item.regexp) {
         //Terrible regex to unregex the regex
-        let result = item.regexp.toString().match(/(?<=\\\/).*(?=\(\?\:)/);
+        let result = item.regexp.toString().match(/(?<=\\\/).*(?=\(\?:)/);
         let parentPath = (result) ? result : '';
         hierarchy[parentPath] = {};
         if (item.handle.stack) {

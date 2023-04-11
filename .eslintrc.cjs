@@ -15,7 +15,7 @@ module.exports = {
     node: true,
   },
   rules: {
-    '@typescript-eslint/no-var-requires': 'off',
-    'no-useless-escape': 'off',
+    'no-useless-escape': 'warn',
+    '@typescript-eslint/no-unused-vars': 'off',
   },
 };

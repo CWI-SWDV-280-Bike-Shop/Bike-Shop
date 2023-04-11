@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import Swiper from 'react-native-swiper/src';
 
@@ -11,7 +12,7 @@ export const Home = () => {
       <View style={[styles.slidesContainer]}>
         <Swiper>
           <Slide
-            name={'Road Bikes'}
+            name={'City Bikes'}
             description={
               'Shop our collection of bikes built for busy city streets.'
             }
@@ -52,17 +53,17 @@ export const Home = () => {
       </View>
       <View style={[styles.contentContainer]}>
         <ScrollView>
-          <View style={[styles.titleRow]}>
+          {/* <View style={[styles.titleRow]}>
             <Text style={[styles.title]}>Wheely Good Bikes</Text>
-          </View>
+          </View> */}
           <View style={[styles.quoteRow]}>
             <Text style={[styles.quote]}>
-              "Here we aren't just a bikeshop. We're a community."
+              "We aren't just a bike shop, we're a community."
             </Text>
           </View>
           <View style={[styles.missionStatementRow]}>
             <Text style={[styles.missionStatement]}>
-              Our mission Wheely Good Bikes is to provide high-quality bicycles
+              Our mission at Wheely Good Bikes is to provide high-quality bicycles
               and accessories that promote a healthy and sustainable lifestyle.
               We are committed to offering personalized service and expert
               advice to help our customers choose the right bike for their needs
@@ -73,6 +74,38 @@ export const Home = () => {
               eco-friendly transportation options and helping our community
               reduce its carbon footprint.
             </Text>
+          </View>
+          <View style={[styles.footer]}>
+              <Text style={[styles.footerText]}>
+                  The Bicycle Shop
+              </Text>
+              <Text style={[styles.footerText]}>
+              <Icon
+                  name="navigate-outline"
+                  size={15}
+                  color="#FFF"
+   /> 1234 Something Blvd, Boise, ID 83706
+              </Text>
+              <Text style={[styles.footerText]}>
+                  Monday - Friday | 9am - 8pm
+              </Text>
+              <Text style={[styles.footerText]}>
+              <Icon
+                  name="receipt-outline"
+                  size={15}
+                  color="#FFF"
+   />  contact@thebicycleshop.com
+              </Text>
+              <Text style={[styles.footerText]}>
+              <Icon
+                  name="phone-portrait-outline"
+                  size={15}
+                  color="#FFF"
+   />  (208)123-4567
+              </Text>
+              <Text style={[styles.footerText]}>
+                  © Copyright 2023
+              </Text>
           </View>
         </ScrollView>
       </View>
@@ -109,12 +142,17 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingVertical: 20,
-    backgroundColor: '#03312E',
+    backgroundColor: '#6A7B76',
+    borderColor: '#03312E',
+    borderWidth: 15,
     width: '100%',
   },
   quote: {
-    fontSize: 35,
-    color: '#FFFFFF',
+    fontSize: 27,
+    color: 'white',
+    textShadowColor: 'rgba(0, 0, 0, 0.85)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
     fontStyle: 'italic',
     textAlign: 'center',
   },
@@ -122,11 +160,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flex: 1,
     marginTop: 20,
+    marginBottom: 20,
   },
   missionStatement: {
     alignSelf: 'center',
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 20,
     color: '#03312E',
+    paddingLeft: 15,
+    paddingRight: 15,
+  },
+  footer: {
+    backgroundColor: '#6A7B76',
+    paddingTop: 7,
+    paddingBottom: 7,
+  },
+  footerText: {
+    alignSelf: 'center',
+    color: 'white',
+    paddingTop: 1,
+    paddingBottom: 1,
+    fontWeight: 'bold',
   },
 });

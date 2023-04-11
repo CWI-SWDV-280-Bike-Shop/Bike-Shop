@@ -2,7 +2,7 @@ import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { Home } from './pages/home';
 import { Shop } from './pages/shop';
-import { About } from './pages/about';
+import { Profile } from './pages/profile';
 import 'react-native-gesture-handler';
 import { DrawerHeaderProps, createDrawerNavigator } from '@react-navigation/drawer';
 import { TouchableOpacity, Text, Image, View, StyleSheet } from 'react-native';
@@ -25,7 +25,7 @@ const NavigationHeader = ({ navigation }: DrawerHeaderProps) => {
         </TouchableOpacity>
       </View>
       <View style={styles.headerLogoParent}>
-        <Image source={require('./Media/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
+        <Image source={require('./assets/Media/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
       </View>
       <View style={styles.headerIcons}>
         <TouchableOpacity style={styles.headerTouchable}>
@@ -74,7 +74,7 @@ const App = () => {
       >
         <Drawer.Screen name="Home" component={Home} />
         <Drawer.Screen name="Shop" component={Shop} />
-        <Drawer.Screen name="About" component={About} />
+        <Drawer.Screen name="Profile" component={Profile} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

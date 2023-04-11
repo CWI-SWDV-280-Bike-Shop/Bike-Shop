@@ -1,27 +1,30 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
+// Dynamic Refs
+// https://mongoosejs.com/docs/populate.html#dynamic-ref
+const ItemSchema = new Schema({
+  item: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    refPath: 'items.itemModel',
+  },
+  itemModel: {
+    type: String,
+    required: true,
+    enum: ['Bike', 'Accessory', 'Service'],
+  },
+  price: Number,
+  quantity: Number,
+});
+
 const OrderSchema = new Schema(
   {
     customer: {
       type: Schema.Types.ObjectId,
       ref: 'User',
     },
-    items: [
-      {
-        name: String,
-        description: String,
-        productType: String,
-        bikeType: String,
-        accessoryType: String,
-        serviceType: String,
-        color: String,
-        size: String,
-        price: Number,
-        serviceDate: Date,
-        quantity: Number,
-      },
-    ],
+    items: [ItemSchema],
     total: Number,
   },
   { timestamps: true }

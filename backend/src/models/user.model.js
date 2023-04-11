@@ -28,9 +28,9 @@ const UserSchema = new Schema(
     orders: [
       {
         type: Schema.Types.ObjectId,
-        ref: 'Order'
-      }
-    ]
+        ref: 'Order',
+      },
+    ],
   },
   { timestamps: true }
 );

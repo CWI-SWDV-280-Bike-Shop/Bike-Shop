@@ -15,7 +15,7 @@ export const Home = () => {
             description={
               'Shop our collection of bikes built for busy city streets.'
             }
-            imgSrc={require('../Media/Images/citybikestockimg.png')}
+            imgSrc={require('../assets/Media/Images/citybikestockimg.png')}
             btnName={'Shop'}
           />
           <Slide
@@ -23,13 +23,13 @@ export const Home = () => {
             description={
               'Our eBikes are efficient and will save you money on your commute.'
             }
-            imgSrc={require('../Media/Images/ebikestockimg.png')}
+            imgSrc={require('../assets/Media/Images/ebikestockimg.png')}
             btnName={'Shop'}
           />
           <Slide
             name={"Kid's Bikes"}
             description={'Bikes for anyone in your family, available now.'}
-            imgSrc={require('../Media/Images/kidsbikestockimg.png')}
+            imgSrc={require('../assets/Media/Images/kidsbikestockimg.png')}
             btnName={'Shop'}
           />
           <Slide
@@ -37,7 +37,7 @@ export const Home = () => {
             description={
               'We have rugged mountain bikes to get you out on the trails.'
             }
-            imgSrc={require('../Media/Images/mtnbikestockimg.png')}
+            imgSrc={require('../assets/Media/Images/mtnbikestockimg.png')}
             btnName={'Shop'}
           />
           <Slide
@@ -45,7 +45,7 @@ export const Home = () => {
             description={
               'If your bike breaks down, our repair shop has you covered. Give us a call!'
             }
-            imgSrc={require('../Media/Images/repairshopimg.png')}
+            imgSrc={require('../assets/Media/Images/repairshopimg.png')}
             btnName={'Contact'}
           />
         </Swiper>

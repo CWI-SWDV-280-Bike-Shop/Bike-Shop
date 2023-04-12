@@ -1,60 +1,60 @@
 import * as React from 'react';
-import {  Text, StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export const Profile = () => {
-    return (
-      <View style={[styles.container]}>
-        <View style={[styles.contentContainer]}>
-          <Text style={[styles.header]}>Welcome, user_name</Text>
-          <View style={styles.buttonRow}>
-            <View style={styles.buttonCol}>
-              <TouchableOpacity style={styles.button}>
-                <Icon 
-                  name="receipt-outline"
-                  size={60}
-                  color="#FFF"
-                />
-                <Text style={styles.buttonContent}>Orders</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonCol}>
+  return (
+    <View style={[styles.container]}>
+      <View style={[styles.contentContainer]}>
+        <Text style={[styles.header]}>Welcome, user_name</Text>
+        <View style={styles.buttonRow}>
+          <View style={styles.buttonCol}>
             <TouchableOpacity style={styles.button}>
-            <Icon 
-                  name="person-circle-outline"
-                  size={60}
-                  color="#FFF"
-                />
-                <Text style={styles.buttonContent}>Account</Text>
-              </TouchableOpacity>
-            </View>
+              <Icon
+                name="receipt-outline"
+                size={60}
+                color="#FFF"
+              />
+              <Text style={styles.buttonContent}>Orders</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.buttonRow}>
-            <View style={styles.buttonCol}>
+          <View style={styles.buttonCol}>
             <TouchableOpacity style={styles.button}>
-                <Icon 
-                  name="key-outline"
-                  size={60}
-                  color="#FFF"
-                />
-                <Text style={styles.buttonContent}>Admin</Text>
-              </TouchableOpacity>
-            </View>
-            <View style={styles.buttonCol}>
-            <TouchableOpacity style={styles.button}>
-                <Icon 
-                  name="log-out-outline"
-                  size={60}
-                  color="#FFF"
-                />
-                <Text style={styles.buttonContent}>Logout</Text>
-              </TouchableOpacity>
-            </View>
+              <Icon
+                name="person-circle-outline"
+                size={60}
+                color="#FFF"
+              />
+              <Text style={styles.buttonContent}>Account</Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.buttonRow}></View>
         </View>
+        <View style={styles.buttonRow}>
+          <View style={styles.buttonCol}>
+            <TouchableOpacity style={styles.button}>
+              <Icon
+                name="key-outline"
+                size={60}
+                color="#FFF"
+              />
+              <Text style={styles.buttonContent}>Admin</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.buttonCol}>
+            <TouchableOpacity style={styles.button}>
+              <Icon
+                name="log-out-outline"
+                size={60}
+                color="#FFF"
+              />
+              <Text style={styles.buttonContent}>Logout</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={styles.buttonRow}></View>
       </View>
-    );
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     backgroundColor: '#D3D5D4',
-  }, 
+  },
   header: {
     fontSize: 48,
     color: "#262626",

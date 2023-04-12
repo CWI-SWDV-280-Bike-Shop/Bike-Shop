@@ -5,14 +5,6 @@ import User from '../models/user.model.js';
 const { TokenExpiredError } = jwt;
 
 const authToken = {
-  catchExpiredError(err, res) {
-    if (err instanceof TokenExpiredError) {
-      return res
-        .status(401)
-        .json({ message: 'Unauthorized! Access token was expired!' });
-    }
-  },
-
   verifyToken(req, res, next) {
     let token = req.headers['x-access-token'];
 
@@ -21,8 +13,10 @@ const authToken = {
     }
 
     jwt.verify(token, config.secret, async (error, decoded) => {
-      if (error) {
-        return this.catchExpiredError(error, res);
+      if (error instanceof TokenExpiredError) {
+        return res
+          .status(401)
+          .json({ message: 'Unauthorized! Access token was expired!' });
       }
 
       const user = User.findById(decoded.userId);

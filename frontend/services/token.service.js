@@ -21,7 +21,7 @@ const TokenService = {
     return JSON.parse(AsyncStorage.getItem('user'));
   },
 
-  setLocalUser() {
+  setLocalUser(user) {
     AsyncStorage.setItem('user', JSON.stringify(user));
   },
 

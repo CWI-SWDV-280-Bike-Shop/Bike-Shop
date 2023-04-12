@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import BikeService from '../services/bike.service';
 
-const initialState = [];
 
 export const retrieveBikes = createAsyncThunk('bikes/retrieve', async () => {
   const res = await BikeService.getAll();
@@ -99,6 +98,8 @@ export const findBikesByGender = createAsyncThunk(
     return res.data;
   }
 );
+
+const initialState = [];
 
 const BikeSlice = createSlice({
   name: 'bikes',

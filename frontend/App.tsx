@@ -13,6 +13,7 @@ import {
 } from '@react-navigation/drawer';
 import { NavigationHeader } from './Components/Navigation/Header';
 import { Login } from './pages/login';
+import { ProfileNavigator } from './pages/profileNavigator';
 
 const Drawer = createDrawerNavigator();
 
@@ -34,7 +35,7 @@ const App = () => {
         >
           <Drawer.Screen name="Home" component={Home} />
           <Drawer.Screen name="Shop" component={Shop} />
-          <Drawer.Screen name="Profile" component={Profile} />
+          <Drawer.Screen name="Profile " component={ProfileNavigator} />
           <Drawer.Screen name="Redux Test Page" component={ReduxTestPage} />
           <Drawer.Screen name="Login" component={Login} />
         </Drawer.Navigator>

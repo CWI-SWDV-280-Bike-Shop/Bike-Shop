@@ -7,6 +7,7 @@ import Swiper from 'react-native-swiper/src';
 import { Slide } from '../Components/Slide';
 
 export const Home = () => {
+  const slideNames = ['City Bikes'];
   return (
     <View style={[styles.container]}>
       <View style={[styles.slidesContainer]}>
@@ -63,49 +64,34 @@ export const Home = () => {
           </View>
           <View style={[styles.missionStatementRow]}>
             <Text style={[styles.missionStatement]}>
-              Our mission at Wheely Good Bikes is to provide high-quality bicycles
-              and accessories that promote a healthy and sustainable lifestyle.
-              We are committed to offering personalized service and expert
-              advice to help our customers choose the right bike for their needs
-              and skill level. Our goal is to create a welcoming environment
-              where cyclists of all ages and abilities can come together to
-              share their passion for cycling and enjoy the freedom of the open
-              road. At the heart of our mission is a dedication to promoting
-              eco-friendly transportation options and helping our community
-              reduce its carbon footprint.
+              Our mission at Wheely Good Bikes is to provide high-quality
+              bicycles and accessories that promote a healthy and sustainable
+              lifestyle. We are committed to offering personalized service and
+              expert advice to help our customers choose the right bike for
+              their needs and skill level. Our goal is to create a welcoming
+              environment where cyclists of all ages and abilities can come
+              together to share their passion for cycling and enjoy the freedom
+              of the open road. At the heart of our mission is a dedication to
+              promoting eco-friendly transportation options and helping our
+              community reduce its carbon footprint.
             </Text>
           </View>
           <View style={[styles.footer]}>
-              <Text style={[styles.footerText]}>
-                  The Bicycle Shop
-              </Text>
-              <Text style={[styles.footerText]}>
-              <Icon
-                  name="navigate-outline"
-                  size={15}
-                  color="#FFF"
-   /> 1234 Something Blvd, Boise, ID 83706
-              </Text>
-              <Text style={[styles.footerText]}>
-                  Monday - Friday | 9am - 8pm
-              </Text>
-              <Text style={[styles.footerText]}>
-              <Icon
-                  name="receipt-outline"
-                  size={15}
-                  color="#FFF"
-   />  contact@thebicycleshop.com
-              </Text>
-              <Text style={[styles.footerText]}>
-              <Icon
-                  name="phone-portrait-outline"
-                  size={15}
-                  color="#FFF"
-   />  (208)123-4567
-              </Text>
-              <Text style={[styles.footerText]}>
-                  © Copyright 2023
-              </Text>
+            <Text style={[styles.footerText]}>The Bicycle Shop</Text>
+            <Text style={[styles.footerText]}>
+              <Icon name="navigate-outline" size={15} color="#FFF" /> 1234
+              Something Blvd, Boise, ID 83706
+            </Text>
+            <Text style={[styles.footerText]}>Monday - Friday | 9am - 8pm</Text>
+            <Text style={[styles.footerText]}>
+              <Icon name="receipt-outline" size={15} color="#FFF" />{' '}
+              contact@thebicycleshop.com
+            </Text>
+            <Text style={[styles.footerText]}>
+              <Icon name="phone-portrait-outline" size={15} color="#FFF" />{' '}
+              (208)123-4567
+            </Text>
+            <Text style={[styles.footerText]}>© Copyright 2023</Text>
           </View>
         </ScrollView>
       </View>

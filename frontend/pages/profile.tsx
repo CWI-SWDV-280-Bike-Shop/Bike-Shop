@@ -1,15 +1,21 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { Orders } from './orders';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export const Profile = () => {
+export const Profile = ({navigation}) => {
   return (
     <View style={[styles.container]}>
       <View style={[styles.contentContainer]}>
         <Text style={[styles.header]}>Welcome, user_name</Text>
         <View style={styles.buttonRow}>
           <View style={styles.buttonCol}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity 
+              style={styles.button}
+              onPress={() => navigation.navigate('Orders')}
+            >
               <Icon
                 name="receipt-outline"
                 size={60}
@@ -19,7 +25,10 @@ export const Profile = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.buttonCol}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity 
+              style={styles.button}
+              onPress={() => navigation.navigate('Account')}
+            >
               <Icon
                 name="person-circle-outline"
                 size={60}
@@ -31,7 +40,10 @@ export const Profile = () => {
         </View>
         <View style={styles.buttonRow}>
           <View style={styles.buttonCol}>
-            <TouchableOpacity style={styles.button}>
+            <TouchableOpacity 
+              style={styles.button}
+              onPress={() => navigation.navigate('Admin')}
+            >
               <Icon
                 name="key-outline"
                 size={60}

@@ -5,10 +5,13 @@ import AccessoryRoute from './api/accessory.route.js';
 import ServiceRoute from './api/service.route.js';
 import OrderRoute from './api/order.route.js';
 import EndpointsRoute from './api/endpoints.route.js';
+import AuthRoute from './api/auth.route.js';
 
 const router = express.Router();
 
-router.use('/', EndpointsRoute)
+router.use('/', EndpointsRoute);
+
+router.use('/auth', AuthRoute);
 
 router.use('/users', UserRoute);
 

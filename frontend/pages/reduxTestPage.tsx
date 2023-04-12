@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks/reduxHooks';
-import { retrieveBikes } from '../store/bikeSlice';
+import { retrieveBikes } from '../store/bike.slice.js';
 import { View, Text, StyleSheet } from 'react-native';
 import Styles from '../Styles';
 
 export const ReduxTestPage = () => {
   const bikes = useAppSelector((state) => [...state.bikes]);
+  const auth = useAppSelector((state) => {
+    state.auth;
+  });
   const dispatch = useAppDispatch();
 
   useEffect(() => {

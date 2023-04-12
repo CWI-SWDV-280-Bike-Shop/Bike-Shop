@@ -24,16 +24,16 @@ const authToken = {
       if (error) {
         return this.catchExpiredError(error, res);
       }
+
+      const user = User.findById(decoded.userId);
+      if (!user) {
+        res.status(500).json({ message: 'User not found' });
+        return;
+      }
+
+      req.user = user;
+      next();
     });
-
-    const user = User.findById(decoded.userId);
-    if (!user) {
-      res.status(500).json({ message: 'User not found' });
-      return;
-    }
-
-    req.user = user;
-    next();
   },
 };
 

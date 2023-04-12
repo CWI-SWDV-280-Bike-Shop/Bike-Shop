@@ -16,6 +16,9 @@ export const ReduxTestPage = () => {
     console.log(bikes);
   }, []);
 
+  // TODO
+  // handleLogin() + simple login form to test Auth store
+
   return (
     <View style={Styles.container}>
       <Text>Redux Test Page</Text>

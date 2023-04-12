@@ -35,12 +35,12 @@ export const createAccessories = createAsyncThunk(
   }
 );
 
-export const updateAccessories = createAsyncThunk('Accessories/update', async (id, data) => {
+export const updateAccessory = createAsyncThunk('Accessories/update', async (id, data) => {
   const res = await AccessoryService.update(id, data);
   return res.data;
 });
 
-export const deleteAccessories = createAsyncThunk('bikes/delete', async (id) => {
+export const deleteAccessory = createAsyncThunk('bikes/delete', async (id) => {
   const res = await AccessoryService.delete(id);
   return res.data;
 });
@@ -71,42 +71,42 @@ export const findAccessoriesByInStock = createAsyncThunk(
 
 const initialState = [];
 
-const BikeSlice = createSlice({
-  name: 'bikes',
+const AccessorySlice = createSlice({
+  name: 'accessories',
   initialState,
   extraReducers: (builder) => {
     builder
-      .addCase(retrieveBikes.fulfilled, (state, action) => {
+      .addCase(retrieveAccessories.fulfilled, (state, action) => {
         return [...action.payload];
       })
-      .addCase(retrieveBikeById.fulfilled, (state, action) => {
+      .addCase(retrieveAccessoriesById.fulfilled, (state, action) => {
         return [...action.payload];
       })
-      .addCase(createBike.fulfilled, (state, action) => {
+      .addCase(createAccessories.fulfilled, (state, action) => {
         state.push(action.payload);
       })
-      .addCase(updateBike.fulfilled, (state, action) => {
-        const index = state.findIndex((bike) => bike.id === action.payload.id);
+      .addCase(updateAccessory.fulfilled, (state, action) => {
+        const index = state.findIndex((accessory) => accessory.id === action.payload.id);
         state[index] = {
           ...state[index],
           ...action.payload,
         };
       })
-      .addCase(deleteBike.fulfilled, (state, action) => {
+      .addCase(deleteAccessory.fulfilled, (state, action) => {
         let index = state.findIndex(({ id }) => id === action.payload.id);
         state.splice(index, 1);
       })
-      .addCase(findBikesByName.fulfilled, (state, action) => {
+      .addCase(findAccessoriesByName.fulfilled, (state, action) => {
         return [...action.payload];
       })
-      .addCase(findBikesByCategory.fulfilled, (state, action) => {
+      .addCase(findAccessoriesByCategory.fulfilled, (state, action) => {
         return [...action.payload];
       })
-      .addCase(findBikesByInStock.fulfilled, (state, action) => {
+      .addCase(findAccessoriesByInStock.fulfilled, (state, action) => {
         return [...action.payload];
       });
   },
 });
 
-const { reducer } = BikeSlice;
+const { reducer } = AccessorySlice;
 export default reducer;

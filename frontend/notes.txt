@@ -1,10 +1,11 @@
 Joel 4/7
     For configuring Icons for Web and IOS this is the package I used for Icons https://www.npmjs.com/package/react-native-vector-icons
 
-    Also note that for getting the fonts working on android I modified the android/app/build.gradle
-    *** THIS LINE
-    apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
-    ***
+    #IGNORE THESE LINE
+    #Also note that for getting the fonts working on android I modified the android/app/build.gradle
+    #*** THIS LINE
+    #apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+    #***
     
     For Icons I used this https://ionic.io/ionicons/
 

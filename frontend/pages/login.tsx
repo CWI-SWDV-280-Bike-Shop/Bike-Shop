@@ -5,15 +5,14 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export const Login = () => {
   return (
-    <View style={[styles.container]}>
+    <ScrollView style={[styles.container]}>
       <View style={[styles.contentContainer]}>
         <Text style={[styles.header]}>Login</Text>
         <Text style={[styles.bodyText]}>
           Please login to see your profile.
         </Text>
-        <TextInput style={[styles.textArea]} placeholder='Username' />
-        <TextInput style={[styles.textArea]} placeholder='Password' secureTextEntry={true}
-        />
+        <TextInput style={[styles.textArea]} placeholder='Email' />
+        <TextInput style={[styles.textArea]} placeholder='Password' secureTextEntry={true} />
         <TouchableOpacity style={styles.button}>
           <Icon
             name="log-in-outline"
@@ -22,8 +21,36 @@ export const Login = () => {
           />
           <Text style={styles.buttonContent}> Login</Text>
         </TouchableOpacity>
+        <View style={styles.contentContainer}>
+          <Text style={[styles.header]}>New here? Please sign up!</Text>
+          <View style={{ flex: 1, flexDirection: "row" }}>
+            <View style={{ marginRight: 15, }}>
+              <Text style={[styles.bodyText]}>Information</Text>
+              <TextInput style={styles.textArea} inputMode='email' placeholder='Email' />
+              <TextInput style={styles.textArea} placeholder='Password' secureTextEntry={true} />
+              <TextInput style={styles.textArea} placeholder='Confirm Password' secureTextEntry={true} />
+              <TextInput style={styles.textArea} inputMode='tel' placeholder='Phone Number' />
+            </View>
+            <View>
+              <Text style={[styles.bodyText]}>Address</Text>
+              <TextInput style={styles.textArea} placeholder='Country' />
+              <TextInput style={styles.textArea} placeholder='State' />
+              <TextInput style={styles.textArea} placeholder='City' />
+              <TextInput style={styles.textArea} placeholder='Street' />
+              <TextInput style={styles.textArea} inputMode='numeric' placeholder='Zipcode' />
+            </View>
+          </View>
+          <TouchableOpacity style={styles.buttonNewAccount}>
+            <Icon
+              name="person-add-outline"
+              size={60}
+              color="#03312E"
+            />
+            <Text style={styles.buttonNewAccountContent}>New Account</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -34,7 +61,8 @@ const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
     backgroundColor: '#D3D5D4',
-    alignItems: "center"
+    alignItems: "center",
+    paddingBottom: 50,
   },
   header: {
     margin: 15,
@@ -53,6 +81,7 @@ const styles = StyleSheet.create({
     borderColor: "#03312E",
     borderWidth: 2,
     borderRadius: 10,
+    minWidth: 250,
   },
   button: {
     flexDirection: "row",
@@ -69,6 +98,29 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.58,
     shadowRadius: 16.00,
     elevation: 24,
+  },
+  buttonNewAccount: {
+    flexDirection: "row",
+    borderColor: "#03312E",
+    borderWidth: 3,
+    padding: 10,
+    margin: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+    elevation: 24,
+  },
+  buttonNewAccountContent: {
+    color: "#03312E",
+    textAlign: 'center',
+    fontSize: 20,
+    padding: 5,
   },
   buttonContent: {
     color: "#FFFFFF",

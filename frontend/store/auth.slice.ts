@@ -1,22 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import AuthService from '../services/auth.service';
 
-const initialState = {
-  id: '',
-  name: '',
-  email: '',
-  phone: '',
-  address: {
-    street: '',
-    city: '',
-    state: '',
-    zip: '',
-    country: '',
-  },
-  role: '',
-  accessToken: '',
-  refreshToken: '',
-};
+const initialState = {};
 
 export const login = createAsyncThunk(
   'auth/login',

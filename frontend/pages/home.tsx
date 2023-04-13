@@ -6,6 +6,9 @@ import Swiper from 'react-native-swiper/src';
 // Slide component imports
 import { Slide } from '../Components/Slide';
 
+//Footer Import 
+import { Footer } from '../Components/Footer';
+
 export const Home = () => {
   const slideNames = ['City Bikes'];
   return (
@@ -76,23 +79,7 @@ export const Home = () => {
               community reduce its carbon footprint.
             </Text>
           </View>
-          <View style={[styles.footer]}>
-            <Text style={[styles.footerText]}>The Bicycle Shop</Text>
-            <Text style={[styles.footerText]}>
-              <Icon name="navigate-outline" size={15} color="#FFF" /> 1234
-              Something Blvd, Boise, ID 83706
-            </Text>
-            <Text style={[styles.footerText]}>Monday - Friday | 9am - 8pm</Text>
-            <Text style={[styles.footerText]}>
-              <Icon name="receipt-outline" size={15} color="#FFF" />{' '}
-              contact@thebicycleshop.com
-            </Text>
-            <Text style={[styles.footerText]}>
-              <Icon name="phone-portrait-outline" size={15} color="#FFF" />{' '}
-              (208)123-4567
-            </Text>
-            <Text style={[styles.footerText]}>© Copyright 2023</Text>
-          </View>
+          <Footer/>
         </ScrollView>
       </View>
     </View>
@@ -155,17 +142,5 @@ const styles = StyleSheet.create({
     color: '#03312E',
     paddingLeft: 15,
     paddingRight: 15,
-  },
-  footer: {
-    backgroundColor: '#6A7B76',
-    paddingTop: 7,
-    paddingBottom: 7,
-  },
-  footerText: {
-    alignSelf: 'center',
-    color: 'white',
-    paddingTop: 1,
-    paddingBottom: 1,
-    fontWeight: 'bold',
   },
 });

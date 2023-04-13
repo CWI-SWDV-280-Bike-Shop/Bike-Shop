@@ -2,12 +2,19 @@ import api from '../api';
 import TokenService from './token.service.js';
 
 const AuthService = {
-  register({ name, email, password }) {
-    return api.post('/auth/register', { name, email, password });
-  },
-
   login({ email, password }) {
     return api.post('/auth/login', { email, password });
+  },
+
+  register({ name, email, password, phone, address, role }) {
+    return api.post('/auth/register', {
+      name,
+      email,
+      password,
+      phone,
+      address,
+      role,
+    });
   },
 
   logout() {

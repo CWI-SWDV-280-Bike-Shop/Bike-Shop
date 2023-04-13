@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import BikeReducer from './store/bike.slice.js';
-import AuthReducer from './store/auth.slice.js';
+import BikeReducer from './store/bike.slice';
+import AuthReducer from './store/auth.slice';
 
 const reducer = {
   auth: AuthReducer,

@@ -10,7 +10,7 @@ import {
 
 const AuthController = {
   async register(req, res) {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, address, role } = req.body;
     const hashedPassword = await hashPassword(password);
 
     const user = new User({
@@ -18,6 +18,9 @@ const AuthController = {
       name: name,
       email: email,
       password: hashedPassword,
+      phone,
+      address,
+      role,
     });
 
     const accessToken = jwt.sign({ userId: user }, config.secret, {
@@ -35,6 +38,9 @@ const AuthController = {
       id: user._id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
+      address: user.address,
+      role: user.role,
       accessToken: accessToken,
       refreshToken: refreshToken,
     });

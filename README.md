@@ -33,7 +33,7 @@ To start the application, run the following command:
 
 This will launch the Expo development server and open the application in your default web browser. You can then scan the QR code with your mobile device to open the application in the Expo client.
 
-## Contributing/Working with this repo
+## Contributing
 
 Contributions to this project are welcome and encouraged (and required for a passing grade 😉). To contribute, please follow these steps:
 

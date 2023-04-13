@@ -26,12 +26,13 @@ export const Login = () => {
           <View style={{ flex: 1, flexDirection: "row" }}>
             <View style={{ marginRight: 15, }}>
               <Text style={[styles.bodyText]}>Information</Text>
+              <TextInput style={styles.textArea} placeholder='Full Name' />
               <TextInput style={styles.textArea} inputMode='email' placeholder='Email' />
               <TextInput style={styles.textArea} placeholder='Password' secureTextEntry={true} />
               <TextInput style={styles.textArea} placeholder='Confirm Password' secureTextEntry={true} />
               <TextInput style={styles.textArea} inputMode='tel' placeholder='Phone Number' />
             </View>
-            <View>
+            <View style={{ marginLeft: 15, }}>
               <Text style={[styles.bodyText]}>Address</Text>
               <TextInput style={styles.textArea} placeholder='Country' />
               <TextInput style={styles.textArea} placeholder='State' />

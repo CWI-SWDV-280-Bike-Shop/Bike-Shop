@@ -75,10 +75,10 @@ const AuthSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(login.fulfilled, (state, action) => {
-        return action.payload;
+        return { ...action.payload };
       })
       .addCase(register.fulfilled, (state, action) => {
-        return action.payload;
+        return { ...action.payload };
       });
   },
 });

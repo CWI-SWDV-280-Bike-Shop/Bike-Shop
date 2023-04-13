@@ -19,12 +19,13 @@ export const Register = () => {
     country: '',
   });
   const [role, setRole] = useState('Customer'); //setting default role... this is sloppy
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [registered, setRegistered] = useState(false);
 
   // initialize redux store
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
+  // declare input methods
   const onChangeName = (name: string) => {
     setName(name);
   };
@@ -51,7 +52,7 @@ export const Register = () => {
 
   const handleLogin = () => {
     dispatch(register({ name, email, password, phone, address, role }));
-    setLoggedIn(true);
+    setRegistered(true);
   };
 
   return (
@@ -123,9 +124,7 @@ export const Register = () => {
       <Picker
         style={Styles.input}
         selectedValue={role}
-        onValueChange={(value, index) => {
-          setRole(value);
-        }}
+        onValueChange={(value) => onChangeRole(value)}
       >
         <Picker.Item label="Customer" value="Customer"></Picker.Item>
         <Picker.Item label="Admin" value="Admin"></Picker.Item>
@@ -133,7 +132,7 @@ export const Register = () => {
 
       <Button title="Submit" onPress={handleLogin}></Button>
 
-      {loggedIn && (
+      {registered && (
         <View>
           <Text>id: {auth.id}</Text>
           <Text>name: {auth.name}</Text>

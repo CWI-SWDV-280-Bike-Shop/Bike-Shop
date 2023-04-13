@@ -14,6 +14,7 @@ export const Login = () => {
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
+  // declare input methods
   const onChangeEmail = (email: string) => {
     setEmail(email);
   };

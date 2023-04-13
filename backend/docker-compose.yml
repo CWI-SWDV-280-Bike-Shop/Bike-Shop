@@ -1,0 +1,54 @@
+version: "3"
+services:
+  bikeshop-nginx:
+    container_name: bikeshop-nginx
+    image: nginx
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    volumes:
+      - ./docker/web-root:/var/www/html
+      - ./docker/nginx-conf:/etc/nginx/conf.d
+      - ./docker/certbot-etc:/etc/letsencrypt
+      - ./docker/certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - bikeshop-backend
+    networks:
+      - app-network
+  bikeshop-backend:
+    container_name: bikeshop-backend
+    image: node:18.15-alpine
+    restart: unless-stopped
+    build:
+      context: .
+    #ports:
+    #  - "8081:8081"
+    links:
+      - bikeshop-mongo
+    networks:
+      - app-network
+  bikeshop-mongo:
+    container_name: bikeshop-mongo
+    restart: unless-stopped
+    image: mongo
+    volumes:
+      - ./docker/data:/data/db
+    networks:
+      - app-network
+    #ports:
+    #  - '27018:27017'
+  #certbot:
+  #  image: certbot/certbot
+  #  container_name: certbot
+  #  volumes:
+  #    - certbot-etc:/etc/letsencrypt
+  #    - certbot-var:/var/lib/letsencrypt
+  #    - web-root:/var/www/html
+  #  depends_on:
+  #   - bikeshop-nginx
+  #  command: certonly --webroot --webroot-path=/var/www/html --email USER@DOMAIN --agree-tos --no-eff-email --staging -d DOMAIN  -d www.DOMAIN
+
+networks:
+  app-network:
+    #external: true
+    driver: bridge

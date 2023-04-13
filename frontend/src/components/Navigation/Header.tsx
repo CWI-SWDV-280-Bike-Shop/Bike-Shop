@@ -1,11 +1,11 @@
 import { DrawerHeaderProps } from "@react-navigation/drawer";
 import React from "react";
-import { TouchableOpacity, Text, Image, View, StyleSheet, Platform } from 'react-native';
+import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, Dimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 
 const NavigationBar = ({navigation}: DrawerHeaderProps) => {
 
-  if (Platform.OS === 'android' || Platform.OS === 'ios') {
+  if ( (Platform.OS === 'android' || Platform.OS === 'ios') || Dimensions.get('window').width < 1450) {
     return (
       <View style={styles.headerIcons}>
         <TouchableOpacity style={styles.headerTouchable} onPress={navigation.openDrawer}>
@@ -53,7 +53,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
       <View style={styles.headerLogoParent}>
         <Image source={require('../../assets/Media/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
       </View>
-      <View style={styles.headerIcons}>
+      <View style={[styles.headerIcons, {justifyContent: 'flex-end'}]}>
         <TouchableOpacity style={styles.headerTouchable}>
           <Icon name="cart-outline"
             size={40}
@@ -67,13 +67,18 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
 //Header Stylesheetr
 const styles = StyleSheet.create({
   headerView: {
-    flexDirection: "row", backgroundColor: "#6A7B76", paddingTop: 7, justifyContent: "center",
+    flexDirection: "row", 
+    backgroundColor: "#6A7B76", 
+    paddingTop: 7,
+    justifyContent: 'space-around'
   },
   headerIcons: {
-    flexDirection: "column", justifyContent: "center"
+    flex: 1,
+    flexDirection: "row", 
+    padding: '2rem'
   },
   headerLogoParent: {
-    flexDirection: "row", flex: 1, justifyContent: 'center'
+    alignSelf: 'center'
   },
   headerLogo: {
     width: 180, height: 120,
@@ -82,10 +87,9 @@ const styles = StyleSheet.create({
     margin: 8
   },
   navBar: {
-    // flex: 1,
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    //position: "absolute",
   },
   navText: {
     color: '#FFF',

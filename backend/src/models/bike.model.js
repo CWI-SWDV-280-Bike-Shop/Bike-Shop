@@ -29,7 +29,10 @@ const BikeSchema = new Schema(
     },
     gender: String,
     price: Number,
-    inStock: Boolean,
+    inStock: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, Text } from 'react-native';
 import Styles from '../Styles';
-import { Auth, Bikes } from '../Components/Redux';
+import { Auth, Bikes, Service } from '../Components/Redux';
 
 export const ReduxTestPage = () => {
   return (
@@ -9,6 +9,7 @@ export const ReduxTestPage = () => {
       <Text style={Styles.title}>Redux Test Page</Text>
       <Auth />
       <Bikes />
+      <Service />
     </ScrollView>
   );
 };

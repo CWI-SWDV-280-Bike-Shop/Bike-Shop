@@ -21,6 +21,17 @@ const ServiceController = {
   },
 
   async createService(req, res) {
+    /*we are going to move this serviceDate somewhere else, leaving this here so it can be looked at for reference
+    const serviceDay = new Date(req.body.serviceDate);
+    const service = new Service({
+    name: req.body.name,
+    description: req.body.description,
+    category: req.body.category,
+    price: req.body.price,
+    serviceDate: serviceDay,
+    inStock: req.body.inStock
+   })
+   */
     const service = new Service(req.body);
     const newService = await service.save();
     res.status(200).json(newService);

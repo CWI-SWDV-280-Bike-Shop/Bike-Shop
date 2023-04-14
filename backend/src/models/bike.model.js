@@ -54,7 +54,10 @@ const BikeSchema = new Schema(
     gender: String,
     price: Number,
     image: String,
-    inStock: Boolean,
+    inStock: {
+      type: Boolean,
+      default: true,
+    },
   },
   { timestamps: true }
 );

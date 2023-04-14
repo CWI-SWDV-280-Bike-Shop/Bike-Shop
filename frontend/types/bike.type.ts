@@ -1,6 +1,6 @@
 type Bike = {
-  _id: string;
   name: string;
+  brand: string;
   description: string;
   category: string;
   material: string;
@@ -10,9 +10,6 @@ type Bike = {
   gender: string;
   price: number;
   image: string;
-  inStock: boolean;
-  createdAt: string;
-  updatedAt: string;
 };
 
 export default Bike;

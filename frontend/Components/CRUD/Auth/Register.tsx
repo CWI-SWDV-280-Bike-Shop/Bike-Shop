@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, { useState, useContext } from 'react';
+import { View, Text, TextInput, Button } from 'react-native';
 import Styles from '../../../Styles';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hooks';
-import { register } from '../../../store/auth.slice';
+import AuthContext from '../../../context/auth.context';
+import { Picker } from '@react-native-picker/picker';
 
-export const Register = () => {
+const Register = () => {
+  const { NewUser, isRegistered, register } = useContext(AuthContext);
+
   // initialize component state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -18,20 +19,15 @@ export const Register = () => {
     zip: '',
     country: '',
   });
-  const [role, setRole] = useState('Customer'); //setting default role... this is sloppy
-  const [registered, setRegistered] = useState(false);
 
-  // initialize redux store
-  const auth = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
+  const [role, setRole] = useState('Customer'); //setting default role... this is kinda sloppy
 
   const onChangeAddress = (fieldName: string, value: string) => {
     setAddress({ ...address, [fieldName]: value });
   };
 
   const handleSubmit = () => {
-    dispatch(register({ name, email, password, phone, address, role }));
-    setRegistered(true);
+    register({ name, email, password, phone, address, role });
   };
 
   return (
@@ -111,18 +107,17 @@ export const Register = () => {
 
       <Button title="Submit" onPress={handleSubmit}></Button>
 
-      {registered && (
+      {isRegistered && (
         <View>
-          <Text>id: {auth.id}</Text>
-          <Text>name: {auth.name}</Text>
-          <Text>email: {auth.email}</Text>
-          <Text>phone: {auth.phone}</Text>
-          <Text>address: {JSON.stringify(auth.address)}</Text>
-          <Text>role: {auth.role}</Text>
-          <Text>accessToken: {auth.accessToken}</Text>
-          <Text>refreshToken: {auth.refreshToken}</Text>
+          <Text>name: {NewUser.name}</Text>
+          <Text>email: {NewUser.email}</Text>
+          <Text>phone: {NewUser.phone}</Text>
+          <Text>address: {JSON.stringify(NewUser.address)}</Text>
+          <Text>role: {NewUser.role}</Text>
         </View>
       )}
     </View>
   );
 };
+
+export default Register;

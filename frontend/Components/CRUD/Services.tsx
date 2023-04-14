@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Styles from '../../Styles';
-import { AddService, ListServices } from './Service/';
+import AddService from './Services/AddService';
+import ListServices from './Services/ListServices';
 
-export const Service = () => {
+const Services = () => {
   return (
     <View style={Styles.section}>
       <Text style={Styles.title}>Service</Text>
@@ -12,3 +13,5 @@ export const Service = () => {
     </View>
   );
 };
+
+export default Services;

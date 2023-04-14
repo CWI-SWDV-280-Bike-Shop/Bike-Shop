@@ -1,40 +1,37 @@
 import api from '../api';
 
 const ServiceService = {
-
-create(data) {
-    return api.post('/service', data);
+  create(data) {
+    return api.post('/services', data);
   },
 
-update(id, data) {
-    return api.put(`/service/${id}`, data);
+  update(id, data) {
+    return api.put(`/services/${id}`, data);
   },
 
   delete(id) {
-    return api.delete(`/service/${id}`);
+    return api.delete(`/services/${id}`);
   },
 
   getAll() {
-    return api.get('/service');
+    return api.get('/services');
   },
 
   get(id) {
-    return api.get(`/service/${id}`);
+    return api.get(`/services/${id}`);
   },
 
   findByName(name) {
-    return api.get(`/service?name=${name}`);
+    return api.get(`/services?name=${name}`);
   },
 
   findByCategory(category) {
-    return api.get(`/service?category=${category}`);
+    return api.get(`/services?category=${category}`);
   },
 
-findByPrice(price) {
-    return api.get(`/service?price=${price}`);
+  findByPrice(price) {
+    return api.get(`/services?price=${price}`);
   },
-
-  
 
   findByInStock(inStock) {
     return api.get(`/service?inStock=${inStock}`);

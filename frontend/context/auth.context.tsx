@@ -1,6 +1,4 @@
 import React, { ReactNode, createContext, useState } from 'react';
-import AuthService from '../services/auth.service';
-import { View } from 'react-native/types';
 
 type AuthUser = {
   id: string;
@@ -11,14 +9,33 @@ type AuthUser = {
   refreshToken: string;
 };
 
-type AuthContextType = {
-  user: AuthUser;
-  isLoggedIn: boolean;
-  login: (credentials: { email: string; password: string }) => void;
+type NewUser = {
+  name: string;
+  email: string;
+  password: string;
+  phone: string;
+  address: {
+    street: string;
+    city: string;
+    state: string;
+    zip: string;
+    country: string;
+  };
+  role: string;
 };
 
-export const AuthContext = createContext<AuthContextType>({
-  user: {
+type AuthContextType = {
+  AuthUser: AuthUser;
+  login: (credentials: { email: string; password: string }) => void;
+  isLoggedIn: boolean;
+
+  NewUser: NewUser;
+  register: (user: NewUser) => void;
+  isRegistered: boolean;
+};
+
+const AuthContext = createContext<AuthContextType>({
+  AuthUser: {
     id: '',
     name: '',
     email: '',
@@ -26,7 +43,27 @@ export const AuthContext = createContext<AuthContextType>({
     accessToken: '',
     refreshToken: '',
   },
-  isLoggedIn: false,
   // eslint-disable-next-line @typescript-eslint/no-empty-function
-  login: ({ email, password }) => {},
+  login: (credentials) => {},
+  isLoggedIn: false,
+
+  NewUser: {
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+    address: {
+      street: '',
+      city: '',
+      state: '',
+      zip: '',
+      country: '',
+    },
+    role: '',
+  },
+  isRegistered: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  register: (user) => {},
 });
+
+export default AuthContext;

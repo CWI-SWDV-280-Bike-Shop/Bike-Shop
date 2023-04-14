@@ -1,62 +1,48 @@
 import api from '../api';
+import Bike from '../types/bike.type';
 
 const BikeService = {
   getAll() {
     return api.get('/bikes');
   },
 
-  get(id) {
+  get(id: string) {
     return api.get(`/bikes/${id}`);
   },
 
-  create(data) {
+  create(data: Bike) {
     return api.post('/bikes', data);
   },
 
-  update(id, data) {
+  update(id: string, data: Bike) {
     return api.put(`/bikes/${id}`, data);
   },
 
-  delete(id) {
+  delete(id: string) {
     return api.delete(`/bikes/${id}`);
   },
 
-  findByName(name) {
+  findByName(name: string) {
     return api.get(`/bikes?name=${name}`);
   },
 
-  //   ['Mountain', 'Electric', 'Street']
-  findByCategory(category) {
+  findByCategory(category: string) {
     return api.get(`/bikes?category=${category}`);
   },
 
-  //   expects boolean
-  findByInStock(inStock) {
+  findByInStock(inStock: boolean) {
     return api.get(`/bikes?inStock=${inStock}`);
   },
 
-  //   [
-  //     'Red',
-  //     'Orange',
-  //     'Yellow',
-  //     'Green',
-  //     'Blue',
-  //     'Purple',
-  //     'Black',
-  //     'White',
-  //     'Grey',
-  //   ]
-  findByColor(color) {
+  findByColor(color: string) {
     return api.get(`/bikes?color=${color}`);
   },
 
-  //   ['Small', 'Medium', 'Large']
-  findBySize(size) {
+  findBySize(size: string) {
     return api.get(`/bikes/size=${size}`);
   },
 
-  // ['Mens', 'Womens', 'Neutral']
-  findByGender(gender) {
+  findByGender(gender: string) {
     return api.get(`/bikes/gender=${gender}`);
   },
 };

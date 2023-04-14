@@ -1,31 +1,35 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TokenService = {
-  getLocalAccessToken() {
-    const user = JSON.parse(AsyncStorage.getItem('user'));
+  async getLocalAccessToken() {
+    let user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user);
     return user?.accessToken;
   },
 
-  getLocalRefreshToken() {
-    const user = JSON.parse(AsyncStorage.getItem('user'));
+  async getLocalRefreshToken() {
+    let user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user);
     return user?.refreshToken;
   },
 
-  updateLocalAccessToken(token) {
-    let user = JSON.parse(AsyncStorage.getItem('user'));
+  async updateLocalAccessToken(token) {
+    let user = await AsyncStorage.getItem('user');
+    user = JSON.parse(user);
     user.accessToken = token;
+    await AsyncStorage.setItem('user', JSON.stringify(user));
+  },
+
+  async getLocalUser() {
+    let user = await AsyncStorage.getItem('user');
+    return JSON.parse(user);
+  },
+
+  async setLocalUser(user) {
     AsyncStorage.setItem('user', JSON.stringify(user));
   },
 
-  getLocalUser() {
-    return JSON.parse(AsyncStorage.getItem('user'));
-  },
-
-  setLocalUser(user) {
-    AsyncStorage.setItem('user', JSON.stringify(user));
-  },
-
-  removeLocalUser() {
+  async removeLocalUser() {
     AsyncStorage.removeItem('user');
   },
 };

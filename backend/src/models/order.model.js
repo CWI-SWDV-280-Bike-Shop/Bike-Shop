@@ -16,7 +16,7 @@ const ItemSchema = new Schema({
   },
   price: Number,
   quantity: Number,
-  serviceDate: Date
+  serviceDate: Date,
 });
 
 const OrderSchema = new Schema(

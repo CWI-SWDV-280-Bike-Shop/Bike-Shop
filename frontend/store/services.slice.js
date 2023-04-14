@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import ServiceService from '../services/services.service';
 
 
-export const retrieveService = createAsyncThunk('service/retrieve', async () => {
+export const retrieveServices = createAsyncThunk('service/retrieve', async () => {
   const res = await ServiceService.getAll();
   return res.data;
 });

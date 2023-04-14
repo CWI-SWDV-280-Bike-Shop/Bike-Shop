@@ -14,7 +14,7 @@ export const Login = () => {
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  const handleLogin = () => {
+  const handleSubmit = () => {
     dispatch(login({ email, password }));
     setLoggedIn(true);
   };
@@ -37,7 +37,7 @@ export const Login = () => {
         onChangeText={(value) => setPassword(value)}
         secureTextEntry={true}
       />
-      <Button title="Submit" onPress={handleLogin}></Button>
+      <Button title="Submit" onPress={handleSubmit}></Button>
 
       {loggedIn && (
         <View>

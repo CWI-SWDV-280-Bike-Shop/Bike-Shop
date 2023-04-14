@@ -50,9 +50,7 @@ const Auth = () => {
   };
 
   return (
-    <AuthContext.Provider
-      value={{ AuthUser, login, isLoggedIn, NewUser, register, isRegistered }}
-    >
+    <AuthContext.Provider value={{ AuthUser, login, isLoggedIn }}>
       <View style={Styles.section}>
         <Text style={Styles.title}>Auth </Text>
         <Login />

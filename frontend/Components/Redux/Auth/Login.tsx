@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button } from 'react-native';
 import Styles from '../../../Styles';
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hooks';
 import { login } from '../../../store/auth.slice';
@@ -14,15 +14,6 @@ export const Login = () => {
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  // declare input methods
-  const onChangeEmail = (email: string) => {
-    setEmail(email);
-  };
-
-  const onChangePassword = (password: string) => {
-    setPassword(password);
-  };
-
   const handleLogin = () => {
     dispatch(login({ email, password }));
     setLoggedIn(true);
@@ -36,14 +27,14 @@ export const Login = () => {
       <TextInput
         style={Styles.input}
         value={email}
-        onChangeText={onChangeEmail}
+        onChangeText={(value) => setEmail(value)}
       />
 
       <Text>Password</Text>
       <TextInput
         style={Styles.input}
         value={password}
-        onChangeText={onChangePassword}
+        onChangeText={(value) => setPassword(value)}
         secureTextEntry={true}
       />
       <Button title="Submit" onPress={handleLogin}></Button>

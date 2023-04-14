@@ -25,32 +25,11 @@ export const Register = () => {
   const auth = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
 
-  // declare input methods
-  const onChangeName = (name: string) => {
-    setName(name);
-  };
-
-  const onChangeEmail = (email: string) => {
-    setEmail(email);
-  };
-
-  const onChangePassword = (password: string) => {
-    setPassword(password);
-  };
-
-  const onChangePhone = (phone: string) => {
-    setPhone(phone);
-  };
-
   const onChangeAddress = (fieldName: string, value: string) => {
     setAddress({ ...address, [fieldName]: value });
   };
 
-  const onChangeRole = (role: string) => {
-    setRole(role);
-  };
-
-  const handleLogin = () => {
+  const handleSubmit = () => {
     dispatch(register({ name, email, password, phone, address, role }));
     setRegistered(true);
   };
@@ -63,21 +42,21 @@ export const Register = () => {
       <TextInput
         style={Styles.input}
         value={name}
-        onChangeText={onChangeName}
+        onChangeText={(value) => setName(value)}
       />
 
       <Text>Email</Text>
       <TextInput
         style={Styles.input}
         value={email}
-        onChangeText={onChangeEmail}
+        onChangeText={(value) => setEmail(value)}
       />
 
       <Text>Password</Text>
       <TextInput
         style={Styles.input}
         value={password}
-        onChangeText={onChangePassword}
+        onChangeText={(value) => setPassword(value)}
         secureTextEntry={true}
       />
 
@@ -85,7 +64,7 @@ export const Register = () => {
       <TextInput
         style={Styles.input}
         value={phone}
-        onChangeText={onChangePhone}
+        onChangeText={(value) => setPhone(value)}
       />
 
       <Text>Address</Text>
@@ -124,13 +103,13 @@ export const Register = () => {
       <Picker
         style={Styles.input}
         selectedValue={role}
-        onValueChange={(value) => onChangeRole(value)}
+        onValueChange={(value) => setRole(value)}
       >
         <Picker.Item label="Customer" value="Customer"></Picker.Item>
         <Picker.Item label="Admin" value="Admin"></Picker.Item>
       </Picker>
 
-      <Button title="Submit" onPress={handleLogin}></Button>
+      <Button title="Submit" onPress={handleSubmit}></Button>
 
       {registered && (
         <View>

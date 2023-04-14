@@ -1,9 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Styles from '../../Styles';
-import { AddBike, ListBikes } from './Bikes/index';
+import AddBike from './Bikes/AddBike';
+import ListBikes from './Bikes/ListBikes';
 
-export const Bikes = () => {
+const Bikes = () => {
   return (
     <View style={Styles.section}>
       <Text style={Styles.title}>Bikes</Text>
@@ -12,3 +13,5 @@ export const Bikes = () => {
     </View>
   );
 };
+
+export default Bikes;

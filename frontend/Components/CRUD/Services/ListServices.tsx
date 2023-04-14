@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Styles from '../../../Styles';
-import ServicesService from '../../../services/services.service';
+import ServicesService from '../../../services/service.service';
 
-export const ListServices = () => {
+const ListServices = () => {
   const [service, setService] = useState([]);
 
   useEffect(() => {
@@ -33,3 +33,5 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
+
+export default ListServices;

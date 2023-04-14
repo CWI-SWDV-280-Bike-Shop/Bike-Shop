@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import Styles from '../../../Styles';
-import { AuthContext } from '../../../context/auth.context';
+import AuthContext from '../../../context/auth.context';
 
-export const Login = () => {
-  const { user, isLoggedIn, login } = useContext(AuthContext);
+const Login = () => {
+  const { AuthUser, isLoggedIn, login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -34,14 +34,16 @@ export const Login = () => {
 
       {isLoggedIn && (
         <View>
-          <Text>_id: {user.id}</Text>
-          <Text>name: {user.name}</Text>
-          <Text>email: {user.email}</Text>
-          <Text>role: {user.role}</Text>
-          <Text>accessToken: {user.accessToken}</Text>
-          <Text>refreshToken: {user.refreshToken}</Text>
+          <Text>_id: {AuthUser.id}</Text>
+          <Text>name: {AuthUser.name}</Text>
+          <Text>email: {AuthUser.email}</Text>
+          <Text>role: {AuthUser.role}</Text>
+          <Text>accessToken: {AuthUser.accessToken}</Text>
+          <Text>refreshToken: {AuthUser.refreshToken}</Text>
         </View>
       )}
     </View>
   );
 };
+
+export default Login;

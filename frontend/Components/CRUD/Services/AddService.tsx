@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Styles from '../../../Styles';
-import ServiceService from '../../../services/services.service';
+import ServiceService from '../../../services/service.service';
 
-export const AddService = () => {
+const AddService = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-  const [bike, setService] = useState({
+  const [service, setService] = useState({
     _id: '',
     name: '',
     description: '',
@@ -38,7 +38,7 @@ export const AddService = () => {
         value={name}
         onChangeText={(value) => setName(value)}
       ></TextInput>
-  
+
       <Text>Description</Text>
       <TextInput
         style={Styles.input}
@@ -53,9 +53,15 @@ export const AddService = () => {
         onValueChange={(value) => setCategory(value)}
       >
         <Picker.Item label="Tune" value="Tune"></Picker.Item>
-        <Picker.Item label="Wheel and Tire Maintenance" value="Wheel and Tire Maintenance"></Picker.Item>
+        <Picker.Item
+          label="Wheel and Tire Maintenance"
+          value="Wheel and Tire Maintenance"
+        ></Picker.Item>
         <Picker.Item label="Assembly" value="Assembly"></Picker.Item>
-        <Picker.Item label="Shifting and Brakes" value="Shifting and Brakes"></Picker.Item>
+        <Picker.Item
+          label="Shifting and Brakes"
+          value="Shifting and Brakes"
+        ></Picker.Item>
       </Picker>
 
       <Text>Price</Text>
@@ -69,19 +75,15 @@ export const AddService = () => {
 
       {submitted && (
         <View>
-          <Text>_id: {bike._id}</Text>
-          <Text>name: {bike.name}</Text>
-          <Text>description: {bike.description}</Text>
-          <Text>category: {bike.category}</Text>
-          <Text>price: {bike.price.toString()}</Text>
+          <Text>_id: {service._id}</Text>
+          <Text>name: {service.name}</Text>
+          <Text>description: {service.description}</Text>
+          <Text>category: {service.category}</Text>
+          <Text>price: {service.price.toString()}</Text>
         </View>
       )}
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  service: {
-    margin: 10,
-  },
-});
+export default AddService;

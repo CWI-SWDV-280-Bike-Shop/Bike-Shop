@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import Styles from '../../../Styles';
 import BikeService from '../../../services/bike.service';
 
-export const ListBikes = () => {
+const ListBikes = () => {
   const [bikes, setBikes] = useState([]);
 
   useEffect(() => {
@@ -36,3 +36,5 @@ const styles = StyleSheet.create({
     margin: 10,
   },
 });
+
+export default ListBikes;

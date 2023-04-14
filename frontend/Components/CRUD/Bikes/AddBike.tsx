@@ -4,7 +4,7 @@ import { Picker } from '@react-native-picker/picker';
 import Styles from '../../../Styles';
 import BikeService from '../../../services/bike.service';
 
-export const AddBike = () => {
+const AddBike = () => {
   const [name, setName] = useState('');
   const [brand, setBrand] = useState('');
   const [description, setDescription] = useState('');
@@ -39,6 +39,8 @@ export const AddBike = () => {
       brand,
       description,
       category,
+      material,
+      wheelSize,
       color,
       size,
       gender,
@@ -180,3 +182,5 @@ export const AddBike = () => {
     </View>
   );
 };
+
+export default AddBike;

@@ -20,7 +20,7 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   return (
     <Provider store={store}>
-      <NavigationContainer>
+      <NavigationContainer linking={{prefixes: []}}>
         <Drawer.Navigator
           screenOptions={{
             drawerStyle: {

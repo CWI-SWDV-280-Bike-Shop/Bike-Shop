@@ -1,20 +1,13 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Styles from '../../Styles';
-import { useAppDispatch, useAppSelector } from '../../hooks/redux.hooks';
-import {
-  retrieveBikes,
-  createBike,
-  updateBike,
-  deleteBike,
-} from '../../store/bike.slice.js';
+import BikeService from '../../services/bike.service';
 
 export const Bikes = () => {
-  const bikes = useAppSelector((state) => [...state.bikes]);
-  const dispatch = useAppDispatch();
+  const [bikes, setBikes] = useState([]);
 
   useEffect(() => {
-    dispatch(retrieveBikes());
+    BikeService.getAll().then((res) => setBikes(res.data));
   }, []);
 
   return (

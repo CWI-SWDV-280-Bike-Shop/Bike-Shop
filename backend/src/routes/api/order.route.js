@@ -3,14 +3,14 @@ import OrderController from '../../controllers/order.controller.js';
 
 const router = express.Router();
 
-router.get('/', OrderController.getOrders);
+router.get('/', OrderController.find);
 
-router.get('/:id', OrderController.getOrderById);
+router.get('/:id', OrderController.getById);
 
-router.post('/', OrderController.createOrder);
+router.post('/', OrderController.create);
 
-router.put('/:id', OrderController.updateOrder);
+router.put('/:id', OrderController.update);
 
-router.delete('/:id', OrderController.deleteOrder);
+router.delete('/:id', OrderController.delete);
 
 export default router;

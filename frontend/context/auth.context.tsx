@@ -30,30 +30,3 @@ export const AuthContext = createContext<AuthContextType>({
   // eslint-disable-next-line @typescript-eslint/no-empty-function
   login: ({ email, password }) => {},
 });
-
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState({
-    id: '',
-    name: '',
-    email: '',
-    role: '',
-    accessToken: '',
-    refreshToken: '',
-  });
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const login = ({ email, password }) => {
-    console.log('logging in');
-    AuthService.login({ email, password }).then((res) => setUser(res.data));
-    setIsLoggedIn(true);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  const register = () => {}; // TODO
-
-  return (
-    <AuthContext.Provider value={{ user, isLoggedIn, login }}>
-      {children}
-    </AuthContext.Provider>
-  );
-};

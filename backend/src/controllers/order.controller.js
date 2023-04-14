@@ -1,8 +1,8 @@
 import Order from '../models/order.model.js';
-import { NotFound } from '../errors.js';
+import { BaseController } from './base.controller.js';
 
-const OrderController = {
-  async getOrders(req, res) {
+class OrderController extends BaseController(Order) {
+  static async find(req, res) {
     let {
       customer,
       itemId,
@@ -44,33 +44,7 @@ const OrderController = {
     }
 
     res.status(200).json(filteredOrders);
-  },
-
-  async getOrderById(req, res) {
-    const order = await Order.findById(req.params.id);
-    if (!order) throw new NotFound('Order not found');
-    res.status(200).json(order);
-  },
-
-  async createOrder(req, res) {
-    const order = new Order(req.body);
-    const newOrder = await order.save();
-    res.status(200).json(newOrder);
-  },
-
-  async updateOrder(req, res) {
-    const order = await Order.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
-    if (!order) throw new NotFound('Order not found');
-    res.status(200).json(order);
-  },
-
-  async deleteOrder(req, res) {
-    const order = await Order.findByIdAndDelete(req.params.id);
-    if (!order) throw new NotFound('Order not found');
-    res.status(200).json({ message: 'Order deleted successfully' });
-  },
-};
+  }
+}
 
 export default OrderController;

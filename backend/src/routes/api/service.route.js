@@ -3,14 +3,14 @@ import ServiceController from '../../controllers/service.controller.js';
 
 const router = express.Router();
 
-router.get('/', ServiceController.getServices);
+router.get('/', ServiceController.find);
 
-router.get('/:id', ServiceController.getServiceById);
+router.get('/:id', ServiceController.getById);
 
-router.post('/', ServiceController.createService);
+router.post('/', ServiceController.create);
 
-router.put('/:id', ServiceController.updateService);
+router.put('/:id', ServiceController.update);
 
-router.delete('/:id', ServiceController.deleteService);
+router.delete('/:id', ServiceController.delete);
 
 export default router;

@@ -4,12 +4,12 @@ const Schema = mongoose.Schema;
 // Dynamic Refs
 // https://mongoosejs.com/docs/populate.html#dynamic-ref
 const ItemSchema = new Schema({
-  item: {
+  product: {
     type: Schema.Types.ObjectId,
     required: true,
-    refPath: 'items.itemModel',
+    refPath: 'items.productModel',
   },
-  itemModel: {
+  productModel: {
     type: String,
     required: true,
     enum: ['Bike', 'Accessory', 'Service'],

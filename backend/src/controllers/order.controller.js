@@ -17,18 +17,11 @@ const OrderController = {
     let query = {};
 
     if (customer) query.customer = customer;
-    if (itemId) query['items.item'] = itemId;
-    if (itemType) query['items.itemModel'] = itemType;
-
-    // Example of the query if all params are present
-    // query = {
-    //   'customer': customer,
-    //   'items.item': itemId,
-    //   'items.itemModel': itemType,
-    // };
+    if (itemId) query['items.product'] = itemId;
+    if (itemType) query['items.productModel'] = itemType;
 
     const orders = await Order.find(query).populate('customer').populate({
-      path: 'items.item',
+      path: 'items.product',
       model: itemType,
     });
 

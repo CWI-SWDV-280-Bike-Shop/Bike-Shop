@@ -3,9 +3,10 @@ import { View, Text, TextInput, Button } from 'react-native';
 import Styles from '../../../Styles';
 import AuthContext from '../../../context/auth.context';
 import { Picker } from '@react-native-picker/picker';
+import AuthService from '../../../services/auth.service';
 
 const Register = () => {
-  const { NewUser, isRegistered, register } = useContext(AuthContext);
+  const { AuthUser, isLoggedIn, login } = useContext(AuthContext);
 
   // initialize component state
   const [name, setName] = useState('');
@@ -27,7 +28,10 @@ const Register = () => {
   };
 
   const handleSubmit = () => {
-    register({ name, email, password, phone, address, role });
+    // register user and then immediately login.
+    AuthService.register({ name, email, password, phone, address, role }).then(
+      () => login({ email, password })
+    );
   };
 
   return (
@@ -107,13 +111,14 @@ const Register = () => {
 
       <Button title="Submit" onPress={handleSubmit}></Button>
 
-      {isRegistered && (
+      {isLoggedIn && (
         <View>
-          <Text>name: {NewUser.name}</Text>
-          <Text>email: {NewUser.email}</Text>
-          <Text>phone: {NewUser.phone}</Text>
-          <Text>address: {JSON.stringify(NewUser.address)}</Text>
-          <Text>role: {NewUser.role}</Text>
+          <Text>_id: {AuthUser.id}</Text>
+          <Text>name: {AuthUser.name}</Text>
+          <Text>email: {AuthUser.email}</Text>
+          <Text>role: {AuthUser.role}</Text>
+          <Text>accessToken: {AuthUser.accessToken}</Text>
+          <Text>refreshToken: {AuthUser.refreshToken}</Text>
         </View>
       )}
     </View>

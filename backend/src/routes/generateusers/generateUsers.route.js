@@ -3,12 +3,12 @@ import GenerateUsersController from '../../controllers/generateUsers.controller.
 
 const router = express.Router();
 
-router.get('/', GenerateUsersController.viewGeneratedSample);
+router.get('/', GenerateUsersController.getGeneratedUsers);
 
-router.get('/:quantity', GenerateUsersController.viewGeneratedSample);
+router.get('/:quantity', GenerateUsersController.getGeneratedUsers);
 
-router.post('/', GenerateUsersController.pushGeneratedUsersToDatabase);
+router.post('/', GenerateUsersController.createGeneratedUsers);
 
-router.post('/:quantity', GenerateUsersController.pushGeneratedUsersToDatabase);
+router.post('/:quantity', GenerateUsersController.createGeneratedUsers);
 
 export default router;

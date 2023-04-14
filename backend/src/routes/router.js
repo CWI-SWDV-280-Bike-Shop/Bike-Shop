@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.use('/', EndpointsRoute);
 
-router.use('/generateUsers', GenerateUsersRoute);
+router.use('/generateusers', GenerateUsersRoute);
 
 router.use('/auth', AuthRoute);
 

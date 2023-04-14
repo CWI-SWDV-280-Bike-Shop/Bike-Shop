@@ -80,7 +80,7 @@ const GenerateUsers = (quantity) => {
 
 const GenerateUsersController = {
 
-    async pushGeneratedUsersToDatabase(req, res){
+    async createGeneratedUsers(req, res){
       try {
         let limitedQuantity = (!req.params.quantity) ? 1 : (req.params.quantity>maxQuantity) ? maxQuantity : req.params.quantity;
         let objects = GenerateUsers(limitedQuantity);
@@ -103,7 +103,7 @@ const GenerateUsersController = {
       }
     },
 
-    async viewGeneratedSample(req, res) {
+    async getGeneratedUsers(req, res) {
       try {
         let limitedQuantity = (!req.params.quantity) ? 1 : (req.params.quantity>maxQuantity) ? maxQuantity : req.params.quantity;
         

@@ -1,38 +1,49 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
+import { View, Text, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Styles from '../../../Styles';
 import BikeService from '../../../services/bike.service';
 
 export const AddBike = () => {
   const [name, setName] = useState('');
+  const [brand, setBrand] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [color, setColor] = useState('');
-  const [size, setSize] = useState('');
-  const [gender, setGender] = useState('');
+  const [category, setCategory] = useState('Mountain'); //initializing these because Picker sends null if you don't click
+  const [material, setMaterial] = useState('Aluminum');
+  const [wheelSize, setWheelSize] = useState('20in');
+  const [color, setColor] = useState('Red');
+  const [size, setSize] = useState('Small');
+  const [gender, setGender] = useState('Mens');
   const [price, setPrice] = useState(0);
+  const [image, setImage] = useState('');
+
   const [submitted, setSubmitted] = useState(false);
   const [bike, setBike] = useState({
     _id: '',
     name: '',
+    brand: '',
     description: '',
     category: '',
+    material: '',
+    wheelSize: '',
     color: '',
     size: '',
     gender: '',
     price: 0,
+    image: '',
   });
 
   const handleSubmit = async () => {
     BikeService.create({
       name,
+      brand,
       description,
       category,
       color,
       size,
       gender,
       price,
+      image,
     }).then((res) => setBike(res.data));
     setSubmitted(true);
   };
@@ -46,6 +57,13 @@ export const AddBike = () => {
         style={Styles.input}
         value={name}
         onChangeText={(value) => setName(value)}
+      ></TextInput>
+
+      <Text>Brand</Text>
+      <TextInput
+        style={Styles.input}
+        value={brand}
+        onChangeText={(value) => setBrand(value)}
       ></TextInput>
 
       <Text>Description</Text>
@@ -64,6 +82,32 @@ export const AddBike = () => {
         <Picker.Item label="Mountain" value="Mountain"></Picker.Item>
         <Picker.Item label="Electric" value="Electric"></Picker.Item>
         <Picker.Item label="Street" value="Street"></Picker.Item>
+      </Picker>
+
+      <Text>Material</Text>
+      <Picker
+        style={Styles.input}
+        selectedValue={material}
+        onValueChange={(value) => setMaterial(value)}
+      >
+        <Picker.Item label="Aluminum" value="Aluminum"></Picker.Item>
+        <Picker.Item label="Steel" value="Steel"></Picker.Item>
+        <Picker.Item label="Carbon" value="Carbon"></Picker.Item>
+      </Picker>
+
+      <Text>Wheel Size</Text>
+      <Picker
+        style={Styles.input}
+        selectedValue={wheelSize}
+        onValueChange={(value) => setWheelSize(value)}
+      >
+        <Picker.Item label="20in" value="20in"></Picker.Item>
+        <Picker.Item label="24in" value="24in"></Picker.Item>
+        <Picker.Item label="26in" value="26in"></Picker.Item>
+        <Picker.Item label="27.5in" value="27.5in"></Picker.Item>
+        <Picker.Item label="29in" value="29in"></Picker.Item>
+        <Picker.Item label="700c" value="700c"></Picker.Item>
+        <Picker.Item label="650b" value="650b"></Picker.Item>
       </Picker>
 
       <Text>Color</Text>
@@ -95,17 +139,28 @@ export const AddBike = () => {
       </Picker>
 
       <Text>Gender</Text>
-      <TextInput
+      <Picker
         style={Styles.input}
-        value={gender}
-        onChangeText={(value) => setGender(value)}
-      ></TextInput>
+        selectedValue={gender}
+        onValueChange={(value) => setGender(value)}
+      >
+        <Picker.Item label="Mens" value="Mens"></Picker.Item>
+        <Picker.Item label="Womens" value="Womens"></Picker.Item>
+        <Picker.Item label="Neutral" value="Neutral"></Picker.Item>
+      </Picker>
 
       <Text>Price</Text>
       <TextInput
         style={Styles.input}
         value={price.toString()}
         onChangeText={(value) => setPrice(Number(value))}
+      ></TextInput>
+
+      <Text>Image {'(URL)'}</Text>
+      <TextInput
+        style={Styles.input}
+        value={image}
+        onChangeText={(value) => setImage(value)}
       ></TextInput>
 
       <Button title="submit" onPress={handleSubmit} />
@@ -125,9 +180,3 @@ export const AddBike = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  bike: {
-    margin: 10,
-  },
-});

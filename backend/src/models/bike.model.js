@@ -3,8 +3,8 @@ const Schema = mongoose.Schema;
 
 const BikeSchema = new Schema(
   {
-    brand: String,
     name: String,
+    brand: String,
     description: String,
     category: {
       type: String,
@@ -12,25 +12,13 @@ const BikeSchema = new Schema(
     },
     material: {
       type: String,
-      enum: [
-        'Aluminum',
-        'Steel',
-        'Carbon'
-      ]
+      enum: ['Aluminum', 'Steel', 'Carbon'],
     },
-    wheelSize:{
+    wheelSize: {
       type: String,
       trim: true,
       lowercase: true,
-      enum: [
-        '20in',
-        '24in',
-        '26in',
-        '27.5in',
-        '29in',
-        '700c',
-        '650b'
-      ]
+      enum: ['20in', '24in', '26in', '27.5in', '29in', '700c', '650b'],
     },
     color: {
       type: String,
@@ -51,7 +39,10 @@ const BikeSchema = new Schema(
       type: String,
       enum: ['Small', 'Medium', 'Large'],
     },
-    gender: String,
+    gender: {
+      type: String,
+      enum: ['Mens', 'Womens', 'Neutral'],
+    },
     price: Number,
     image: String,
     inStock: {

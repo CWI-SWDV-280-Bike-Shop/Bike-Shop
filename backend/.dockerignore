@@ -57,9 +57,13 @@ typings/
 # next.js build output
 .next
 
-# docker mongo files
-docker/data
-
 node_modules
 
-.env
+# volumes
+data
+certbot-etc
+certbot-var
+nginx-conf
+web-root
+
+#.env

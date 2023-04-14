@@ -7,10 +7,10 @@ const ServiceSchema = new Schema(
     description: String,
     category: {
       type: String,
-      enum: ['Tune', 'Repair', 'Tube Installation', 'Alignment'],
+      enum: ['Tune', 'Wheel and Tire Maintenance', 'Assembly', 'Shifting and Brakes'],
     },
     price: Number,
-    serviceDate: Date,
+    image: String,
     inStock: Boolean,
   },
   { timestamps: true }

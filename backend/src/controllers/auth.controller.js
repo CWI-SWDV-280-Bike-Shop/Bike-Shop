@@ -31,7 +31,7 @@ const AuthController = {
     // check if user w/ email already exists before creating new User
     const checkEmail = await User.findOne({ email });
     if (checkEmail)
-      return res.json({ message: 'A user already exists with that email' });
+      return res.status(409).json({ message: 'A user already exists with that email' });
 
     await user.save();
     res.status(200).json({
@@ -50,10 +50,10 @@ const AuthController = {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    if (!user) return res.json({ message: 'Email does not exist!' });
+    if (!user) return res.status(401).json({ message: 'Email does not exist!' });
 
     const validPassword = await validatePassword(password, user.password);
-    if (!validPassword) return res.json({ message: 'Password is incorrect!' });
+    if (!validPassword) return res.status(401).json({ message: 'Password is incorrect!' });
 
     const accessToken = jwt.sign({ userId: user.id }, config.secret, {
       expiresIn: config.accessTokenExpiration,
@@ -73,13 +73,13 @@ const AuthController = {
   async refreshToken(req, res) {
     const { refreshToken: requestToken } = req.body;
     if (!requestToken) {
-      return res.status(403).json({ message: 'Refresh token is required!' });
+      return res.status(401).json({ message: 'Refresh token is required!' });
     }
 
     let refreshToken = await RefreshToken.findOne({ token: requestToken });
     if (!refreshToken) {
       return res
-        .status(403)
+        .status(401)
         .json({ message: 'Refresh token is not in the database!' });
     }
 
@@ -89,7 +89,7 @@ const AuthController = {
         useFindAndModify: false,
       });
 
-      return res.status(403).json({
+      return res.status(401).json({
         message: 'Refresh token was expired! Please make a new login request',
       });
     }

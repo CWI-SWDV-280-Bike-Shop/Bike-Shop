@@ -9,7 +9,7 @@ const authToken = {
     let token = req.headers['x-access-token'];
 
     if (!token) {
-      return res.status(403).json({ message: 'No token provided!' });
+      return res.status(401).json({ message: 'No token provided!' });
     }
 
     jwt.verify(token, config.secret, async (error, decoded) => {
@@ -21,7 +21,7 @@ const authToken = {
 
       const user = User.findById(decoded.userId);
       if (!user) {
-        res.status(500).json({ message: 'User not found' });
+        res.status(403).json({ message: 'User not found' });
         return;
       }
 

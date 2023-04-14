@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
 import Styles from '../../Styles';
-import { AddBike, ListBikes } from './Bikes/';
+import { AddBike, ListBikes } from './Bikes/index';
 
 export const Bikes = () => {
   return (

@@ -47,7 +47,7 @@ const Auth = () => {
       (res) => setNewUser(res.data)
     );
     setIsRegistered(true);
-  }; // TODO
+  };
 
   return (
     <AuthContext.Provider

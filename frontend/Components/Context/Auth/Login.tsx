@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import Styles from '../../../Styles';
-import { useAppDispatch, useAppSelector } from '../../../hooks/redux.hooks';
-import { login } from '../../../store/auth.slice';
+import { AuthContext } from '../../../context/auth.context';
 
 export const Login = () => {
-  // initialize component state
+  const { user, isLoggedIn, login } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [loggedIn, setLoggedIn] = useState(false);
-
-  // initialize redux store
-  const auth = useAppSelector((state) => state.auth);
-  const dispatch = useAppDispatch();
 
   const handleSubmit = () => {
-    dispatch(login({ email, password }));
-    setLoggedIn(true);
+    login({ email, password });
   };
 
   return (
@@ -39,14 +32,14 @@ export const Login = () => {
       />
       <Button title="Submit" onPress={handleSubmit}></Button>
 
-      {loggedIn && (
+      {isLoggedIn && (
         <View>
-          <Text>_id: {auth.id}</Text>
-          <Text>name: {auth.name}</Text>
-          <Text>email: {auth.email}</Text>
-          <Text>role: {auth.role}</Text>
-          <Text>accessToken: {auth.accessToken}</Text>
-          <Text>refreshToken: {auth.refreshToken}</Text>
+          <Text>_id: {user.id}</Text>
+          <Text>name: {user.name}</Text>
+          <Text>email: {user.email}</Text>
+          <Text>role: {user.role}</Text>
+          <Text>accessToken: {user.accessToken}</Text>
+          <Text>refreshToken: {user.refreshToken}</Text>
         </View>
       )}
     </View>

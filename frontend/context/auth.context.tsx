@@ -27,6 +27,7 @@ export const AuthContext = createContext<AuthContextType>({
     refreshToken: '',
   },
   isLoggedIn: false,
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   login: ({ email, password }) => {},
 });
 
@@ -47,6 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsLoggedIn(true);
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   const register = () => {}; // TODO
 
   return (

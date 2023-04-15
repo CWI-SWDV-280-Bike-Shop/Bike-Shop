@@ -1,4 +1,3 @@
-// AsyncStorage is needed for expo to handle localStorage on mobile and web
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuthUser from '../types/authUser.type';
 
@@ -30,7 +29,7 @@ const TokenService = {
     return JSON.parse(localUser) as AuthUser;
   },
 
-  async setLocalAuthUser(user: AuthUser) {
+  async setLocalAuthUser(user) {
     AsyncStorage.setItem('user', JSON.stringify(user));
   },
 

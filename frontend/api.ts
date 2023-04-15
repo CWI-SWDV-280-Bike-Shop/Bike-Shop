@@ -1,5 +1,5 @@
 import axios from 'axios';
-import TokenService from './services/token.service.js';
+import TokenService from './services/token.service';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const api = axios.create({

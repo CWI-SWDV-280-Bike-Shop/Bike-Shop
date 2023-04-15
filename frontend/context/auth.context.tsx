@@ -1,13 +1,5 @@
 import React, { ReactNode, createContext, useState } from 'react';
-
-type AuthUser = {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  accessToken: string;
-  refreshToken: string;
-};
+import AuthUser from '../types/authUser.type';
 
 type AuthContextType = {
   AuthUser: AuthUser;

@@ -18,7 +18,7 @@ const AuthService = {
   },
 
   logout() {
-    TokenService.removeLocalUser();
+    TokenService.removeLocalAuthUser();
   },
 };
 

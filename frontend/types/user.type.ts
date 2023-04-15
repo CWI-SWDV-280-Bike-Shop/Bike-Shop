@@ -17,6 +17,8 @@ type User = {
   orders: [Order];
   createdAt: string;
   updatedAt: string;
+  accessToken: string;
+  refreshToken: string;
 };
 
 export default User;

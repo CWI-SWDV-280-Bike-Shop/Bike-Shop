@@ -16,10 +16,6 @@ const AuthService = {
       role,
     });
   },
-
-  logout() {
-    TokenService.removeLocalAuthUser();
-  },
 };
 
 export default AuthService;

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import config from '../config/auth.config.js';
+import config from '../../config/auth.config.js';
 import { v4 as uuidv4 } from 'uuid';
 const Schema = mongoose.Schema;
 

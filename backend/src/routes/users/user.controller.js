@@ -1,6 +1,6 @@
-import User from '../models/user.model.js';
-import { BaseController } from './base.controller.js';
-import { NotFound } from '../errors.js';
+import User from '../../routes/users/user.model.js';
+import { BaseController } from '../base.controller.js';
+import { NotFound } from '../../errors/errors.js';
 
 class UserController extends BaseController(User) {
   async getUsers(req, res) {

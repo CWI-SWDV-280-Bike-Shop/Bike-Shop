@@ -1,5 +1,5 @@
 import express from 'express';
-import EndpointsController from '../../controllers/endpoints.controller.js';
+import EndpointsController from './endpoints.controller.js';
 
 const router = express.Router();
 

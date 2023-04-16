@@ -5,7 +5,7 @@ import cors from 'cors';
 import router from './src/routes/router.js';
 import mongoose from 'mongoose';
 import db from './src/config/database.config.js';
-import { NotFound, UserError } from './src/errors.js';
+import { NotFound, UserError } from './src/errors/errors.js';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;

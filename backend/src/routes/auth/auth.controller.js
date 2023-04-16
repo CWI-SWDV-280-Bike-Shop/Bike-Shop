@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.model.js';
-import RefreshToken from '../models/refreshToken.model.js';
-import config from '../config/auth.config.js';
+import RefreshToken from '../../routes/auth/refreshToken.model.js';
+import config from '../../config/auth.config.js';
 import {
   hashPassword,
   validatePassword,
-} from '../utilities/password.utility.js';
-import { Conflict, Unauthorized } from '../errors.js';
+} from '../../utilities/password.utility.js';
+import { Conflict, Unauthorized } from '../../errors/errors.js';
 
 const AuthController = {
   async register(req, res) {
@@ -75,7 +75,8 @@ const AuthController = {
     if (!requestToken) throw new Unauthorized('Refresh token is required!');
 
     let refreshToken = await RefreshToken.findOne({ token: requestToken });
-    if (!refreshToken) throw new Unauthorized('Refresh token is not in the database!');
+    if (!refreshToken)
+      throw new Unauthorized('Refresh token is not in the database!');
 
     // check if refreshToken has expired
     if (RefreshToken.verifyExpiration(refreshToken)) {
@@ -83,7 +84,9 @@ const AuthController = {
         useFindAndModify: false,
       });
 
-      throw new Unauthorized('Refresh token was expired! Please make a new login request');
+      throw new Unauthorized(
+        'Refresh token was expired! Please make a new login request'
+      );
     }
 
     // refreshToke was not expired, we can issue a new accessToken

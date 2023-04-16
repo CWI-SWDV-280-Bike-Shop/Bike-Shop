@@ -1,5 +1,5 @@
-import Order from '../models/order.model.js';
-import { BaseController } from './base.controller.js';
+import Order from './order.model.js';
+import { BaseController } from '../base.controller.js';
 
 class OrderController extends BaseController(Order) {
   static async find(req, res) {

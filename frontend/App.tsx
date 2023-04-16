@@ -1,18 +1,18 @@
 import * as React from 'react';
-import { AuthProvider } from './src/context/auth.context';
+import { AuthProvider } from '@context/auth.context';
 import { NavigationContainer } from '@react-navigation/native';
-import { Home } from './src/pages/home';
-import { Shop } from './src/pages/shop';
-import { Profile } from './src/pages/profile';
-import CRUDPlayground from './src/pages/CRUDPlayground';
+import { Home } from '@pages/home';
+import { Shop } from '@pages/shop';
+import { Profile } from '@pages/profile';
+import CRUDPlayground from '@pages/CRUDPlayground';
 import 'react-native-gesture-handler';
 import {
   DrawerHeaderProps,
   createDrawerNavigator,
 } from '@react-navigation/drawer';
-import { NavigationHeader } from './src/components/Navigation/Header';
-import { Login } from './src/pages/login';
-import { ProfileNavigator } from './src/pages/profileNavigator';
+import { NavigationHeader } from '@/components/Navigation/Header';
+import { Login } from '@pages/login';
+import { ProfileNavigator } from '@pages/profileNavigator';
 
 const Drawer = createDrawerNavigator();
 

@@ -26,7 +26,7 @@ export const Shop = () => {
             <ItemCard
               name={'City Bike'}
               price={'$300.00'}
-              imgSrc={require('../assets/Media/Images/citybikestockimg.png')}
+              imgSrc={require('../../assets/Media/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
@@ -36,7 +36,7 @@ export const Shop = () => {
             <ItemCard
               name={'City Bike'}
               price={'$300.00'}
-              imgSrc={require('../assets/Media/Images/citybikestockimg.png')}
+              imgSrc={require('../../assets/Media/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
@@ -46,7 +46,7 @@ export const Shop = () => {
             <ItemCard
               name={'City Bike'}
               price={'$300.00'}
-              imgSrc={require('../assets/Media/Images/citybikestockimg.png')}
+              imgSrc={require('../../assets/Media/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}

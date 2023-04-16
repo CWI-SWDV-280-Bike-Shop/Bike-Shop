@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
-import User from '../models/user.model.js';
+import User from '../users/user.model.js';
 import RefreshToken from '../../routes/auth/refreshToken.model.js';
 import config from '../../config/auth.config.js';
 import {

@@ -1,5 +1,5 @@
 import express from 'express';
-import AccessoryController from '../../controllers/accessory.controller.js';
+import AccessoryController from './accessory.controller.js';
 
 const router = express.Router();
 

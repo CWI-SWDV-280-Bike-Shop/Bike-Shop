@@ -1,6 +1,6 @@
 import React, { ReactNode, createContext, useState, useEffect } from 'react';
-import AuthService from '../services/auth.service';
-import TokenService from '../services/token.service';
+import AuthService from '../api/auth.api';
+import TokenService from '../api/token.api';
 import AuthUser from '../types/authUser.type';
 
 type AuthContextType = {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Styles from '../../Styles';
+import Styles from '../../styles/Layout';
 import AddService from './Services/AddService';
 import ListServices from './Services/ListServices';
 

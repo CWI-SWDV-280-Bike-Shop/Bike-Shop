@@ -1,7 +1,7 @@
-import api from '../api';
-import TokenService from './token.service.js';
+import api from './api';
+import TokenService from './token.api.js';
 
-const AuthService = {
+const AuthAPI = {
   login({ email, password }) {
     return api.post('/auth/login', { email, password });
   },
@@ -18,4 +18,4 @@ const AuthService = {
   },
 };
 
-export default AuthService;
+export default AuthAPI;

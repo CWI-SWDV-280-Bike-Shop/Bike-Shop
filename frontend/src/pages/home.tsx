@@ -4,10 +4,10 @@ import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import Swiper from 'react-native-swiper/src';
 
 // Slide component imports
-import { Slide } from '../Components/Slide';
+import { Slide } from '../components/Slide';
 
-//Footer Import 
-import { Footer } from '../Components/Footer';
+//Footer Import
+import { Footer } from '../components/Footer';
 
 export const Home = () => {
   const slideNames = ['City Bikes'];
@@ -79,7 +79,7 @@ export const Home = () => {
               community reduce its carbon footprint.
             </Text>
           </View>
-          <Footer/>
+          <Footer />
         </ScrollView>
       </View>
     </View>

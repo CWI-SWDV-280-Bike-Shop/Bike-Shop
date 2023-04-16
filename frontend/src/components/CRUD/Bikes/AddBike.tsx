@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import Styles from '../../../Styles';
-import BikeService from '../../../services/bike.service';
+import Styles from '../../../styles/Layout';
+import BikeService from '../../../api/bike.api';
 
 const AddBike = () => {
   const [name, setName] = useState('');

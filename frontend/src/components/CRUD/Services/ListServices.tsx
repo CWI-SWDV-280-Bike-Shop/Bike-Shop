@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Styles from '../../../Styles';
-import ServicesService from '../../../services/service.service';
+import Styles from '../../../styles/Layout';
+import ServicesService from '../../../api/service.api';
 
 const ListServices = () => {
   const [service, setService] = useState([]);

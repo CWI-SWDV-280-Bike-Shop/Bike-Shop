@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Styles from '../../../Styles';
-import BikeService from '../../../services/bike.service';
+import Styles from '../../../styles/Layout';
+import BikeService from '../../../api/bike.api';
 
 const ListBikes = () => {
   const [bikes, setBikes] = useState([]);

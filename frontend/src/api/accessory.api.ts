@@ -1,6 +1,6 @@
-import api from '../api';
+import api from './api';
 
-const AccessoryService = {
+const AccessoryAPI = {
   getAll() {
     return api.get('/accessories');
   },
@@ -21,17 +21,17 @@ const AccessoryService = {
     return api.delete(`/accessories/${id}`);
   },
 
-  findByName(name){
-    return api.get(`/accessories?name=${name}`)
+  findByName(name) {
+    return api.get(`/accessories?name=${name}`);
   },
 
-  findByCategory(category){
-    return api.get(`/accessories?category=${category}`)
+  findByCategory(category) {
+    return api.get(`/accessories?category=${category}`);
   },
 
-  findByInStock(inStock){
-    return api.get(`/accessories?inStock=${inStock}`)
-  }
+  findByInStock(inStock) {
+    return api.get(`/accessories?inStock=${inStock}`);
+  },
 };
 
-export default AccessoryService;
+export default AccessoryAPI;

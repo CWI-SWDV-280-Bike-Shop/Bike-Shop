@@ -1,7 +1,7 @@
-import api from '../api';
+import api from './api';
 import Bike from '../types/bike.type';
 
-const BikeService = {
+const BikeAPI = {
   getAll() {
     return api.get('/bikes');
   },
@@ -47,4 +47,4 @@ const BikeService = {
   },
 };
 
-export default BikeService;
+export default BikeAPI;

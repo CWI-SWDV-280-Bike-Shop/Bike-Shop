@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Styles from '../../Styles';
+import Styles from '../../styles/Layout';
 import AddBike from './Bikes/AddBike';
 import ListBikes from './Bikes/ListBikes';
 

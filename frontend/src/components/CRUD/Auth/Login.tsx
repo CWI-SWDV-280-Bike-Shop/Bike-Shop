@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import Styles from '../../../Styles';
+import Styles from '../../../styles/Layout';
 import { AuthContext } from '../../../context/auth.context';
 
 const Login = () => {

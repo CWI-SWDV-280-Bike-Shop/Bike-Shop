@@ -1,9 +1,9 @@
 import React from 'react';
 import { ScrollView, Text } from 'react-native';
-import Styles from '../Styles';
-import Auth from '../Components/CRUD/Auth';
-import Bikes from '../Components/CRUD/Bikes';
-import Services from '../Components/CRUD/Services';
+import Styles from '../styles/Layout';
+import Auth from '../components/CRUD/Auth';
+import Bikes from '../components/CRUD/Bikes';
+import Services from '../components/CRUD/Services';
 
 const CRUDPlayground = () => {
   return (

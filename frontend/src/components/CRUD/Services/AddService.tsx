@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import Styles from '../../../Styles';
-import ServiceService from '../../../services/service.service';
+import Styles from '../../../styles/Layout';
+import ServiceService from '../../../api/service.api';
 
 const AddService = () => {
   const [name, setName] = useState('');

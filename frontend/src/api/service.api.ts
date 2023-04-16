@@ -1,6 +1,6 @@
-import api from '../api';
+import api from './api';
 
-const ServiceService = {
+const ServiceAPI = {
   create(data) {
     return api.post('/services', data);
   },
@@ -46,4 +46,4 @@ findByImage(image) {
   },*/
 };
 
-export default ServiceService;
+export default ServiceAPI;

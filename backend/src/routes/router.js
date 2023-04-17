@@ -6,10 +6,13 @@ import ServiceRoute from './services/service.route.js';
 import OrderRoute from './orders/order.route.js';
 import EndpointsRoute from './endpoints/endpoints.route.js';
 import AuthRoute from './auth/auth.route.js';
+import GenerateUsersRoute from './generateusers/generateUsers.route.js';
 
 const router = express.Router();
 
 router.use('/', EndpointsRoute);
+
+router.use('/generateusers', GenerateUsersRoute);
 
 router.use('/auth', AuthRoute);
 

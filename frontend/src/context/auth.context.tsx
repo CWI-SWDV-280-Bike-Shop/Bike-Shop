@@ -1,7 +1,7 @@
 import React, { ReactNode, createContext, useState, useEffect } from 'react';
-import AuthService from '../api/auth.api';
-import TokenService from '../api/token.api';
-import AuthUser from '../types/authUser.type';
+import AuthAPI from '@api/auth.api';
+import TokenAPI from '@api/token.api';
+import AuthUser from '@types/authUser.type';
 
 type AuthContextType = {
   authUser: AuthUser | null;
@@ -30,7 +30,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // this will prevent the user from having to re-login every time they refresh the app
   useEffect(() => {
     const fetchLocalAuthUser = async () => {
-      const localAuthUser = (await TokenService.getLocalAuthUser()) as AuthUser;
+      const localAuthUser = (await TokenAPI.getLocalAuthUser()) as AuthUser;
       if (localAuthUser) {
         setAuthUser(localAuthUser);
         setIsLoggedIn(true);
@@ -41,11 +41,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = ({ email, password }) => {
-    AuthService.login({ email, password })
+    AuthAPI.login({ email, password })
       .then((res) => {
         const user = res.data as AuthUser;
         setAuthUser(user);
-        TokenService.setLocalAuthUser(user);
+        TokenAPI.setLocalAuthUser(user);
         setMessage('User logged in successfully!');
         setIsLoggedIn(true);
       })
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setAuthUser(null);
-    TokenService.removeLocalAuthUser();
+    TokenAPI.removeLocalAuthUser();
     setIsLoggedIn(false);
     setMessage('User logged out');
   };

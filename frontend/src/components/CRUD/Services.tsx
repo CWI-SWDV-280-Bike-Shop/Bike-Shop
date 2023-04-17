@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Styles from '../../styles/Layout';
+import Layout from '@styles/layout/Layout';
 import AddService from './Services/AddService';
 import ListServices from './Services/ListServices';
 
 const Services = () => {
   return (
-    <View style={Styles.section}>
-      <Text style={Styles.title}>Service</Text>
+    <View style={Layout.section}>
+      <Text style={Layout.title}>Service</Text>
       <AddService />
       <ListServices />
     </View>

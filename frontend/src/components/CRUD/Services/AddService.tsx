@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import Styles from '../../../styles/Layout';
-import ServiceService from '../../../api/service.api';
+import Layout from '@styles/layout/Layout';
+import ServiceAPI from '@api/service.api';
 
 const AddService = () => {
   const [name, setName] = useState('');
@@ -19,7 +19,7 @@ const AddService = () => {
   });
 
   const handleSubmit = async () => {
-    ServiceService.create({
+    ServiceAPI.create({
       name,
       description,
       category,
@@ -29,26 +29,26 @@ const AddService = () => {
   };
 
   return (
-    <View style={Styles.subsection}>
-      <Text style={Styles.subtitle}>Add Service</Text>
+    <View style={Layout.subsection}>
+      <Text style={Layout.subtitle}>Add Service</Text>
 
       <Text>Name</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={name}
         onChangeText={(value) => setName(value)}
       ></TextInput>
 
       <Text>Description</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={description}
         onChangeText={(value) => setDescription(value)}
       ></TextInput>
 
       <Text>Category</Text>
       <Picker
-        style={Styles.input}
+        style={Layout.input}
         selectedValue={category}
         onValueChange={(value) => setCategory(value)}
       >
@@ -66,7 +66,7 @@ const AddService = () => {
 
       <Text>Price</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={price.toString()}
         onChangeText={(value) => setPrice(Number(value))}
       ></TextInput>

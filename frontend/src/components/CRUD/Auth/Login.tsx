@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import Styles from '../../../styles/Layout';
-import { AuthContext } from '../../../context/auth.context';
+import Layout from '@styles/layout/Layout';
+import { AuthContext } from '@context/auth.context';
 
 const Login = () => {
   const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
@@ -13,19 +13,19 @@ const Login = () => {
   };
 
   return (
-    <View style={Styles.subsection}>
-      <Text style={Styles.subtitle}>Login</Text>
+    <View style={Layout.subsection}>
+      <Text style={Layout.subtitle}>Login</Text>
 
       <Text>Email</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={email}
         onChangeText={(value) => setEmail(value)}
       />
 
       <Text>Password</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={password}
         onChangeText={(value) => setPassword(value)}
         secureTextEntry={true}

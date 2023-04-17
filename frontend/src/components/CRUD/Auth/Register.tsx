@@ -1,9 +1,9 @@
 import React, { useState, useContext } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
-import Styles from '../../../styles/Layout';
-import { AuthContext } from '../../../context/auth.context';
+import Layout from '@styles/layout/Layout';
+import { AuthContext } from '@context/auth.context';
 import { Picker } from '@react-native-picker/picker';
-import AuthService from '../../../api/auth.api';
+import AuthAPI from '@api/auth.api';
 
 const Register = () => {
   const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
@@ -29,32 +29,32 @@ const Register = () => {
 
   const handleSubmit = () => {
     // register user and then immediately login.
-    AuthService.register({ name, email, password, phone, address, role }).then(
-      () => login({ email, password })
+    AuthAPI.register({ name, email, password, phone, address, role }).then(() =>
+      login({ email, password })
     );
   };
 
   return (
-    <View style={Styles.subsection}>
-      <Text style={Styles.subtitle}>Register</Text>
+    <View style={Layout.subsection}>
+      <Text style={Layout.subtitle}>Register</Text>
 
       <Text>Name</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={name}
         onChangeText={(value) => setName(value)}
       />
 
       <Text>Email</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={email}
         onChangeText={(value) => setEmail(value)}
       />
 
       <Text>Password</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={password}
         onChangeText={(value) => setPassword(value)}
         secureTextEntry={true}
@@ -62,7 +62,7 @@ const Register = () => {
 
       <Text>Phone</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={phone}
         onChangeText={(value) => setPhone(value)}
       />
@@ -70,38 +70,38 @@ const Register = () => {
       <Text>Address</Text>
       <Text>Street</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={address.street}
         onChangeText={(value) => onChangeAddress('street', value)}
       />
       <Text>City</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={address.city}
         onChangeText={(value) => onChangeAddress('city', value)}
       />
       <Text>State</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={address.state}
         onChangeText={(value) => onChangeAddress('state', value)}
       />
       <Text>Zip</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={address.zip}
         onChangeText={(value) => onChangeAddress('zip', value)}
       />
       <Text>Country</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={address.country}
         onChangeText={(value) => onChangeAddress('country', value)}
       />
 
       <Text>Role</Text>
       <Picker
-        style={Styles.input}
+        style={Layout.input}
         selectedValue={role}
         onValueChange={(value) => setRole(value)}
       >

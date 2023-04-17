@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Styles from '../../../styles/Layout';
-import ServicesService from '../../../api/service.api';
+import Layout from '@styles/layout/Layout';
+import ServiceAPI from '@api/service.api';
 
 const ListServices = () => {
   const [service, setService] = useState([]);
 
   useEffect(() => {
-    ServicesService.getAll().then((res) => setService(res.data));
+    ServiceAPI.getAll().then((res) => setService(res.data));
   }, []);
 
   return (
-    <View style={Styles.subsection}>
-      <Text style={Styles.subtitle}>List Services</Text>
+    <View style={Layout.subsection}>
+      <Text style={Layout.subtitle}>List Services</Text>
       {service &&
         service.map((service) => (
           <View style={styles.service} key={service._id}>

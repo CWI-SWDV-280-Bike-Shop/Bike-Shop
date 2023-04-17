@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import AuthUser from '../types/authUser.type';
+import AuthUser from '@types/authUser.type';
 
-const TokenService = {
+const TokenAPI = {
   async getLocalAccessToken() {
     const localUser = await AsyncStorage.getItem('user');
     if (!localUser) return null;
@@ -38,4 +38,4 @@ const TokenService = {
   },
 };
 
-export default TokenService;
+export default TokenAPI;

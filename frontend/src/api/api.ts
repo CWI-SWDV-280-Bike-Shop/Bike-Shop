@@ -1,5 +1,5 @@
 import axios from 'axios';
-import TokenService from './token.api';
+import TokenAPI from './token.api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const api = axios.create({
@@ -12,7 +12,7 @@ const api = axios.create({
 // attach accessToken before api requests
 axios.interceptors.request.use(
   (config) => {
-    const token = TokenService.getLocalAccessToken();
+    const token = TokenAPI.getLocalAccessToken();
     if (token) {
       config.headers['x-access-token'] = token;
     }
@@ -49,12 +49,12 @@ axios.interceptors.response.use(
       try {
         const response = await api
           .post('/auth/refresh', {
-            refreshToken: TokenService.getLocalRefreshToken(),
+            refreshToken: TokenAPI.getLocalRefreshToken(),
           })
           .then((res) => res.data);
 
         const { accessToken } = response;
-        TokenService.updateLocalAccessToken(accessToken);
+        TokenAPI.updateLocalAccessToken(accessToken);
 
         return api(originalConfig);
       } catch (error) {

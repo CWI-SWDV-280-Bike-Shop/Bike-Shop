@@ -8,7 +8,7 @@ export const colors = {
   artichoke: '#8B9D83',
 };
 
-export default StyleSheet.create({
+const Colors = StyleSheet.create({
   textWhite: {
     color: colors.white,
   },
@@ -40,3 +40,5 @@ export default StyleSheet.create({
     backgroundColor: colors.artichoke,
   },
 });
+
+export default Colors;

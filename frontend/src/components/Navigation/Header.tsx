@@ -17,7 +17,7 @@ export const NavigationHeader = ({ navigation }: DrawerHeaderProps) => {
       </View>
       <View style={styles.headerLogoParent}>
         <Image
-          source={require('../../../assets/Media/Branding/OfficialLogo-white.png')}
+          source={require('@assets/Branding/OfficialLogo-white.png')}
           style={styles.headerLogo}
         />
       </View>

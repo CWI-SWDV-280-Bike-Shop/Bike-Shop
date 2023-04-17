@@ -5,60 +5,44 @@ import { Orders } from './orders';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export const Profile = ({navigation}) => {
+export const Profile = ({ navigation }) => {
   return (
     <View style={[styles.container]}>
       <View style={[styles.contentContainer]}>
         <Text style={[styles.header]}>Welcome, user_name</Text>
         <View style={styles.buttonRow}>
           <View style={styles.buttonCol}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate('Orders')}
             >
-              <Icon
-                name="receipt-outline"
-                size={60}
-                color="#FFF"
-              />
+              <Icon name="receipt-outline" size={60} color="#FFF" />
               <Text style={styles.buttonContent}>Orders</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttonCol}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate('Account')}
             >
-              <Icon
-                name="person-circle-outline"
-                size={60}
-                color="#FFF"
-              />
+              <Icon name="person-circle-outline" size={60} color="#FFF" />
               <Text style={styles.buttonContent}>Account</Text>
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.buttonRow}>
           <View style={styles.buttonCol}>
-            <TouchableOpacity 
+            <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate('Admin')}
             >
-              <Icon
-                name="key-outline"
-                size={60}
-                color="#FFF"
-              />
+              <Icon name="key-outline" size={60} color="#FFF" />
               <Text style={styles.buttonContent}>Admin</Text>
             </TouchableOpacity>
           </View>
           <View style={styles.buttonCol}>
             <TouchableOpacity style={styles.button}>
-              <Icon
-                name="log-out-outline"
-                size={60}
-                color="#FFF"
-              />
+              <Icon name="log-out-outline" size={60} color="#FFF" />
               <Text style={styles.buttonContent}>Logout</Text>
             </TouchableOpacity>
           </View>
@@ -71,7 +55,7 @@ export const Profile = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   contentContainer: {
     flex: 1,
@@ -79,8 +63,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 48,
-    color: "#262626",
-    margin: 20
+    color: '#262626',
+    margin: 20,
   },
   buttonRow: {
     flex: 1,
@@ -89,26 +73,26 @@ const styles = StyleSheet.create({
   buttonCol: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   button: {
-    backgroundColor: "#03312E",
+    backgroundColor: '#03312E',
     padding: 10,
     marginHorizontal: 30,
     borderRadius: 10,
     alignItems: 'center',
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 12,
     },
     shadowOpacity: 0.58,
-    shadowRadius: 16.00,
+    shadowRadius: 16.0,
     elevation: 24,
   },
   buttonContent: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     textAlign: 'center',
-    fontSize: 20
-  }
+    fontSize: 20,
+  },
 });

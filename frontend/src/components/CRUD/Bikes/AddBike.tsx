@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import Styles from '../../../styles/Layout';
-import BikeService from '../../../api/bike.api';
+import Layout from '@styles/layout/Layout';
+import BikeAPI from '@api/bike.api';
 
 const AddBike = () => {
   const [name, setName] = useState('');
@@ -34,7 +34,7 @@ const AddBike = () => {
   });
 
   const handleSubmit = async () => {
-    BikeService.create({
+    BikeAPI.create({
       name,
       brand,
       description,
@@ -51,33 +51,33 @@ const AddBike = () => {
   };
 
   return (
-    <View style={Styles.subsection}>
-      <Text style={Styles.subtitle}>Add Bike</Text>
+    <View style={Layout.subsection}>
+      <Text style={Layout.subtitle}>Add Bike</Text>
 
       <Text>Name</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={name}
         onChangeText={(value) => setName(value)}
       ></TextInput>
 
       <Text>Brand</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={brand}
         onChangeText={(value) => setBrand(value)}
       ></TextInput>
 
       <Text>Description</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={description}
         onChangeText={(value) => setDescription(value)}
       ></TextInput>
 
       <Text>Category</Text>
       <Picker
-        style={Styles.input}
+        style={Layout.input}
         selectedValue={category}
         onValueChange={(value) => setCategory(value)}
       >
@@ -88,7 +88,7 @@ const AddBike = () => {
 
       <Text>Material</Text>
       <Picker
-        style={Styles.input}
+        style={Layout.input}
         selectedValue={material}
         onValueChange={(value) => setMaterial(value)}
       >
@@ -99,7 +99,7 @@ const AddBike = () => {
 
       <Text>Wheel Size</Text>
       <Picker
-        style={Styles.input}
+        style={Layout.input}
         selectedValue={wheelSize}
         onValueChange={(value) => setWheelSize(value)}
       >
@@ -114,7 +114,7 @@ const AddBike = () => {
 
       <Text>Color</Text>
       <Picker
-        style={Styles.input}
+        style={Layout.input}
         selectedValue={color}
         onValueChange={(value) => setColor(value)}
       >
@@ -131,7 +131,7 @@ const AddBike = () => {
 
       <Text>Size</Text>
       <Picker
-        style={Styles.input}
+        style={Layout.input}
         selectedValue={size}
         onValueChange={(value) => setSize(value)}
       >
@@ -142,7 +142,7 @@ const AddBike = () => {
 
       <Text>Gender</Text>
       <Picker
-        style={Styles.input}
+        style={Layout.input}
         selectedValue={gender}
         onValueChange={(value) => setGender(value)}
       >
@@ -153,14 +153,14 @@ const AddBike = () => {
 
       <Text>Price</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={price.toString()}
         onChangeText={(value) => setPrice(Number(value))}
       ></TextInput>
 
       <Text>Image {'(URL)'}</Text>
       <TextInput
-        style={Styles.input}
+        style={Layout.input}
         value={image}
         onChangeText={(value) => setImage(value)}
       ></TextInput>

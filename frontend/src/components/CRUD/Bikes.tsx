@@ -1,13 +1,13 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import Styles from '../../styles/Layout';
+import Layout from '@styles/layout/Layout';
 import AddBike from './Bikes/AddBike';
 import ListBikes from './Bikes/ListBikes';
 
 const Bikes = () => {
   return (
-    <View style={Styles.section}>
-      <Text style={Styles.title}>Bikes</Text>
+    <View style={Layout.section}>
+      <Text style={Layout.title}>Bikes</Text>
       <AddBike />
       <ListBikes />
     </View>

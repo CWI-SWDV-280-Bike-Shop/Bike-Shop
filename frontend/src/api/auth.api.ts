@@ -1,5 +1,4 @@
 import api from './api';
-import TokenService from './token.api.js';
 
 const AuthAPI = {
   login({ email, password }) {

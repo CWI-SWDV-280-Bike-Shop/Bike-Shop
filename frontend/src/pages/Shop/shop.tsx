@@ -3,10 +3,10 @@ import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // Card component import
-import { ItemCard } from '../components/Cards/ItemCards';
+import { ItemCard } from '@components/Cards/ItemCards';
 
 //Footer Import
-import { Footer } from '../components/Footer';
+import { Footer } from '@components/Footer';
 
 export const Shop = () => {
   return (
@@ -26,7 +26,7 @@ export const Shop = () => {
             <ItemCard
               name={'City Bike'}
               price={'$300.00'}
-              imgSrc={require('../../assets/Media/Images/citybikestockimg.png')}
+              imgSrc={require('../../../assets/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
@@ -36,7 +36,7 @@ export const Shop = () => {
             <ItemCard
               name={'City Bike'}
               price={'$300.00'}
-              imgSrc={require('../../assets/Media/Images/citybikestockimg.png')}
+              imgSrc={require('../../../assets/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
@@ -46,7 +46,7 @@ export const Shop = () => {
             <ItemCard
               name={'City Bike'}
               price={'$300.00'}
-              imgSrc={require('../../assets/Media/Images/citybikestockimg.png')}
+              imgSrc={require('../../../assets/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import Styles from '../../../styles/Layout';
-import BikeService from '../../../api/bike.api';
+import Layout from '@styles/layout/Layout';
+import BikeService from '@api/bike.api';
 
 const ListBikes = () => {
   const [bikes, setBikes] = useState([]);
@@ -11,8 +11,8 @@ const ListBikes = () => {
   }, []);
 
   return (
-    <View style={Styles.subsection}>
-      <Text style={Styles.subtitle}>List Bikes</Text>
+    <View style={Layout.subsection}>
+      <Text style={Layout.subtitle}>List Bikes</Text>
       {bikes &&
         bikes.map((bike) => (
           <View style={styles.bike} key={bike._id}>

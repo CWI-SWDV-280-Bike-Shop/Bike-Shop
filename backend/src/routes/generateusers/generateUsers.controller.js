@@ -15,6 +15,15 @@ const maxQuantity = 100;
 //  Zipcode Info         https://www.unitedstateszipcodes.org
 //  Street Names         https://www.livingplaces.com/streets/most-popular_street_names.html
 
+const GenerateOrders = (quantity) => {
+  let orders = []
+  for (let i = 0; i < quantity; i++) {
+    
+    
+  }
+  return orders;
+}
+
 const GenerateUsers = (quantity) => {
   let objects = [];
   for (let i = 0; i < quantity; i++) {

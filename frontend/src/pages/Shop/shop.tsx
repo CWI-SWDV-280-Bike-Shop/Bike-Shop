@@ -1,32 +1,59 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import SelectDropdown from 'react-native-select-dropdown';
 
 // Card component import
-import { ItemCard } from '@components/Cards/ItemCards';
+import { ItemCard } from '../../components/Cards/ItemCards';
 
-//Footer Import
-import { Footer } from '@components/Footer';
+//Footer Import 
+import { Footer } from '../../components/Footer';
+
+const filter = ["Price: Low to High", "Price: High to Low", "Ratings: High to Low"];
 
 export const Shop = () => {
   return (
     <View style={[styles.container]}>
       <ScrollView>
         <View style={[styles.searchbar]}>
-          <Text>Here is the search bar</Text>
+          <Text>
+            Here is the search bar
+          </Text>
         </View>
         <View style={[styles.number]}>
-          <Text>Showing 1 - 25 out of 100</Text>
+          <Text>
+            Showing 1 - 25 out of 100
+          </Text>
         </View>
         <View style={[styles.sortby]}>
-          <Text>Sort by:</Text>
+          <Text>
+            Sort by:
+          </Text>
+          <SelectDropdown
+            data={filter}
+            onSelect={(selectedItem, index) => {
+              console.log(selectedItem, index)
+            }}
+            buttonTextAfterSelection={(selectedItem, index) => {
+              // text represented after item is selected
+              // if data array is an array of objects then return selectedItem.property to render after item is selected
+              return selectedItem
+            }}
+            rowTextForSelection={(item, index) => {
+              // text represented for each item in dropdown
+              // if data array is an array of objects then return item.property to represent item in dropdown
+              return item
+            }}
+          />
         </View>
         <View style={[styles.cardContainer]}>
           <View style={[styles.cards]}>
             <ItemCard
               name={'City Bike'}
-              price={'$300.00'}
-              imgSrc={require('../../../assets/Images/citybikestockimg.png')}
+              price={
+                '$300.00'
+              }
+              imgSrc={require('../assets/Media/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
@@ -35,8 +62,10 @@ export const Shop = () => {
             />
             <ItemCard
               name={'City Bike'}
-              price={'$300.00'}
-              imgSrc={require('../../../assets/Images/citybikestockimg.png')}
+              price={
+                '$300.00'
+              }
+              imgSrc={require('../assets/Media/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
@@ -45,8 +74,10 @@ export const Shop = () => {
             />
             <ItemCard
               name={'City Bike'}
-              price={'$300.00'}
-              imgSrc={require('../../../assets/Images/citybikestockimg.png')}
+              price={
+                '$300.00'
+              }
+              imgSrc={require('../assets/Media/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
@@ -63,22 +94,23 @@ export const Shop = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    flex: 1
   },
   searchbar: {
-    flex: 0.5,
+    flex: 0.5
   },
   number: {
-    flex: 0.5,
+    flex: 0.5
   },
   sortby: {
-    flex: 0.5,
+    flexDirection: 'column',
+    flex: 0.5
   },
   cards: {
     flexDirection: 'column',
     gap: 8,
     flex: 1,
-    padding: 15,
+    padding: 15
   },
   cardContainer: {
     flex: 15,
@@ -87,11 +119,11 @@ const styles = StyleSheet.create({
   header: {
     margin: 20,
     fontSize: 48,
-    color: '#262626',
+    color: "#262626"
   },
   bodyText: {
     marginHorizontal: 20,
     fontSize: 24,
-    color: '#262626',
+    color: "#262626"
   },
 });

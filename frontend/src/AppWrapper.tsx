@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Home } from '@pages/home';
+import { About } from '@pages/about';
 import CRUDPlayground from '@pages/CRUDPlayground';
 import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -33,6 +34,7 @@ const AppWrapper = () => {
         <Drawer.Screen name="Bikes" component={Bikes} />
         <Drawer.Screen name="Accessories" component={Accessories} />
         <Drawer.Screen name="Services" component={Services} />
+        <Drawer.Screen name="About" component={About} />
         <Drawer.Screen name="Profile " component={ProfileNavigator} />
         <Drawer.Screen name="Login" component={Login} />
         <Drawer.Screen name="CRUD Playground" component={CRUDPlayground} />

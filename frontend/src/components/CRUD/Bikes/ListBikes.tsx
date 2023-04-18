@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Layout from '@styles/layout/Layout';
-import BikeService from '@api/bike.api';
+import BikeAPI from '@api/bike.api';
 
 const ListBikes = () => {
   const [bikes, setBikes] = useState([]);
 
   useEffect(() => {
-    BikeService.getAll().then((res) => setBikes(res.data));
+    BikeAPI.getAll().then((res) => setBikes(res.data));
   }, []);
 
   return (

@@ -1,16 +1,4 @@
-import express from 'express';
 import AccessoryController from './accessory.controller.js';
+import { baseCRUD } from '../base.route.js'
 
-const router = express.Router();
-
-router.get('/', AccessoryController.find);
-
-router.get('/:id', AccessoryController.getById);
-
-router.post('/', AccessoryController.create);
-
-router.put('/:id', AccessoryController.update);
-
-router.delete('/:id', AccessoryController.delete);
-
-export default router;
+export default baseCRUD(AccessoryController);

@@ -1,7 +1,7 @@
 import React, { ReactNode, createContext, useState, useEffect } from 'react';
 import AuthAPI from '@api/auth.api';
 import TokenAPI from '@api/token.api';
-import AuthUser from '@types/authUser.type';
+import AuthUser from '@/types/authUser.type';
 
 type AuthContextType = {
   authUser: AuthUser | null;
@@ -14,9 +14,9 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   authUser: null,
   isLoggedIn: false,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @/typescript-eslint/no-empty-function
   login: (credentials) => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @/typescript-eslint/no-empty-function
   logout: () => {},
   message: null,
 });

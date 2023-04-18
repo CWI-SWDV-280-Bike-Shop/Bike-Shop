@@ -1,5 +1,5 @@
 import api from './api';
-import Bike from '@types/bike.type';
+import Bike from '@/types/bike.type';
 
 const BikeAPI = {
   getAll() {

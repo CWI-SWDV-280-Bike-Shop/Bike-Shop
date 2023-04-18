@@ -16,7 +16,6 @@ module.exports = function (api) {
             '@context': './src/context',
             '@pages': './src/pages',
             '@styles': './src/styles',
-            '@types': './src/types',
           },
         },
       ],

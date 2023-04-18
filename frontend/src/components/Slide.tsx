@@ -26,23 +26,27 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: '#FFFFFF85',
-    padding: 15,
+    padding: 20,
     textAlign: 'center',
     borderRadius: 5
   },
   heading: {
-      fontSize: 30,
+      fontSize: 28,
   },
   bodyText: {
     fontSize: 18
   },
   button: {
       alignSelf: 'center',
-      backgroundColor: '#62929E',
-      padding: 8
+      backgroundColor: '#FFFFFF',
+      padding: 8,
+      borderColor: '#03312E',
+      borderWidth: 2,
+      marginTop: 5,
   },
   buttonText: {
-      fontSize: 20,
-      fontWeight: 'bold'
+      fontSize: 18,
+      fontWeight: 'bold',
+      color: '#03312E',
   }
 });

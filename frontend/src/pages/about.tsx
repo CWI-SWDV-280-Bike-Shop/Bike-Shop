@@ -17,7 +17,7 @@ export const About = () => {
             description={
                 '"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"'
             }
-            imgSrc={require('../../../frontend/assets/Media/Images/background1.png')}
+            imgSrc={require('../../../frontend/src/assets/Images/background1.png')}
             btnName={'Shop'}
           />
           <Slide
@@ -25,13 +25,13 @@ export const About = () => {
             description={
                 '"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"'
             }
-            imgSrc={require('../../../frontend/assets/Media/Images/background2.png')}
+            imgSrc={require('../../../frontend/src/assets/Images/background2.png')}
             btnName={'Accessories'}
           />
           <Slide
             name={'From Dwight Shrute'}
             description={'"This shop opened up down the road from my beet farm, its nice enough."'}
-            imgSrc={require('../../../frontend/assets/Media/Images/background3.png')}
+            imgSrc={require('../../../frontend/src/assets/Images/background3.png')}
             btnName={'Shop'}
           />
           <Slide

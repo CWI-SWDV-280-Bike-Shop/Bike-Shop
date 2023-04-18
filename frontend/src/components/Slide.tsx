@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF85',
     padding: 20,
     textAlign: 'center',
-    borderRadius: 5
+    borderRadius: 5,
   },
   heading: {
       fontSize: 28,

@@ -2,18 +2,16 @@ import Order from './order.model.js';
 import { BaseController } from '../base.controller.js';
 
 class OrderController extends BaseController(Order) {
-  static async find(req, res) {
-    let {
-      customer,
-      itemId,
-      itemType,
-      itemCategory,
-      bikeColor,
-      bikeSize,
-      bikeGender,
-      serviceDate,
-    } = req.query;
-
+  static async find({
+    customer,
+    itemId,
+    itemType,
+    itemCategory,
+    bikeColor,
+    bikeSize,
+    bikeGender,
+    serviceDate,
+  } = {}) {
     let query = {};
 
     if (customer) query.customer = customer;
@@ -43,7 +41,7 @@ class OrderController extends BaseController(Order) {
       });
     }
 
-    res.status(200).json(filteredOrders);
+    return filteredOrders;
   }
 }
 

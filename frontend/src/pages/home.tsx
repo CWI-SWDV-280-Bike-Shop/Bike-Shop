@@ -168,12 +168,8 @@ const mobile = StyleSheet.create({
     flexDirection: 'column',
   },
   slidesContainer: {
-    flexDirection: 'row',
-    flex: 1,
-  },
-  contentContainer: {
-    flexDirection: 'row',
-    flex: 2,
+    // flexDirection: 'column',
+    // flex: 2,
   },
   titleRow: {
     flexDirection: 'row',

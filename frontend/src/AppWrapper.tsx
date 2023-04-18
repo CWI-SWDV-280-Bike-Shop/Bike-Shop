@@ -8,6 +8,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationHeader } from '@/components/Navigation/Header';
 import { Login } from '@pages/login';
 import { ProfileNavigator } from '@/pages/Profile/profileNavigator';
+import { About } from './pages/about';
 import Bikes from '@pages/Shop/Products/bikes';
 import Accessories from '@pages/Shop/Products/accessories';
 import Services from '@pages/Shop/Products/services';
@@ -33,6 +34,7 @@ const AppWrapper = () => {
         <Drawer.Screen name="Bikes" component={Bikes} />
         <Drawer.Screen name="Accessories" component={Accessories} />
         <Drawer.Screen name="Services" component={Services} />
+        <Drawer.Screen name="About" component={About} />
         <Drawer.Screen name="Profile " component={ProfileNavigator} />
         <Drawer.Screen name="Login" component={Login} />
         <Drawer.Screen name="CRUD Playground" component={CRUDPlayground} />

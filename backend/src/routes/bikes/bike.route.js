@@ -1,16 +1,4 @@
-import express from 'express';
 import BikeController from './bike.controller.js';
+import { baseCRUD } from '../base.route.js'
 
-const router = express.Router();
-
-router.get('/', BikeController.find);
-
-router.get('/:id', BikeController.getById);
-
-router.post('/', BikeController.create);
-
-router.put('/:id', BikeController.update);
-
-router.delete('/:id', BikeController.delete);
-
-export default router;
+export default baseCRUD(BikeController);

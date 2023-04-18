@@ -10,8 +10,7 @@ import {
 import { Conflict, Unauthorized } from '../../errors/errors.js';
 
 const AuthController = {
-  async register(req, res) {
-    const { name, email, password, phone, address, role } = req.body;
+  async register({ name, email, password, phone, address, role }) {
     const hashedPassword = await hashPassword(password);
 
     const user = new User({
@@ -34,7 +33,7 @@ const AuthController = {
     if (checkEmail) throw new Conflict('A user already exists with that email');
 
     await user.save();
-    res.status(200).json({
+    return {
       id: user._id,
       name: user.name,
       email: user.email,
@@ -43,12 +42,10 @@ const AuthController = {
       role: user.role,
       accessToken: accessToken,
       refreshToken: refreshToken,
-    });
+    };
   },
 
-  async login(req, res, next) {
-    const { email, password } = req.body;
-
+  async login({ email, password }) {
     const user = await User.findOne({ email });
     if (!user) throw new Unauthorized('Email does not exist!');
 
@@ -60,18 +57,17 @@ const AuthController = {
     });
     let refreshToken = await RefreshToken.createToken(user); // returns refreshToken.token
 
-    res.status(200).json({
+    return {
       id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
       accessToken: accessToken,
       refreshToken: refreshToken,
-    });
+    };
   },
 
-  async refreshToken(req, res) {
-    const { refreshToken: requestToken } = req.body;
+  async refreshToken({ refreshToken: requestToken }) {
     if (!requestToken) throw new Unauthorized('Refresh token is required!');
 
     let refreshToken = await RefreshToken.findOne({ token: requestToken });
@@ -98,10 +94,10 @@ const AuthController = {
       }
     );
 
-    return res.status(200).json({
+    return {
       accessToken: newAccessToken,
       refreshToken: refreshToken.token,
-    });
+    };
   },
 };
 

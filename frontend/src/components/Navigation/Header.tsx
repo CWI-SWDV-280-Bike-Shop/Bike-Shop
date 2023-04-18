@@ -25,20 +25,28 @@ const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
         <Text style={styles.navText}>Home</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Shop")}>
-        <Text style={styles.navText}>Shop</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Bikes")}>
+        <Text style={styles.navText}>Bikes</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-        <Text style={styles.navText}>Login</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Accessories")}>
+        <Text style={styles.navText}>Accessories</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("Services")}>
+        <Text style={styles.navText}>Services</Text>
       </TouchableOpacity>
 
       <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
         <Text style={styles.navText}>Profile</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("ReduxTestPage")}>
-        <Text style={styles.navText}>Redux Test Page</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+        <Text style={styles.navText}>Login</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("CRUD Playground")}>
+        <Text style={styles.navText}>CRUD Playground</Text>
       </TouchableOpacity>
     </View>
   );

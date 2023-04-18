@@ -69,7 +69,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
     <View style={styles.headerView} >
       <NavigationBar {...props} width={width} />
       <View style={styles.headerLogoParent}>
-        <Image source={require('../../assets/Media/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
+        <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
       </View>
       <View style={[styles.headerIcons, { justifyContent: 'flex-end' }]}>
         <TouchableOpacity style={styles.headerTouchable}>

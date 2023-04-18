@@ -1,12 +1,12 @@
 import { DrawerHeaderProps } from "@react-navigation/drawer";
-import React, {useState, useEffect} from "react";
-import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, Dimensions, useWindowDimensions } from 'react-native';
+import React from "react";
+import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, Dimensions, useWindowDimensions, ScaledSize } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 
-const NavigationBar = (props: DrawerHeaderProps & {width: number}) => {
+const NavigationBar = (props: DrawerHeaderProps & {smallDesktop: boolean}) => {
   
   if ((Platform.OS === 'android' || Platform.OS === 'ios') 
-   || props.width < 1450
+   || props.smallDesktop
   ) {
     return (
       <HamburgerMenu {...props} />
@@ -59,15 +59,15 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 }
 
 //Navigation Header
-export const NavigationHeader = (props: DrawerHeaderProps) => {
-  
-// Imagine spending time creating a useState and useEffect to set a width variable then it turns out that React Native had a prebuilt hook that does the same thing...
-
-  const {width} = useWindowDimensions();
+export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeaderProps) => {
+  let smallDesktop = false;
+  if(dimensions.width <= 1450){
+    smallDesktop = true;
+  }
 
   return (
     <View style={styles.headerView} >
-      <NavigationBar {...props} width={width} />
+      <NavigationBar {...props} smallDesktop={smallDesktop} />
       <View style={styles.headerLogoParent}>
         <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
       </View>

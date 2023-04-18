@@ -12,10 +12,13 @@ import { About } from './pages/about';
 import Bikes from '@pages/Shop/Products/bikes';
 import Accessories from '@pages/Shop/Products/accessories';
 import Services from '@pages/Shop/Products/services';
+import { useWindowDimensions } from 'react-native';
 
 const Drawer = createDrawerNavigator();
 
 const AppWrapper = () => {
+  const dimensions = useWindowDimensions();
+
   return (
     <NavigationContainer linking={{ prefixes: [] }}>
       <Drawer.Navigator
@@ -27,7 +30,7 @@ const AppWrapper = () => {
           drawerActiveBackgroundColor: '#03312E',
           drawerInactiveTintColor: '#FFFFFF',
           headerTintColor: '#FFFFFF',
-          header: NavigationHeader,
+          header: NavigationHeader(dimensions),
         }}
       >
         <Drawer.Screen name="Home" component={Home} />

@@ -9,11 +9,13 @@ services:
       dockerfile: ./docker/Dockerfile
     ports:
       - "8080:80"
+      - "10443:443"
     volumes:
       - web-root:/var/www/html
       - ./docker/nginx-conf:/etc/nginx/conf.d
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
+      - dhparam:/etc/ssl/certs
     depends_on:
       - bikeshop-backend
     networks:
@@ -49,7 +51,7 @@ services:
       - web-root:/var/www/html
     depends_on:
       - bikeshop-nginx
-    command: certonly --webroot --webroot-path=/var/www/html --email williambeukelman@my.cwi.edu --agree-tos --no-eff-email --staging -d thebikeshop.app -d www.thebikeshop.app
+    command: certonly --webroot --webroot-path=/var/www/html --email williambeukelman@my.cwi.edu --agree-tos --no-eff-email --force-renewal -d thebikeshop.app
 
 volumes:
   certbot-etc:
@@ -59,6 +61,12 @@ volumes:
     driver_opts:
       type: none
       device: ./docker/web-root
+      o: bind
+  dhparam:
+    driver: local
+    driver_opts:
+      type: none
+      device: .docker/dhparam/
       o: bind
 
 networks:

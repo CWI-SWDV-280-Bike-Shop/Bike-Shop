@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Text, StyleSheet, View, ScrollView, Platform } from 'react-native';
-import Swiper from 'react-native-swiper/src';
+//import Swiper from 'react-native-swiper/src';
+import Swiper from 'react-native-web-swiper';
 
 // Slide component imports
 import { Slide } from '@components/Slide';
@@ -9,9 +10,42 @@ import { Slide } from '@components/Slide';
 //Footer Import
 import { Footer } from '@components/Footer';
 
+const checkMobile = () => { return (Platform.OS === 'android' || Platform.OS === 'ios') }
+const onlyMobile = (code) => { if ((Platform.OS === 'android' || Platform.OS === 'ios')){ return code } }
+const onlyWeb = (code) => { if (Platform.OS === 'web'){ return code } }
+
 const CustomSwiper = () => {
   return (
-    <Swiper>
+    <Swiper 
+    loop
+    timeout={5}
+    springConfig={{ speed: .5, bounciness: .5, }}
+    controlsProps={{
+      prevTitle: 'Prev',
+      nextTitle: 'Next',
+      dotsTouchable: true,
+      dotsPos: 'bottom',
+      prevPos: (checkMobile) ? false : 'left', 
+      nextPos: (checkMobile) ? false : 'right', 
+      cellsStyle: (checkMobile) ? {} : {
+        'right': { 
+          padding: 20, 
+          backgroundColor: '#ffffff2a',
+        },
+        'left': { 
+          padding: 20, 
+          backgroundColor: '#ffffff2a',
+        },
+      },
+      nextTitleStyle: {
+        fontSize: 18,
+        color: '#fff'
+      },
+      prevTitleStyle: {
+        fontSize: 18,
+        color: '#fff'
+      }
+    }}>
       <Slide
         name={'City Bikes'}
         description={
@@ -61,8 +95,6 @@ const mission = [`Our mission at Wheely Good Bikes is to provide high-quality bi
 
 export const Home = () => {
   const slideNames = ['City Bikes'];
-  //const onlyMobile = (code) => { if ((Platform.OS === 'android' || Platform.OS === 'ios')){ return code } }
-  //const onlyWeb = (code) => { if (Platform.OS === 'web'){ return code } }
   if ((Platform.OS === 'android' || Platform.OS === 'ios')) {
     return (
       <View style={[styles.container]}>

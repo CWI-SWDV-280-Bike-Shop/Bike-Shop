@@ -4,16 +4,15 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import SelectDropdown from 'react-native-select-dropdown';
+import { Picker } from '@react-native-picker/picker';
+import Layout from '@styles/layout/Layout';
+import BikeCards from '@components/Cards/BikeCards'
 
 // Card component import
-import { ItemCard } from '../../../components/Cards/ItemCards';
+import { ItemCard } from '@components/Cards/ItemCards';
 
 //Footer Import 
-import { Footer } from '../../../components/Footer';
-
-const filter = ["Price: Low to High", "Price: High to Low", "Ratings: High to Low"];
-const sort = ["Price: Low to High", "Price: High to Low", "Ratings: High to Low"];
+import { Footer } from '@components/Footer';
 
 export const Bikes = () => {
   return (
@@ -33,43 +32,70 @@ export const Bikes = () => {
           <Text>
             Filter by:
           </Text>
-          <View>
-          <SelectDropdown 
-            data={filter}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index)
-            }} 
-            buttonTextAfterSelection={(selectedItem, index) => {
-              // text represented after item is selected
-              // if data array is an array of objects then return selectedItem.property to render after item is selected
-              return selectedItem
-            }}
-            rowTextForSelection={(item, index) => {
-              // text represented for each item in dropdown
-              // if data array is an array of objects then return item.property to represent item in dropdown
-              return item
-            }} 
-          />
-          </View>
+          <Picker style={Layout.input}>
+            <Picker.Item label="Mountain" value="Mountain"></Picker.Item>
+            <Picker.Item label="Electric" value="Electric"></Picker.Item>
+            <Picker.Item label="Street" value="Street"></Picker.Item>
+          </Picker>
           <Text>
             Sort by:
           </Text>
-          <SelectDropdown
-            data={sort}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index)
-            }}
-            buttonTextAfterSelection={(selectedItem, index) => {
-              // text represented after item is selected
-              // if data array is an array of objects then return selectedItem.property to render after item is selected
-              return selectedItem
-            }}
-            rowTextForSelection={(item, index) => {
-              // text represented for each item in dropdown
-              // if data array is an array of objects then return item.property to represent item in dropdown
-              return item
-            }}
-          />
+          <Picker style={Layout.input}>
+            <Picker.Item label="Price: Low to High" value="PLH"></Picker.Item>
+            <Picker.Item label="Price: High to Low" value="PHL"></Picker.Item>
+            <Picker.Item label="Ratings: High to Low" value="RHL"></Picker.Item>
+          </Picker>
+          <Text>
+            Material:
+          </Text>
+          <Picker style={Layout.input}>
+            <Picker.Item label="Aluminum" value="Aluminum"></Picker.Item>
+            <Picker.Item label="Steel" value="Steel"></Picker.Item>
+            <Picker.Item label="Carbon" value="Carbon"></Picker.Item>
+          </Picker>
+          <Text>
+            Wheel Size:
+          </Text>
+          <Picker style={Layout.input}>
+            <Picker.Item label="20&rdquo;" value="20in"></Picker.Item>
+            <Picker.Item label="24&rdquo;" value="24in"></Picker.Item>
+            <Picker.Item label="26&rdquo;" value="26in"></Picker.Item>
+            <Picker.Item label="27.5&rdquo;" value="27.5in"></Picker.Item>
+            <Picker.Item label="29&rdquo;" value="29in"></Picker.Item>
+            <Picker.Item label="700c" value="700c"></Picker.Item>
+            <Picker.Item label="650b" value="650b"></Picker.Item>
+          </Picker>
+          <Text>
+            Color:
+          </Text>
+          <Picker style={Layout.input}>
+            <Picker.Item label="Red" value="Red"></Picker.Item>
+            <Picker.Item label="Orange" value="Orange"></Picker.Item>
+            <Picker.Item label="Yellow" value="Yellow"></Picker.Item>
+            <Picker.Item label="Green" value="Green"></Picker.Item>
+            <Picker.Item label="Blue" value="Blue"></Picker.Item>
+            <Picker.Item label="Purple" value="Purple"></Picker.Item>
+            <Picker.Item label="Black" value="Black"></Picker.Item>
+            <Picker.Item label="White" value="White"></Picker.Item>
+            <Picker.Item label="Grey" value="Grey"></Picker.Item>
+            <Picker.Item label="Pink" value="Pink"></Picker.Item>
+          </Picker>
+          <Text>
+            Size:
+          </Text>
+          <Picker style={Layout.input}>
+            <Picker.Item label="Small" value="Small"></Picker.Item>
+            <Picker.Item label="Medium" value="Medium"></Picker.Item>
+            <Picker.Item label="Large" value="Large"></Picker.Item>
+          </Picker>
+          <Text>
+            Gender:
+          </Text>
+          <Picker style={Layout.input}>
+            <Picker.Item label="Mens" value="Mens"></Picker.Item>
+            <Picker.Item label="Womens" value="Womens"></Picker.Item>
+            <Picker.Item label="Neutral" value="Neutral"></Picker.Item>
+          </Picker>
         </View>
         <View style={[styles.cardContainer]}>
           <View style={[styles.cards]}>
@@ -83,7 +109,6 @@ export const Bikes = () => {
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
               size={'58 CM'}
-              brakes={'Disc Brakes'}
             />
             <ItemCard
               name={'City Bike'}
@@ -95,7 +120,6 @@ export const Bikes = () => {
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
               size={'58 CM'}
-              brakes={'Disc Brakes'}
             />
             <ItemCard
               name={'City Bike'}
@@ -107,7 +131,6 @@ export const Bikes = () => {
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
               size={'58 CM'}
-              brakes={'Disc Brakes'}
             />
           </View>
         </View>
@@ -130,8 +153,9 @@ const styles = StyleSheet.create({
     flex: 0.5
   },
   sortby: {
-    flexDirection: 'column',
-    flex: 0.5
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 0.75,
   },
   cards: {
     flexDirection: 'column',

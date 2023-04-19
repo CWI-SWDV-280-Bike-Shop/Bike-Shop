@@ -4,16 +4,14 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, ScrollView } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import SelectDropdown from 'react-native-select-dropdown';
+import { Picker } from '@react-native-picker/picker';
+import Layout from '@styles/layout/Layout';
 
 // Card component import
 import { ItemCard } from '../../../components/Cards/ItemCards';
 
 //Footer Import 
 import { Footer } from '../../../components/Footer';
-
-const filter = ["Helmets", "Pedals", "Grips", "Chains", "Tires", "Tubes", "Lights", "Brakes"];
-const sort = ["Price: Low to High", "Price: High to Low", "Ratings: High to Low"];
 
 export const Accessories = () => {
   return (
@@ -34,42 +32,25 @@ export const Accessories = () => {
             Filter by:
           </Text>
           <View>
-          <SelectDropdown 
-            data={filter}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index)
-            }} 
-            buttonTextAfterSelection={(selectedItem, index) => {
-              // text represented after item is selected
-              // if data array is an array of objects then return selectedItem.property to render after item is selected
-              return selectedItem
-            }}
-            rowTextForSelection={(item, index) => {
-              // text represented for each item in dropdown
-              // if data array is an array of objects then return item.property to represent item in dropdown
-              return item
-            }} 
-          />
+            <Picker style={Layout.input}>
+              <Picker.Item label="Helmets" value="Helmets"></Picker.Item>
+              <Picker.Item label="Pedals" value="Pedals"></Picker.Item>
+              <Picker.Item label="Grips" value="Grips"></Picker.Item>
+              <Picker.Item label="Chains" value="Chains"></Picker.Item>
+              <Picker.Item label="Tires" value="Tires"></Picker.Item>
+              <Picker.Item label="Tubes" value="Tubes"></Picker.Item>
+              <Picker.Item label="Lights" value="Lights"></Picker.Item>
+              <Picker.Item label="Brakes" value="Brakes"></Picker.Item>
+            </Picker>
           </View>
           <Text>
             Sort by:
           </Text>
-          <SelectDropdown
-            data={sort}
-            onSelect={(selectedItem, index) => {
-              console.log(selectedItem, index)
-            }}
-            buttonTextAfterSelection={(selectedItem, index) => {
-              // text represented after item is selected
-              // if data array is an array of objects then return selectedItem.property to render after item is selected
-              return selectedItem
-            }}
-            rowTextForSelection={(item, index) => {
-              // text represented for each item in dropdown
-              // if data array is an array of objects then return item.property to represent item in dropdown
-              return item
-            }}
-          />
+          <Picker style={Layout.input}>
+              <Picker.Item label="Price: Low to High" value="PLH"></Picker.Item>
+              <Picker.Item label="Price: High to Low" value="PHL"></Picker.Item>
+              <Picker.Item label="Ratings: High to Low" value="RHL"></Picker.Item>
+            </Picker>
         </View>
         <View style={[styles.cardContainer]}>
           <View style={[styles.cards]}>
@@ -83,7 +64,6 @@ export const Accessories = () => {
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
               size={'58 CM'}
-              brakes={'Disc Brakes'}
             />
             <ItemCard
               name={'City Bike'}
@@ -95,7 +75,6 @@ export const Accessories = () => {
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
               size={'58 CM'}
-              brakes={'Disc Brakes'}
             />
             <ItemCard
               name={'City Bike'}
@@ -107,7 +86,6 @@ export const Accessories = () => {
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
               size={'58 CM'}
-              brakes={'Disc Brakes'}
             />
           </View>
         </View>

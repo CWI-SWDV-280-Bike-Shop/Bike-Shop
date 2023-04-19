@@ -20,7 +20,7 @@ const ServiceAPI = {
   get(id) {
     return api.get(`/services/${id}`);
   },
-
+/*
   findByName(name) {
     return api.get(`/services?name=${name}`);
   },

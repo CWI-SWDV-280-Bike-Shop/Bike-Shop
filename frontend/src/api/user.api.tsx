@@ -29,7 +29,12 @@ const UserAPI = {
   findByEmail(email){
     return api.get(`/users?email=${email}`)
   },
-  
+
+  findByRole(role){
+    return api.get(`/users?role=${role}`)
+  },
+  /*
+  {
   findByPassword(password){
     return api.get(`/users?password=${password}`)
   },
@@ -65,6 +70,7 @@ const UserAPI = {
   findByOrders(orders){
     return api.get(`/users?orders=${orders}`)
   },
+  */
 };
 
 export default UserAPI;

@@ -9,19 +9,19 @@ const BikeAPI = {
   get(id: string) {
     return api.get(`/bikes/${id}`);
   },
-
-  create(data: Bike) {
+//Changed Bike to any 
+  create(data: any) {
     return api.post('/bikes', data);
   },
 
-  update(id: string, data: Bike) {
+  update(id: string, data: any) {
     return api.put(`/bikes/${id}`, data);
   },
 
   delete(id: string) {
     return api.delete(`/bikes/${id}`);
   },
-
+/*
   findByName(name: string) {
     return api.get(`/bikes?name=${name}`);
   },
@@ -45,6 +45,7 @@ const BikeAPI = {
   findByGender(gender: string) {
     return api.get(`/bikes/gender=${gender}`);
   },
+  */
 };
 
 export default BikeAPI;

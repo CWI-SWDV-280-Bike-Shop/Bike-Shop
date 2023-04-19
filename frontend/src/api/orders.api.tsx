@@ -21,6 +21,7 @@ const OrderAPI = {
   get(id) {
     return api.get(`/orders/${id}`);
   },
+  /*
 
   findByProduct(product){
     return api.get(`/orders?product=${product}`)
@@ -53,6 +54,7 @@ const OrderAPI = {
   findByTotal(total){
     return api.get(`/orders?total=${total}`)
   },
+  */
 };
 
 export default OrderAPI;

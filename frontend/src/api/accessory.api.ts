@@ -20,7 +20,7 @@ const AccessoryAPI = {
   delete(id) {
     return api.delete(`/accessories/${id}`);
   },
-
+/*
   findByName(name) {
     return api.get(`/accessories?name=${name}`);
   },
@@ -32,6 +32,7 @@ const AccessoryAPI = {
   findByInStock(inStock) {
     return api.get(`/accessories?inStock=${inStock}`);
   },
+  */
 };
 
 export default AccessoryAPI;

@@ -1,15 +1,16 @@
+import { BikeQuery } from '@/types/queries.type';
 import api from './api';
 import Bike from '@/types/bike.type';
 
 const BikeAPI = {
-  getAll() {
-    return api.get('/bikes');
+  getAll(query: BikeQuery | null) {
+    return api.get('/bikes', { params: query });
   },
 
   get(id: string) {
     return api.get(`/bikes/${id}`);
   },
-  create(data:Bike) {
+  create(data: Bike) {
     return api.post('/bikes', data);
   },
 
@@ -19,7 +20,7 @@ const BikeAPI = {
 
   delete(id: string) {
     return api.delete(`/bikes/${id}`);
-  }
+  },
 };
 
 export default BikeAPI;

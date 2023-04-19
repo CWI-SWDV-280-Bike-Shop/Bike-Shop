@@ -9,7 +9,7 @@ type Item = {
 };
 
 type Order = {
-  _id: string;
+  _id?: string;
   customer: User;
   items: [Item];
   total: number;

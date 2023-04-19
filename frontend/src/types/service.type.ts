@@ -1,5 +1,5 @@
 type Service = {
-  _id: string;
+  _id?: string;
   name: string;
   category: string;
   price: number;

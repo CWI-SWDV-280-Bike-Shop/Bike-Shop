@@ -2,7 +2,7 @@ import * as React from 'react';
 import {  Text, StyleSheet, View, Image } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-export const ItemCard = ({name, price, imgSrc, btnName, stockStatus, color, size, brakes}) => {
+export const ItemCard = ({name, price, imgSrc, btnName, stockStatus, color, size}) => {
     return (
           <View style={[styles.card]}>
             <View style={[styles.leftSide]}>
@@ -16,7 +16,7 @@ export const ItemCard = ({name, price, imgSrc, btnName, stockStatus, color, size
                 <View style={[styles.descTextContainer]}>
                 <Text style={[styles.descText]}>- {color}</Text>
                 <Text style={[styles.descText]}>- {size}</Text>
-                <Text style={[styles.descText]}>- {brakes}</Text>
+                {/* <Text style={[styles.descText]}>- {brakes}</Text> */}
                 </View>
                 <TouchableOpacity style={[styles.button]}>
                     <Text style={[styles.buttonText]}>{btnName}</Text>

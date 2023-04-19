@@ -29,10 +29,13 @@ export const Footer = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
+    backgroundColor: '#6A7B76',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%'
   },
   footer: {
+    flexDirection: 'column',
     backgroundColor: '#6A7B76',
     paddingTop: 7,
     paddingBottom: 7,

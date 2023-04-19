@@ -135,12 +135,21 @@ export const Home = () => {
             </Text>
           </View>
           <View style={[styles.missionStatementRow]}>
+            <Icon name="megaphone-outline"
+              size={40}
+            />
             <Text style={[styles.missionStatement]}>
               {mission[0]}
             </Text>
+            <Icon name="flag-outline"
+              size={40}
+            />
             <Text style={[styles.missionStatement]}>
               {mission[1]}
             </Text>
+            <Icon name="heart-outline"
+              size={40}
+            />
             <Text style={[styles.missionStatement]}>
               {mission[2]}
             </Text>
@@ -248,13 +257,17 @@ const web = StyleSheet.create({
   },
   missionStatementRow: {
     flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#0000002a',
+    padding: 15,
+    borderRadius: 10,
     //flex: 1, 
     marginTop: 20,
     marginBottom: 20,
   },
   missionStatement: {
-    borderLeftWidth: 5,
-    borderColor: '#03312E',
+    /* borderRightWidth: 5,
+    borderColor: '#03312E', */
     alignSelf: 'flex-start',
     textAlign: 'left',
     fontSize: 20,

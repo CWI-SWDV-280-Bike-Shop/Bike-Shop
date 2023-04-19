@@ -10,7 +10,7 @@ import { Slide } from '@components/Slide';
 //Footer Import
 import { Footer } from '@components/Footer';
 
-const checkMobile = () => { return (Platform.OS === 'android' || Platform.OS === 'ios') }
+const checkMobile = () => { return (Platform.OS === 'android' || Platform.OS === 'ios') ? true : false }
 const onlyMobile = (code) => { if ((Platform.OS === 'android' || Platform.OS === 'ios')){ return code } }
 const onlyWeb = (code) => { if (Platform.OS === 'web'){ return code } }
 
@@ -25,9 +25,9 @@ const CustomSwiper = () => {
       nextTitle: 'Next',
       dotsTouchable: true,
       dotsPos: 'bottom',
-      prevPos: (checkMobile) ? false : 'left', 
-      nextPos: (checkMobile) ? false : 'right', 
-      cellsStyle: (checkMobile) ? {} : {
+      prevPos: (checkMobile()) ? false : 'left', 
+      nextPos: (checkMobile()) ? false : 'right', 
+      cellsStyle: (!checkMobile()) ? {
         'right': { 
           padding: 20, 
           backgroundColor: '#ffffff2a',
@@ -36,7 +36,7 @@ const CustomSwiper = () => {
           padding: 20, 
           backgroundColor: '#ffffff2a',
         },
-      },
+      } : {},
       nextTitleStyle: {
         fontSize: 18,
         color: '#fff'

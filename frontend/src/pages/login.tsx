@@ -2,7 +2,7 @@ import AuthAPI from '@/api/auth.api';
 import { AuthContext } from '@/context/auth.context';
 import * as React from 'react';
 import { useContext, useState } from 'react';
-import { Text, StyleSheet, View} from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -20,7 +20,9 @@ export const Login = () => {
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
   const [regPassword, setRegPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [regPhone, setRegPhone] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const [regAddress, setRegAddress] = useState({
     street: '',
     city: '',
@@ -36,10 +38,19 @@ export const Login = () => {
   };
 
   const regSubmit = () => {
-    // register user and then immediately login.
-    AuthAPI.register({ name: regName, email: regEmail, password: regPassword, phone: regPhone, address: regAddress, role }).then(() =>
-      login({ email: regEmail, password: regPassword })
-    );
+    if (regName == '' || regEmail == '' || regPassword == '' || regPhone == '') {
+      setErrorMessage('One or more fields are not filled!');
+    } else if (confirmPassword != regPassword) {
+      setErrorMessage('Password and Confirm Password must match!');
+    } else if (regAddress.city == '' || regAddress.country == "" || regAddress.state == '' || regAddress.street == '' || regAddress.zip == '') {
+      setErrorMessage('Please fill in your whole address.');
+    } else {
+      setErrorMessage('');
+      // register user and then immediately login.
+      AuthAPI.register({ name: regName, email: regEmail, password: regPassword, phone: regPhone, address: regAddress, role }).then(() =>
+        login({ email: regEmail, password: regPassword })
+      );
+    }
   };
 
   return (
@@ -104,7 +115,8 @@ export const Login = () => {
                 onChangeText={(value) => setRegPassword(value)}
               />
               <TextInput style={styles.textArea} placeholder='Confirm Password' secureTextEntry={true}
-              //TODO add logic for confirming password
+                value={confirmPassword}
+                onChangeText={(value) => setConfirmPassword(value)}
               />
               <TextInput style={styles.textArea} inputMode='tel' placeholder='Phone Number'
                 value={regPhone}
@@ -137,6 +149,7 @@ export const Login = () => {
             </View>
 
           </View>
+          <Text style={[styles.bodyText]}>{errorMessage}</Text>
           <TouchableOpacity style={styles.buttonNewAccount}
             onPressIn={regSubmit}
           >

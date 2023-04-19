@@ -1,15 +1,16 @@
 import api from './api';
+import Service from '@/types/service.type';
 
 const ServiceAPI = {
-  create(data) {
+  create(data:Service) {
     return api.post('/services', data);
   },
 
-  update(id, data) {
+  update(id: string, data:Service) {
     return api.put(`/services/${id}`, data);
   },
 
-  delete(id) {
+  delete(id:string) {
     return api.delete(`/services/${id}`);
   },
 
@@ -17,33 +18,8 @@ const ServiceAPI = {
     return api.get('/services');
   },
 
-  get(id) {
-    return api.get(`/services/${id}`);
-  },
-/*
-  findByName(name) {
-    return api.get(`/services?name=${name}`);
-  },
-
-  findByCategory(category) {
-    return api.get(`/services?category=${category}`);
-  },
-
-  findByPrice(price) {
-    return api.get(`/services?price=${price}`);
-  },
-
-  findByInStock(inStock) {
-    return api.get(`/service?inStock=${inStock}`);
-  },
-  /*
-findByImage(image) {
-    return api.get(`/service?image=${image}`);
-  },
-  
-  findByTimeStamp(timestamps) {
-    return api.get(`/service?timestamps=${timestamps}`);
-  },*/
+  get(id:string) {
+    return api.get(`/services/${id}`);}
 };
 
 export default ServiceAPI;

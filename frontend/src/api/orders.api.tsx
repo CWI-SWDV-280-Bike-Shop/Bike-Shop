@@ -1,16 +1,17 @@
 import api from "./api";
+import Orders from '@/types/order.type';
 
 const OrderAPI = {
  
-  create(data) {
+  create(data:Orders) {
     return api.post('/orders', data);
   },
 
-  update(id, data) {
+  update(id:string, data:Orders) {
     return api.put(`/orders/${id}`, data);
   },
 
-  delete(id) {
+  delete(id:string) {
     return api.delete(`/orders/${id}`);
   },
 
@@ -18,43 +19,9 @@ const OrderAPI = {
     return api.get('/orders');
   },
 
-  get(id) {
+  get(id:string) {
     return api.get(`/orders/${id}`);
-  },
-  /*
-
-  findByProduct(product){
-    return api.get(`/orders?product=${product}`)
-  },
-  
-  findByModel(productModel){
-    return api.get(`/orders?productModel=${productModel}`)
-  },
-  
-  findByPrice(price){
-    return api.get(`/orders?price=${price}`)
-  },
-  
-  findByQuantity(quantity){
-    return api.get(`/orders?quantity=${quantity}`)
-  },
-
-  findByDate(serviceDate){
-    return api.get(`/orders?serviceDate=${serviceDate}`)
-  },
-
-  findByCustomer(customer){
-    return api.get(`/orders?customer=${customer}`)
-  },
-
-  findByItems(items){
-    return api.get(`/orders?items=${items}`)
-  },
-
-  findByTotal(total){
-    return api.get(`/orders?total=${total}`)
-  },
-  */
+  }
 };
 
 export default OrderAPI;

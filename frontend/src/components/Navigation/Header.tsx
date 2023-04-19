@@ -1,7 +1,8 @@
 import { DrawerHeaderProps } from "@react-navigation/drawer";
 import React from "react";
-import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, Dimensions, useWindowDimensions, ScaledSize } from 'react-native';
+import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, ScaledSize } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { Pressable, } from 'react-native-web-hover'
 
 const NavigationBar = (props: DrawerHeaderProps & {smallDesktop: boolean}) => {
   
@@ -19,35 +20,20 @@ const NavigationBar = (props: DrawerHeaderProps & {smallDesktop: boolean}) => {
 }
 
 const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
+  const checkPage = (page) => { return (navigation.getState().routeNames[navigation.getState().index]==page) }
+  const HoverButton = (props: {title: string, page: string}) => {
+    return (
+      <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered, 
+        (checkPage(props.page)) ? styles.active : styles.inactive]}>
+            <TouchableOpacity onPress={() => navigation.navigate(props.page)}>
+              <Text style={styles.navText}>{props.title}</Text>
+            </TouchableOpacity>
+        </Pressable>
+    )
+  }
   return (
     <View style={styles.navBar}>
-      <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-        <Text style={styles.navText}>Home</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("Bikes")}>
-        <Text style={styles.navText}>Bikes</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("Accessories")}>
-        <Text style={styles.navText}>Accessories</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("Services")}>
-        <Text style={styles.navText}>Services</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-        <Text style={styles.navText}>Profile</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-        <Text style={styles.navText}>Login</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("CRUD Playground")}>
-        <Text style={styles.navText}>CRUD Playground</Text>
-      </TouchableOpacity>
+      { navigation.getState().routeNames.map((name, i) => <HoverButton key={i} title={name} page={name}/>) } 
     </View>
   );
 }
@@ -92,6 +78,16 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
 }
 //Header Stylesheetr
 const styles = StyleSheet.create({
+  active: {
+    borderBottomColor: '#fff', 
+    borderBottomWidth: 5
+  },
+  inactive: {
+    borderBottomColor: '#ffffff00', 
+    borderBottomWidth: 5
+  },
+  buttonRoot: { },
+  buttonHovered: { backgroundColor: '#00000088' },
   headerView: {
     flexDirection: "row",
     backgroundColor: "#6A7B76",
@@ -116,14 +112,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
+    marginHorizontal: 10
   },
   navText: {
     color: '#FFF',
-    fontSize: 25,
+    textTransform: 'uppercase',
+    fontWeight: "700",
+    fontSize: 18,
     margin: 8,
-    borderColor: "#FFF",
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 5,
+    paddingHorizontal: 5,
   }
 })

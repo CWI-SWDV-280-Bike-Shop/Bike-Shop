@@ -22,9 +22,10 @@ export const Login = () => {
           <Text style={styles.buttonContent}> Login</Text>
         </TouchableOpacity>
         <View style={styles.contentContainer}>
-          <Text style={[styles.header]}>New here? Please sign up!</Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
-            <View style={{ marginRight: 15, }}>
+          <Text style={[styles.header]}>New here?</Text>
+          <Text style={[styles.header2]}>Please sign up!</Text>
+          <View style={{ flex: 1, flexDirection: "column" }}>
+            <View>
               <Text style={[styles.bodyText]}>Information</Text>
               <TextInput style={styles.textArea} placeholder='Full Name' />
               <TextInput style={styles.textArea} inputMode='email' placeholder='Email' />
@@ -32,7 +33,7 @@ export const Login = () => {
               <TextInput style={styles.textArea} placeholder='Confirm Password' secureTextEntry={true} />
               <TextInput style={styles.textArea} inputMode='tel' placeholder='Phone Number' />
             </View>
-            <View style={{ marginLeft: 15, }}>
+            <View>
               <Text style={[styles.bodyText]}>Address</Text>
               <TextInput style={styles.textArea} placeholder='Country' />
               <TextInput style={styles.textArea} placeholder='State' />
@@ -41,13 +42,13 @@ export const Login = () => {
               <TextInput style={styles.textArea} inputMode='numeric' placeholder='Zipcode' />
             </View>
           </View>
-          <TouchableOpacity style={styles.buttonNewAccount}>
+          <TouchableOpacity style={styles.button}>
             <Icon
               name="person-add-outline"
               size={60}
-              color="#03312E"
+              color="#FFFFFF"
             />
-            <Text style={styles.buttonNewAccountContent}>New Account</Text>
+            <Text style={styles.buttonContent}>New Account</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -66,12 +67,20 @@ const styles = StyleSheet.create({
     paddingBottom: 50,
   },
   header: {
-    margin: 15,
-    fontSize: 48,
-    color: "#262626"
+    marginTop: 10,
+    fontSize: 45,
+    color: "#262626",
+    textAlign: 'center',
+  },
+  header2: {
+    marginBottom: 10,
+    fontSize: 35,
+    color: "#262626",
+    textAlign: 'center',
   },
   bodyText: {
-    margin: 15,
+    marginLeft: 10,
+    marginTop: 15,
     fontSize: 24,
     color: "#262626"
   },
@@ -82,7 +91,8 @@ const styles = StyleSheet.create({
     borderColor: "#03312E",
     borderWidth: 2,
     borderRadius: 10,
-    minWidth: 250,
+    minWidth: 300,
+    padding: 5,
   },
   button: {
     flexDirection: "row",
@@ -100,34 +110,10 @@ const styles = StyleSheet.create({
     shadowRadius: 16.00,
     elevation: 24,
   },
-  buttonNewAccount: {
-    flexDirection: "row",
-    borderColor: "#03312E",
-    borderWidth: 3,
-    padding: 10,
-    margin: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    elevation: 24,
-  },
-  buttonNewAccountContent: {
-    color: "#03312E",
-    textAlign: 'center',
-    fontSize: 20,
-    padding: 5,
-  },
   buttonContent: {
     color: "#FFFFFF",
     textAlign: 'center',
     fontSize: 20,
     padding: 5,
   },
-
 });

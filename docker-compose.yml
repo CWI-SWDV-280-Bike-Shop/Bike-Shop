@@ -4,13 +4,16 @@ services:
     container_name: bikeshop-nginx
     image: nginx
     restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: ./docker/Dockerfile
     ports:
       - "8080:80"
     volumes:
-      - ./docker/web-root:/var/www/html
+      - web-root:/var/www/html
       - ./docker/nginx-conf:/etc/nginx/conf.d
-      - ./docker/certbot-etc:/etc/letsencrypt
-      - ./docker/certbot-var:/var/lib/letsencrypt
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
     depends_on:
       - bikeshop-backend
     networks:
@@ -37,16 +40,26 @@ services:
       - app-network
     #ports:
     #  - '27018:27017'
-  #certbot:
-  #  image: certbot/certbot
-  #  container_name: certbot
-  #  volumes:
-  #    - certbot-etc:/etc/letsencrypt
-  #    - certbot-var:/var/lib/letsencrypt
-  #    - web-root:/var/www/html
-  #  depends_on:
-  #   - bikeshop-nginx
-  #  command: certonly --webroot --webroot-path=/var/www/html --email USER@DOMAIN --agree-tos --no-eff-email --staging -d DOMAIN  -d www.DOMAIN
+  certbot:
+    image: certbot/certbot:nightly
+    container_name: certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - web-root:/var/www/html
+    depends_on:
+      - bikeshop-nginx
+    command: certonly --webroot --webroot-path=/var/www/html --email williambeukelman@my.cwi.edu --agree-tos --no-eff-email --staging -d thebikeshop.app -d www.thebikeshop.app
+
+volumes:
+  certbot-etc:
+  certbot-var:
+  web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./docker/web-root
+      o: bind
 
 networks:
   app-network:

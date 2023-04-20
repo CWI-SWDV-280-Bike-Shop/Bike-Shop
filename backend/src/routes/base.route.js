@@ -5,8 +5,17 @@ export const baseRouter = (routeOptions) => {
 
   routeOptions.forEach((route) => {
     const [method, path, handler, options] = route;
-    router[method](path, ...options?.middleware ?? [], async (req, res) =>
-      res.status(200).json(await handler({ ...req.param, ...req.body, ...req.query }))
+    router[method](
+      path,
+      ...(options?.middleware ?? []),
+      Object.defineProperty(
+        async (req, res) =>
+          res
+            .status(200)
+            .json(await handler({ ...req.param, ...req.body, ...req.query })),
+        "name",
+        { value: handler.name }
+      )
     );
   });
 

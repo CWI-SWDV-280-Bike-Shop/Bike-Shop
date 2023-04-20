@@ -2,22 +2,23 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
-import ServiceAPI from '@api/service.api';
-import { Service } from '@/types/data.types';
+import AccessoryAPI from '@api/accessory.api';
+import { Accessory } from '@/types/data.types';
 import { formatPrice } from '@/utilities/formatter';
 
-const AddService = () => {
+const AddAccessory = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState(0);
   const [image, setImage] = useState('');
   const [inStock, setInStock] = useState(true);
+
   const [submitted, setSubmitted] = useState(false);
-  const [service, setService] = useState({} as Service);
+  const [accessory, setAccessory] = useState({} as Accessory);
 
   const handleSubmit = async () => {
-    const newService: Service = {
+    const newAccessory: Accessory = {
       name,
       description,
       category,
@@ -25,13 +26,13 @@ const AddService = () => {
       image,
       inStock,
     };
-    ServiceAPI.create(service).then((res) => setService(res.data));
+    AccessoryAPI.create(newAccessory).then((res) => setAccessory(res.data));
     setSubmitted(true);
   };
 
   return (
     <View style={Layout.subsection}>
-      <Text style={Layout.subtitle}>Add Service</Text>
+      <Text style={Layout.subtitle}>Add Accessory</Text>
 
       <Text>Name</Text>
       <TextInput
@@ -53,16 +54,14 @@ const AddService = () => {
         selectedValue={category}
         onValueChange={(value) => setCategory(value)}
       >
-        <Picker.Item label="Tune" value="Tune"></Picker.Item>
-        <Picker.Item
-          label="Wheel and Tire Maintenance"
-          value="Wheel and Tire Maintenance"
-        ></Picker.Item>
-        <Picker.Item label="Assembly" value="Assembly"></Picker.Item>
-        <Picker.Item
-          label="Shifting and Brakes"
-          value="Shifting and Brakes"
-        ></Picker.Item>
+        <Picker.Item label="Tires" value="Tires"></Picker.Item>
+        <Picker.Item label="Brakes" value="Brakes"></Picker.Item>
+        <Picker.Item label="Lights" value="Lights"></Picker.Item>
+        <Picker.Item label="Frames" value="Frames"></Picker.Item>
+        <Picker.Item label="Chains" value="Chains"></Picker.Item>
+        <Picker.Item label="Pedals" value="Pedals"></Picker.Item>
+        <Picker.Item label="Tires" value="Tires"></Picker.Item>
+        <Picker.Item label="Tubes" value="Tubes"></Picker.Item>
       </Picker>
 
       <Text>Price</Text>
@@ -89,50 +88,52 @@ const AddService = () => {
 
       {submitted && (
         <View>
-          <Text>_id: {service?._id}</Text>
-          <Text>name: {service?.name}</Text>
-          <Text>description: {service.description}</Text>
-          <Text>category: {service.category}</Text>
-          <Text>price: {formatPrice(service.price)}</Text>
+          <Text>_id: {accessory?._id}</Text>
+          <Text>name: {accessory?.name}</Text>
+          <Text>description: {accessory?.description}</Text>
+          <Text>category: {accessory?.category}</Text>
+          <Text>price: {formatPrice(accessory?.price)}</Text>
         </View>
       )}
     </View>
   );
 };
 
-const ListServices = () => {
-  const [services, setServices] = useState([{}] as [Service]);
+const ListAccessories = () => {
+  const [accessories, setAccessories] = useState([]);
 
   useEffect(() => {
-    ServiceAPI.getAll().then((res) => setServices(res.data));
+    AccessoryAPI.getAll().then((res) => setAccessories(res.data));
   }, []);
 
   return (
     <View style={Layout.subsection}>
-      <Text style={Layout.subtitle}>List Services</Text>
-      {services &&
-        services.map((service: Service) => (
-          <View style={Layout.card} key={service?._id}>
-            <Text>ID: {service?._id}</Text>
-            <Text>Name: {service?.name}</Text>
-            <Text>Description: {service?.description}</Text>
-            <Text>Category: {service?.category}</Text>
-            <Text>Price: {formatPrice(service?.price)}</Text>
-            <Text>In Stock: {service?.inStock?.toString()}</Text>
+      <Text style={Layout.subtitle}>List Accessories</Text>
+      {accessories &&
+        accessories.map((accessories) => (
+          <View style={Layout.card} key={accessories?._id}>
+            <Text>ID: {accessories?._id}</Text>
+            <Text>Name: {accessories?.name}</Text>
+            <Text>Description: {accessories?.description}</Text>
+            <Text>Category: {accessories?.category}</Text>
+            <Text>Price: {formatPrice(accessories?.price)}</Text>
+            <Text>In Stock: {accessories?.inStock?.toString()}</Text>
+            <Text>Image: {accessories?.image}</Text>
           </View>
+          //IMage type diffrent then string
         ))}
     </View>
   );
 };
 
-const Services = () => {
+const Accessories = () => {
   return (
     <View style={Layout.section}>
-      <Text style={Layout.title}>Services</Text>
-      <AddService />
-      <ListServices />
+      <Text style={Layout.title}>Accessories</Text>
+      <AddAccessory />
+      <ListAccessories />
     </View>
   );
 };
 
-export default Services;
+export default Accessories;

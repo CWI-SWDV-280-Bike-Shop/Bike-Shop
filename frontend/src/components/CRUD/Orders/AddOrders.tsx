@@ -9,7 +9,7 @@ const AddOrders = () => {
   ItemSChema 
   const [product, setProduct] = useState('');
   const [productModel, setProductModel] = useState('');
-  const [price, setPrice] = useState('');
+  const [price, setPrice] = useState(0);
   const [quantity, setQuantity] = useState('');
   const [serviceDate, setServiceDate] = useState('');
 */

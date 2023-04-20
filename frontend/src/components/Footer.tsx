@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Text, StyleSheet, View, ScrollView } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 
 export const Footer = () => {
   return (
@@ -29,10 +29,13 @@ export const Footer = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
+    backgroundColor: '#6A7B76',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%'
   },
   footer: {
+    flexDirection: 'column',
     backgroundColor: '#6A7B76',
     paddingTop: 7,
     paddingBottom: 7,
@@ -45,3 +48,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+

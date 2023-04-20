@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Text, StyleSheet, View, ScrollView, Platform } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, Platform, TouchableOpacity } from 'react-native';
 //import Swiper from 'react-native-swiper/src';
 import Swiper from 'react-native-web-swiper';
 
@@ -14,12 +14,23 @@ const checkMobile = () => { return (Platform.OS === 'android' || Platform.OS ===
 const onlyMobile = (code) => { if ((Platform.OS === 'android' || Platform.OS === 'ios')){ return code } }
 const onlyWeb = (code) => { if (Platform.OS === 'web'){ return code } }
 
+/* cellsStyle: (!checkMobile()) ? {
+  'right': { 
+    padding: 20, 
+    backgroundColor: '#ffffff2a',
+  },
+  'left': { 
+    padding: 20, 
+    backgroundColor: '#ffffff2a',
+  },
+} : {} */
+
 const CustomSwiper = () => {
   return (
     <Swiper 
     loop
     timeout={5}
-    springConfig={{ speed: .5, bounciness: .5, }}
+    springConfig={{ speed: 5, bounciness: 1, }}
     controlsProps={{
       prevTitle: 'Prev',
       nextTitle: 'Next',
@@ -27,24 +38,16 @@ const CustomSwiper = () => {
       dotsPos: 'bottom',
       prevPos: (checkMobile()) ? false : 'left', 
       nextPos: (checkMobile()) ? false : 'right', 
-      cellsStyle: (!checkMobile()) ? {
-        'right': { 
-          padding: 20, 
-          backgroundColor: '#ffffff2a',
-        },
-        'left': { 
-          padding: 20, 
-          backgroundColor: '#ffffff2a',
-        },
-      } : {},
       nextTitleStyle: {
-        fontSize: 18,
+        fontSize: 28,
+        fontWeight: '900',
         color: '#fff'
       },
       prevTitleStyle: {
-        fontSize: 18,
+        fontSize: 28,
+        fontWeight: '900',
         color: '#fff'
-      }
+      },
     }}>
       <Slide
         name={'City Bikes'}
@@ -154,8 +157,8 @@ export const Home = () => {
               {mission[2]}
             </Text>
           </View>
-          <Footer />
       </View>
+      <Footer />
     </View>
   </ScrollView>
     );
@@ -168,8 +171,14 @@ const mobile = StyleSheet.create({
     flexDirection: 'column',
   },
   slidesContainer: {
-    // flexDirection: 'column',
-    // flex: 2,
+    flexDirection: 'column',
+    height: 250
+  },
+  contentContainer: {
+    flexDirection: 'column',
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   titleRow: {
     flexDirection: 'row',

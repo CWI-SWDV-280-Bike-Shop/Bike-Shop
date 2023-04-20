@@ -1,0 +1,15 @@
+# IMPORT DATA (JSON or CSV)
+mongoimport --uri mongodb+srv://swdv280_2023:<PASSWORD>@bikeshop.v1dhfuf.mongodb.net/<DATABASE> --collection <COLLECTION> --type <FILETYPE> --file <FILENAME>
+
+# EXPORT DATA (JSON or CSV)
+mongoexport --uri mongodb+srv://swdv280_2023:<PASSWORD>@bikeshop.v1dhfuf.mongodb.net/<DATABASE> --collection <COLLECTION> --type <FILETYPE> --out <FILENAME>
+
+# DUMP DB (Full Backup)
+mongodump --uri mongodb+srv://swdv280_2023:<PASSWORD>@bikeshop.v1dhfuf.mongodb.net/BikeShop
+
+# RESTORE DB (Restore from Backup)
+mongorestore --uri mongodb+srv://swdv280_2023:<PASSWORD>@bikeshop.v1dhfuf.mongodb.net <PATH (optional)>
+
+note: mongorestore creates a new database or adds data to an existing database. 
+By default, mongorestore reads the database dump in the dump/ sub-directory of the current directory; 
+to restore from a different directory, pass in the path to the directory as a final argument.

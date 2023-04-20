@@ -1,12 +1,12 @@
 import React, { ReactNode, createContext, useState, useEffect } from 'react';
 import AuthAPI from '@api/auth.api';
 import TokenAPI from '@api/token.api';
-import AuthUser from '@/types/authUser.type';
+import { AuthUser, Credentials } from '@/types/data.types';
 
 type AuthContextType = {
   authUser: AuthUser | null;
   isLoggedIn: boolean;
-  login: (credentials: { email: string; password: string }) => void;
+  login: (credentials: Credentials) => void;
   logout: () => void;
   message: string | null;
 };
@@ -43,6 +43,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const login = ({ email, password }) => {
     AuthAPI.login({ email, password })
       .then((res) => {
+        console.log(res.data);
         const user = res.data as AuthUser;
         setAuthUser(user);
         TokenAPI.setLocalAuthUser(user);

@@ -33,16 +33,7 @@ const AuthController = {
     if (checkEmail) throw new Conflict('A user already exists with that email');
 
     await user.save();
-    return {
-      id: user._id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      address: user.address,
-      role: user.role,
-      accessToken: accessToken,
-      refreshToken: refreshToken,
-    };
+    return user;
   },
 
   async login({ email, password }) {
@@ -58,7 +49,7 @@ const AuthController = {
     let refreshToken = await RefreshToken.createToken(user); // returns refreshToken.token
 
     return {
-      id: user._id,
+      _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,

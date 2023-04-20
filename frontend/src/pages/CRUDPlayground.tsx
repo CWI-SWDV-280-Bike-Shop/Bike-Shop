@@ -12,11 +12,11 @@ const CRUDPlayground = () => {
   return (
     <ScrollView style={Layout.container}>
       <Text style={Layout.title}>CRUD Playground</Text>
-      <Auth />
-      <Bikes />
-      <Services />
-      <Accessories />
-      <Orders />
+      {/* <Auth /> */}
+      {/* <Bikes /> */}
+      {/* <Services /> */}
+      {/* <Accessories /> */}
+      {/* <Orders /> */}
       <User />
     </ScrollView>
   );

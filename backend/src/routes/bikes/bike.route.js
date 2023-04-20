@@ -1,4 +1,4 @@
 import BikeController from './bike.controller.js';
-import { baseCRUD } from '../base.route.js'
+import { productRoute } from '../product.route.js';
 
-export default baseCRUD(BikeController);
+export default productRoute(BikeController);

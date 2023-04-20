@@ -44,7 +44,7 @@ const BikeSchema = new Schema(
       enum: ['Mens', 'Womens', 'Neutral'],
     },
     price: Number,
-    image: String,
+    images: [String],
     inStock: {
       type: Boolean,
       default: true,

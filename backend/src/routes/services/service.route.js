@@ -1,4 +1,4 @@
 import ServiceController from './service.controller.js';
-import { baseCRUD } from '../base.route.js';
+import { productRoute } from '../product.route.js';
 
-export default baseCRUD(ServiceController);
+export default productRoute(ServiceController);

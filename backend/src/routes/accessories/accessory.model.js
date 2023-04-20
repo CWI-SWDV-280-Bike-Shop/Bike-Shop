@@ -19,7 +19,7 @@ const AccessorySchema = new Schema(
       ],
     },
     price: Number,
-    image: String,
+    images: [String],
     inStock: Boolean,
   },
   { timestamps: true }

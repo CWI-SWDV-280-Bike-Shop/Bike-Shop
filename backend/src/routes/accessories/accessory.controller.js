@@ -1,6 +1,6 @@
 import Accessory from './accessory.model.js';
-import { BaseController } from '../base.controller.js';
+import { ProductController } from '../product.controller.js';
 
-class AccessoryController extends BaseController(Accessory) {}
+class AccessoryController extends ProductController(Accessory) {}
 
 export default AccessoryController;

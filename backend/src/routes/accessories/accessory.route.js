@@ -1,4 +1,4 @@
 import AccessoryController from './accessory.controller.js';
-import { baseCRUD } from '../base.route.js'
+import { productRoute } from '../product.route.js';
 
-export default baseCRUD(AccessoryController);
+export default productRoute(AccessoryController);

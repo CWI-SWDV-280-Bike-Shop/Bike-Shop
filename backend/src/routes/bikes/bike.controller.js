@@ -1,6 +1,6 @@
 import Bike from '../../routes/bikes/bike.model.js';
-import { BaseController } from '../base.controller.js';
+import { ProductController } from '../product.controller.js';
 
-class BikeController extends BaseController(Bike) {}
+class BikeController extends ProductController(Bike) {}
 
 export default BikeController;

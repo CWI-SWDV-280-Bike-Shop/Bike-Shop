@@ -13,7 +13,7 @@ const BikeAPI = {
     return api.post('/bikes', data);
   },
 
-  update(id: string, data: any) {
+  update(id: string, data: Bike) {
     return api.put(`/bikes/${id}`, data);
   },
 

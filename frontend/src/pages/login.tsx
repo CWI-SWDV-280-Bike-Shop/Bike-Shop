@@ -1,20 +1,28 @@
 import AuthAPI from '@/api/auth.api';
 import { AuthContext } from '@/context/auth.context';
+import { User } from '@/types/data.types';
 import * as React from 'react';
 import { useContext, useState } from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export const Login = () => {
+  //Window Dimensions
+  const dimensions = useWindowDimensions();
   //Auth connection
   const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
   //Login Logic
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
 
   const submit = () => {
-    login({ email, password });
+    if (email == '' || password == "") {
+      setLoginError('Please fill out all the fields!');
+    } else {
+      login({ email, password });
+    }
   };
   //Register Logic
   const [regName, setRegName] = useState('');
@@ -47,9 +55,16 @@ export const Login = () => {
     } else {
       setErrorMessage('');
       // register user and then immediately login.
-      AuthAPI.register({ name: regName, email: regEmail, password: regPassword, phone: regPhone, address: regAddress, role }).then(() =>
-        login({ email: regEmail, password: regPassword })
-      );
+      const newUser: User = {
+        name: regName,
+        email: regEmail,
+        password: regPassword,
+        phone: regPhone,
+        address: regAddress,
+        role,
+      };
+      // register user and then immediately login.
+      AuthAPI.register(newUser).then(() => login({ email: regEmail, password: regPassword }));
     }
   };
 
@@ -73,6 +88,7 @@ export const Login = () => {
           onChangeText={(value) => setPassword(value)}
           secureTextEntry={true}
         />
+        <Text style={[styles.errorText]}>{loginError}</Text>
         <TouchableOpacity
           style={styles.button}
           onPressIn={(submit)}
@@ -88,7 +104,7 @@ export const Login = () => {
 
         {isLoggedIn && (
           <View>
-            <Text>_id: {authUser.id}</Text>
+            <Text>_id: {authUser._id}</Text>
             <Text>name: {authUser.name}</Text>
             <Text>email: {authUser.email}</Text>
             <Text>role: {authUser.role}</Text>
@@ -98,9 +114,9 @@ export const Login = () => {
         )}
         <View style={styles.contentContainer}>
           <Text style={[styles.header]}>New here? Please sign up!</Text>
-          <View style={{ flex: 1, flexDirection: "row" }}>
+          <View style={dimensions.width <= 800 ? styles.registrationContainerSmaller : styles.registrationContainer}>
 
-            <View style={{ marginRight: 15, }}>
+            <View style={dimensions.width <= 800 ? styles.infoContainer : styles.infoContainerSmaller}>
               <Text style={[styles.bodyText]}>Information</Text>
               <TextInput style={styles.textArea} placeholder='Full Name'
                 value={regName}
@@ -124,7 +140,7 @@ export const Login = () => {
               />
             </View>
 
-            <View style={{ marginLeft: 15, }}>
+            <View style={dimensions.width <= 800 ? styles.addressContainerSmaller : styles.addressContainer}>
               <Text style={[styles.bodyText]}>Address</Text>
               <TextInput style={styles.textArea} placeholder='Country'
                 value={regAddress.country}
@@ -149,7 +165,7 @@ export const Login = () => {
             </View>
 
           </View>
-          <Text style={[styles.bodyText]}>{errorMessage}</Text>
+          <Text style={[styles.errorText]}>{errorMessage}</Text>
           <TouchableOpacity style={styles.buttonNewAccount}
             onPressIn={regSubmit}
           >
@@ -164,7 +180,7 @@ export const Login = () => {
 
           {isLoggedIn && (
             <View>
-              <Text>_id: {authUser.id}</Text>
+              <Text>_id: {authUser._id}</Text>
               <Text>name: {authUser.name}</Text>
               <Text>email: {authUser.email}</Text>
               <Text>role: {authUser.role}</Text>
@@ -179,6 +195,26 @@ export const Login = () => {
 };
 
 const styles = StyleSheet.create({
+  infoContainer: {
+    marginRight: 15,
+  },
+  addressContainer: {
+    marginLeft: 15,
+  },
+  registrationContainer: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  infoContainerSmaller:{
+    marginRight: 0
+  },
+  addressContainerSmaller:{
+    marginLeft: 0
+  },
+  registrationContainerSmaller:{
+    flex:1,
+    flexDirection: "column",
+  },
   container: {
     flex: 1,
   },
@@ -204,7 +240,15 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginTop: 15,
     fontSize: 24,
-    color: "#262626"
+    color: "#262626",
+    textAlign: "center",
+  },
+  errorText: {
+    marginLeft: 10,
+    marginTop: 15,
+    fontSize: 24,
+    color: "#dc143c",
+    textAlign: "center",
   },
   textArea: {
     margin: 15,

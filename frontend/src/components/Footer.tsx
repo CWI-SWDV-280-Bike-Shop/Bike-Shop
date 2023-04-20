@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Text, StyleSheet, View, ScrollView } from 'react-native';
+import { Text, StyleSheet, View } from 'react-native';
 
 export const Footer = () => {
   return (
@@ -48,3 +48,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+

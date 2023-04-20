@@ -157,8 +157,8 @@ export const Home = () => {
               {mission[2]}
             </Text>
           </View>
-          <Footer />
       </View>
+      <Footer />
     </View>
   </ScrollView>
     );
@@ -173,6 +173,12 @@ const mobile = StyleSheet.create({
   slidesContainer: {
     flexDirection: 'column',
     height: 250
+  },
+  contentContainer: {
+    flexDirection: 'column',
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   titleRow: {
     flexDirection: 'row',

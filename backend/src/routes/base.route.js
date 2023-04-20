@@ -12,7 +12,7 @@ export const baseRouter = (routeOptions) => {
         async (req, res) =>
           res
             .status(200)
-            .json(await handler({ ...req.param, ...req.body, ...req.query })),
+            .json(await handler({ ...req.params, ...req.body, ...req.query })),
         "name",
         { value: handler.name }
       )

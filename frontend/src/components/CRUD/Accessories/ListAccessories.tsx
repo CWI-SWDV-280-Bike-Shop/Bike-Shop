@@ -4,10 +4,10 @@ import Layout from '@styles/layout/Layout';
 import AccessoryAPI from '@api/accessory.api';
 
 const ListAccessories = () => {
-  const [accessories, setAccessory] = useState([]);
+  const [accessories, setAccessories] = useState([]);
 
   useEffect(() => {
-    AccessoryAPI.getAll().then((res) => setAccessory(res.data));
+    AccessoryAPI.getAll().then((res) => setAccessories(res.data));
   }, []);
 
   return (

@@ -78,7 +78,7 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
 }
 
 //Header Stylesheet
-let styles = StyleSheet.create({
+const styles = StyleSheet.create({
   active: {
     borderBottomColor: '#fff', 
     borderBottomWidth: 5

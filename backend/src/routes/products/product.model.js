@@ -32,6 +32,7 @@ const ProductSchema = new Schema(
     price: Number,
     imageURL: String,
     inStock: Boolean,
+    brand: String,
     material: {
       type: String,
       enum: ['Aluminum', 'Steel', 'Carbon'],

@@ -61,14 +61,14 @@ export type Bike = Product & {
 
 // Order
 export type OrderItem = Data & {
-  product?: Accessory | Service | Bike;
+  product?: Accessory | Service | Bike | string;
   productModel?: string;
   price?: number;
   quantity?: number;
 };
 
 export type Order = Data & {
-  customer?: User;
+  customer?: User | string;
   items?: [OrderItem];
   total?: number;
 };

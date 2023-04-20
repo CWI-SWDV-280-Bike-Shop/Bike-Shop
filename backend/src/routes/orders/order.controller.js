@@ -19,8 +19,7 @@ class OrderController extends BaseController(Order) {
     if (itemType) query['items.productModel'] = itemType;
 
     const orders = await Order.find(query).populate('customer').populate({
-      path: 'items.product',
-      model: itemType,
+      path: 'items',
     });
 
     // After retrieving the orders, filter them based on the contents of their "items"

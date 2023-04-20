@@ -30,7 +30,7 @@ const CustomSwiper = () => {
     <Swiper 
     loop
     timeout={5}
-    springConfig={{ speed: .5, bounciness: .5, }}
+    springConfig={{ speed: 5, bounciness: 1, }}
     controlsProps={{
       prevTitle: 'Prev',
       nextTitle: 'Next',

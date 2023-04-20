@@ -1,16 +1,9 @@
 import api from './api';
-import Accessory from '@/types/accessory.type';
+import { Accessory } from '@/types/data.types';
+import { AccessoryParams } from '@/types/parameter.types';
 
 const AccessoryAPI = {
-  getAll() {
-    return api.get('/accessories');
-  },
-
-  get(id : string) {
-    return api.get(`/accessories/${id}`);
-  },
-
-  create(data :Accessory) {
+  create(data: Accessory) {
     return api.post('/accessories', data);
   },
 
@@ -18,9 +11,17 @@ const AccessoryAPI = {
     return api.put(`/accessories/${id}`, data);
   },
 
-  delete(id:string ) {
+  delete(id: string) {
     return api.delete(`/accessories/${id}`);
-  }
+  },
+
+  getAll(params?: AccessoryParams) {
+    return api.get('/accessories', { params });
+  },
+
+  getById(id: string) {
+    return api.get(`/accessories/${id}`);
+  },
 };
 
 export default AccessoryAPI;

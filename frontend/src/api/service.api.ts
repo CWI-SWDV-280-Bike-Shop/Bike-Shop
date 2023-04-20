@@ -1,25 +1,27 @@
 import api from './api';
-import Service from '@/types/service.type';
+import { Service } from '@/types/data.types';
+import { ServiceParams } from '@/types/parameter.types';
 
 const ServiceAPI = {
-  create(data:Service) {
+  create(data: Service) {
     return api.post('/services', data);
   },
 
-  update(id: string, data:Service) {
+  update(id: string, data: Service) {
     return api.put(`/services/${id}`, data);
   },
 
-  delete(id:string) {
+  delete(id: string) {
     return api.delete(`/services/${id}`);
   },
 
-  getAll() {
-    return api.get('/services');
+  getAll(params?: ServiceParams) {
+    return api.get('/services', { params });
   },
 
-  get(id:string) {
-    return api.get(`/services/${id}`);}
+  getById(id: string) {
+    return api.get(`/services/${id}`);
+  },
 };
 
 export default ServiceAPI;

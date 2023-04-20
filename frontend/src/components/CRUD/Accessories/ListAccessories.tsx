@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Layout from '@styles/layout/Layout';
 import AccessoryAPI from '@api/accessory.api';
+import { formatPrice } from '@/utilities/formatter';
 
 const ListAccessories = () => {
   const [accessories, setAccessories] = useState([]);
@@ -15,25 +16,19 @@ const ListAccessories = () => {
       <Text style={Layout.subtitle}>List Accessories</Text>
       {accessories &&
         accessories.map((accessories) => (
-          <View style={styles.bike} key={accessories._id}>
-            <Text>ID: {accessories._id}</Text>
-            <Text>Name: {accessories.name.toString()}</Text>
-            <Text>Description: {accessories.description.toString()}</Text>
-            <Text>Category: {accessories.category.toString()}</Text>
-            <Text>Price: {accessories.price.toString()}</Text>
-            <Text>In Stock: {accessories.inStock.toString()}</Text>     
-            <Text>Image: {accessories.image.toString()}</Text>
+          <View style={Layout.card} key={accessories?._id}>
+            <Text>ID: {accessories?._id}</Text>
+            <Text>Name: {accessories?.name}</Text>
+            <Text>Description: {accessories.description}</Text>
+            <Text>Category: {accessories.category}</Text>
+            <Text>Price: {formatPrice(accessories.price)}</Text>
+            <Text>In Stock: {accessories.inStock.toString()}</Text>
+            <Text>Image: {accessories.image}</Text>
           </View>
           //IMage type diffrent then string
         ))}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  bike: {
-    margin: 10,
-  },
-});
 
 export default ListAccessories;

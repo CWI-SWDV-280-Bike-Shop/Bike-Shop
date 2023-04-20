@@ -3,6 +3,8 @@ import { View, Text, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
 import AccessoryAPI from '@api/accessory.api';
+import { formatPrice } from '@/utilities/formatter';
+import { Accessory } from '@/types/data.types';
 
 const AddAccessory = () => {
   const [name, setName] = useState('');
@@ -12,23 +14,10 @@ const AddAccessory = () => {
   const [image, setImage] = useState('');
 
   const [submitted, setSubmitted] = useState(false);
-  const [accessory, setAccessory] = useState({
-    _id: '',
-    name: '',
-    description: '',
-    category: '',
-    price: 0,
-    image: '',
-  });
+  const [accessory, setAccessory] = useState({} as Accessory);
 
   const handleSubmit = async () => {
-    AccessoryAPI.create({
-      name,
-      description,
-      category,
-      price,
-      image,
-    }).then((res) => setAccessory(res.data));
+    AccessoryAPI.create(accessory).then((res) => setAccessory(res.data));
     setSubmitted(true);
   };
 
@@ -84,11 +73,11 @@ const AddAccessory = () => {
 
       {submitted && (
         <View>
-          <Text>_id: {accessory._id}</Text>
-          <Text>name: {accessory.name}</Text>
+          <Text>_id: {accessory?._id}</Text>
+          <Text>name: {accessory?.name}</Text>
           <Text>description: {accessory.description}</Text>
           <Text>category: {accessory.category}</Text>
-          <Text>price: {accessory.price.toString()}</Text>
+          <Text>price: {formatPrice(accessory.price)}</Text>
         </View>
       )}
     </View>

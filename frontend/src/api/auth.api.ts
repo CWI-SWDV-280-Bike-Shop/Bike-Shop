@@ -1,19 +1,13 @@
 import api from './api';
+import { Credentials, AuthUser } from '@/types/data.types';
 
 const AuthAPI = {
-  login({ email, password }) {
-    return api.post('/auth/login', { email, password });
+  login(credentials: Credentials) {
+    return api.post('/auth/login', credentials);
   },
 
-  register({ name, email, password, phone, address, role }) {
-    return api.post('/auth/register', {
-      name,
-      email,
-      password,
-      phone,
-      address,
-      role,
-    });
+  register(user: AuthUser) {
+    return api.post('/auth/register', user);
   },
 };
 

@@ -3,6 +3,8 @@ import { View, Text, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
 import BikeAPI from '@api/bike.api';
+import { formatPrice } from '@/utilities/formatter';
+import { Bike } from '@/types/data.types';
 
 const AddBike = () => {
   const [name, setName] = useState('');
@@ -18,35 +20,10 @@ const AddBike = () => {
   const [image, setImage] = useState('');
 
   const [submitted, setSubmitted] = useState(false);
-  const [bike, setBike] = useState({
-    _id: '',
-    name: '',
-    brand: '',
-    description: '',
-    category: '',
-    material: '',
-    wheelSize: '',
-    color: '',
-    size: '',
-    gender: '',
-    price: 0,
-    image: '',
-  });
+  const [bike, setBike] = useState({} as Bike);
 
   const handleSubmit = async () => {
-    BikeAPI.create({
-      name,
-      brand,
-      description,
-      category,
-      material,
-      wheelSize,
-      color,
-      size,
-      gender,
-      price,
-      image,
-    }).then((res) => setBike(res.data));
+    BikeAPI.create(bike).then((res) => setBike(res.data));
     setSubmitted(true);
   };
 
@@ -169,14 +146,14 @@ const AddBike = () => {
 
       {submitted && (
         <View>
-          <Text>_id: {bike._id}</Text>
-          <Text>name: {bike.name}</Text>
+          <Text>_id: {bike?._id}</Text>
+          <Text>name: {bike?.name}</Text>
           <Text>description: {bike.description}</Text>
           <Text>category: {bike.category}</Text>
           <Text>color: {bike.color}</Text>
           <Text>size: {bike.size}</Text>
           <Text>gender: {bike.gender}</Text>
-          <Text>price: {bike.price.toString()}</Text>
+          <Text>price: {formatPrice(bike.price)}</Text>
         </View>
       )}
     </View>

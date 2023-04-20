@@ -3,44 +3,29 @@ import { View, Text, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
 import UserAPI from '@api/user.api';
+import { User } from '@/types/data.types';
 
 const AddUser = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState(''); 
-  const [address, setAddress] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState({});
   const [role, setRole] = useState('');
   const [orders, setOrders] = useState('');
-  
 
   const [submitted, setSubmitted] = useState(false);
-  const [user, setUser] = useState({
-    _id: '',
-    name: '',
-    email: '',
-    phone: '',
-    address: '',
-    role: '',
-    orders: '',
-  });
+  const [user, setUser] = useState({} as User);
 
   const handleSubmit = async () => {
-    UserAPI.create({
-      name,
-      email,
-      phone,
-      address,
-      role,
-      orders,
-    }).then((res) => setUser(res.data));
+    UserAPI.create(user).then((res) => setUser(res.data));
     setSubmitted(true);
   };
 
   return (
     <View style={Layout.subsection}>
       <Text style={Layout.subtitle}>Add User</Text>
-
-      <Text>Name</Text>
+      <Text>TODO</Text>
+      {/* <Text>Name</Text>
       <TextInput
         style={Layout.input}
         value={name}
@@ -52,7 +37,7 @@ const AddUser = () => {
         style={Layout.input}
         value={email}
         onChangeText={(value) => setEmail(value)}
-      ></TextInput>
+      ></TextInput>*/}
     </View>
   );
 };

@@ -15,7 +15,7 @@ const AccessoryAPI = {
     return api.delete(`/accessories/${id}`);
   },
 
-  getAll(params: AccessoryParams | null) {
+  getAll(params?: AccessoryParams) {
     return api.get('/accessories', { params });
   },
 

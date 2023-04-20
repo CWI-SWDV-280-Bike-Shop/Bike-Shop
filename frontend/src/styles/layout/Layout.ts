@@ -17,6 +17,9 @@ export default StyleSheet.create({
     margin: 5,
     padding: 5,
   },
+  card: {
+    margin: 10,
+  },
   title: {
     textAlign: 'center',
     fontWeight: 'bold',

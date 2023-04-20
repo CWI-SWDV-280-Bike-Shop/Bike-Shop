@@ -15,7 +15,7 @@ const UserAPI = {
     return api.delete(`/users/${id}`);
   },
 
-  getAll(params: UserParams | null) {
+  getAll(params?: UserParams) {
     return api.get('/users', { params });
   },
 

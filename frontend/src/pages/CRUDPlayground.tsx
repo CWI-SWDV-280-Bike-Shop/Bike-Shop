@@ -18,7 +18,6 @@ const CRUDPlayground = () => {
       <Accessories />
       <Orders />
       <User />
-
     </ScrollView>
   );
 };

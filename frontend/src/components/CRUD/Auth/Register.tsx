@@ -116,10 +116,10 @@ const Register = () => {
       {isLoggedIn && (
         <View>
           <Text>_id: {authUser.id}</Text>
-          <Text>name: {authUser.name}</Text>
-          <Text>email: {authUser.email}</Text>
-          <Text>role: {authUser.role}</Text>
-          <Text>accessToken: {authUser.accessToken}</Text>
+          <Text>name: {authUser?.name}</Text>
+          <Text>email: {authUser?.email}</Text>
+          <Text>role: {authUser?.role}</Text>
+          <Text>accessToken: {authUser?.accessToken}</Text>
           <Text>refreshToken: {authUser.refreshToken}</Text>
         </View>
       )}

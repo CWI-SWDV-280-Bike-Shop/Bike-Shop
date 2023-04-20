@@ -15,7 +15,7 @@ const BikeAPI = {
     return api.delete(`/bikes/${id}`);
   },
 
-  getAll(params: BikeParams | null) {
+  getAll(params?: BikeParams) {
     return api.get('/bikes', { params });
   },
 

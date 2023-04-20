@@ -15,7 +15,7 @@ const OrderAPI = {
     return api.delete(`/orders/${id}`);
   },
 
-  getAll(params: OrderParams | null) {
+  getAll(params?: OrderParams) {
     return api.get('/orders', { params });
   },
 

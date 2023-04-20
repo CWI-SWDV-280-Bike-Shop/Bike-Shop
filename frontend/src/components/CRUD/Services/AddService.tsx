@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Button, TextInput } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
 import ServiceAPI from '@api/service.api';
+import { formatPrice } from '@/utilities/formatter';
+import { Service } from '@/types/data.types';
 
 const AddService = () => {
   const [name, setName] = useState('');
@@ -10,21 +12,10 @@ const AddService = () => {
   const [category, setCategory] = useState('');
   const [price, setPrice] = useState(0);
   const [submitted, setSubmitted] = useState(false);
-  const [service, setService] = useState({
-    _id: '',
-    name: '',
-    description: '',
-    category: '',
-    price: 0,
-  });
+  const [service, setService] = useState({} as Service);
 
   const handleSubmit = async () => {
-    ServiceAPI.create({
-      name,
-      description,
-      category,
-      price,
-    }).then((res) => setService(res.data));
+    ServiceAPI.create(service).then((res) => setService(res.data));
     setSubmitted(true);
   };
 
@@ -75,11 +66,11 @@ const AddService = () => {
 
       {submitted && (
         <View>
-          <Text>_id: {service._id}</Text>
-          <Text>name: {service.name}</Text>
+          <Text>_id: {service?._id}</Text>
+          <Text>name: {service?.name}</Text>
           <Text>description: {service.description}</Text>
           <Text>category: {service.category}</Text>
-          <Text>price: {service.price.toString()}</Text>
+          <Text>price: {formatPrice(service.price)}</Text>
         </View>
       )}
     </View>

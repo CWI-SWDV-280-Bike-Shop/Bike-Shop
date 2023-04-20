@@ -24,7 +24,7 @@ export type AuthUser = Data & {
   refreshToken?: string;
 };
 
-// Users
+// User
 export type User = AuthUser & {
   phone?: string;
   address?: {
@@ -37,7 +37,7 @@ export type User = AuthUser & {
   orders?: [Order];
 };
 
-// Products
+// Product
 type Product = Data & {
   name?: string;
   description?: string;
@@ -51,6 +51,7 @@ export type Accessory = Product;
 export type Service = Product;
 
 export type Bike = Product & {
+  brand?: string;
   material?: string;
   wheelSize?: string;
   color?: string;
@@ -58,17 +59,16 @@ export type Bike = Product & {
   gender?: string;
 };
 
-// Orders
-type Item = Data & {
+// Order
+export type OrderItem = Data & {
   product?: Accessory | Service | Bike;
   productModel?: string;
   price?: number;
   quantity?: number;
-  serviceDate?: string;
 };
 
 export type Order = Data & {
   customer?: User;
-  items?: [Item];
+  items?: [OrderItem];
   total?: number;
 };

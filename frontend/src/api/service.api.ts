@@ -15,7 +15,7 @@ const ServiceAPI = {
     return api.delete(`/services/${id}`);
   },
 
-  getAll(params: ServiceParams | null) {
+  getAll(params?: ServiceParams) {
     return api.get('/services', { params });
   },
 

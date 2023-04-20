@@ -4,40 +4,6 @@ import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, ScaledSize }
 import Icon from 'react-native-vector-icons/Ionicons'
 import { Pressable, } from 'react-native-web-hover'
 
-const NavigationBar = (props: DrawerHeaderProps & {smallDesktop: boolean}) => {
-  
-  if ((Platform.OS === 'android' || Platform.OS === 'ios') 
-   || props.smallDesktop
-  ) {
-    return (
-      <HamburgerMenu {...props} />
-    );
-  } else if (Platform.OS === 'web') {
-    return (
-      <DesktopNavbar {...props} />
-    );
-  }
-}
-
-const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
-  const checkPage = (page) => { return (navigation.getState().routeNames[navigation.getState().index]==page) }
-  const HoverButton = (props: {title: string, page: string}) => {
-    return (
-      <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered, 
-        (checkPage(props.page)) ? styles.active : styles.inactive]}>
-            <TouchableOpacity onPress={() => navigation.navigate(props.page)}>
-              <Text style={styles.navText}>{props.title}</Text>
-            </TouchableOpacity>
-        </Pressable>
-    )
-  }
-  return (
-    <View style={styles.navBar}>
-      { navigation.getState().routeNames.map((name, i) => <HoverButton key={i} title={name} page={name}/>) } 
-    </View>
-  );
-}
-
 const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
   return (
     <View style={styles.headerIcons}>
@@ -54,14 +20,37 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 
 //Navigation Header
 export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeaderProps) => {
-  let smallDesktop = false;
-  if(dimensions.width <= 1450){
-    smallDesktop = true;
+
+  const nav = props.navigation;
+  const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index]==page) }
+  const HoverButton = (props: {title: string, page: string}) => {
+    return (
+      <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered, 
+        (checkPage(props.page)) ? styles.active : styles.inactive]}>
+            <TouchableOpacity onPress={() => nav.navigate(props.page)}>
+              <Text style={styles.navText}>{props.title}</Text>
+            </TouchableOpacity>
+        </Pressable>
+    )
   }
 
+  const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
+    return (
+      <View style={styles.navBar}>
+        { navigation.getState().routeNames.map((name, i) => <HoverButton key={i} title={name} page={name}/>) }     
+      </View>
+    );
+  }
+
+  const NavigationBar = (props: DrawerHeaderProps) => {
+    return ((Platform.OS === 'android' || Platform.OS === 'ios')|| dimensions.width <= 1450) ? <HamburgerMenu {...props} /> : <DesktopNavbar {...props} />
+  }
+
+  const currentRoute = nav.getState().routeNames[nav.getState().index];
+
   return (
-    <View style={[(props.navigation.getState().routeNames[props.navigation.getState().index]!="Home") ? styles.headerView : styles.headerHomeView]} >
-      <NavigationBar {...props} smallDesktop={smallDesktop} />
+    <View style={[(currentRoute != "Home") ? styles.headerView : styles.headerHomeView]} >
+      <NavigationBar {...props}/>
       <View style={styles.headerLogoParent}>
         <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
       </View>

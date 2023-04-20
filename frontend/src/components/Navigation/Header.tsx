@@ -1,12 +1,13 @@
 import { DrawerHeaderProps } from "@react-navigation/drawer";
-import React from "react";
+import React, { useContext } from "react";
 import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, Dimensions, useWindowDimensions, ScaledSize } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AuthContext } from '@context/auth.context';
 
-const NavigationBar = (props: DrawerHeaderProps & {smallDesktop: boolean}) => {
-  
-  if ((Platform.OS === 'android' || Platform.OS === 'ios') 
-   || props.smallDesktop
+const NavigationBar = (props: DrawerHeaderProps & { smallDesktop: boolean }) => {
+
+  if ((Platform.OS === 'android' || Platform.OS === 'ios')
+    || props.smallDesktop
   ) {
     return (
       <HamburgerMenu {...props} />
@@ -19,32 +20,45 @@ const NavigationBar = (props: DrawerHeaderProps & {smallDesktop: boolean}) => {
 }
 
 const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
+  const { isLoggedIn } = useContext(AuthContext);
   return (
     <View style={styles.navBar}>
       <TouchableOpacity onPress={() => navigation.navigate("Home")}>
         <Text style={styles.navText}>Home</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("Bikes")}>
-        <Text style={styles.navText}>Bikes</Text>
+      <TouchableOpacity onPress={() => navigation.navigate("Shop")}>
+        <Text style={styles.navText}>Shop</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("About")}>
+        <Text style={styles.navText}>About</Text>
+      </TouchableOpacity>
+
+      {/*   <TouchableOpacity onPress={() => navigation.navigate("Bikes")}>
+        <Text style={styles.navText}>Bikes</Text>
+      </TouchableOpacity> 
 
       <TouchableOpacity onPress={() => navigation.navigate("Accessories")}>
         <Text style={styles.navText}>Accessories</Text>
       </TouchableOpacity>
 
+
       <TouchableOpacity onPress={() => navigation.navigate("Services")}>
         <Text style={styles.navText}>Services</Text>
-      </TouchableOpacity>
+      </TouchableOpacity>*/}
 
-      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-        <Text style={styles.navText}>Profile</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-        <Text style={styles.navText}>Login</Text>
-      </TouchableOpacity>
-
+      {
+        isLoggedIn
+        &&
+        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+          <Text style={styles.navText}>Profile</Text>
+        </TouchableOpacity>
+        ||
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.navText}>Login</Text>
+        </TouchableOpacity>
+      }
       <TouchableOpacity onPress={() => navigation.navigate("CRUD Playground")}>
         <Text style={styles.navText}>CRUD Playground</Text>
       </TouchableOpacity>
@@ -69,7 +83,7 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 //Navigation Header
 export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeaderProps) => {
   let smallDesktop = false;
-  if(dimensions.width <= 1450){
+  if (dimensions.width <= 1450) {
     smallDesktop = true;
   }
 

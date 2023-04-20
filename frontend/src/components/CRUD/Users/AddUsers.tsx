@@ -7,7 +7,6 @@ import UserAPI from '@api/user.api';
 const AddUser = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [phone, setPhone] = useState(''); 
   const [address, setAddress] = useState('');
   const [role, setRole] = useState('');
@@ -19,7 +18,6 @@ const AddUser = () => {
     _id: '',
     name: '',
     email: '',
-    password: '',
     phone: '',
     address: '',
     role: '',
@@ -30,7 +28,6 @@ const AddUser = () => {
     UserAPI.create({
       name,
       email,
-      password,
       phone,
       address,
       role,
@@ -55,13 +52,6 @@ const AddUser = () => {
         style={Layout.input}
         value={email}
         onChangeText={(value) => setEmail(value)}
-      ></TextInput>
-
-      <Text>Password</Text>
-      <TextInput
-        style={Layout.input}
-        value={password}
-        onChangeText={(value) => setPassword(value)}
       ></TextInput>
     </View>
   );

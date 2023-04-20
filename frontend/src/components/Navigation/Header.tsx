@@ -60,7 +60,7 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
   }
 
   return (
-    <View style={styles.headerView} >
+    <View style={[(props.navigation.getState().routeNames[props.navigation.getState().index]!="Home") ? styles.headerView : styles.headerHomeView]} >
       <NavigationBar {...props} smallDesktop={smallDesktop} />
       <View style={styles.headerLogoParent}>
         <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
@@ -76,8 +76,9 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
     </View>
   );
 }
-//Header Stylesheetr
-const styles = StyleSheet.create({
+
+//Header Stylesheet
+let styles = StyleSheet.create({
   active: {
     borderBottomColor: '#fff', 
     borderBottomWidth: 5
@@ -88,9 +89,18 @@ const styles = StyleSheet.create({
   },
   buttonRoot: { },
   buttonHovered: { backgroundColor: '#00000088' },
-  headerView: {
+  headerHomeView: {
+    width: '100%',
+    position: 'absolute',
+    top: 0,
+    backgroundColor: "#6A7B7600",
     flexDirection: "row",
+    paddingTop: 7,
+    justifyContent: 'space-around'
+  },
+  headerView: {
     backgroundColor: "#6A7B76",
+    flexDirection: "row",
     paddingTop: 7,
     justifyContent: 'space-around'
   },

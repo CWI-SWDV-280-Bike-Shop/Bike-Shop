@@ -10,7 +10,7 @@ const BikeAPI = {
     return api.get(`/bikes/${id}`);
   },
   create(data:Bike) {
-    return api.post('/bikes', toString());
+    return api.post('/bikes', data);
   },
 
   update(id: string, data: any) {

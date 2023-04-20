@@ -4,11 +4,28 @@ type Data = {
   updatedAt?: string;
 };
 
-// Users
-export type User = Data & {
-  name?: string;
-  email?: string;
+// Auth
+export type Credentials = {
+  email: string;
+  password: string;
+};
+
+export type refreshToken = Data & {
+  token: string;
+  user: User;
+};
+
+export type AuthUser = Data & {
+  name: string;
+  email: string;
   password?: string;
+  role: string;
+  accessToken?: string;
+  refreshToken?: string;
+};
+
+// Users
+export type User = AuthUser & {
   phone?: string;
   address?: {
     street?: string;
@@ -17,17 +34,7 @@ export type User = Data & {
     zip?: string;
     country?: string;
   };
-  role?: string;
   orders?: [Order];
-  createdAt?: string;
-  updatedAt?: string;
-  accessToken?: string;
-  refreshToken?: string;
-};
-
-export type Credentials = {
-  email: string;
-  password: string;
 };
 
 // Products

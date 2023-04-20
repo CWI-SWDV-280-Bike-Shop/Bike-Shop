@@ -156,7 +156,7 @@ export const Login = () => {
             <Icon
               name="person-add-outline"
               size={60}
-              color="#FFFFFF"
+              color="#03312E"
             />
             <Text style={styles.buttonNewAccountContent}>New Account</Text>
           </TouchableOpacity>

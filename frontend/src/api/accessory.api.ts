@@ -1,37 +1,26 @@
 import api from './api';
+import Accessory from '@/types/accessory.type';
 
 const AccessoryAPI = {
   getAll() {
     return api.get('/accessories');
   },
 
-  get(id) {
+  get(id : string) {
     return api.get(`/accessories/${id}`);
   },
 
-  create(data) {
+  create(data :Accessory) {
     return api.post('/accessories', data);
   },
 
-  update(id, data) {
+  update(id: string, data: Accessory) {
     return api.put(`/accessories/${id}`, data);
   },
 
-  delete(id) {
+  delete(id:string ) {
     return api.delete(`/accessories/${id}`);
-  },
-
-  findByName(name) {
-    return api.get(`/accessories?name=${name}`);
-  },
-
-  findByCategory(category) {
-    return api.get(`/accessories?category=${category}`);
-  },
-
-  findByInStock(inStock) {
-    return api.get(`/accessories?inStock=${inStock}`);
-  },
+  }
 };
 
 export default AccessoryAPI;

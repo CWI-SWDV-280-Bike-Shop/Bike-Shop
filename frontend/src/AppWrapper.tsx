@@ -12,6 +12,7 @@ import { About } from './pages/about';
 import { useWindowDimensions } from 'react-native';
 import { Shop } from './pages/Shop/shop';
 import { AuthContext } from '@context/auth.context';
+import Cart from './pages/Shop/cart';
 
 const Drawer = createDrawerNavigator();
 
@@ -49,6 +50,7 @@ const AppWrapper = () => {
         <Drawer.Screen name="Profile" component={ProfileNavigator} />{/*Once we are closer to testing if we have working app then switch back to use Auth*/}
         <Drawer.Screen name="Login" component={Login} />
         <Drawer.Screen name="CRUD Playground" component={CRUDPlayground} />
+        <Drawer.Screen name='Cart' component={Cart} options={{drawerItemStyle: {display: 'none'}}} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

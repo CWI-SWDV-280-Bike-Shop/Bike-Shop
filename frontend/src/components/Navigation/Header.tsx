@@ -23,40 +23,43 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeaderProps) => {
 
   const nav = props.navigation;
-  const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index]==page) }
-  const HoverButton = (props: {title: string, page: string}) => {
+  const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index] == page) }
+  const HoverButton = (props: { title: string, page: string }) => {
     return (
-      <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered, 
-        (checkPage(props.page)) ? styles.active : styles.inactive]}>
-            <TouchableOpacity onPress={() => nav.navigate(props.page)}>
-              <Text style={styles.navText}>{props.title}</Text>
-            </TouchableOpacity>
-        </Pressable>
+      <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered,
+      (checkPage(props.page)) ? styles.active : styles.inactive]}>
+        <TouchableOpacity onPress={() => nav.navigate(props.page)}>
+          <Text style={styles.navText}>{props.title}</Text>
+        </TouchableOpacity>
+      </Pressable>
     )
   }
 
   const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
     return (
       <View style={styles.navBar}>
-        { navigation.getState().routeNames.map((name, i) => <HoverButton key={i} title={name} page={name}/>) }     
+        {navigation.getState().routeNames.map((name, i) => { if (name != 'Cart') return (<HoverButton key={i} title={name} page={name} />)})}
       </View>
     );
   }
 
   const NavigationBar = (props: DrawerHeaderProps) => {
-    return ((Platform.OS === 'android' || Platform.OS === 'ios')|| dimensions.width <= 1450) ? <HamburgerMenu {...props} /> : <DesktopNavbar {...props} />
+    return ((Platform.OS === 'android' || Platform.OS === 'ios') || dimensions.width <= 1450) ? <HamburgerMenu {...props} /> : <DesktopNavbar {...props} />
   }
 
   const currentRoute = nav.getState().routeNames[nav.getState().index];
 
   return (
-    <View style={[(currentRoute != "Home") ? styles.headerView : styles.headerHomeView]} >
-      <NavigationBar {...props}/>
+    <View style={[(currentRoute != "Home" || dimensions.width <= 800) ? styles.headerView : styles.headerHomeView]} >
+      <NavigationBar {...props} />
       <View style={styles.headerLogoParent}>
         <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
       </View>
       <View style={[styles.headerIcons, { justifyContent: 'flex-end' }]}>
-        <TouchableOpacity style={styles.headerTouchable}>
+        <TouchableOpacity
+          style={styles.headerTouchable}
+          onPress={() => props.navigation.navigate('Cart')}
+        >
           <Icon name="cart-outline"
             size={40}
             color="#FFF"
@@ -70,14 +73,14 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
 //Header Stylesheet
 const styles = StyleSheet.create({
   active: {
-    borderBottomColor: '#fff', 
+    borderBottomColor: '#fff',
     borderBottomWidth: 5
   },
   inactive: {
-    borderBottomColor: '#ffffff00', 
+    borderBottomColor: '#ffffff00',
     borderBottomWidth: 5
   },
-  buttonRoot: { },
+  buttonRoot: {},
   buttonHovered: { backgroundColor: '#00000088' },
   headerHomeView: {
     width: '100%',

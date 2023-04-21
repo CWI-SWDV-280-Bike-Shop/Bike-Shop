@@ -21,7 +21,6 @@ const ProductSchema = new Schema(
         'Frames',
         'Chains',
         'Pedals',
-        'Tires',
         'Tubes',
         'Tune',
         'Wheel and Tire Maintenance',
@@ -30,7 +29,7 @@ const ProductSchema = new Schema(
       ],
     },
     price: Number,
-    imageURL: String,
+    imageIds: [String],
     inStock: Boolean,
     brand: String,
     material: {

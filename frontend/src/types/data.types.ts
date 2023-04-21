@@ -49,6 +49,8 @@ type Product = Data & {
 
 export type Accessory = Product;
 export type Service = Product;
+export type Products = Product;
+
 
 export type Bike = Product & {
   brand?: string;

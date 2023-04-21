@@ -1,6 +1,6 @@
 import api from './api';
 import { Products } from '@/types/data.types';
-import { ProductsParams } from '@/types/parameter.types';
+import { ProductParams } from '@/types/parameter.types';
 
 const ProductAPI = {
   create(data: Products) {
@@ -15,7 +15,7 @@ const ProductAPI = {
     return api.delete(`/products/${id}`);
   },
 
-  getAll(params?: ProductsParams) {
+  getAll(params?: ProductParams) {
     return api.get('/products', { params });
   },
 

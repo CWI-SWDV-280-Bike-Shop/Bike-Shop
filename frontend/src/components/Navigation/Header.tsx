@@ -3,76 +3,7 @@ import React, { useContext } from "react";
 import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, Dimensions, useWindowDimensions, ScaledSize } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AuthContext } from '@context/auth.context';
-
-const NavigationBar = (props: DrawerHeaderProps & { smallDesktop: boolean }) => {
-
-  if ((Platform.OS === 'android' || Platform.OS === 'ios')
-    || props.smallDesktop
-  ) {
-    return (
-      <HamburgerMenu {...props} />
-    );
-  } else if (Platform.OS === 'web') {
-    return (
-      <DesktopNavbar {...props} />
-    );
-  }
-}
-
-const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
-  const { isLoggedIn } = useContext(AuthContext);
-  return (
-    <View style={styles.navBar}>
-      <TouchableOpacity onPress={() => navigation.navigate("Home")}>
-        <Text style={styles.navText}>Home</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("Shop")}>
-        <Text style={styles.navText}>Shop</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("About")}>
-        <Text style={styles.navText}>About</Text>
-      </TouchableOpacity>
-
-      {/*   <TouchableOpacity onPress={() => navigation.navigate("Bikes")}>
-        <Text style={styles.navText}>Bikes</Text>
-      </TouchableOpacity> 
-
-      <TouchableOpacity onPress={() => navigation.navigate("Accessories")}>
-        <Text style={styles.navText}>Accessories</Text>
-      </TouchableOpacity>
-
-
-      <TouchableOpacity onPress={() => navigation.navigate("Services")}>
-        <Text style={styles.navText}>Services</Text>
-      </TouchableOpacity>*/}
-
-      {/* {
-        isLoggedIn
-        &&
-        <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-          <Text style={styles.navText}>Profile</Text>
-        </TouchableOpacity>
-        ||
-        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
-          <Text style={styles.navText}>Login</Text>
-        </TouchableOpacity>
-      } */}
-      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
-        <Text style={styles.navText}>Profile</Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity onPress={() => navigation.navigate("Login")}>{/*Once we are closer to testing if we have working app then switch back to use Auth*/}
-        <Text style={styles.navText}>Login</Text>
-      </TouchableOpacity>
-      
-      <TouchableOpacity onPress={() => navigation.navigate("CRUD Playground")}>
-        <Text style={styles.navText}>CRUD Playground</Text>
-      </TouchableOpacity>
-    </View>
-  );
-}
+import { Pressable, } from 'react-native-web-hover'
 
 const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
   return (
@@ -90,14 +21,37 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 
 //Navigation Header
 export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeaderProps) => {
-  let smallDesktop = false;
-  if (dimensions.width <= 1450) {
-    smallDesktop = true;
+
+  const nav = props.navigation;
+  const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index]==page) }
+  const HoverButton = (props: {title: string, page: string}) => {
+    return (
+      <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered, 
+        (checkPage(props.page)) ? styles.active : styles.inactive]}>
+            <TouchableOpacity onPress={() => nav.navigate(props.page)}>
+              <Text style={styles.navText}>{props.title}</Text>
+            </TouchableOpacity>
+        </Pressable>
+    )
   }
 
+  const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
+    return (
+      <View style={styles.navBar}>
+        { navigation.getState().routeNames.map((name, i) => <HoverButton key={i} title={name} page={name}/>) }     
+      </View>
+    );
+  }
+
+  const NavigationBar = (props: DrawerHeaderProps) => {
+    return ((Platform.OS === 'android' || Platform.OS === 'ios')|| dimensions.width <= 1450) ? <HamburgerMenu {...props} /> : <DesktopNavbar {...props} />
+  }
+
+  const currentRoute = nav.getState().routeNames[nav.getState().index];
+
   return (
-    <View style={styles.headerView} >
-      <NavigationBar {...props} smallDesktop={smallDesktop} />
+    <View style={[(currentRoute != "Home") ? styles.headerView : styles.headerHomeView]} >
+      <NavigationBar {...props}/>
       <View style={styles.headerLogoParent}>
         <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
       </View>
@@ -112,11 +66,31 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
     </View>
   );
 }
-//Header Stylesheetr
+
+//Header Stylesheet
 const styles = StyleSheet.create({
-  headerView: {
+  active: {
+    borderBottomColor: '#fff', 
+    borderBottomWidth: 5
+  },
+  inactive: {
+    borderBottomColor: '#ffffff00', 
+    borderBottomWidth: 5
+  },
+  buttonRoot: { },
+  buttonHovered: { backgroundColor: '#00000088' },
+  headerHomeView: {
+    width: '100%',
+    position: 'absolute',
+    top: 0,
+    backgroundColor: "#6A7B7600",
     flexDirection: "row",
+    paddingTop: 7,
+    justifyContent: 'space-around'
+  },
+  headerView: {
     backgroundColor: "#6A7B76",
+    flexDirection: "row",
     paddingTop: 7,
     justifyContent: 'space-around'
   },
@@ -138,14 +112,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
+    marginHorizontal: 10
   },
   navText: {
     color: '#FFF',
-    fontSize: 25,
+    textTransform: 'uppercase',
+    fontWeight: "700",
+    fontSize: 18,
     margin: 8,
-    borderColor: "#FFF",
-    borderWidth: 2,
-    borderRadius: 10,
-    padding: 5,
+    paddingHorizontal: 5,
   }
 })

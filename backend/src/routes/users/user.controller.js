@@ -3,11 +3,11 @@ import { BaseController } from '../base.controller.js';
 import { NotFound } from '../../errors/errors.js';
 
 class UserController extends BaseController(User) {
-  getUsers(query) {
+  find(query) {
     return User.find(query).populate('orders');
   }
 
-  async getUserById({ id } = {}) {
+  async getById({ id } = {}) {
     const user = await User.findById(id).populate('orders');
     if (!user) throw new NotFound();
     return user;

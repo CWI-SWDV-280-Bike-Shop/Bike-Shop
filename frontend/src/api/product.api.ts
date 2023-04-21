@@ -1,13 +1,13 @@
 import api from './api';
-import { Products } from '@/types/data.types';
+import { Product } from '@/types/data.types';
 import { ProductParams } from '@/types/parameter.types';
 
 const ProductAPI = {
-  create(data: Products) {
+  create(data: Product) {
     return api.post('/products', data);
   },
 
-  update(id: string, data: Products) {
+  update(id: string, data: Product) {
     return api.put(`/products/${id}`, data);
   },
 

@@ -1,7 +1,8 @@
 import { DrawerHeaderProps } from "@react-navigation/drawer";
-import React from "react";
-import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, ScaledSize } from 'react-native';
+import React, { useContext } from "react";
+import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, Dimensions, useWindowDimensions, ScaledSize } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AuthContext } from '@context/auth.context';
 import { Pressable, } from 'react-native-web-hover'
 
 const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {

@@ -1,5 +1,5 @@
 // for use when sending api requests
-type ProductParams = {
+export type ProductParams = {
   name?: string;
   category?: string;
   price?: number;

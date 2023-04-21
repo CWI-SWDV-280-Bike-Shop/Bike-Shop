@@ -1,5 +1,6 @@
 import express from 'express';
 import UserRoute from './users/user.route.js';
+import ProductRoute from './products/product.route.js';
 import BikeRoute from './bikes/bike.route.js';
 import AccessoryRoute from './accessories/accessory.route.js';
 import ServiceRoute from './services/service.route.js';
@@ -17,6 +18,8 @@ router.use('/generateusers', GenerateUsersRoute);
 router.use('/auth', AuthRoute);
 
 router.use('/users', UserRoute);
+
+router.use('/products', ProductRoute);
 
 router.use('/bikes', BikeRoute);
 

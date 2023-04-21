@@ -27,19 +27,19 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
   const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index]==page) }
   const HoverButton = (props: {title: string, page: string}) => {
     return (
-      <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered, 
-        (checkPage(props.page)) ? styles.active : styles.inactive]}>
-            <TouchableOpacity onPress={() => nav.navigate(props.page)}>
-              <Text style={styles.navText}>{props.title}</Text>
-            </TouchableOpacity>
-        </Pressable>
+      <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered,
+      (checkPage(props.page)) ? styles.active : styles.inactive]}>
+        <TouchableOpacity onPress={() => nav.navigate(props.page)}>
+          <Text style={styles.navText}>{props.title}</Text>
+        </TouchableOpacity>
+      </Pressable>
     )
   }
 
   const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
     return (
       <View style={styles.navBar}>
-        { navigation.getState().routeNames.map((name, i) => <HoverButton key={i} title={name} page={name}/>) }     
+        {navigation.getState().routeNames.map((name, i) => { if (name != 'Cart') return (<HoverButton key={i} title={name} page={name} />)})}
       </View>
     );
   }
@@ -57,7 +57,10 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
         <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
       </View>
       <View style={[styles.headerIcons, { justifyContent: 'flex-end' }]}>
-        <TouchableOpacity style={styles.headerTouchable}>
+        <TouchableOpacity
+          style={styles.headerTouchable}
+          onPress={() => props.navigation.navigate('Cart')}
+        >
           <Icon name="cart-outline"
             size={40}
             color="#FFF"
@@ -71,14 +74,14 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
 //Header Stylesheet
 const styles = StyleSheet.create({
   active: {
-    borderBottomColor: '#fff', 
+    borderBottomColor: '#fff',
     borderBottomWidth: 5
   },
   inactive: {
-    borderBottomColor: '#ffffff00', 
+    borderBottomColor: '#ffffff00',
     borderBottomWidth: 5
   },
-  buttonRoot: { },
+  buttonRoot: {},
   buttonHovered: { backgroundColor: '#00000088' },
   headerHomeView: {
     width: '100%',

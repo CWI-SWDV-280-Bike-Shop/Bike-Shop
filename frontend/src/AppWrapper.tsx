@@ -42,13 +42,15 @@ const AppWrapper = () => {
         <Drawer.Screen name="Services" component={Services} />*/}
         <Drawer.Screen name="About" component={About} />
         <Drawer.Screen name="Shop" component={Bikes} />{/*TODO Change Navigation from bikes to shop once shop has been fixed*/}
-        {
+        {/* {
           isLoggedIn
           &&
           <Drawer.Screen name="Profile" component={ProfileNavigator} />
           ||
           <Drawer.Screen name="Login" component={Login} />
-        }
+        } */}
+        <Drawer.Screen name="Profile" component={ProfileNavigator} />{/*Once we are closer to testing if we have working app then switch back to use Auth*/}
+        <Drawer.Screen name="Login" component={Login} />
         <Drawer.Screen name="CRUD Playground" component={CRUDPlayground} />
       </Drawer.Navigator>
     </NavigationContainer>

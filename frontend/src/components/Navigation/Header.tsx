@@ -48,7 +48,7 @@ const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
         <Text style={styles.navText}>Services</Text>
       </TouchableOpacity>*/}
 
-      {
+      {/* {
         isLoggedIn
         &&
         <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
@@ -58,7 +58,15 @@ const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
         <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.navText}>Login</Text>
         </TouchableOpacity>
-      }
+      } */}
+      <TouchableOpacity onPress={() => navigation.navigate("Profile")}>
+        <Text style={styles.navText}>Profile</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("Login")}>{/*Once we are closer to testing if we have working app then switch back to use Auth*/}
+        <Text style={styles.navText}>Login</Text>
+      </TouchableOpacity>
+      
       <TouchableOpacity onPress={() => navigation.navigate("CRUD Playground")}>
         <Text style={styles.navText}>CRUD Playground</Text>
       </TouchableOpacity>

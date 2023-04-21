@@ -67,55 +67,63 @@ const AddProduct = () => {
         selectedValue={category}
         onValueChange={(value) => setCategory(value)}
       >
-        <Picker.Item label="Bikes" value="Bikes"></Picker.Item>
-        <Picker.Item label="Accessories" value="Accessories"></Picker.Item>
-        <Picker.Item label="Services" value="Services"></Picker.Item>
+        <Picker.Item label="-Select Category-" />
+        <Picker.Item label="Bikes" value="Bikes" />
+        <Picker.Item label="Accessories" value="Accessories" />
+        <Picker.Item label="Services" value="Services" />
       </Picker>
 
-      <Text>Subcategory</Text>
-      {category === 'Bikes' && (
-        <Picker
-          style={Layout.input}
-          selectedValue={subcategory}
-          onValueChange={(value) => setSubcategory(value)}
-        >
-          <Picker.Item label="Mountain" value="Mountain" />
-          <Picker.Item label="Electric" value="Electric" />
-          <Picker.Item label="Street" value="Street" />
-        </Picker>
-      )}
-      {category === 'Accessories' && (
-        <Picker
-          style={Layout.input}
-          selectedValue={subcategory}
-          onValueChange={(value) => setSubcategory(value)}
-        >
-          <Picker.Item label="Tires" value="Tires" />
-          <Picker.Item label="Brakes" value="Brakes" />
-          <Picker.Item label="Lights" value="Lights" />
-          <Picker.Item label="Frames" value="Frames" />
-          <Picker.Item label="Chains" value="Chains" />
-          <Picker.Item label="Pedals" value="Pedals" />
-          <Picker.Item label="Tubes" value="Tubes" />
-        </Picker>
-      )}
-      {category === 'Services' && (
-        <Picker
-          style={Layout.input}
-          selectedValue={subcategory}
-          onValueChange={(value) => setSubcategory(value)}
-        >
-          <Picker.Item label="Tune" value="Tune" />
-          <Picker.Item
-            label="Wheel and Tire Maintenance"
-            value="Wheel and Tire Maintenance"
-          />
-          <Picker.Item label="Assembly" value="Assembly" />
-          <Picker.Item
-            label="Shifting and Brakes"
-            value="Shifting and Brakes"
-          />
-        </Picker>
+      {category && (
+        <>
+          <Text>Subcategory</Text>
+          {category === 'Bikes' && (
+            <Picker
+              style={Layout.input}
+              selectedValue={subcategory}
+              onValueChange={(value) => setSubcategory(value)}
+            >
+              <Picker.Item label="-Select Bike Subcategory-" />
+              <Picker.Item label="Mountain" value="Mountain" />
+              <Picker.Item label="Electric" value="Electric" />
+              <Picker.Item label="Street" value="Street" />
+            </Picker>
+          )}
+          {category === 'Accessories' && (
+            <Picker
+              style={Layout.input}
+              selectedValue={subcategory}
+              onValueChange={(value) => setSubcategory(value)}
+            >
+              <Picker.Item label="-Select Accesssory Subcategory-" />
+              <Picker.Item label="Tires" value="Tires" />
+              <Picker.Item label="Brakes" value="Brakes" />
+              <Picker.Item label="Lights" value="Lights" />
+              <Picker.Item label="Frames" value="Frames" />
+              <Picker.Item label="Chains" value="Chains" />
+              <Picker.Item label="Pedals" value="Pedals" />
+              <Picker.Item label="Tubes" value="Tubes" />
+            </Picker>
+          )}
+          {category === 'Services' && (
+            <Picker
+              style={Layout.input}
+              selectedValue={subcategory}
+              onValueChange={(value) => setSubcategory(value)}
+            >
+              <Picker.Item label="-Select Service Subcategory-" />
+              <Picker.Item label="Tune" value="Tune" />
+              <Picker.Item
+                label="Wheel and Tire Maintenance"
+                value="Wheel and Tire Maintenance"
+              />
+              <Picker.Item label="Assembly" value="Assembly" />
+              <Picker.Item
+                label="Shifting and Brakes"
+                value="Shifting and Brakes"
+              />
+            </Picker>
+          )}
+        </>
       )}
 
       <Text>Price</Text>

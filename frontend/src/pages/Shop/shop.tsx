@@ -100,7 +100,7 @@ export const Shop = () => {
               price={
                 '$300.00'
               }
-              imgSrc={require('../../../assets/Images/citybikestockimg.png')}
+              imgSrc={require('../../assets/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
@@ -111,7 +111,7 @@ export const Shop = () => {
               price={
                 '$300.00'
               }
-              imgSrc={require('../../../assets/Images/citybikestockimg.png')}
+              imgSrc={require('../../assets/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}
@@ -122,7 +122,7 @@ export const Shop = () => {
               price={
                 '$300.00'
               }
-              imgSrc={require('../../../assets/Images/citybikestockimg.png')}
+              imgSrc={require('../../assets/Images/citybikestockimg.png')}
               btnName={'Add to Cart'}
               stockStatus={'IN STOCK'}
               color={'Yellow/Black'}

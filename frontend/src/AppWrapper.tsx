@@ -38,7 +38,7 @@ const AppWrapper = () => {
         <Drawer.Screen name="Accessories" component={Accessories} />
         <Drawer.Screen name="Services" component={Services} />*/}
         <Drawer.Screen name="About" component={About} />
-        <Drawer.Screen name="Shop" component={Bikes} />{/*TODO Change Navigation from bikes to shop once shop has been fixed*/}
+        <Drawer.Screen name="Shop" component={Shop} />{/*TODO Change Navigation from bikes to shop once shop has been fixed*/}
         {/* {
           isLoggedIn
           &&

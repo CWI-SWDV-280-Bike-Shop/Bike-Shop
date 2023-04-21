@@ -4,7 +4,7 @@ import Layout from '@styles/layout/Layout';
 import Auth from '@components/CRUD/Auth';
 import Products from '@/components/CRUD/Products';
 import Orders from '@components/CRUD/Orders';
-import User from '@components/CRUD/Users';
+import Users from '@components/CRUD/Users';
 
 const CRUDPlayground = () => {
   return (
@@ -13,7 +13,7 @@ const CRUDPlayground = () => {
       <Auth />
       <Products />
       <Orders />
-      <User />
+      <Users />
     </ScrollView>
   );
 };

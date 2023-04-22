@@ -18,7 +18,7 @@ const TableHeader = ({labels} : {labels: string[]}) => {
 
 const UserElement = ({user}: {user: User}) => (
   <View style={styles.row}>
-    <View style={styles.col}><Text>{user?._id}</Text></View>
+    <View style={styles.col}><Text numberOfLines={1}>{user?._id}</Text></View>
     <View style={styles.col}><Text>{user?.name}</Text></View>
     <View style={styles.col}><Text>{user?.email}</Text></View>
     <View style={styles.col}><Text>{user?.role}</Text></View>
@@ -29,6 +29,19 @@ const UserElement = ({user}: {user: User}) => (
     <View style={styles.col}><Text>{user?.address?.state}</Text></View>
     <View style={styles.col}><Text>{user?.address?.zip}</Text></View>
     <View style={styles.col}><Text>{user?.address?.country}</Text></View>
+  </View>
+);
+
+const ProductElement = ({product}: {product: Product}) => (
+  <View style={styles.row}>
+    <View style={styles.col}><Text numberOfLines={1}>{product?._id}</Text></View>
+    <View style={styles.col}><Text>{product?.name}</Text></View>
+    <View style={styles.col}><Text numberOfLines={1}>{product?.description}</Text></View>
+    <View style={styles.col}><Text>{product?.category}</Text></View>
+    <View style={styles.col}><Text>{product?.subcategory}</Text></View>
+    <View style={styles.col}><Text>{formatPrice(product?.price)}</Text></View>
+    <View style={styles.col}><Text numberOfLines={1}>{product?.imageIds}</Text></View>
+    <View style={styles.col}><Text>{product?.inStock}</Text></View>
   </View>
 );
 
@@ -53,6 +66,27 @@ const ListUsers = () => {
   );
 };
 
+const ListProducts = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    ProductAPI.getAll().then((res) => setProducts(res.data));
+  }, []);
+
+  return (
+    <View style={styles.section}>
+      { products &&
+      <FlatList
+        data={products}
+        renderItem={({item}) => <ProductElement product={item} />}
+        keyExtractor={(product: Product) => product?._id}
+        ListHeaderComponent={() => <TableHeader labels={["id", "name", "description", "category", "subcategory", "price", "images", "in stock"]}/>}
+      />
+      }
+    </View>
+  );
+};
+
 export const Admin = () => {
     return (
       <View style={[styles.container]}>
@@ -61,7 +95,8 @@ export const Admin = () => {
           <Text style={[styles.bodyText]}>
             This is the admin page.
           </Text>
-          <ListUsers />
+          <ListUsers/>
+          <ListProducts/>
         </View>
       </View>
     );

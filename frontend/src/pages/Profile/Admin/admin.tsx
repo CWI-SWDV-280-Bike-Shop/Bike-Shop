@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import {  Text, StyleSheet, View, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import {  Text, StyleSheet, View, FlatList, TextInput, TouchableOpacity, ScrollView as ScrollViewDefault } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import UserAPI from '@api/user.api';
 import { User } from '@/types/data.types';
 import { Product } from '@/types/data.types';
 import ProductAPI from '@/api/product.api';
 import { formatPrice } from '@/utilities/formatter';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { getHeaderTitle } from '@react-navigation/elements';
+import { ScrollView } from 'react-native-gesture-handler';
 
 //Need a wrapper or something that calls this so I can do more complex features
 // - Have a fake first row for create anything, where everything is placeholder and
@@ -15,12 +19,38 @@ import { formatPrice } from '@/utilities/formatter';
 // Navbar on side, dark color maybe black with white text and icons
 // Better fonts
 
+const NavigationMenu = ({navigation}) => (
+  <View style={styles.navigationMenu}>
+    <TouchableOpacity style={styles.navbutton} onPressOut={() => navigation.navigate('Users')}>
+        <Icon name="people-outline"
+            size={20}
+            color="#fff"
+          />
+          <Text style={styles.textWhite}>Users</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.navbutton} onPressOut={() => navigation.navigate('Products')}>
+        <Icon name="pricetags-outline"
+            size={20}
+            color="#fff"
+          />
+          <Text style={styles.textWhite}>Products</Text>
+    </TouchableOpacity>
+    <TouchableOpacity style={styles.navbutton} onPressOut={() => navigation.navigate('Orders')}>
+        <Icon name="receipt-outline"
+            size={20}
+            color="#fff"
+          />
+          <Text style={styles.textWhite}>Orders</Text>
+    </TouchableOpacity>
+  </View>
+)
+
 const TableHeader = ({labels} : {labels: string[]}) => {
   return (
       <View style={[styles.row, styles.rowHeader]}>
-      { labels.map((label) => (
+      { labels.map((label, i) => (
         (label != "options" && label != "select") ? (
-        <View style={[styles.col, styles.headerElement]}>
+        <View style={[styles.col, styles.headerElement]} key={i}>
           <Text style={styles.rowHeaderText}>{label}</Text>
           <Icon name="swap-vertical"
             size={20}
@@ -28,7 +58,7 @@ const TableHeader = ({labels} : {labels: string[]}) => {
           />
         </View>
         ) : (
-        <View style={[styles.col, styles.headerElement]}>
+        <View style={[styles.col, styles.headerElement]} key={i}>
           <Text style={styles.rowHeaderText}>{label}</Text>
         </View>
         )
@@ -59,8 +89,8 @@ const UsersTableHeader = ({labels} : {labels: string[]}) => {
       <View>
         <TableHeader labels={labels}/>
         <View style={styles.row}>
-          { labels.map( (label) => (
-            <View style={styles.col}>
+          { labels.map( (label, i) => (
+            <View style={styles.col} key={i}>
               <TextInput style={styles.createNew} placeholder={label}/>
             </View>
           )) }
@@ -122,86 +152,123 @@ const ProductElement = ({product}: {product: Product}) => (
   </View>
 );
 
-const ListUsers = () => {
+const ListUsers = ({navigation}) => {
   const [users, setUser] = useState([{}] as [User]);
 
   useEffect(() => {
     UserAPI.getAll().then((res) => setUser(res.data));
   }, []);
-
+  const [searchProductsText, _searchProductsText] = useState('Search');
   return (
-    <View style={styles.section}>
-      { users &&
-      <FlatList
-        data={users}
-        renderItem={({item}) => <UserElement user={item} />}
-        keyExtractor={(user: User) => user?._id}
-        ListHeaderComponent={() => <UsersTableHeader labels={["select", "id", "name", "email", "role", "phone", "orders", "street", "city", "state", "zip", "country", "options"]}/>}
-      />
-      }
+    <View style={styles.rowSimple}>
+      <NavigationMenu navigation={navigation}/>
+      <View style={styles.section}>
+        <View style={styles.listFilters}>
+          <Icon name="search-sharp"
+                  size={20}
+                  color="#000"
+                />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={_searchProductsText}
+            value={searchProductsText}
+          />
+        </View>
+        { users &&
+        <FlatList
+          data={users}
+          renderItem={({item, index}) => <UserElement user={item} key={index} />}
+          keyExtractor={(user: User) => user?._id}
+          ListHeaderComponent={() => <UsersTableHeader labels={["select", "id", "name", "email", "role", "phone", "orders", "street", "city", "state", "zip", "country", "options"]}/>}
+        />
+        }
+      </View>
     </View>
+    
   );
 };
 
-const ListProducts = () => {
+const ListProducts = ({navigation}) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
     ProductAPI.getAll().then((res) => setProducts(res.data));
   }, []);
-  const [text, onChangeText] = useState('Search');
+  const [searchUserText, _searchUserText] = useState('Search');
   return (
-    <View style={styles.section}>
-      <View style={styles.listFilters}>
-        <Icon name="search-sharp"
-                size={20}
-                color="#000"
-              />
-        <TextInput
-          style={styles.textInput}
-          onChangeText={onChangeText}
-          value={text}
+    <View style={styles.rowSimple}>
+      <NavigationMenu navigation={navigation}/>
+      <View style={styles.section}>
+        <View style={styles.listFilters}>
+          <Icon name="search-sharp"
+                  size={20}
+                  color="#000"
+                />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={_searchUserText}
+            value={searchUserText}
+          />
+        </View>
+        { products &&
+        <FlatList
+          data={products}
+          renderItem={({item, index}) => <ProductElement product={item} key={index} />}
+          keyExtractor={(product: Product) => product?._id}
+          ListHeaderComponent={() => <TableHeader labels={["select", "id", "name", "description", "category", "subcategory", "price", "images", "in stock", "options"]}/>}
         />
+        }
       </View>
-      { products &&
-      <FlatList
-        data={products}
-        renderItem={({item}) => <ProductElement product={item} />}
-        keyExtractor={(product: Product) => product?._id}
-        ListHeaderComponent={() => <TableHeader labels={["select", "id", "name", "description", "category", "subcategory", "price", "images", "in stock", "options"]}/>}
-      />
-      }
     </View>
+    
   );
 };
 
 //On platform web show the melting face emoji with text like Maybe just don't use admin on mobile right now. or sad-outline
 
 export const Admin = () => {
+  const Stack = createStackNavigator();
+  function AdminPages() {
+    return (
+      <Stack.Navigator
+      initialRouteName='Users'
+      screenOptions={{
+        headerShown: false,
+        cardStyle: { backgroundColor: '#fff', flex: 1 },
+      }}>
+        <Stack.Screen name="Users" component={ListUsers} />
+        <Stack.Screen name="Products" component={ListProducts} />
+      </Stack.Navigator>
+    );
+  }
     return (
       <View style={[styles.container]}>
-        <View style={[styles.contentContainer]}>
-          <View style={styles.topBar}>
+          {/* <View style={styles.topBar}>
           <TouchableOpacity style={styles.button}>
             <Icon name="moon"
                 size={20}
                 color="#000"
               />
           </TouchableOpacity>
-            
-          </View>
-          <Text style={[styles.header]}>Admin</Text>
-          <Text style={[styles.bodyText]}>
-            This is the admin page.
-          </Text>
-          <ListUsers/>
-          <ListProducts/>
-        </View>
+          </View> */}
+          <NavigationContainer independent={true}>
+            <AdminPages/>
+          </NavigationContainer>
       </View>
     );
 };
 
 const styles = StyleSheet.create({
+  rowSimple: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  navigationMenu: {
+    height: '100%',
+    backgroundColor: '#000',
+    flexDirection: 'column',
+    padding: '1rem'
+  },
   createNew: {
     borderStyle: 'dashed',
     borderColor: '#6a7b76cc',
@@ -209,6 +276,15 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     margin: 5,
+  },
+  textWhite: {
+    color: '#fff'
+  },
+  navbutton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    gap: 5
   },
   button: {
     alignItems: 'center',
@@ -260,6 +336,8 @@ const styles = StyleSheet.create({
     paddingVertical: '.5rem'
   },
   section: {
+    flex: 1,
+    flexDirection: 'column',
     borderTopColor: '#6a7b76',
     borderTopWidth: 10,
     margin: '2rem',

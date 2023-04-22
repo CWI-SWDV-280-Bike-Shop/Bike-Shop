@@ -1,49 +1,51 @@
 import React, { useEffect, useState } from 'react';
-import {  Text, StyleSheet, View, FlatList, TextInput, TouchableOpacity, ScrollView as ScrollViewDefault } from 'react-native';
+import {  Text, StyleSheet, View, FlatList, TextInput, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import UserAPI from '@api/user.api';
-import { User } from '@/types/data.types';
-import { Product } from '@/types/data.types';
 import ProductAPI from '@/api/product.api';
+import OrdersAPI from '@api/order.api';
+import { Product, Order, User, OrderItem } from '@/types/data.types';
 import { formatPrice } from '@/utilities/formatter';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { getHeaderTitle } from '@react-navigation/elements';
-import { ScrollView } from 'react-native-gesture-handler';
 
 //Need a wrapper or something that calls this so I can do more complex features
-// - Have a fake first row for create anything, where everything is placeholder and
-//   as you start typing it highlights, and has a save icon or something at one end Ion: save
 // Figure out auto option instead of flex 1 so things like description can take up more space
 // Use hover thing from nav on whole row
-// Navbar on side, dark color maybe black with white text and icons
 // Better fonts
 
-const NavigationMenu = ({navigation}) => (
-  <View style={styles.navigationMenu}>
-    <TouchableOpacity style={styles.navbutton} onPressOut={() => navigation.navigate('Users')}>
-        <Icon name="people-outline"
-            size={20}
-            color="#fff"
-          />
-          <Text style={styles.textWhite}>Users</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.navbutton} onPressOut={() => navigation.navigate('Products')}>
-        <Icon name="pricetags-outline"
-            size={20}
-            color="#fff"
-          />
-          <Text style={styles.textWhite}>Products</Text>
-    </TouchableOpacity>
-    <TouchableOpacity style={styles.navbutton} onPressOut={() => navigation.navigate('Orders')}>
-        <Icon name="receipt-outline"
-            size={20}
-            color="#fff"
-          />
-          <Text style={styles.textWhite}>Orders</Text>
-    </TouchableOpacity>
+//One large object everything can reference so you don't have to go looking for stuff
+const document = {
+  routes: [
+    {
+      "route": "Users",
+      "icon": "people-outline"
+    },{
+      "route": "Products",
+      "icon": "pricetags-outline"
+    },{
+      "route": "Orders",
+      "icon": "receipt-outline"
+      }
+  ]
+}
+
+const NavigationMenu = ({navigation}) => {
+  const checkPage = (page) => { return (navigation.getState().routeNames[navigation.getState().index]==page) }
+  return(
+    <View style={styles.navigationMenu}>
+      { document.routes.map( (item) => (
+        <TouchableOpacity style={[styles.navbutton, (checkPage(item.route)) ? styles.active : styles.inactive]} onPressOut={() => navigation.navigate(item.route)}>
+          <Icon name={item.icon}
+              size={20}
+              color="#fff"
+            />
+            <Text style={styles.textWhite}>{item.route}</Text>
+        </TouchableOpacity>
+      )) }
   </View>
-)
+  )
+}
 
 const TableHeader = ({labels} : {labels: string[]}) => {
   return (
@@ -152,6 +154,30 @@ const ProductElement = ({product}: {product: Product}) => (
   </View>
 );
 
+//Typescript doesn't like type 'user | string' trying to access props, so I had to use any, Solomon can fix this I'm sure.
+const OrderElement = ({order}: {order: any}) => (
+  <View style={styles.row}>
+    <View style={styles.col}>
+      <Icon name="square-outline"
+        size={20}
+        color="#000"
+      />
+    </View>
+    <View style={styles.col}><Text numberOfLines={1}>{order?._id}</Text></View>
+    <View style={styles.col}><Text>{order?.customer?.name}</Text></View>
+    <View style={styles.col}><Text numberOfLines={1}>{order?.createdAt}</Text></View>
+    <View style={styles.col}><Text>{order?.items.length}</Text></View>
+    <View style={styles.col}><Text>{formatPrice(order?.total)}</Text></View>
+    <View style={styles.col}><Text>{order?.updatedAt}</Text></View>
+    <View style={[styles.col, {alignItems: 'center'}]}>
+      <Icon name="ellipsis-vertical"
+        size={20}
+        color="#000"
+      />
+    </View>
+  </View>
+);
+
 const ListUsers = ({navigation}) => {
   const [users, setUser] = useState([{}] as [User]);
 
@@ -190,7 +216,6 @@ const ListUsers = ({navigation}) => {
 
 const ListProducts = ({navigation}) => {
   const [products, setProducts] = useState([]);
-
   useEffect(() => {
     ProductAPI.getAll().then((res) => setProducts(res.data));
   }, []);
@@ -224,6 +249,41 @@ const ListProducts = ({navigation}) => {
   );
 };
 
+const ListOrders = ({navigation}) => {
+  const [orders, setOrders] = useState([]);
+  useEffect(() => {
+    OrdersAPI.getAll().then((res) => setOrders(res.data));
+  }, []);
+  const [searchOrderText, _searchOrderText] = useState('Search');
+  return (
+    <View style={styles.rowSimple}>
+      <NavigationMenu navigation={navigation}/>
+      <View style={styles.section}>
+        <View style={styles.listFilters}>
+          <Icon name="search-sharp"
+                  size={20}
+                  color="#000"
+                />
+          <TextInput
+            style={styles.textInput}
+            onChangeText={_searchOrderText}
+            value={searchOrderText}
+          />
+        </View>
+        { orders &&
+        <FlatList
+          data={orders}
+          renderItem={({item, index}) => <OrderElement order={item} key={index} />}
+          keyExtractor={(order: Order) => order?._id}
+          ListHeaderComponent={() => <TableHeader labels={["select", "id", "purchased by", "created at", "items", "total", "updated", "options"]}/>}
+        />
+        }
+      </View>
+    </View>
+    
+  );
+};
+
 //On platform web show the melting face emoji with text like Maybe just don't use admin on mobile right now. or sad-outline
 
 export const Admin = () => {
@@ -238,6 +298,7 @@ export const Admin = () => {
       }}>
         <Stack.Screen name="Users" component={ListUsers} />
         <Stack.Screen name="Products" component={ListProducts} />
+        <Stack.Screen name="Orders" component={ListOrders} />
       </Stack.Navigator>
     );
   }
@@ -259,16 +320,62 @@ export const Admin = () => {
 };
 
 const styles = StyleSheet.create({
-  rowSimple: {
-    flex: 1,
-    flexDirection: 'row'
+  //Navigation Bar Styles
+  active: {
+    backgroundColor: '#ffffff33'
+  },
+  inactive: {
+    backgroundColor: '#ffffff00',
+  },
+  navbutton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 10,
+    paddingHorizontal: 30,
+    gap: 5,
+    width: '100%',
+    fontSize: 20,
   },
   navigationMenu: {
     height: '100%',
     backgroundColor: '#000',
     flexDirection: 'column',
-    padding: '1rem'
+    paddingVertical: '1rem'
   },
+  //Container Styles
+  section: {
+    flex: 1,
+    flexDirection: 'column',
+    borderTopColor: '#6a7b76',
+    borderTopWidth: 10,
+    margin: '2rem',
+    padding: '1rem',
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+    elevation: 1
+  },
+  container: {
+    flex: 1
+  },
+  contentContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  }, 
+  //Generic Styles
+  rowSimple: {
+    flex: 1,
+    flexDirection: 'row'
+  },
+  textWhite: {
+    color: '#fff'
+  },
+  //Table Styles
   createNew: {
     borderStyle: 'dashed',
     borderColor: '#6a7b76cc',
@@ -276,15 +383,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 5,
     margin: 5,
-  },
-  textWhite: {
-    color: '#fff'
-  },
-  navbutton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    gap: 5
   },
   button: {
     alignItems: 'center',
@@ -332,33 +430,8 @@ const styles = StyleSheet.create({
   },
   col: {
     flex: 1,
-    paddingHorizontal: '.5rem',
-    paddingVertical: '.5rem'
+    padding: '.5rem'
   },
-  section: {
-    flex: 1,
-    flexDirection: 'column',
-    borderTopColor: '#6a7b76',
-    borderTopWidth: 10,
-    margin: '2rem',
-    padding: '1rem',
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-    elevation: 1
-  },
-  container: {
-    flex: 1
-  },
-  contentContainer: {
-    flex: 1,
-    backgroundColor: '#fff',
-  }, 
   header: {
     margin: 20,
     fontSize: 48,

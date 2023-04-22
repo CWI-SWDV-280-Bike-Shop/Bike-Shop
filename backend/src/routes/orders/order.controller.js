@@ -14,8 +14,8 @@ class OrderController extends BaseController(Order) {
       .populate('items.product');
   }
 
-  static getById(query = {}) {
-    return Order.findById(query)
+  static getById({ id } = {}) {
+    return Order.findById(id)
       .populate('customer')
       .populate('items')
       .populate('items.product');

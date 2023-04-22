@@ -10,32 +10,73 @@ import { formatPrice } from '@/utilities/formatter';
 //Need a wrapper or something that calls this so I can do more complex features
 // - Have a fake first row for create anything, where everything is placeholder and
 //   as you start typing it highlights, and has a save icon or something at one end Ion: save
-// - Delete icon next to everything, edit icon, maybe three dots to expand that into context menu
-// Search bar, filter options for each box search-sharp
+// Figure out auto option instead of flex 1 so things like description can take up more space
+// Use hover thing from nav on whole row
+// Navbar on side, dark color maybe black with white text and icons
+// Better fonts
+
 const TableHeader = ({labels} : {labels: string[]}) => {
-    return (
+  return (
       <View style={[styles.row, styles.rowHeader]}>
-        { labels.map((label) => (
-          (label != "options") ? (
-          <View style={[styles.col, styles.headerElement]}>
-            <Text style={styles.rowHeaderText}>{label}</Text>
-            <Icon name="filter"
-              size={20}
-              color="#000"
-            />
-          </View>
-          ) : (
-          <View style={styles.col}>
-            <Text style={styles.rowHeaderText}>{label}</Text>
-          </View>
-          )
-          )) }
+      { labels.map((label) => (
+        (label != "options" && label != "select") ? (
+        <View style={[styles.col, styles.headerElement]}>
+          <Text style={styles.rowHeaderText}>{label}</Text>
+          <Icon name="swap-vertical"
+            size={20}
+            color="#000000aa"
+          />
+        </View>
+        ) : (
+        <View style={[styles.col, styles.headerElement]}>
+          <Text style={styles.rowHeaderText}>{label}</Text>
+        </View>
+        )
+        )) }
     </View>
+  )};
+
+  {/* <View style={[styles.col]}><Text>ADD USER</Text></View>
+        <View style={[styles.col]}><Text></Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>name</Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>email</Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>role</Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>phone</Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>orders</Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>street</Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>city</Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>state</Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>zip</Text></View>
+        <View style={[styles.col, styles.createNew]}><Text>country</Text></View>
+        <View style={[styles.col, {alignItems: 'center'}]}><Icon name="md-save"
+              size={30}
+              color="#000000aa"
+            /></View>
+      </View> */}
+
+const UsersTableHeader = ({labels} : {labels: string[]}) => {    
+    return (
+      <View>
+        <TableHeader labels={labels}/>
+        <View style={styles.row}>
+          { labels.map( (label) => (
+            <View style={styles.col}>
+              <TextInput style={styles.createNew} placeholder={label}/>
+            </View>
+          )) }
+        </View>
+      </View>
     )
 }
 
 const UserElement = ({user}: {user: User}) => (
   <View style={styles.row}>
+    <View style={styles.col}>
+      <Icon name="square-outline"
+        size={20}
+        color="#000"
+      />
+    </View>
     <View style={styles.col}><Text numberOfLines={1}>{user?._id}</Text></View>
     <View style={styles.col}><Text>{user?.name}</Text></View>
     <View style={styles.col}><Text>{user?.email}</Text></View>
@@ -58,6 +99,12 @@ const UserElement = ({user}: {user: User}) => (
 
 const ProductElement = ({product}: {product: Product}) => (
   <View style={styles.row}>
+    <View style={styles.col}>
+      <Icon name="square-outline"
+        size={20}
+        color="#000"
+      />
+    </View>
     <View style={styles.col}><Text numberOfLines={1}>{product?._id}</Text></View>
     <View style={styles.col}><Text>{product?.name}</Text></View>
     <View style={styles.col}><Text numberOfLines={1}>{product?.description}</Text></View>
@@ -89,7 +136,7 @@ const ListUsers = () => {
         data={users}
         renderItem={({item}) => <UserElement user={item} />}
         keyExtractor={(user: User) => user?._id}
-        ListHeaderComponent={() => <TableHeader labels={["id", "name", "email", "role", "phone", "orders", "street", "city", "state", "zip", "country", "options"]}/>}
+        ListHeaderComponent={() => <UsersTableHeader labels={["select", "id", "name", "email", "role", "phone", "orders", "street", "city", "state", "zip", "country", "options"]}/>}
       />
       }
     </View>
@@ -102,7 +149,7 @@ const ListProducts = () => {
   useEffect(() => {
     ProductAPI.getAll().then((res) => setProducts(res.data));
   }, []);
-  const [text, onChangeText] = React.useState('Search');
+  const [text, onChangeText] = useState('Search');
   return (
     <View style={styles.section}>
       <View style={styles.listFilters}>
@@ -121,7 +168,7 @@ const ListProducts = () => {
         data={products}
         renderItem={({item}) => <ProductElement product={item} />}
         keyExtractor={(product: Product) => product?._id}
-        ListHeaderComponent={() => <TableHeader labels={["id", "name", "description", "category", "subcategory", "price", "images", "in stock", "options"]}/>}
+        ListHeaderComponent={() => <TableHeader labels={["select", "id", "name", "description", "category", "subcategory", "price", "images", "in stock", "options"]}/>}
       />
       }
     </View>
@@ -155,6 +202,14 @@ export const Admin = () => {
 };
 
 const styles = StyleSheet.create({
+  createNew: {
+    borderStyle: 'dashed',
+    borderColor: '#6a7b76cc',
+    borderWidth: 2,
+    borderRadius: 5,
+    padding: 5,
+    margin: 5,
+  },
   button: {
     alignItems: 'center',
     backgroundColor: '#DDDDDD4f',
@@ -183,20 +238,20 @@ const styles = StyleSheet.create({
     borderBottomColor: '#f0f1f1',
     borderBottomWidth: 3,
     marginBottom: '1rem',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   rowHeaderText: {
+    paddingHorizontal: 5,
     fontWeight: '700'
   },
   row: {
     display: 'flex',
     flexDirection: 'row',
-    borderBottomColor: '#f8f8f8',
+    borderBottomColor: '#efefef',
     borderBottomWidth: 1,
   },
   headerElement: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center'
   },
   col: {

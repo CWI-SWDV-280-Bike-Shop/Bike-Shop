@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import {  Text, StyleSheet, View, FlatList, TextInput, TouchableOpacity } from 'react-native';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import {  Text, StyleSheet, View, FlatList, TextInput, TouchableOpacity, ViewComponent } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import UserAPI from '@api/user.api';
 import ProductAPI from '@/api/product.api';
@@ -9,6 +9,7 @@ import { formatPrice } from '@/utilities/formatter';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
+//Apply sorting based on which column is pressed, need to figure out how to pass props like user.name vs product.id etc.
 //Need a wrapper or something that calls this so I can do more complex features
 // Figure out auto option instead of flex 1 so things like description can take up more space
 // Use hover thing from nav on whole row
@@ -19,13 +20,19 @@ const document = {
   routes: [
     {
       "route": "Users",
-      "icon": "people-outline"
+      "icon": "people-outline",
+      "component": ListUsers,
+      "labels": ["select", "id", "name", "email", "role", "phone", "orders", "street", "city", "state", "zip", "country", "options"]
     },{
       "route": "Products",
-      "icon": "pricetags-outline"
+      "icon": "pricetags-outline",
+      "component": ListProducts,
+      "labels": ["select", "id", "name", "description", "category", "subcategory", "price", "images", "in stock", "options"]
     },{
       "route": "Orders",
-      "icon": "receipt-outline"
+      "icon": "receipt-outline",
+      "component": ListOrders,
+      "labels": ["select", "id", "purchased by", "created at", "items", "total", "updated", "options"]
       }
   ]
 }
@@ -36,28 +43,27 @@ const NavigationMenu = ({navigation}) => {
     <View style={styles.navigationMenu}>
       { document.routes.map( (item) => (
         <TouchableOpacity style={[styles.navbutton, (checkPage(item.route)) ? styles.active : styles.inactive]} onPressOut={() => navigation.navigate(item.route)}>
-          <Icon name={item.icon}
-              size={20}
-              color="#fff"
-            />
-            <Text style={styles.textWhite}>{item.route}</Text>
+          <Icon name={item.icon} size={20} color="#fff" />
+          <Text style={styles.textWhite}>{item.route}</Text>
         </TouchableOpacity>
       )) }
   </View>
   )
 }
 
-const TableHeader = ({labels} : {labels: string[]}) => {
+const TableHeader = ({labels, state} : {labels: string[], state?: [boolean, Dispatch<SetStateAction<boolean>>]}) => {
   return (
       <View style={[styles.row, styles.rowHeader]}>
       { labels.map((label, i) => (
         (label != "options" && label != "select") ? (
         <View style={[styles.col, styles.headerElement]} key={i}>
           <Text style={styles.rowHeaderText}>{label}</Text>
-          <Icon name="swap-vertical"
-            size={20}
-            color="#000000aa"
-          />
+          <TouchableOpacity onPressOut={() => state[1](!state[0])}>
+            <Icon name="swap-vertical"
+              size={20}
+              color="#000000aa"
+            />
+          </TouchableOpacity>
         </View>
         ) : (
         <View style={[styles.col, styles.headerElement]} key={i}>
@@ -86,10 +92,10 @@ const TableHeader = ({labels} : {labels: string[]}) => {
             /></View>
       </View> */}
 
-const UsersTableHeader = ({labels} : {labels: string[]}) => {    
+const UsersTableHeader = ({labels, state} : {labels: string[], state: [boolean, Dispatch<SetStateAction<boolean>>]}) => {    
     return (
       <View>
-        <TableHeader labels={labels}/>
+        <TableHeader labels={labels} state={state}/>
         <View style={styles.row}>
           { labels.map( (label, i) => (
             <View style={styles.col} key={i}>
@@ -109,17 +115,17 @@ const UserElement = ({user}: {user: User}) => (
         color="#000"
       />
     </View>
-    <View style={styles.col}><Text numberOfLines={1}>{user?._id}</Text></View>
-    <View style={styles.col}><Text>{user?.name}</Text></View>
-    <View style={styles.col}><Text>{user?.email}</Text></View>
-    <View style={styles.col}><Text>{user?.role}</Text></View>
-    <View style={styles.col}><Text>{user?.phone}</Text></View>
-    <View style={styles.col}><Text>0</Text></View>
-    <View style={styles.col}><Text>{user?.address?.street}</Text></View>
-    <View style={styles.col}><Text>{user?.address?.city}</Text></View>
-    <View style={styles.col}><Text>{user?.address?.state}</Text></View>
-    <View style={styles.col}><Text>{user?.address?.zip}</Text></View>
-    <View style={styles.col}><Text>{user?.address?.country}</Text></View>
+    <Column>{user?._id}</Column>
+    <Column>{user?.name}</Column>
+    <Column>{user?.email}</Column>
+    <Column>{user?.role}</Column>
+    <Column>{user?.phone}</Column>
+    <Column>0</Column>
+    <Column>{user?.address?.street}</Column>
+    <Column>{user?.address?.city}</Column>
+    <Column>{user?.address?.state}</Column>
+    <Column>{user?.address?.zip}</Column>
+    <Column>{user?.address?.country}</Column>
     <View style={[styles.col, {alignItems: 'center'}]}>
       <Icon name="ellipsis-vertical"
         size={20}
@@ -129,7 +135,13 @@ const UserElement = ({user}: {user: User}) => (
   </View>
 );
 
-const ProductElement = ({product}: {product: Product}) => (
+const Column = ({overflow, children} : {overflow?: boolean, children?: any}) => {
+  return <View style={styles.col}><Text numberOfLines={(overflow) ? 10 : 1}>{children}</Text></View>
+}
+
+function ProductElement({product}: {product: Product}){
+  
+  return(
   <View style={styles.row}>
     <View style={styles.col}>
       <Icon name="square-outline"
@@ -137,14 +149,14 @@ const ProductElement = ({product}: {product: Product}) => (
         color="#000"
       />
     </View>
-    <View style={styles.col}><Text numberOfLines={1}>{product?._id}</Text></View>
-    <View style={styles.col}><Text>{product?.name}</Text></View>
-    <View style={styles.col}><Text numberOfLines={1}>{product?.description}</Text></View>
-    <View style={styles.col}><Text>{product?.category}</Text></View>
-    <View style={styles.col}><Text>{product?.subcategory}</Text></View>
-    <View style={styles.col}><Text>{formatPrice(product?.price)}</Text></View>
-    <View style={styles.col}><Text numberOfLines={1}>{product?.imageIds}</Text></View>
-    <View style={styles.col}><Text>{product?.inStock}</Text></View>
+    <Column>{product?._id}</Column>
+    <Column>{product?.name}</Column>
+    <Column>{product?.description}</Column>
+    <Column>{product?.category}</Column>
+    <Column>{product?.subcategory}</Column>
+    <Column>{formatPrice(product?.price)}</Column>
+    <Column>{product?.imageIds}</Column>
+    <Column>{product?.inStock}</Column>
     <View style={[styles.col, {alignItems: 'center'}]}>
       <Icon name="ellipsis-vertical"
         size={20}
@@ -152,7 +164,8 @@ const ProductElement = ({product}: {product: Product}) => (
       />
     </View>
   </View>
-);
+  )
+};
 
 //Typescript doesn't like type 'user | string' trying to access props, so I had to use any, Solomon can fix this I'm sure.
 const OrderElement = ({order}: {order: any}) => (
@@ -163,12 +176,12 @@ const OrderElement = ({order}: {order: any}) => (
         color="#000"
       />
     </View>
-    <View style={styles.col}><Text numberOfLines={1}>{order?._id}</Text></View>
-    <View style={styles.col}><Text>{order?.customer?.name}</Text></View>
-    <View style={styles.col}><Text numberOfLines={1}>{order?.createdAt}</Text></View>
-    <View style={styles.col}><Text>{order?.items.length}</Text></View>
-    <View style={styles.col}><Text>{formatPrice(order?.total)}</Text></View>
-    <View style={styles.col}><Text>{order?.updatedAt}</Text></View>
+    <Column>{order?._id}</Column>
+    <Column>{order?.customer?.name}</Column>
+    <Column>{order?.createdAt}</Column>
+    <Column>{order?.items.length}</Column>
+    <Column>{formatPrice(order?.total)}</Column>
+    <Column>{order?.updatedAt}</Column>
     <View style={[styles.col, {alignItems: 'center'}]}>
       <Icon name="ellipsis-vertical"
         size={20}
@@ -178,12 +191,20 @@ const OrderElement = ({order}: {order: any}) => (
   </View>
 );
 
-const ListUsers = ({navigation}) => {
+function ListUsers({navigation}) {
   const [users, setUser] = useState([{}] as [User]);
+  const [asc, setAsc] = useState(true);
 
   useEffect(() => {
     UserAPI.getAll().then((res) => setUser(res.data));
   }, []);
+
+  const sortData = (data) => {
+    return data.sort((a, b) => {
+      return (asc) ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name);
+    });
+  } 
+
   const [searchProductsText, _searchProductsText] = useState('Search');
   return (
     <View style={styles.rowSimple}>
@@ -202,19 +223,20 @@ const ListUsers = ({navigation}) => {
         </View>
         { users &&
         <FlatList
-          data={users}
+          data={sortData(users)}
           renderItem={({item, index}) => <UserElement user={item} key={index} />}
           keyExtractor={(user: User) => user?._id}
-          ListHeaderComponent={() => <UsersTableHeader labels={["select", "id", "name", "email", "role", "phone", "orders", "street", "city", "state", "zip", "country", "options"]}/>}
+          ListHeaderComponent={() => 
+            <UsersTableHeader state={[asc, setAsc]}
+              labels={document.routes.find((e)=>e.route=="Users").labels}/>}
         />
         }
       </View>
     </View>
-    
   );
 };
 
-const ListProducts = ({navigation}) => {
+function ListProducts({navigation}) {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     ProductAPI.getAll().then((res) => setProducts(res.data));
@@ -225,10 +247,7 @@ const ListProducts = ({navigation}) => {
       <NavigationMenu navigation={navigation}/>
       <View style={styles.section}>
         <View style={styles.listFilters}>
-          <Icon name="search-sharp"
-                  size={20}
-                  color="#000"
-                />
+          <Icon name="search-sharp" size={20} color="#000"/>
           <TextInput
             style={styles.textInput}
             onChangeText={_searchUserText}
@@ -240,7 +259,7 @@ const ListProducts = ({navigation}) => {
           data={products}
           renderItem={({item, index}) => <ProductElement product={item} key={index} />}
           keyExtractor={(product: Product) => product?._id}
-          ListHeaderComponent={() => <TableHeader labels={["select", "id", "name", "description", "category", "subcategory", "price", "images", "in stock", "options"]}/>}
+          ListHeaderComponent={() => <TableHeader labels={document.routes.find((e)=>e.route=="Products").labels}/>}
         />
         }
       </View>
@@ -249,7 +268,7 @@ const ListProducts = ({navigation}) => {
   );
 };
 
-const ListOrders = ({navigation}) => {
+function ListOrders ({navigation}) {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     OrdersAPI.getAll().then((res) => setOrders(res.data));
@@ -260,10 +279,7 @@ const ListOrders = ({navigation}) => {
       <NavigationMenu navigation={navigation}/>
       <View style={styles.section}>
         <View style={styles.listFilters}>
-          <Icon name="search-sharp"
-                  size={20}
-                  color="#000"
-                />
+          <Icon name="search-sharp" size={20} color="#000" />
           <TextInput
             style={styles.textInput}
             onChangeText={_searchOrderText}
@@ -275,7 +291,7 @@ const ListOrders = ({navigation}) => {
           data={orders}
           renderItem={({item, index}) => <OrderElement order={item} key={index} />}
           keyExtractor={(order: Order) => order?._id}
-          ListHeaderComponent={() => <TableHeader labels={["select", "id", "purchased by", "created at", "items", "total", "updated", "options"]}/>}
+          ListHeaderComponent={() => <TableHeader labels={document.routes.find((e)=>e.route=="Orders").labels}/>}
         />
         }
       </View>
@@ -284,21 +300,16 @@ const ListOrders = ({navigation}) => {
   );
 };
 
-//On platform web show the melting face emoji with text like Maybe just don't use admin on mobile right now. or sad-outline
-
 export const Admin = () => {
   const Stack = createStackNavigator();
   function AdminPages() {
     return (
       <Stack.Navigator
-      initialRouteName='Users'
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: '#fff', flex: 1 },
       }}>
-        <Stack.Screen name="Users" component={ListUsers} />
-        <Stack.Screen name="Products" component={ListProducts} />
-        <Stack.Screen name="Orders" component={ListOrders} />
+      { document.routes.map( (item) => <Stack.Screen name={item.route} component={item.component} /> ) }
       </Stack.Navigator>
     );
   }

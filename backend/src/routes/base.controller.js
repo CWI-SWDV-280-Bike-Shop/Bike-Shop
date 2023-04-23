@@ -29,7 +29,7 @@ export const BaseController = (mongooseModel) =>
     }
 
     static async delete({ id }) {
-      const deleted = await mongooseModel.findByIdAndDelete({ id });
+      const deleted = await mongooseModel.findByIdAndDelete(id);
       if (!deleted) throw new NotFound();
       return { message: 'Deleted successfully' };
     }

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, ScrollView } from 'react-native';
 import Layout from '@styles/layout/Layout';
 import { Picker } from '@react-native-picker/picker';
 import AuthAPI from '@api/auth.api';
@@ -193,12 +193,12 @@ const Register = () => {
 
 const Auth = () => {
   return (
-    <View style={Layout.section}>
+    <ScrollView style={Layout.section}>
       <Text style={Layout.title}>Auth </Text>
       <Login />
       <Logout />
       <Register />
-    </View>
+    </ScrollView>
   );
 };
 

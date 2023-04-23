@@ -34,13 +34,23 @@ const ProductSchema = new Schema(
     brand: String,
     material: {
       type: String,
-      enum: ['Aluminum', 'Steel', 'Carbon'],
+      enum: ['Aluminum', 'Steel', 'Carbon', null, ''],
     },
     wheelSize: {
       type: String,
       trim: true,
       lowercase: true,
-      enum: ['20in', '24in', '26in', '27.5in', '29in', '700c', '650b'],
+      enum: [
+        '20in',
+        '24in',
+        '26in',
+        '27.5in',
+        '29in',
+        '700c',
+        '650b',
+        null,
+        '',
+      ],
     },
     color: {
       type: String,
@@ -55,15 +65,17 @@ const ProductSchema = new Schema(
         'White',
         'Grey',
         'Pink',
+        null,
+        '',
       ],
     },
     size: {
       type: String,
-      enum: ['Small', 'Medium', 'Large'],
+      enum: ['Small', 'Medium', 'Large', null, ''],
     },
     gender: {
       type: String,
-      enum: ['Mens', 'Womens', 'Neutral'],
+      enum: ['Mens', 'Womens', 'Neutral', null, ''],
     },
   },
   { timestamps: true }

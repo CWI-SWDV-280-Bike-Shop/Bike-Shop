@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, TextInput } from 'react-native';
+import { View, Text, Button, TextInput, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
 import UserAPI from '@api/user.api';
@@ -149,11 +149,12 @@ const ListUsers = () => {
 
 const Users = () => {
   return (
-    <View style={Layout.section}>
+    <ScrollView style={Layout.section}>
       <Text style={Layout.title}>Users</Text>
       <AddUser />
+
       <ListUsers />
-    </View>
+    </ScrollView>
   );
 };
 

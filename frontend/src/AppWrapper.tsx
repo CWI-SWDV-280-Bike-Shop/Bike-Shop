@@ -9,7 +9,7 @@ import { NavigationHeader } from '@/components/Navigation/Header';
 import { Login } from '@pages/login';
 import { ProfileNavigator } from '@/pages/Profile/profileNavigator';
 import { About } from './pages/about';
-import { useWindowDimensions } from 'react-native';
+import { Dimensions, ScaledSize, useWindowDimensions } from 'react-native';
 import { Shop } from './pages/Shop/shop';
 import { AuthContext } from '@context/auth.context';
 
@@ -33,7 +33,9 @@ const AppWrapper = () => {
           header: NavigationHeader(dimensions),
         }}
       >
-        <Drawer.Screen name="Home" component={Home} />
+        <Drawer.Screen name="Home">
+          {props => <Home {...props} dimensions={dimensions} />}
+        </Drawer.Screen>
         {/* <Drawer.Screen name="Bikes" component={Bikes} /> 
         <Drawer.Screen name="Accessories" component={Accessories} />
         <Drawer.Screen name="Services" component={Services} />*/}

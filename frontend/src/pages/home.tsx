@@ -7,7 +7,7 @@ import { Slide } from '@components/Slide';
 //Footer Import
 import { Footer } from '@components/Footer';
 
-const checkMobile = (dimensions : ScaledSize) => { console.log(dimensions.width); return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
+const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
 const onlyMobile = (code) => { if ((Platform.OS === 'android' || Platform.OS === 'ios')){ return code } }
 const onlyWeb = (code) => { if (Platform.OS === 'web'){ return code } }
 

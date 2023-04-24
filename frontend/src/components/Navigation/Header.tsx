@@ -1,6 +1,6 @@
 import { DrawerHeaderProps } from "@react-navigation/drawer";
 import React, { useContext } from "react";
-import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, Dimensions, useWindowDimensions, ScaledSize } from 'react-native';
+import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, ScaledSize } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AuthContext } from '@context/auth.context';
 import { Pressable, } from 'react-native-web-hover'
@@ -23,6 +23,7 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeaderProps) => {
 
   const nav = props.navigation;
+  const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
   const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index]==page) }
   const HoverButton = (props: {title: string, page: string}) => {
     return (
@@ -44,13 +45,13 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
   }
 
   const NavigationBar = (props: DrawerHeaderProps) => {
-    return ((Platform.OS === 'android' || Platform.OS === 'ios')|| dimensions.width <= 1450) ? <HamburgerMenu {...props} /> : <DesktopNavbar {...props} />
+    return (checkMobile(dimensions)) ? <HamburgerMenu {...props} /> : <DesktopNavbar {...props} />
   }
 
   const currentRoute = nav.getState().routeNames[nav.getState().index];
 
   return (
-    <View style={[(currentRoute != "Home") ? styles.headerView : styles.headerHomeView]} >
+    <View style={[(currentRoute != "Home" || checkMobile(dimensions)) ? styles.headerView : styles.headerHomeView]} >
       <NavigationBar {...props}/>
       <View style={styles.headerLogoParent}>
         <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />

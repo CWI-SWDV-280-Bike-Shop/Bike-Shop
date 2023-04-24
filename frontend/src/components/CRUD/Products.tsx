@@ -264,6 +264,112 @@ const AddProduct = () => {
   );
 };
 
+const ListProducts = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [editModalVisibile, setEditModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    ProductAPI.getAll().then((res) => {
+      setProducts(res.data);
+      // setMessage(res.data?.message); // return `message` on the backend??
+    });
+  }, []);
+
+  const handleEdit = (product: Product) => {
+    setSelectedProduct(product);
+    setEditModalVisible(true);
+  };
+
+  const handleDelete = (product: Product) => {
+    setSelectedProduct(product);
+    setDeleteModalVisible(true);
+  };
+
+  const saveProduct = (editedProduct: Product) => {
+    ProductAPI.update(editedProduct._id, editedProduct);
+    const updatedProducts = products.map((product: Product) => {
+      return product._id === editedProduct._id ? editedProduct : product;
+    });
+    setProducts(updatedProducts);
+  };
+
+  const deleteProduct = (deletedProduct: Product) => {
+    ProductAPI.delete(deletedProduct._id).then((res) =>
+      setMessage(res.data.message)
+    );
+    const updatedProducts = products.filter((product: Product) => {
+      return product._id !== deletedProduct._id;
+    });
+    setProducts(updatedProducts);
+  };
+
+  return (
+    <View style={Layout.subsection}>
+      <Text style={Layout.subtitle}>List Products</Text>
+      {/* {message && <Text>{message}</Text>} */}
+
+      {products &&
+        products.map((product: Product) => (
+          <View style={Layout.card} key={product?._id}>
+            <Text>id: {product._id}</Text>
+            <Text>name: {product?.name}</Text>
+            <Text>description: {product?.description}</Text>
+            <Text>category: {product?.category}</Text>
+            <Text>subcategory: {product?.subcategory}</Text>
+            <Text>price: {formatPrice(product?.price)}</Text>
+            <Text>imageIds: {product?.imageIds}</Text>
+            <Text>inStock: {product?.inStock?.toString()}</Text>
+            <>
+              {product?.category === 'Bikes' && (
+                <>
+                  <Text>brand: {product?.brand}</Text>
+                  <Text>material: {product?.material}</Text>
+                  <Text>wheelSize: {product?.wheelSize}</Text>
+                  <Text>color: {product?.color}</Text>
+                  <Text>size: {product?.size}</Text>
+                  <Text>gender: {product?.gender}</Text>
+                </>
+              )}
+            </>
+            <View style={Styles.buttonContainer}>
+              <TouchableOpacity
+                style={[Styles.button, Styles.editBtn]}
+                onPress={() => handleEdit(product)}
+              >
+                <Text style={Styles.buttonText}>
+                  Edit <Icon size={15} name="create-outline"></Icon>
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[Styles.button, Styles.deleteBtn]}
+                onPress={() => handleDelete(product)}
+              >
+                <Text style={Styles.buttonText}>
+                  Delete <Icon size={15} name="trash-outline"></Icon>
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        ))}
+      <EditProduct
+        product={selectedProduct}
+        visible={editModalVisibile}
+        onClose={() => setEditModalVisible(false)}
+        onSave={saveProduct}
+      />
+      <DeleteProduct
+        product={selectedProduct}
+        visible={deleteModalVisible}
+        onClose={() => setDeleteModalVisible(false)}
+        onDelete={deleteProduct}
+      />
+    </View>
+  );
+};
+
 const EditProduct = ({ product, visible, onClose, onSave }) => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -271,7 +377,7 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
   const [subcategory, setSubcategory] = useState('');
   const [price, setPrice] = useState(0);
   const [imageIds, setImageIds] = useState([]);
-  const [inStock, setInStock] = useState(false);
+  const [inStock, setInStock] = useState(true);
   const [brand, setBrand] = useState('');
   const [material, setMaterial] = useState('');
   const [wheelSize, setWheelSize] = useState('');
@@ -285,18 +391,18 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
     // because of the `value` being undefined
     if (product) {
       setName(product?.name || '');
-      setDescription(product?.description);
-      setCategory(product?.category);
-      setSubcategory(product?.subcategory);
-      setPrice(product?.price);
-      setImageIds(product?.imageIds);
-      setInStock(product?.inStock);
-      setBrand(product?.brand);
-      setMaterial(product?.material);
-      setWheelSize(product?.wheelSize);
-      setColor(product?.color);
-      setSize(product?.size);
-      setGender(product?.gender);
+      setDescription(product?.description || '');
+      setCategory(product?.category || '');
+      setSubcategory(product?.subcategory || '');
+      setPrice(product?.price || 0);
+      setImageIds(product?.imageIds || '');
+      setInStock(product?.inStock || true);
+      setBrand(product?.brand || '');
+      setMaterial(product?.material || '');
+      setWheelSize(product?.wheelSize || '');
+      setColor(product?.color || '');
+      setSize(product?.size || '');
+      setGender(product?.gender || '');
     }
   }, [product]);
 
@@ -509,15 +615,15 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
             onPress={handleSave}
           >
             <Text style={Styles.buttonText}>
-              Save <Icon name="save-outline"></Icon>
+              Save <Icon size={15} name="save-outline"></Icon>
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[Styles.button, Styles.deleteBtn]}
+            style={[Styles.button, Styles.closeBtn]}
             onPress={onClose}
           >
             <Text style={Styles.buttonText}>
-              Close <Icon name="close-outline"></Icon>
+              Close <Icon size={15} name="close-circle-outline"></Icon>
             </Text>
           </TouchableOpacity>
         </View>
@@ -525,121 +631,61 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
     </Modal>
   );
 };
-
-const ListProducts = () => {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [modalVisibile, setModalVisible] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [message, setMessage] = useState('');
-
-  const tableHead = [
-    '_id',
-    'Name',
-    'Description',
-    'Category',
-    'Subcategory',
-    'Price',
-    'ImageIDs',
-    'In Stock',
-    'Brand',
-    'Material',
-    'Wheel Size',
-    'Color',
-    'Size',
-    'Gender',
-  ];
-
-  useEffect(() => {
-    getProducts();
-  }, []);
-
-  const getProducts = () => {
-    ProductAPI.getAll().then((res) => setProducts(res.data));
-    setMessage('Products retreived successfully');
-  };
-
-  const handleEdit = (product: Product) => {
-    setSelectedProduct(product);
-    setModalVisible(true);
-  };
-
-  const handleSave = (editedProduct: Product) => {
-    ProductAPI.update(editedProduct._id, editedProduct);
-    const updatedProducts = products.map((product: Product) => {
-      return product._id === editedProduct._id ? editedProduct : product;
-    });
-    setProducts(updatedProducts);
-  };
-
-  const handleDelete = (deletedProduct: Product) => {
-    ProductAPI.delete(deletedProduct._id).then((res) =>
-      setMessage(res.data.message)
-    );
-    const updatedProducts = products.filter((product: Product) => {
-      return product._id !== deletedProduct._id;
-    });
-    setProducts(updatedProducts);
+const DeleteProduct = ({ product, visible, onClose, onDelete }) => {
+  const handleDelete = () => {
+    const deletedProduct = { ...product };
+    onDelete(deletedProduct);
+    onClose();
   };
 
   return (
-    <View style={Layout.subsection}>
-      <Text style={Layout.subtitle}>List Products</Text>
-      {message && (
-        <>
-          <Text>{message}</Text>
-        </>
-      )}
-
-      {products &&
-        products.map((product: Product) => (
-          <View style={Layout.card} key={product?._id}>
-            <Text>id: {product._id}</Text>
-            <Text>name: {product?.name}</Text>
-            <Text>description: {product?.description}</Text>
-            <Text>category: {product?.category}</Text>
-            <Text>subcategory: {product?.subcategory}</Text>
-            <Text>price: {formatPrice(product?.price)}</Text>
-            <Text>imageIds: {product?.imageIds}</Text>
-            <Text>inStock: {product?.inStock?.toString()}</Text>
-            <>
-              {product?.category === 'Bikes' && (
-                <>
-                  <Text>brand: {product?.brand}</Text>
-                  <Text>material: {product?.material}</Text>
-                  <Text>wheelSize: {product?.wheelSize}</Text>
-                  <Text>color: {product?.color}</Text>
-                  <Text>size: {product?.size}</Text>
-                  <Text>gender: {product?.gender}</Text>
-                </>
-              )}
-            </>
-            <View style={Styles.buttonContainer}>
-              <TouchableOpacity
-                style={[Styles.button, Styles.editBtn]}
-                onPress={() => handleEdit(product)}
-              >
-                <Text style={Styles.buttonText}>
-                  Edit <Icon name="create-outline"></Icon>
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[Styles.button, Styles.deleteBtn]}
-                onPress={() => handleDelete(product)}
-              >
-                <Text style={Styles.buttonText}>
-                  Delete <Icon name="trash-outline"></Icon>
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        ))}
-      <EditProduct
-        product={selectedProduct}
-        visible={modalVisibile}
-        onClose={() => setModalVisible(false)}
-        onSave={handleSave}
-      />
-    </View>
+    <Modal visible={visible} animationType="slide">
+      <View>
+        <Text style={{ fontWeight: 'bold' }}>
+          Are you sure you want to delete the following product?
+        </Text>
+        <View style={Layout.card} key={product?._id}>
+          <Text>id: {product?._id}</Text>
+          <Text>name: {product?.name}</Text>
+          <Text>description: {product?.description}</Text>
+          <Text>category: {product?.category}</Text>
+          <Text>subcategory: {product?.subcategory}</Text>
+          <Text>price: {formatPrice(product?.price)}</Text>
+          <Text>imageIds: {product?.imageIds}</Text>
+          <Text>inStock: {product?.inStock?.toString()}</Text>
+          <>
+            {product?.category === 'Bikes' && (
+              <>
+                <Text>brand: {product?.brand}</Text>
+                <Text>material: {product?.material}</Text>
+                <Text>wheelSize: {product?.wheelSize}</Text>
+                <Text>color: {product?.color}</Text>
+                <Text>size: {product?.size}</Text>
+                <Text>gender: {product?.gender}</Text>
+              </>
+            )}
+          </>
+        </View>
+        <View style={Styles.buttonContainer}>
+          <TouchableOpacity
+            style={[Styles.button, Styles.deleteBtn]}
+            onPress={handleDelete}
+          >
+            <Text style={Styles.buttonText}>
+              Delete <Icon size={15} name="trash-outline"></Icon>
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[Styles.button, Styles.closeBtn]}
+            onPress={onClose}
+          >
+            <Text style={Styles.buttonText}>
+              Close <Icon size={15} name="close-circle-outline"></Icon>
+            </Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </Modal>
   );
 };
 

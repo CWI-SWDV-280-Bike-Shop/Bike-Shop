@@ -29,4 +29,7 @@ export default StyleSheet.create({
   saveBtn: {
     backgroundColor: '#2b9348',
   },
+  closeBtn: {
+    backgroundColor: 'gray',
+  },
 });

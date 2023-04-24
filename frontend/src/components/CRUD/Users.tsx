@@ -8,12 +8,12 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
+import Styles from './Styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
 import UserAPI from '@api/user.api';
 import { User } from '@/types/data.types';
-import Styles from './Styles';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 const AddUser = () => {
   const [name, setName] = useState('');

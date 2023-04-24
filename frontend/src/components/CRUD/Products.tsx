@@ -8,13 +8,13 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Styles from './Styles';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
 import { Product } from '@/types/data.types';
 import ProductAPI from '@/api/product.api';
 import { formatPrice } from '@/utilities/formatter';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Styles from './Styles';
 
 const AddProduct = () => {
   const [name, setName] = useState('');
@@ -631,6 +631,7 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
     </Modal>
   );
 };
+
 const DeleteProduct = ({ product, visible, onClose, onDelete }) => {
   const handleDelete = () => {
     const deletedProduct = { ...product };

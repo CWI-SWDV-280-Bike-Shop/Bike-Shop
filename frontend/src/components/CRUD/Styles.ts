@@ -30,6 +30,6 @@ export default StyleSheet.create({
     backgroundColor: '#2b9348',
   },
   closeBtn: {
-    backgroundColor: 'gray',
+    backgroundColor: '#555',
   },
 });

@@ -23,9 +23,11 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeaderProps) => {
 
   const nav = props.navigation;
-  const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
-  const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index]==page) }
-  const HoverButton = (props: {title: string, page: string}) => {
+  const { isLoggedIn } = useContext(AuthContext);
+
+  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
+  const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index] == page) }
+  const HoverButton = (props: { title: string, page: string }) => {
     return (
       <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered,
       (checkPage(props.page)) ? styles.active : styles.inactive]}>
@@ -39,7 +41,15 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
   const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
     return (
       <View style={styles.navBar}>
-        {navigation.getState().routeNames.map((name, i) => { if (name != 'Cart') return (<HoverButton key={i} title={name} page={name} />)})}
+        {navigation.getState().routeNames.map((name, i) => {
+          if (name === 'Cart') {
+            return;
+          }
+          if (isLoggedIn && name !== 'Login' || !isLoggedIn && name !== 'Profile') {
+            return (<HoverButton key={i} title={name} page={name} />)
+          }
+        })
+        }
       </View>
     );
   }
@@ -52,7 +62,7 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
 
   return (
     <View style={[(currentRoute != "Home" || checkMobile(dimensions)) ? styles.headerView : styles.headerHomeView]} >
-      <NavigationBar {...props}/>
+      <NavigationBar {...props} />
       <View style={styles.headerLogoParent}>
         <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
       </View>

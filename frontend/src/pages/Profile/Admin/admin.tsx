@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { Dispatch, ReactComponentElement, SetStateAction, useEffect, useState } from 'react';
 import {  Text, StyleSheet, View, FlatList, TextInput, TouchableOpacity, ViewComponent } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import UserAPI from '@api/user.api';
@@ -81,7 +81,7 @@ const TableHeader = ({labels, properties, state} : {labels: string[], properties
     </View>
   )};
 
-  const Row = ({children} : {children? : any}) => (
+  const Row = ({children} : {children? : Children}) => (
     <Pressable style={({ hovered }) => [hovered && styles.hoverOver]}>
       <View style={styles.row}>
         {children}
@@ -89,7 +89,7 @@ const TableHeader = ({labels, properties, state} : {labels: string[], properties
     </Pressable>
   )
   
-  const Column = ({overflow, children} : {overflow?: boolean, children?: any}) => {
+  const Column = ({overflow, children} : {overflow?: boolean, children?: Children}) => {
     return <View style={styles.col}><Text numberOfLines={(overflow) ? 10 : 1}>{children}</Text></View>
   }
   
@@ -214,8 +214,7 @@ function ProductElement({product}: {product: Product}){
   )
 };
 
-//Typescript doesn't like type 'user | string' trying to access props, so I had to use any, Solomon can fix this I'm sure.
-const OrderElement = ({order}: {order: any}) => (
+const OrderElement = ({order}: {order: Order}) => (
   <Row>
     <View style={styles.col}>
       <Icon name="square-outline"
@@ -224,7 +223,7 @@ const OrderElement = ({order}: {order: any}) => (
       />
     </View>
     <Column>{order?._id}</Column>
-    <Column>{order?.customer?.name}</Column>
+    <Column>{typeof order?.customer === "string" ? order?.customer : order?.customer?.name}</Column>
     <Column>{order?.createdAt}</Column>
     <Column>{order?.items.length}</Column>
     <Column>{formatPrice(order?.total)}</Column>
@@ -244,14 +243,7 @@ function ListUsers({navigation}) {
   const [field, setField] = useState("name");
 
   const sortData = (data) => {
-    return data.sort((a, b) => {
-      try {
-        return (asc) ? b[field].localeCompare(a[field]) : a[field].localeCompare(b[field]);
-      } catch (error) {
-        console.log(error);
-        return data;
-      }
-    });
+    return data.sort((a, b) => (asc) ? b[field]?.localeCompare(a[field]) : a[field]?.localeCompare(b[field]));
   } 
 
   useEffect(() => {

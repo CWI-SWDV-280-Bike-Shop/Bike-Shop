@@ -22,17 +22,20 @@ const document = {
       "route": "Users",
       "icon": "people-outline",
       "component": ListUsers,
-      "labels": ["select", "id", "name", "email", "role", "phone", "orders", "street", "city", "state", "zip", "country", "options"]
+      "labels": ["select", "id", "name", "email", "role", "phone", "orders", "street", "city", "state", "zip", "country", "options"],
+      "properties": ["", "_id", "name", "email", "role", "phone", "", "", "", "", "", "", ""]
     },{
       "route": "Products",
       "icon": "pricetags-outline",
       "component": ListProducts,
-      "labels": ["select", "id", "name", "description", "category", "subcategory", "price", "images", "in stock", "options"]
+      "labels": ["select", "id", "name", "description", "category", "subcategory", "price", "images", "in stock", "options"],
+      "properties": ["", "_id", "name", "description", "category", "subcategory", "price", "imageIds", "inStock", "",]
     },{
       "route": "Orders",
       "icon": "receipt-outline",
       "component": ListOrders,
-      "labels": ["select", "id", "purchased by", "created at", "items", "total", "updated", "options"]
+      "labels": ["select", "id", "purchased by", "created at", "items", "total", "updated", "options"],
+      "properties": ["", "_id", "customer", "createdAt", "items", "total", "updatedAt", "",]
       }
   ]
 }
@@ -41,8 +44,8 @@ const NavigationMenu = ({navigation}) => {
   const checkPage = (page) => { return (navigation.getState().routeNames[navigation.getState().index]==page) }
   return(
     <View style={styles.navigationMenu}>
-      { document.routes.map( (item) => (
-        <TouchableOpacity style={[styles.navbutton, (checkPage(item.route)) ? styles.active : styles.inactive]} onPressOut={() => navigation.navigate(item.route)}>
+      { document.routes.map( (item, i) => (
+        <TouchableOpacity key={i} style={[styles.navbutton, (checkPage(item.route)) ? styles.active : styles.inactive]} onPressOut={() => navigation.navigate(item.route)}>
           <Icon name={item.icon} size={20} color="#fff" />
           <Text style={styles.textWhite}>{item.route}</Text>
         </TouchableOpacity>
@@ -51,14 +54,17 @@ const NavigationMenu = ({navigation}) => {
   )
 }
 
-const TableHeader = ({labels, state} : {labels: string[], state?: [boolean, Dispatch<SetStateAction<boolean>>]}) => {
+const TableHeader = ({labels, properties, state} : {labels: string[], properties: string[], state?: [boolean, Dispatch<SetStateAction<boolean>>, string, Dispatch<SetStateAction<string>>]}) => {
   return (
       <View style={[styles.row, styles.rowHeader]}>
       { labels.map((label, i) => (
         (label != "options" && label != "select") ? (
         <View style={[styles.col, styles.headerElement]} key={i}>
           <Text style={styles.rowHeaderText}>{label}</Text>
-          <TouchableOpacity onPressOut={() => state[1](!state[0])}>
+          <TouchableOpacity onPressOut={() => {
+            state[3](properties[i]);
+            state[1](!state[0]);
+            }}>
             <Icon name="swap-vertical"
               size={20}
               color="#000000aa"
@@ -92,10 +98,10 @@ const TableHeader = ({labels, state} : {labels: string[], state?: [boolean, Disp
             /></View>
       </View> */}
 
-const UsersTableHeader = ({labels, state} : {labels: string[], state: [boolean, Dispatch<SetStateAction<boolean>>]}) => {    
+const UsersTableHeader = ({labels, properties, state} : {labels: string[], properties: string[], state: [boolean, Dispatch<SetStateAction<boolean>>, string, Dispatch<SetStateAction<string>>]}) => {    
     return (
       <View>
-        <TableHeader labels={labels} state={state}/>
+        <TableHeader labels={labels} properties={properties} state={state}/>
         <View style={styles.row}>
           { labels.map( (label, i) => (
             <View style={styles.col} key={i}>
@@ -194,16 +200,22 @@ const OrderElement = ({order}: {order: any}) => (
 function ListUsers({navigation}) {
   const [users, setUser] = useState([{}] as [User]);
   const [asc, setAsc] = useState(true);
+  const [field, setField] = useState("name");
+
+  const sortData = (data) => {
+    return data.sort((a, b) => {
+      try {
+        return (asc) ? b[field].localeCompare(a[field]) : a[field].localeCompare(b[field]);
+      } catch (error) {
+        console.log(error);
+        return data;
+      }
+    });
+  } 
 
   useEffect(() => {
     UserAPI.getAll().then((res) => setUser(res.data));
   }, []);
-
-  const sortData = (data) => {
-    return data.sort((a, b) => {
-      return (asc) ? b.name.localeCompare(a.name) : a.name.localeCompare(b.name);
-    });
-  } 
 
   const [searchProductsText, _searchProductsText] = useState('Search');
   return (
@@ -227,8 +239,9 @@ function ListUsers({navigation}) {
           renderItem={({item, index}) => <UserElement user={item} key={index} />}
           keyExtractor={(user: User) => user?._id}
           ListHeaderComponent={() => 
-            <UsersTableHeader state={[asc, setAsc]}
-              labels={document.routes.find((e)=>e.route=="Users").labels}/>}
+            <UsersTableHeader state={[asc, setAsc, field, setField]}
+              labels={document.routes.find((e)=>e.route=="Users").labels}
+              properties={document.routes.find((e)=>e.route=="Users").properties}/>}
         />
         }
       </View>
@@ -238,6 +251,20 @@ function ListUsers({navigation}) {
 
 function ListProducts({navigation}) {
   const [products, setProducts] = useState([]);
+  const [asc, setAsc] = useState(true);
+  const [field, setField] = useState("name");
+
+  const sortData = (data) => {
+    return data.sort((a, b) => {
+      try {
+        return (asc) ? b[field].localeCompare(a[field]) : a[field].localeCompare(b[field]);
+      } catch (error) {
+        console.log(error);
+        return data;
+      }
+    });
+  } 
+
   useEffect(() => {
     ProductAPI.getAll().then((res) => setProducts(res.data));
   }, []);
@@ -256,10 +283,12 @@ function ListProducts({navigation}) {
         </View>
         { products &&
         <FlatList
-          data={products}
+          data={sortData(products)}
           renderItem={({item, index}) => <ProductElement product={item} key={index} />}
           keyExtractor={(product: Product) => product?._id}
-          ListHeaderComponent={() => <TableHeader labels={document.routes.find((e)=>e.route=="Products").labels}/>}
+          ListHeaderComponent={() => <TableHeader state={[asc, setAsc, field, setField]}
+            labels={document.routes.find((e)=>e.route=="Products").labels}
+            properties={document.routes.find((e)=>e.route=="Products").properties}/>}
         />
         }
       </View>
@@ -270,6 +299,20 @@ function ListProducts({navigation}) {
 
 function ListOrders ({navigation}) {
   const [orders, setOrders] = useState([]);
+  const [asc, setAsc] = useState(true);
+  const [field, setField] = useState("name");
+
+  const sortData = (data) => {
+    return data.sort((a, b) => {
+      try {
+        return (asc) ? b[field].localeCompare(a[field]) : a[field].localeCompare(b[field]);
+      } catch (error) {
+        console.log(error);
+        return data;
+      }
+    });
+  } 
+
   useEffect(() => {
     OrdersAPI.getAll().then((res) => setOrders(res.data));
   }, []);
@@ -288,10 +331,12 @@ function ListOrders ({navigation}) {
         </View>
         { orders &&
         <FlatList
-          data={orders}
+          data={sortData(orders)}
           renderItem={({item, index}) => <OrderElement order={item} key={index} />}
           keyExtractor={(order: Order) => order?._id}
-          ListHeaderComponent={() => <TableHeader labels={document.routes.find((e)=>e.route=="Orders").labels}/>}
+          ListHeaderComponent={() => <TableHeader state={[asc, setAsc, field, setField]}
+            labels={document.routes.find((e)=>e.route=="Orders").labels}
+            properties={document.routes.find((e)=>e.route=="Orders").properties}/>}
         />
         }
       </View>
@@ -309,7 +354,7 @@ export const Admin = () => {
         headerShown: false,
         cardStyle: { backgroundColor: '#fff', flex: 1 },
       }}>
-      { document.routes.map( (item) => <Stack.Screen name={item.route} component={item.component} /> ) }
+      { document.routes.map( (item, i) => <Stack.Screen name={item.route} key={i} component={item.component} /> ) }
       </Stack.Navigator>
     );
   }

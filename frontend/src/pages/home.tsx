@@ -32,19 +32,19 @@ const CustomSwiper = () => {
     timeout={5}
     springConfig={{ speed: 5, bounciness: 1, }}
     controlsProps={{
-      prevTitle: 'Prev',
-      nextTitle: 'Next',
+      prevTitle: '⮜',
+      nextTitle: '⮞',
       dotsTouchable: true,
       dotsPos: 'bottom',
       prevPos: (checkMobile()) ? false : 'left', 
       nextPos: (checkMobile()) ? false : 'right', 
       nextTitleStyle: {
-        fontSize: 28,
+        fontSize: 38,
         fontWeight: '900',
         color: '#fff'
       },
       prevTitleStyle: {
-        fontSize: 28,
+        fontSize: 38,
         fontWeight: '900',
         color: '#fff'
       },

@@ -41,18 +41,18 @@ const AppWrapper = () => {
         <Drawer.Screen name="Accessories" component={Accessories} />
         <Drawer.Screen name="Services" component={Services} />*/}
         <Drawer.Screen name="About" component={About} />
-        <Drawer.Screen name="Shop" component={Shop} />{/*TODO Change Navigation from bikes to shop once shop has been fixed*/}
-        {/* {
+        <Drawer.Screen name="Shop" component={Shop} />
+        {
           isLoggedIn
           &&
           <Drawer.Screen name="Profile" component={ProfileNavigator} />
           ||
           <Drawer.Screen name="Login" component={Login} />
-        } */}
-        <Drawer.Screen name="Profile" component={ProfileNavigator} />{/*Once we are closer to testing if we have working app then switch back to use Auth*/}
-        <Drawer.Screen name="Login" component={Login} />
+        }
+        {/* <Drawer.Screen name="Profile" component={ProfileNavigator} />
+        <Drawer.Screen name="Login" component={Login} /> */}
         <Drawer.Screen name="CRUD Playground" component={CRUDPlayground} />
-        <Drawer.Screen name='Cart' component={Cart} options={{drawerItemStyle: {display: 'none'}}} />
+        <Drawer.Screen name='Cart' component={Cart} options={{ drawerItemStyle: { display: 'none' } }} />
       </Drawer.Navigator>
     </NavigationContainer>
   );

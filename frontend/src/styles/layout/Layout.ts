@@ -5,6 +5,9 @@ export default StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
+  row: {
+    flexDirection: 'row',
+  },
   section: {
     margin: 10,
     padding: 10,

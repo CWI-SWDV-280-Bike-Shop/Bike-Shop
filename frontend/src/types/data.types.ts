@@ -56,14 +56,14 @@ export type Product = Data & {
 
 // Order
 export type OrderItem = Data & {
-  product?: Product | string;
-  productModel?: string;
-  price?: number;
-  quantity?: number;
+  product: Product | string;
+  price: number;
+  quantity: number;
+  serviceDate?: string;
 };
 
 export type Order = Data & {
   customer?: User | string;
-  items?: [OrderItem];
+  items?: OrderItem[];
   total?: number;
 };

@@ -25,7 +25,7 @@ export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeader
   const nav = props.navigation;
   const { isLoggedIn } = useContext(AuthContext);
 
-  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
+  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 992) ? true : false }
   const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index] == page) }
   const HoverButton = (props: { title: string, page: string }) => {
     return (

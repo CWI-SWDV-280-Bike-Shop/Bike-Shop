@@ -10,10 +10,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Pressable, } from 'react-native-web-hover'
 
-//Apply sorting based on which column is pressed, need to figure out how to pass props like user.name vs product.id etc.
-//Need a wrapper or something that calls this so I can do more complex features
+// Search can be implemented like I did sorting, button needs selector for which field to search
+// Need a wrapper or something that calls this so I can do more complex features
 // Figure out auto option instead of flex 1 so things like description can take up more space
-// Use hover thing from nav on whole row
 // Better fonts
 
 //One large object everything can reference so you don't have to go looking for stuff

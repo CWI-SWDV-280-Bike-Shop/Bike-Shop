@@ -1,9 +1,6 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
-  table: {
-    flexDirection: 'row',
-  },
   modalContainer: {
     padding: 20,
   },
@@ -13,9 +10,11 @@ export default StyleSheet.create({
   button: {
     flex: 1,
     padding: 10,
-    margin: 10,
+    margin: 3,
     borderRadius: 10,
     textAlign: 'center',
+    justifyContent: 'center',
+    color: 'white',
   },
   buttonText: {
     color: 'white',

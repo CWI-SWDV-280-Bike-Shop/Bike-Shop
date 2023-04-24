@@ -555,6 +555,7 @@ const ListProducts = () => {
 
   const getProducts = () => {
     ProductAPI.getAll().then((res) => setProducts(res.data));
+    setMessage('Products retreived successfully');
   };
 
   const handleEdit = (product: Product) => {
@@ -571,14 +572,11 @@ const ListProducts = () => {
   };
 
   const handleDelete = (deletedProduct: Product) => {
-    console.log(deletedProduct._id);
-    // ProductAPI.delete(deletedProduct._id).then((res) =>
-    //   setMessage(res.data.message)
-    // );
-    const updatedProducts = products.map((product: Product) => {
-      if (product._id !== deletedProduct._id) {
-        return product;
-      }
+    ProductAPI.delete(deletedProduct._id).then((res) =>
+      setMessage(res.data.message)
+    );
+    const updatedProducts = products.filter((product: Product) => {
+      return product._id !== deletedProduct._id;
     });
     setProducts(updatedProducts);
   };
@@ -586,10 +584,15 @@ const ListProducts = () => {
   return (
     <View style={Layout.subsection}>
       <Text style={Layout.subtitle}>List Products</Text>
+      {message && (
+        <>
+          <Text>{message}</Text>
+        </>
+      )}
 
       {products &&
         products.map((product: Product) => (
-          <View style={Styles.table} key={product?._id}>
+          <View style={Layout.card} key={product?._id}>
             <Text>id: {product._id}</Text>
             <Text>name: {product?.name}</Text>
             <Text>description: {product?.description}</Text>

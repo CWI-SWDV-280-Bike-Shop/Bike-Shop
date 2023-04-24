@@ -1,15 +1,37 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const BikeSchema = new Schema(
+const ProductSchema = new Schema(
   {
     name: String,
-    brand: String,
     description: String,
     category: {
       type: String,
-      enum: ['Mountain', 'Electric', 'Street'],
+      enum: ['Bikes', 'Accessories', 'Services'],
     },
+    subcategory: {
+      type: String,
+      enum: [
+        'Mountain',
+        'Electric',
+        'Street',
+        'Tires',
+        'Brakes',
+        'Lights',
+        'Frames',
+        'Chains',
+        'Pedals',
+        'Tubes',
+        'Tune',
+        'Wheel and Tire Maintenance',
+        'Assembly',
+        'Shifting and Brakes',
+      ],
+    },
+    price: Number,
+    imageIds: [String],
+    inStock: Boolean,
+    brand: String,
     material: {
       type: String,
       enum: ['Aluminum', 'Steel', 'Carbon'],
@@ -43,15 +65,9 @@ const BikeSchema = new Schema(
       type: String,
       enum: ['Mens', 'Womens', 'Neutral'],
     },
-    price: Number,
-    image: String,
-    inStock: {
-      type: Boolean,
-      default: true,
-    },
   },
   { timestamps: true }
 );
 
-const BikeModel = mongoose.model('Bike', BikeSchema);
-export default BikeModel;
+const ProductModel = mongoose.model('Product', ProductSchema);
+export default ProductModel;

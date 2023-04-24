@@ -1,50 +1,50 @@
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Text, StyleSheet, View, ScrollView, Platform } from 'react-native';
-//import Swiper from 'react-native-swiper/src';
+import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize } from 'react-native';
 import Swiper from 'react-native-web-swiper';
-
 // Slide component imports
 import { Slide } from '@components/Slide';
-
 //Footer Import
 import { Footer } from '@components/Footer';
 
-const checkMobile = () => { return (Platform.OS === 'android' || Platform.OS === 'ios') ? true : false }
+const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
 const onlyMobile = (code) => { if ((Platform.OS === 'android' || Platform.OS === 'ios')){ return code } }
 const onlyWeb = (code) => { if (Platform.OS === 'web'){ return code } }
 
-const CustomSwiper = () => {
+/* cellsStyle: (!checkMobile()) ? {
+  'right': { 
+    padding: 20, 
+    backgroundColor: '#ffffff2a',
+  },
+  'left': { 
+    padding: 20, 
+    backgroundColor: '#ffffff2a',
+  },
+} : {} */
+
+const CustomSwiper = ({dimensions} : {dimensions : ScaledSize}) => {
   return (
     <Swiper 
     loop
     timeout={5}
-    springConfig={{ speed: .5, bounciness: .5, }}
+    springConfig={{ speed: 5, bounciness: 1, }}
     controlsProps={{
-      prevTitle: 'Prev',
-      nextTitle: 'Next',
+      prevTitle: '⮜',
+      nextTitle: '⮞',
       dotsTouchable: true,
       dotsPos: 'bottom',
-      prevPos: (checkMobile()) ? false : 'left', 
-      nextPos: (checkMobile()) ? false : 'right', 
-      cellsStyle: (!checkMobile()) ? {
-        'right': { 
-          padding: 20, 
-          backgroundColor: '#ffffff2a',
-        },
-        'left': { 
-          padding: 20, 
-          backgroundColor: '#ffffff2a',
-        },
-      } : {},
+      prevPos: (checkMobile(dimensions)) ? false : 'left', 
+      nextPos: (checkMobile(dimensions)) ? false : 'right', 
       nextTitleStyle: {
-        fontSize: 18,
+        fontSize: 38,
+        fontWeight: '900',
         color: '#fff'
       },
       prevTitleStyle: {
-        fontSize: 18,
+        fontSize: 38,
+        fontWeight: '900',
         color: '#fff'
-      }
+      },
     }}>
       <Slide
         name={'City Bikes'}
@@ -93,19 +93,17 @@ const mission = [`Our mission at Wheely Good Bikes is to provide high-quality bi
                 `Our goal is to create a welcoming environment where cyclists of all ages and abilities can come together to share their passion for cycling and enjoy the freedom of the open road.`, 
                 `At the heart of our mission is a dedication to promoting eco-friendly transportation options and helping our community reduce its carbon footprint.`]
 
-export const Home = () => {
+export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
+  const styles = (checkMobile(dimensions)) ? mobile : web;
   const slideNames = ['City Bikes'];
-  if ((Platform.OS === 'android' || Platform.OS === 'ios')) {
-    return (
+  return (checkMobile(dimensions)) ?
+    (
+      <ScrollView>
       <View style={[styles.container]}>
         <View style={[styles.slidesContainer]}>
-          <CustomSwiper/>
+          <CustomSwiper dimensions={dimensions}/>
         </View>
         <View style={[styles.contentContainer]}>
-            <ScrollView>
-            {/* <View style={[styles.titleRow]}>
-              <Text style={[styles.title]}>Wheely Good Bikes</Text>
-            </View> */}
             <View style={[styles.quoteRow]}>
               <Text style={[styles.quote]}>
                 {quote}
@@ -117,16 +115,14 @@ export const Home = () => {
               </Text>
             </View>
             <Footer />
-            </ScrollView>
         </View>
       </View>
-    );
-  } else {
-    return (
+      </ScrollView>
+    ) : (
     <ScrollView>
       <View style={[styles.container]}>
       <View style={[styles.slidesContainer]}>
-        <CustomSwiper/>
+        <CustomSwiper dimensions={dimensions}/>
       </View>
       <View style={[styles.contentContainer]}>
           <View style={[styles.quoteRow]}>
@@ -154,13 +150,12 @@ export const Home = () => {
               {mission[2]}
             </Text>
           </View>
-          <Footer />
       </View>
+      <Footer />
     </View>
   </ScrollView>
     );
-  }
-};
+  };
 
 const mobile = StyleSheet.create({
   container: {
@@ -168,8 +163,14 @@ const mobile = StyleSheet.create({
     flexDirection: 'column',
   },
   slidesContainer: {
-    // flexDirection: 'column',
-    // flex: 2,
+    flexDirection: 'column',
+    height: 250
+  },
+  contentContainer: {
+    flexDirection: 'column',
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   titleRow: {
     flexDirection: 'row',
@@ -273,9 +274,3 @@ const web = StyleSheet.create({
   },
 });
 
-let styles;
-if ((Platform.OS === 'android' || Platform.OS === 'ios')) {
-  styles = mobile;
-} else {
-  styles = web;
-}

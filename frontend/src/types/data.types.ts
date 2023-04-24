@@ -38,19 +38,14 @@ export type User = AuthUser & {
 };
 
 // Product
-type Product = Data & {
+export type Product = Data & {
   name?: string;
   description?: string;
   category?: string;
+  subcategory?: string;
   price?: number;
-  image?: string;
+  imageIds?: string[];
   inStock?: boolean;
-};
-
-export type Accessory = Product;
-export type Service = Product;
-
-export type Bike = Product & {
   brand?: string;
   material?: string;
   wheelSize?: string;
@@ -61,7 +56,7 @@ export type Bike = Product & {
 
 // Order
 export type OrderItem = Data & {
-  product?: Accessory | Service | Bike | string;
+  product?: Product | string;
   productModel?: string;
   price?: number;
   quantity?: number;

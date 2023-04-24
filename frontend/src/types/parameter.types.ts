@@ -1,15 +1,12 @@
 // for use when sending api requests
-type ProductParams = {
+
+// Products
+export type ProductParams = {
   name?: string;
   category?: string;
+  subcategory?: string;
   price?: number;
   inStock?: boolean;
-};
-
-export type AccessoryParams = ProductParams;
-export type ServiceParams = ProductParams;
-
-export type BikeParams = ProductParams & {
   material?: string;
   wheelSize?: string;
   color?: string;
@@ -17,10 +14,12 @@ export type BikeParams = ProductParams & {
   gender?: string;
 };
 
+// Orders
 export type OrderParams = {
   customer: string;
 };
 
+// Users
 export type UserParams = {
   name?: string;
   email?: string;

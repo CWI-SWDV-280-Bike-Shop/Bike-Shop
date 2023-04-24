@@ -212,7 +212,7 @@ function ProductElement({product}: {product: Product}){
     </View>
   </Row>
   )
-};
+}
 
 const OrderElement = ({order}: {order: Order}) => (
   <Row>
@@ -280,7 +280,7 @@ function ListUsers({navigation}) {
       </View>
     </View>
   );
-};
+}
 
 function ListProducts({navigation}) {
   const [products, setProducts] = useState([]);
@@ -328,7 +328,7 @@ function ListProducts({navigation}) {
     </View>
     
   );
-};
+}
 
 function ListOrders ({navigation}) {
   const [orders, setOrders] = useState([]);
@@ -376,7 +376,7 @@ function ListOrders ({navigation}) {
     </View>
     
   );
-};
+}
 
 export const Admin = () => {
   const Stack = createStackNavigator();

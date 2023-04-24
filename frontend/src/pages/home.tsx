@@ -94,7 +94,7 @@ const mission = [`Our mission at Wheely Good Bikes is to provide high-quality bi
                 `At the heart of our mission is a dedication to promoting eco-friendly transportation options and helping our community reduce its carbon footprint.`]
 
 export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
-  let styles = (checkMobile(dimensions)) ? mobile : web;
+  const styles = (checkMobile(dimensions)) ? mobile : web;
   const slideNames = ['City Bikes'];
   return (checkMobile(dimensions)) ?
     (

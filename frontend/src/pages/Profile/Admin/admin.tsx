@@ -8,6 +8,7 @@ import { Product, Order, User, OrderItem } from '@/types/data.types';
 import { formatPrice } from '@/utilities/formatter';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Pressable, } from 'react-native-web-hover'
 
 //Apply sorting based on which column is pressed, need to figure out how to pass props like user.name vs product.id etc.
 //Need a wrapper or something that calls this so I can do more complex features
@@ -80,6 +81,19 @@ const TableHeader = ({labels, properties, state} : {labels: string[], properties
     </View>
   )};
 
+  const Row = ({children} : {children? : any}) => (
+    <Pressable style={({ hovered }) => [hovered && styles.hoverOver]}>
+      <View style={styles.row}>
+        {children}
+      </View>
+    </Pressable>
+  )
+  
+  const Column = ({overflow, children} : {overflow?: boolean, children?: any}) => {
+    return <View style={styles.col}><Text numberOfLines={(overflow) ? 10 : 1}>{children}</Text></View>
+  }
+  
+
   {/* <View style={[styles.col]}><Text>ADD USER</Text></View>
         <View style={[styles.col]}><Text></Text></View>
         <View style={[styles.col, styles.createNew]}><Text>name</Text></View>
@@ -114,7 +128,7 @@ const UsersTableHeader = ({labels, properties, state} : {labels: string[], prope
 }
 
 const UserElement = ({user}: {user: User}) => (
-  <View style={styles.row}>
+  <Row>
     <View style={styles.col}>
       <Icon name="square-outline"
         size={20}
@@ -138,17 +152,13 @@ const UserElement = ({user}: {user: User}) => (
         color="#000"
       />
     </View>
-  </View>
+  </Row>
 );
-
-const Column = ({overflow, children} : {overflow?: boolean, children?: any}) => {
-  return <View style={styles.col}><Text numberOfLines={(overflow) ? 10 : 1}>{children}</Text></View>
-}
 
 function ProductElement({product}: {product: Product}){
   
   return(
-  <View style={styles.row}>
+  <Row>
     <View style={styles.col}>
       <Icon name="square-outline"
         size={20}
@@ -169,13 +179,13 @@ function ProductElement({product}: {product: Product}){
         color="#000"
       />
     </View>
-  </View>
+  </Row>
   )
 };
 
 //Typescript doesn't like type 'user | string' trying to access props, so I had to use any, Solomon can fix this I'm sure.
 const OrderElement = ({order}: {order: any}) => (
-  <View style={styles.row}>
+  <Row>
     <View style={styles.col}>
       <Icon name="square-outline"
         size={20}
@@ -194,7 +204,7 @@ const OrderElement = ({order}: {order: any}) => (
         color="#000"
       />
     </View>
-  </View>
+  </Row>
 );
 
 function ListUsers({navigation}) {
@@ -432,6 +442,9 @@ const styles = StyleSheet.create({
     color: '#fff'
   },
   //Table Styles
+  hoverOver: {
+    backgroundColor: '#00000011',
+  },
   createNew: {
     borderStyle: 'dashed',
     borderColor: '#6a7b76cc',

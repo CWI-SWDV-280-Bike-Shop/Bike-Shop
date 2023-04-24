@@ -98,15 +98,12 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
   const slideNames = ['City Bikes'];
   return (checkMobile(dimensions)) ?
     (
+      <ScrollView>
       <View style={[styles.container]}>
         <View style={[styles.slidesContainer]}>
           <CustomSwiper dimensions={dimensions}/>
         </View>
         <View style={[styles.contentContainer]}>
-            <ScrollView>
-            {/* <View style={[styles.titleRow]}>
-              <Text style={[styles.title]}>Wheely Good Bikes</Text>
-            </View> */}
             <View style={[styles.quoteRow]}>
               <Text style={[styles.quote]}>
                 {quote}
@@ -118,9 +115,9 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
               </Text>
             </View>
             <Footer />
-            </ScrollView>
         </View>
       </View>
+      </ScrollView>
     ) : (
     <ScrollView>
       <View style={[styles.container]}>

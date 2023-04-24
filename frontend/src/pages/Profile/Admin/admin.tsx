@@ -9,6 +9,7 @@ import { formatPrice } from '@/utilities/formatter';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Pressable, } from 'react-native-web-hover'
+import Popover, { PopoverMode, PopoverPlacement } from 'react-native-popover-view';
 
 // Search can be implemented like I did sorting, button needs selector for which field to search
 // Need a wrapper or something that calls this so I can do more complex features
@@ -126,7 +127,9 @@ const UsersTableHeader = ({labels, properties, state} : {labels: string[], prope
     )
 }
 
-const UserElement = ({user}: {user: User}) => (
+const UserElement = ({user}: {user: User}) => {
+  const [showPopover, setShowPopover] = useState(true);
+  return (
   <Row>
     <View style={styles.col}>
       <Icon name="square-outline"
@@ -146,13 +149,42 @@ const UserElement = ({user}: {user: User}) => (
     <Column>{user?.address?.zip}</Column>
     <Column>{user?.address?.country}</Column>
     <View style={[styles.col, {alignItems: 'center'}]}>
-      <Icon name="ellipsis-vertical"
-        size={20}
-        color="#000"
-      />
+    <Popover
+      mode={PopoverMode.TOOLTIP}
+      placement={PopoverPlacement.TOP}
+      isVisible={showPopover}
+      from={(
+        <TouchableOpacity onPress={() => setShowPopover(true)}>
+          <Icon name="ellipsis-vertical"
+              size={20}
+              color="#000"
+            />
+        </TouchableOpacity>
+      )}>
+      <>
+        <Text>This is the contents of the popover</Text>
+        <TouchableOpacity onPress={() => setShowPopover(false)}>
+          <Text>Dismiss</Text>
+        </TouchableOpacity>
+      </>
+    </Popover>
+      {/* <Menu>
+        <MenuTrigger>
+        <Icon name="ellipsis-vertical"
+          size={20}
+          color="#000"
+        />
+        </MenuTrigger>
+        <MenuOptions>
+          <MenuOption onSelect={() => alert(`Save`)} text="Save" />
+          <MenuOption onSelect={() => alert(`Delete`)}>
+            <Text style={{ color: 'red' }}>Delete</Text>
+          </MenuOption>
+        </MenuOptions>
+      </Menu> */}
     </View>
   </Row>
-);
+)};
 
 function ProductElement({product}: {product: Product}){
   
@@ -378,7 +410,7 @@ export const Admin = () => {
           </TouchableOpacity>
           </View> */}
           <NavigationContainer independent={true}>
-            <AdminPages/>
+              <AdminPages/>
           </NavigationContainer>
       </View>
     );

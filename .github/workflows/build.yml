@@ -23,7 +23,7 @@ jobs:
         cache: 'npm'
     - name: Install Packages & Build
       run: |
-        echo | ls
+        ls
         cd ./backend
         npm ci
         cd ../frontend
@@ -42,7 +42,10 @@ jobs:
         first_ssh: |-
           cd Bike-Shop
           git checkout main
-          git pull  
+          git pull
+          mkdir frontend/web-build
+          rm -r docker/web-root/
+          mkdir docker/web-root  
         scp: |-
           './frontend/web-build/*' => ~/Bike-Shop/docker/web-root/
         last_ssh: |-

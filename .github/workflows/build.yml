@@ -23,11 +23,8 @@ jobs:
         cache: 'npm'
     - name: Install Packages & Build
       run: |
-        ls
-        cd ./backend
-        npm ci
-        cd ../frontend
-        npm ci
+        cd ./frontend
+        npm install
         npx expo export:web
         cd ../
 
@@ -42,9 +39,11 @@ jobs:
         first_ssh: |-
           cd Bike-Shop
           git checkout main
-          git pull  
+          git pull
+          rm -r docker/web-root/
+          mkdir docker/web-root  
         scp: |-
-          './frontend/web-build/' => ~/Bike-Shop/docker/web-root/
+          './frontend/web-build/*' => ~/Bike-Shop/docker/web-root/
         last_ssh: |-
           cd Bike-Shop
           docker-compose down

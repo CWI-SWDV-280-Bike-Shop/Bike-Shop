@@ -1,4 +1,4 @@
-name: Build & Deploy
+name: Build
 
 on:
   pull_request:
@@ -23,8 +23,7 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - name: Build
-        run: |
-          npx expo export:web
+      run: npx expo export:web
 
     - name: ssh scp ssh pipelines
       uses: cross-the-world/ssh-scp-ssh-pipelines@latest

@@ -40,8 +40,8 @@ jobs:
           cd Bike-Shop
           git checkout main
           git pull
-          rm -r docker/web-root/
-          mkdir docker/web-root  
+          rm -r docker/web-root/ || true
+          mkdir -p docker/web-root  
         scp: |-
           './frontend/web-build/*' => ~/Bike-Shop/docker/web-root/
         last_ssh: |-

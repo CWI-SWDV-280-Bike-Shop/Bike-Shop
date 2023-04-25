@@ -229,6 +229,7 @@ const web = StyleSheet.create({
     flex: 3,
   },
   contentContainer: {
+    backgroundColor: 'tomato',
     flexDirection: 'column',
     flex: 2,
     alignItems: 'center',

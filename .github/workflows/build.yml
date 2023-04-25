@@ -44,7 +44,7 @@ jobs:
           git checkout main
           git pull  
         scp: |-
-          './frontend/web-build/*' => ~/Bike-Shop/docker/web-root/
+          './frontend/web-build/' => ~/Bike-Shop/docker/web-root/
         last_ssh: |-
           cd Bike-Shop
           docker-compose down

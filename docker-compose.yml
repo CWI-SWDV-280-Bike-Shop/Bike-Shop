@@ -1,15 +1,12 @@
-version: "3"
+version: "3.8"
 services:
   bikeshop-nginx:
     container_name: bikeshop-nginx
     image: nginx
     restart: unless-stopped
-    build:
-      context: ./
-      dockerfile: ./docker/Dockerfile
     ports:
-      - "8080:80"
-      - "10443:443"
+      - "80:80"
+      - "443:443"
     volumes:
       - web-root:/var/www/html
       - ./docker/nginx-conf:/etc/nginx/conf.d
@@ -26,8 +23,6 @@ services:
     restart: unless-stopped
     build:
       context: .
-    #ports:
-    #  - "8081:8081"
     links:
       - bikeshop-mongo
     networks:
@@ -40,8 +35,8 @@ services:
       - ./docker/data:/data/db
     networks:
       - app-network
-    #ports:
-    #  - '27018:27017'
+    ports:
+      - '27017:27017'
   certbot:
     image: certbot/certbot:nightly
     container_name: certbot
@@ -55,7 +50,17 @@ services:
 
 volumes:
   certbot-etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./docker/certbot-etc
+      o: bind
   certbot-var:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./docker/certbot-var
+      o: bind
   web-root:
     driver: local
     driver_opts:
@@ -66,10 +71,9 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: .docker/dhparam/
+      device: ./docker/dhparam/
       o: bind
 
 networks:
   app-network:
-    #external: true
     driver: bridge

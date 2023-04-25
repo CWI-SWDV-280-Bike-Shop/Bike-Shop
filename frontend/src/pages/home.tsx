@@ -88,7 +88,7 @@ const CustomSwiper = ({dimensions} : {dimensions : ScaledSize}) => {
   );
 }
 
-const quote = `"We aren't just a bike shop, we're a community."`;
+const quote = `"TEST"`;
 const mission = [`Our mission at Wheely Good Bikes is to provide high-quality bicycles and accessories that promote a healthy and sustainable lifestyle. We are committed to offering personalized service and expert advice to help our customers choose the right bike for their needs and skill level.`, 
                 `Our goal is to create a welcoming environment where cyclists of all ages and abilities can come together to share their passion for cycling and enjoy the freedom of the open road.`, 
                 `At the heart of our mission is a dedication to promoting eco-friendly transportation options and helping our community reduce its carbon footprint.`]

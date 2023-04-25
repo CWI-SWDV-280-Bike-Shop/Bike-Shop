@@ -1,6 +1,6 @@
 # Bike Shop Application
 
-This is a mobile application built with React Native and Expo, and uses Express + MongoDB as the backend to store and retrieve data. The purpose of this application is to allow users to browse, search, and purchase bicycles and related accessories from a fictitious bike shop.
+This is a mobile application built with React Native and Expo, and uses Express + MongoDB as the backend to store and retrieve data. The purpose of this application is to allow users to browse, search, and purchase bicycles and related accessories from a fictitious bike shop. Test.
 
 ## Table of Contents
 

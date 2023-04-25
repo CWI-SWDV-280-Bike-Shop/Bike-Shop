@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
 // import BikeCards from '@components/ProductPage/Cards/BikeCards'
@@ -11,7 +11,7 @@ import { FilterParams } from '@components/ProductPage/filter';
 
 export const Shop = () => {
   return (
-    <View style={[styles.container]}>
+    <View style={[Layout.container]}>
       <ScrollView>
         <View style={[styles.searchFilter]}>
           <View style={[styles.searchbar]}>
@@ -26,8 +26,8 @@ export const Shop = () => {
             </Text>
           </View>
         </View>
-        <View style={[styles.cardContainer]}>
-          <View style={[styles.cards]}>
+        <View style={[Layout.cardContainer]}>
+          <View style={[Layout.card]}>
             <ItemCard
               name={'City Bike'}
               price={

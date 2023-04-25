@@ -22,6 +22,14 @@ export default StyleSheet.create({
   },
   card: {
     margin: 10,
+    flexDirection: 'column',
+    gap: 8,
+    flex: 1,
+    padding: 15
+  },
+  cardContainer: {
+    flex: 15,
+    backgroundColor: '#D3D5D4',
   },
   title: {
     textAlign: 'center',
@@ -39,5 +47,16 @@ export default StyleSheet.create({
   },
   label: {
     fontWeight: 'bold',
+  },
+  text: {
+    flex: 0.5,
+  },
+  searchbar: {
+    flex: 0.5,
+  },
+  by: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 0.75,
   },
 });

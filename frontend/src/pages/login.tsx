@@ -166,15 +166,15 @@ export const Login = () => {
 
           </View>
           <Text style={[styles.errorText]}>{errorMessage}</Text>
-          <TouchableOpacity style={styles.buttonNewAccount}
+          <TouchableOpacity style={styles.button}
             onPressIn={regSubmit}
           >
             <Icon
               name="person-add-outline"
               size={60}
-              color="#03312E"
+              color="#FFF"
             />
-            <Text style={styles.buttonNewAccountContent}>New Account</Text>
+            <Text style={styles.buttonContent}>New Account</Text>
           </TouchableOpacity>
           {message && <Text>{message}</Text>}
 

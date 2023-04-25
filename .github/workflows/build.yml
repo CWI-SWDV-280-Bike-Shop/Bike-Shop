@@ -21,16 +21,15 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: echo ls
-    - name: Install Backend
-    - run: cd ./backend
-    - run: npm ci
-    - name: Install Frontend
-    - run: cd ../frontend
-    - run: npm ci
-    - name: Build Webpack
-      run: npx expo export:web
-    - run: cd ../
+    - name: Install Packages & Build
+      run: |
+        ls
+        cd ./backend
+        npm ci
+        cd ../frontend
+        npm ci
+        npx expo export:web
+        cd ../
 
     - name: SSH/SCP
       uses: cross-the-world/ssh-scp-ssh-pipelines@latest

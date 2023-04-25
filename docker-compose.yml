@@ -74,7 +74,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: .docker/dhparam/
+      device: ./docker/dhparam/
       o: bind
 
 networks:

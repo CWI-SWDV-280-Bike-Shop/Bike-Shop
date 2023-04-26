@@ -1,6 +1,6 @@
 import { DrawerHeaderProps } from "@react-navigation/drawer";
 import React, { useContext } from "react";
-import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, ScaledSize } from 'react-native';
+import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, ScaledSize, useWindowDimensions } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { AuthContext } from '@context/auth.context';
 import { Pressable, } from 'react-native-web-hover'
@@ -20,8 +20,8 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 }
 
 //Navigation Header
-export const NavigationHeader = (dimensions: ScaledSize) => (props: DrawerHeaderProps) => {
-
+export const NavigationHeader = (props: DrawerHeaderProps) => {
+  const dimensions = useWindowDimensions();
   const nav = props.navigation;
   const { isLoggedIn } = useContext(AuthContext);
 

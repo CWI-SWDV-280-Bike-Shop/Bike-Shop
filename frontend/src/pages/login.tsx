@@ -1,4 +1,5 @@
 import AuthAPI from '@/api/auth.api';
+import { DrawerHeaderProps } from "@react-navigation/drawer";
 import { AuthContext } from '@/context/auth.context';
 import { User } from '@/types/data.types';
 import * as React from 'react';
@@ -8,7 +9,7 @@ import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-ha
 import Icon from 'react-native-vector-icons/Ionicons';
 import Layout from '@styles/layout/Layout';
 
-export const Login = () => {
+export const Login = (props: DrawerHeaderProps) => {
   //Window Dimensions
   const dimensions = useWindowDimensions();
   //Auth connection
@@ -22,7 +23,8 @@ export const Login = () => {
     if (email == '' || password == "") {
       setLoginError('Please fill out all the fields!');
     } else {
-      login({ email, password });
+      login({ email: email.toLowerCase(), password });
+      props.navigation.navigate("Profile");
     }
   };
   //Register Logic
@@ -47,6 +49,7 @@ export const Login = () => {
   };
 
   const regSubmit = () => {
+
     if (regName == '' || regEmail == '' || regPassword == '' || regPhone == '') {
       setErrorMessage('One or more fields are not filled!');
     } else if (confirmPassword != regPassword) {
@@ -58,14 +61,17 @@ export const Login = () => {
       // register user and then immediately login.
       const newUser: User = {
         name: regName,
-        email: regEmail,
+        email: regEmail.toLowerCase(),
         password: regPassword,
         phone: regPhone,
         address: regAddress,
         role,
       };
       // register user and then immediately login.
-      AuthAPI.register(newUser).then(() => login({ email: regEmail, password: regPassword }));
+      AuthAPI.register(newUser).then(() => {
+        login({ email: regEmail, password: regPassword });
+        props.navigation.navigate("Profile");
+      });
     }
   };
 
@@ -89,6 +95,7 @@ export const Login = () => {
           onChangeText={(value) => setPassword(value)}
           secureTextEntry={true}
         />
+        {message && <Text style={[Layout.errorText]}>{message}</Text>}
         <Text style={[Layout.errorText]}>{loginError}</Text>
         <TouchableOpacity
           style={Layout.button}
@@ -101,7 +108,6 @@ export const Login = () => {
           />
           <Text style={Layout.buttonContent}> Login</Text>
         </TouchableOpacity>
-        {message && <Text>{message}</Text>}
 
         {isLoggedIn && (
           <View>
@@ -119,6 +125,8 @@ export const Login = () => {
           <View style={dimensions.width <= 800 ? styles.registrationContainerSmaller : styles.registrationContainer}>
 
             <View style={dimensions.width <= 800 ? styles.infoContainer : styles.infoContainerSmaller}>
+              <Text style={[Layout.bodyText]}>Information</Text>
+
               <TextInput style={Layout.textArea} placeholder='Full Name'
                 value={regName}
                 onChangeText={(value) => setRegName(value)}
@@ -166,6 +174,7 @@ export const Login = () => {
             </View>
 
           </View>
+          {message && <Text style={[Layout.errorText]}>{message}</Text>}
           <Text style={[Layout.errorText]}>{errorMessage}</Text>
           <TouchableOpacity style={Layout.button}
             onPressIn={regSubmit}
@@ -177,7 +186,6 @@ export const Login = () => {
             />
             <Text style={Layout.buttonContent}>New Account</Text>
           </TouchableOpacity>
-          {message && <Text>{message}</Text>}
 
           {isLoggedIn && (
             <View>
@@ -206,14 +214,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row"
   },
-  infoContainerSmaller:{
+  infoContainerSmaller: {
+    marginRight: 0
+  },
+  addressContainerSmaller: {
     marginLeft: 0
   },
-  addressContainerSmaller:{
-    marginLeft: 0
-  },
-  registrationContainerSmaller:{
-    flex:1,
+  registrationContainerSmaller: {
+    flex: 1,
     flexDirection: "column",
   },
 });

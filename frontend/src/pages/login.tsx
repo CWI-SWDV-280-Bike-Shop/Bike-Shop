@@ -6,6 +6,7 @@ import { useContext, useState } from 'react';
 import { Text, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Layout from '@styles/layout/Layout';
 
 export const Login = () => {
   //Window Dimensions
@@ -69,28 +70,28 @@ export const Login = () => {
   };
 
   return (
-    <ScrollView style={[styles.container]}>
-      <View style={[styles.contentContainer]}>
-        <Text style={[styles.header]}>Login</Text>
-        <Text style={[styles.bodyText]}>
+    <ScrollView style={[Layout.container]}>
+      <View style={[Layout.contentContainer]}>
+        <Text style={[Layout.header]}>Login</Text>
+        <Text style={[Layout.bodyText]}>
           Please login to see your profile.
         </Text>
         <TextInput
-          style={[styles.textArea]}
+          style={[Layout.textArea]}
           placeholder='Email'
           value={email}
           onChangeText={(value) => setEmail(value)}
         />
         <TextInput
-          style={[styles.textArea]}
+          style={[Layout.textArea]}
           placeholder='Password'
           value={password}
           onChangeText={(value) => setPassword(value)}
           secureTextEntry={true}
         />
-        <Text style={[styles.errorText]}>{loginError}</Text>
+        <Text style={[Layout.errorText]}>{loginError}</Text>
         <TouchableOpacity
-          style={styles.button}
+          style={Layout.button}
           onPressIn={(submit)}
         >
           <Icon
@@ -98,7 +99,7 @@ export const Login = () => {
             size={60}
             color="#FFF"
           />
-          <Text style={styles.buttonContent}> Login</Text>
+          <Text style={Layout.buttonContent}> Login</Text>
         </TouchableOpacity>
         {message && <Text>{message}</Text>}
 
@@ -112,61 +113,61 @@ export const Login = () => {
             <Text>refreshToken: {authUser.refreshToken}</Text>
           </View>
         )}
-        <View style={styles.contentContainer}>
-          <Text style={[styles.header]}>New here? Please sign up!</Text>
+        <View style={Layout.contentContainer}>
+          <Text style={[Layout.header]}>New here?</Text>
+          <Text style={[Layout.bodyText]}>Please sign up!</Text>
           <View style={dimensions.width <= 800 ? styles.registrationContainerSmaller : styles.registrationContainer}>
 
             <View style={dimensions.width <= 800 ? styles.infoContainer : styles.infoContainerSmaller}>
-              <Text style={[styles.bodyText]}>Information</Text>
-              <TextInput style={styles.textArea} placeholder='Full Name'
+              <TextInput style={Layout.textArea} placeholder='Full Name'
                 value={regName}
                 onChangeText={(value) => setRegName(value)}
               />
-              <TextInput style={styles.textArea} inputMode='email' placeholder='Email'
+              <TextInput style={Layout.textArea} inputMode='email' placeholder='Email'
                 value={regEmail}
                 onChangeText={(value) => setRegEmail(value)}
               />
-              <TextInput style={styles.textArea} placeholder='Password' secureTextEntry={true}
+              <TextInput style={Layout.textArea} placeholder='Password' secureTextEntry={true}
                 value={regPassword}
                 onChangeText={(value) => setRegPassword(value)}
               />
-              <TextInput style={styles.textArea} placeholder='Confirm Password' secureTextEntry={true}
+              <TextInput style={Layout.textArea} placeholder='Confirm Password' secureTextEntry={true}
                 value={confirmPassword}
                 onChangeText={(value) => setConfirmPassword(value)}
               />
-              <TextInput style={styles.textArea} inputMode='tel' placeholder='Phone Number'
+              <TextInput style={Layout.textArea} inputMode='tel' placeholder='Phone Number'
                 value={regPhone}
                 onChangeText={(value) => setRegPhone(value)}
               />
             </View>
 
             <View style={dimensions.width <= 800 ? styles.addressContainerSmaller : styles.addressContainer}>
-              <Text style={[styles.bodyText]}>Address</Text>
-              <TextInput style={styles.textArea} placeholder='Country'
-                value={regAddress.country}
-                onChangeText={(value) => onChangeAddress('country', value)}
-              />
-              <TextInput style={styles.textArea} placeholder='State'
-                value={regAddress.state}
-                onChangeText={(value) => onChangeAddress('state', value)}
-              />
-              <TextInput style={styles.textArea} placeholder='City'
-                value={regAddress.city}
-                onChangeText={(value) => onChangeAddress('city', value)}
-              />
-              <TextInput style={styles.textArea} placeholder='Street'
+              <Text style={[Layout.bodyText]}>Address</Text>
+              <TextInput style={Layout.textArea} placeholder='Street'
                 value={regAddress.street}
                 onChangeText={(value) => onChangeAddress('street', value)}
               />
-              <TextInput style={styles.textArea} inputMode='numeric' placeholder='Zipcode'
+              <TextInput style={Layout.textArea} placeholder='City'
+                value={regAddress.city}
+                onChangeText={(value) => onChangeAddress('city', value)}
+              />
+              <TextInput style={Layout.textArea} placeholder='State'
+                value={regAddress.state}
+                onChangeText={(value) => onChangeAddress('state', value)}
+              />
+              <TextInput style={Layout.textArea} inputMode='numeric' placeholder='Zipcode'
                 value={regAddress.zip}
                 onChangeText={(value) => onChangeAddress('zip', value)}
+              />
+              <TextInput style={Layout.textArea} placeholder='Country'
+                value={regAddress.country}
+                onChangeText={(value) => onChangeAddress('country', value)}
               />
             </View>
 
           </View>
-          <Text style={[styles.errorText]}>{errorMessage}</Text>
-          <TouchableOpacity style={styles.button}
+          <Text style={[Layout.errorText]}>{errorMessage}</Text>
+          <TouchableOpacity style={Layout.button}
             onPressIn={regSubmit}
           >
             <Icon
@@ -174,7 +175,7 @@ export const Login = () => {
               size={60}
               color="#FFF"
             />
-            <Text style={styles.buttonContent}>New Account</Text>
+            <Text style={Layout.buttonContent}>New Account</Text>
           </TouchableOpacity>
           {message && <Text>{message}</Text>}
 
@@ -196,17 +197,17 @@ export const Login = () => {
 
 const styles = StyleSheet.create({
   infoContainer: {
-    marginRight: 15,
+    marginLeft: 0,
   },
   addressContainer: {
-    marginLeft: 15,
+    marginLeft: 0,
   },
   registrationContainer: {
     flex: 1,
     flexDirection: "row"
   },
   infoContainerSmaller:{
-    marginRight: 0
+    marginLeft: 0
   },
   addressContainerSmaller:{
     marginLeft: 0
@@ -214,95 +215,5 @@ const styles = StyleSheet.create({
   registrationContainerSmaller:{
     flex:1,
     flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    flex: 1,
-    backgroundColor: '#D3D5D4',
-    alignItems: "center",
-    paddingBottom: 50,
-  },
-  header: {
-    marginTop: 10,
-    fontSize: 45,
-    color: "#262626",
-    textAlign: 'center',
-  },
-  header2: {
-    marginBottom: 10,
-    fontSize: 35,
-    color: "#262626",
-    textAlign: 'center',
-  },
-  bodyText: {
-    marginLeft: 10,
-    marginTop: 15,
-    fontSize: 24,
-    color: "#262626",
-    textAlign: "center",
-  },
-  errorText: {
-    marginLeft: 10,
-    marginTop: 15,
-    fontSize: 24,
-    color: "#dc143c",
-    textAlign: "center",
-  },
-  textArea: {
-    margin: 15,
-    fontSize: 24,
-    backgroundColor: "#FFF",
-    borderColor: "#03312E",
-    borderWidth: 2,
-    borderRadius: 10,
-    minWidth: 300,
-    padding: 5,
-  },
-  button: {
-    flexDirection: "row",
-    backgroundColor: "#03312E",
-    padding: 10,
-    margin: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    elevation: 24,
-  },
-  buttonContent: {
-    color: "#FFFFFF",
-    textAlign: 'center',
-    fontSize: 20,
-    padding: 5,
-  },
-  buttonNewAccount: {
-    flexDirection: "row",
-    borderColor: "#03312E",
-    borderWidth: 3,
-    padding: 10,
-    margin: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    elevation: 24,
-  },
-  buttonNewAccountContent: {
-    color: "#03312E",
-    textAlign: 'center',
-    fontSize: 20,
-    padding: 5,
   },
 });

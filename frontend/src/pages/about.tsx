@@ -88,7 +88,7 @@ export const About = () => {
   const slideNames = ['Testimonials'];
   return (
     <View style={[styles.container]}>
-      {/* <View style={[styles.slidesContainer]}>
+      <View style={[styles.slidesContainer]}>
         <Swiper>
           <Slide
             name={'From Michael Scott'}
@@ -137,7 +137,7 @@ export const About = () => {
             btnName={'Repair'}
           />
         </Swiper>
-      </View> */}
+      </View>
       <View style={[styles.contentContainer]}>
         <ScrollView>
           {/* <View style={[styles.titleRow]}>

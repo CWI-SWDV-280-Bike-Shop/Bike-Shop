@@ -1,6 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
+  // Layout
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -20,6 +21,61 @@ export default StyleSheet.create({
     margin: 5,
     padding: 5,
   },
+  // Texts 
+  title: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  subtitle: {
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  header: {
+    marginTop: 10,
+    fontSize: 45,
+    color: "#262626",
+    textAlign: 'center',
+  },
+  bodyText: {
+    marginTop: 15,
+    fontSize: 24,
+    color: "#262626",
+    textAlign: "center",
+  },
+  errorText: {
+    marginLeft: 10,
+    marginTop: 15,
+    fontSize: 24,
+    color: "#dc143c",
+    textAlign: "center",
+  },
+  text: {
+    flex: 0.5,
+  },
+  // Styles
+  button: {
+    flexDirection: "row",
+    backgroundColor: "#03312E",
+    padding: 10,
+    marginTop: -15,
+    marginBottom: 15,
+    borderRadius: 10,
+    alignItems: 'center',
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+    elevation: 24,
+  },
+  buttonContent: {
+    color: "#FFFFFF",
+    textAlign: 'center',
+    fontSize: 20,
+    padding: 5,
+  },
   card: {
     margin: 10,
     flexDirection: 'column',
@@ -31,13 +87,11 @@ export default StyleSheet.create({
     flex: 15,
     backgroundColor: '#D3D5D4',
   },
-  title: {
-    textAlign: 'center',
-    fontWeight: 'bold',
-  },
-  subtitle: {
-    fontWeight: 'bold',
-    marginVertical: 10,
+  contentContainer: {
+    flex: 1,
+    backgroundColor: '#D3D5D4',
+    alignItems: "center",
+    paddingBottom: 50,
   },
   input: {
     margin: 5,
@@ -48,8 +102,15 @@ export default StyleSheet.create({
   label: {
     fontWeight: 'bold',
   },
-  text: {
-    flex: 0.5,
+  textArea: {
+    margin: 10,
+    fontSize: 24,
+    backgroundColor: "#FFF",
+    borderColor: "#03312E",
+    borderWidth: 2,
+    borderRadius: 10,
+    minWidth: 300,
+    padding: 8,
   },
   searchbar: {
     flex: 0.5,

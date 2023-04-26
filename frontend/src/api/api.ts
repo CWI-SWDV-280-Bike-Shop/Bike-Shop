@@ -10,9 +10,9 @@ const api = axios.create({
 });
 
 // attach accessToken before api requests
-axios.interceptors.request.use(
-  (config) => {
-    const token = TokenAPI.getLocalAccessToken();
+api.interceptors.request.use(
+  async (config) => {
+    const token = await TokenAPI.getLocalAccessToken();
     if (token) {
       config.headers['x-access-token'] = token;
     }
@@ -24,7 +24,7 @@ axios.interceptors.request.use(
 );
 
 // "gracefully" handle Token errors (token not provided, expired, etc.)
-axios.interceptors.response.use(
+api.interceptors.response.use(
   (response) => {
     return response;
   },

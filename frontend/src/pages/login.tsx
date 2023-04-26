@@ -23,7 +23,7 @@ export const Login = (props: DrawerHeaderProps) => {
     if (email == '' || password == "") {
       setLoginError('Please fill out all the fields!');
     } else {
-      login({ email, password });
+      login({ email: email.toLowerCase(), password });
       props.navigation.navigate("Profile");
     }
   };
@@ -49,6 +49,7 @@ export const Login = (props: DrawerHeaderProps) => {
   };
 
   const regSubmit = () => {
+
     if (regName == '' || regEmail == '' || regPassword == '' || regPhone == '') {
       setErrorMessage('One or more fields are not filled!');
     } else if (confirmPassword != regPassword) {
@@ -60,7 +61,7 @@ export const Login = (props: DrawerHeaderProps) => {
       // register user and then immediately login.
       const newUser: User = {
         name: regName,
-        email: regEmail,
+        email: regEmail.toLowerCase(),
         password: regPassword,
         phone: regPhone,
         address: regAddress,
@@ -94,6 +95,7 @@ export const Login = (props: DrawerHeaderProps) => {
           onChangeText={(value) => setPassword(value)}
           secureTextEntry={true}
         />
+        {message && <Text style={[Layout.errorText]}>{message}</Text>}
         <Text style={[Layout.errorText]}>{loginError}</Text>
         <TouchableOpacity
           style={Layout.button}
@@ -106,7 +108,6 @@ export const Login = (props: DrawerHeaderProps) => {
           />
           <Text style={Layout.buttonContent}> Login</Text>
         </TouchableOpacity>
-        {message && <Text>{message}</Text>}
 
         {isLoggedIn && (
           <View>
@@ -171,6 +172,7 @@ export const Login = (props: DrawerHeaderProps) => {
             </View>
 
           </View>
+          {message && <Text style={[Layout.errorText]}>{message}</Text>}
           <Text style={[Layout.errorText]}>{errorMessage}</Text>
           <TouchableOpacity style={Layout.button}
             onPressIn={regSubmit}
@@ -182,7 +184,6 @@ export const Login = (props: DrawerHeaderProps) => {
             />
             <Text style={Layout.buttonContent}>New Account</Text>
           </TouchableOpacity>
-          {message && <Text>{message}</Text>}
 
           {isLoggedIn && (
             <View>

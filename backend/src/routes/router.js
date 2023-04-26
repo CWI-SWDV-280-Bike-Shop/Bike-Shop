@@ -5,6 +5,7 @@ import OrderRoute from './orders/order.route.js';
 import EndpointsRoute from './endpoints/endpoints.route.js';
 import AuthRoute from './auth/auth.route.js';
 import GenerateUsersRoute from './generateusers/generateUsers.route.js';
+import ImageRoute from './images/image.route.js';
 
 const router = express.Router();
 
@@ -19,5 +20,7 @@ router.use('/users', UserRoute);
 router.use('/products', ProductRoute);
 
 router.use('/orders', OrderRoute);
+
+router.use('/images', ImageRoute);
 
 export default router;

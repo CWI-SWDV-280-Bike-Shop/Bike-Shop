@@ -125,6 +125,8 @@ export const Login = (props: DrawerHeaderProps) => {
           <View style={dimensions.width <= 800 ? styles.registrationContainerSmaller : styles.registrationContainer}>
 
             <View style={dimensions.width <= 800 ? styles.infoContainer : styles.infoContainerSmaller}>
+              <Text style={[Layout.bodyText]}>Information</Text>
+
               <TextInput style={Layout.textArea} placeholder='Full Name'
                 value={regName}
                 onChangeText={(value) => setRegName(value)}

@@ -1,10 +1,88 @@
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Text, StyleSheet, View, ScrollView } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize } from 'react-native';
 import Swiper from 'react-native-swiper/src';
 
 // Slide component imports
 import { Slide } from '../components/Slide'
+
+const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
+const onlyMobile = (code) => { if ((Platform.OS === 'android' || Platform.OS === 'ios')){ return code } }
+const onlyWeb = (code) => { if (Platform.OS === 'web'){ return code } }
+
+const CustomSwiper = ({dimensions} : {dimensions : ScaledSize}) => {
+  return (
+    <Swiper 
+    loop
+    timeout={5}
+    springConfig={{ speed: 5, bounciness: 1, }}
+    controlsProps={{
+      prevTitle: '⮜',
+      nextTitle: '⮞',
+      dotsTouchable: true,
+      dotsPos: 'bottom',
+      prevPos: (checkMobile(dimensions)) ? false : 'left', 
+      nextPos: (checkMobile(dimensions)) ? false : 'right', 
+      nextTitleStyle: {
+        fontSize: 38,
+        fontWeight: '900',
+        color: '#fff'
+      },
+      prevTitleStyle: {
+        fontSize: 38,
+        fontWeight: '900',
+        color: '#fff'
+      },
+    }}>
+      <Slide
+            name={'From Michael Scott'}
+            description={
+                '"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"'
+            }
+            imgSrc={require('@assets/Images/background1.png')}
+            btnName={'Shop'}
+          />
+          <Slide
+            name={'From Jim Halpert'}
+            description={
+                '"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"'
+            }
+            imgSrc={require('@assets/Images/background2.png')}
+            btnName={'Accessories'}
+          />
+          <Slide
+            name={'From Dwight Shrute'}
+            description={'"This shop opened up down the road from my beet farm, its nice enough."'}
+            imgSrc={require('@assets/Images/background3.png')}
+            btnName={'Shop'}
+          />
+          <Slide
+            name={'From Creed Bratton'}
+            description={
+                '"I just wandered into this shop one day and left with a new bike! Thanks man!"'
+            }
+            imgSrc={require('@assets/Images/background1.png')}
+            btnName={'Shop'}
+          />
+          <Slide
+            name={'From Stanley Hudson'}
+            description={
+              '"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."'
+            }
+            imgSrc={require('@assets/Images/background2.png')}
+            btnName={'Repair'}
+          />
+            <Slide
+            name={'From David Wallace'}
+            description={
+              '"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."'
+            }
+            imgSrc={require('@assets/Images/background3.png')}
+            btnName={'Repair'}
+          />
+    </Swiper>
+  );
+}
 
 export const About = () => {
   const slideNames = ['Testimonials'];

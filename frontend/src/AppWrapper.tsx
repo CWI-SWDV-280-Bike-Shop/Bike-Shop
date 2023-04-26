@@ -42,9 +42,15 @@ const AppWrapper = () => {
         <Drawer.Screen name="Services" component={Services} />*/}
         <Drawer.Screen name="About" component={About} />
         <Drawer.Screen name="Shop" component={Shop} />
-        {(isLoggedIn && (
-          <Drawer.Screen name="Profile" component={ProfileNavigator} />
-        )) || <Drawer.Screen name="Login" component={Login} />}
+        {
+          isLoggedIn
+          &&
+          <Drawer.Screen name="Profile">
+            {props => <ProfileNavigator {...props} dimensions={dimensions} />}
+          </Drawer.Screen>
+          ||
+          <Drawer.Screen name="Login" component={Login} />
+        }
         {/* <Drawer.Screen name="Profile" component={ProfileNavigator} />
         <Drawer.Screen name="Login" component={Login} /> */}
         <Drawer.Screen name="CRUD Playground" component={CRUDPlayground} />

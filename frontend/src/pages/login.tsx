@@ -1,4 +1,5 @@
 import AuthAPI from '@/api/auth.api';
+import { DrawerHeaderProps } from "@react-navigation/drawer";
 import { AuthContext } from '@/context/auth.context';
 import { User } from '@/types/data.types';
 import * as React from 'react';
@@ -8,7 +9,7 @@ import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-ha
 import Icon from 'react-native-vector-icons/Ionicons';
 import Layout from '@styles/layout/Layout';
 
-export const Login = () => {
+export const Login = (props: DrawerHeaderProps) => {
   //Window Dimensions
   const dimensions = useWindowDimensions();
   //Auth connection
@@ -23,6 +24,7 @@ export const Login = () => {
       setLoginError('Please fill out all the fields!');
     } else {
       login({ email, password });
+      props.navigation.navigate("Profile");
     }
   };
   //Register Logic
@@ -65,7 +67,10 @@ export const Login = () => {
         role,
       };
       // register user and then immediately login.
-      AuthAPI.register(newUser).then(() => login({ email: regEmail, password: regPassword }));
+      AuthAPI.register(newUser).then(() => {
+        login({ email: regEmail, password: regPassword });
+        props.navigation.navigate("Profile");
+      });
     }
   };
 
@@ -206,14 +211,14 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row"
   },
-  infoContainerSmaller:{
+  infoContainerSmaller: {
+    marginRight: 0
+  },
+  addressContainerSmaller: {
     marginLeft: 0
   },
-  addressContainerSmaller:{
-    marginLeft: 0
-  },
-  registrationContainerSmaller:{
-    flex:1,
+  registrationContainerSmaller: {
+    flex: 1,
     flexDirection: "column",
   },
 });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, View, ScrollView } from 'react-native';
+import { Text, View, ScrollView, StyleSheet } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Layout from '@styles/layout/Layout';
 // import BikeCards from '@components/ProductPage/Cards/BikeCards'

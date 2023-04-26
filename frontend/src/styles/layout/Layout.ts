@@ -113,7 +113,10 @@ export default StyleSheet.create({
     padding: 8,
   },
   searchbar: {
-    flex: 0.5,
+    flex: 2
+  },
+  searchFilter: {
+    flex: 3,
   },
   by: {
     flexDirection: 'row',

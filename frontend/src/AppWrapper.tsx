@@ -31,7 +31,7 @@ const AppWrapper = () => {
           drawerActiveBackgroundColor: '#03312E',
           drawerInactiveTintColor: '#FFFFFF',
           headerTintColor: '#FFFFFF',
-          header: NavigationHeader(dimensions),
+          header: (props) => <NavigationHeader {...props} />,
         }}
       >
         <Drawer.Screen name="Home">

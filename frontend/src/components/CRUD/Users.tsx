@@ -168,8 +168,8 @@ const ListUsers = () => {
     <View style={Layout.subsection}>
       <Text style={Layout.subtitle}>List Users</Text>
       {users &&
-        users.map((user) => (
-          <View style={Layout.card} key={user?._id}>
+        users.map((user, index) => (
+          <View style={Layout.card} key={index}>
             <Text>ID: {user?._id}</Text>
             <Text>Name: {user?.name}</Text>
             <Text>Email: {user?.email}</Text>

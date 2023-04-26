@@ -312,8 +312,8 @@ const ListProducts = () => {
       {/* {message && <Text>{message}</Text>} */}
 
       {products &&
-        products.map((product: Product) => (
-          <View style={Layout.card} key={product?._id}>
+        products.map((product: Product, index: number) => (
+          <View style={Layout.card} key={index}>
             <Text>id: {product._id}</Text>
             <Text>name: {product?.name}</Text>
             <Text>description: {product?.description}</Text>

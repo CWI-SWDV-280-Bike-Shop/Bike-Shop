@@ -31,8 +31,12 @@ services:
     container_name: bikeshop-mongo
     restart: unless-stopped
     image: mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASS}
+      MONGO_INITDB_DATABASE: ${MONGO_DBNAME}
     volumes:
-      - ./docker/data:/data/db
+      - mongodb:/data/db
       - ./docker/mongo:/docker-entrypoint-initdb.d/
     networks:
       - app-network
@@ -52,6 +56,12 @@ services:
 volumes:
   certbot-etc:
   certbot-var:
+  mongodb:
+    driver: local
+    driver_opts:
+      type: none
+      device: ./docker/data
+      o: bind
   web-root:
     driver: local
     driver_opts:

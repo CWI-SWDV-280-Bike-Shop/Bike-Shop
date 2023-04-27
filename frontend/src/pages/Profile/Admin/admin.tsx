@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   ViewComponent,
   Button,
+  Platform
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import UserAPI from "@api/user.api";
@@ -25,6 +26,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Pressable } from "react-native-web-hover";
 import Popover from "react-native-popover-view";
+import { ScaledSize } from 'react-native';
 
 // Search can be implemented like I did sorting, button needs selector for which field to search
 // Need a wrapper or something that calls this so I can do more complex features
@@ -595,7 +597,8 @@ function ListOrders({ navigation }) {
   );
 }
 
-export const Admin = () => {
+export const Admin = ({dimensions} : {dimensions : ScaledSize}) => {
+  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 992) ? true : false }
   const Stack = createStackNavigator();
   function AdminPages() {
     return (
@@ -611,9 +614,14 @@ export const Admin = () => {
       </Stack.Navigator>
     );
   }
-  return (
-    <View style={[styles.container]}>
-      {/* <View style={styles.topBar}>
+    return (checkMobile(dimensions)) ? (
+      <View style={styles.wholePage}>
+        <Icon name="sad-outline" size={60} color="#000" />
+        <Text style={styles.wholePageMessage}>Why not use web for admin?</Text>
+      </View>
+     ) : (
+      <View style={[styles.container]}>
+          {/* <View style={styles.topBar}>
           <TouchableOpacity style={styles.button}>
             <Icon name="moon"
                 size={20}
@@ -621,14 +629,25 @@ export const Admin = () => {
               />
           </TouchableOpacity>
           </View> */}
-      <NavigationContainer independent={true}>
-        <AdminPages />
-      </NavigationContainer>
-    </View>
-  );
+          <NavigationContainer independent={true}>
+              <AdminPages/>
+          </NavigationContainer>
+      </View>
+     );
 };
 
 const styles = StyleSheet.create({
+  wholePage: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 30,
+  },
+  wholePageMessage: {
+    fontSize: 22,
+    fontWeight: 'bold'
+  },
   //Navigation Bar Styles
   active: {
     backgroundColor: "#ffffff33",

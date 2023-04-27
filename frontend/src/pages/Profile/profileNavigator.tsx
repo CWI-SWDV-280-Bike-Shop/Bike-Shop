@@ -3,10 +3,11 @@ import { Profile } from './profile';
 import { Orders } from './orders';
 import { Account } from './account';
 import { Admin } from './Admin/admin';
+import { ScaledSize } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
-export const ProfileNavigator = () => {
+export const ProfileNavigator = ({dimensions} : {dimensions : ScaledSize}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
@@ -16,7 +17,9 @@ export const ProfileNavigator = () => {
       />
       <Stack.Screen name="Orders" component={Orders} />
       <Stack.Screen name="Account" component={Account} />
-      <Stack.Screen name="Admin" component={Admin} />
+      <Stack.Screen name="Admin">
+            {props => <Admin {...props} dimensions={dimensions} />}
+      </Stack.Screen>
     </Stack.Navigator>
   );
 };

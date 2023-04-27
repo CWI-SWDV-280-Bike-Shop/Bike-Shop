@@ -33,34 +33,25 @@ services:
     image: mongo
     volumes:
       - ./docker/data:/data/db
+      - ./docker/mongo:/docker-entrypoint-initdb.d/
     networks:
       - app-network
     ports:
       - '27017:27017'
-  certbot:
-    image: certbot/certbot:nightly
-    container_name: certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
-    depends_on:
-      - bikeshop-nginx
-    command: certonly --webroot --webroot-path=/var/www/html --email williambeukelman@my.cwi.edu --agree-tos --no-eff-email --force-renewal -d thebikeshop.app
+  #certbot:
+  #  image: certbot/certbot:nightly
+  #  container_name: certbot
+  #  volumes:
+  #    - certbot-etc:/etc/letsencrypt
+  #    - certbot-var:/var/lib/letsencrypt
+  #    - web-root:/var/www/html
+  #  depends_on:
+  #    - bikeshop-nginx
+  #  command: certonly --webroot --webroot-path=/var/www/html --email williambeukelman@my.cwi.edu --agree-tos --no-eff-email --force-renewal -d thebikeshop.app
 
 volumes:
   certbot-etc:
-    driver: local
-    driver_opts:
-      type: none
-      device: ./docker/certbot-etc
-      o: bind
   certbot-var:
-    driver: local
-    driver_opts:
-      type: none
-      device: ./docker/certbot-var
-      o: bind
   web-root:
     driver: local
     driver_opts:

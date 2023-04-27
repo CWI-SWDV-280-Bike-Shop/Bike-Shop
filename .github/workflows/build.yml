@@ -39,8 +39,9 @@ jobs:
         first_ssh: |-
           cd Bike-Shop
           git checkout main
-          git pull
-          rm -r docker/web-root/ || true
+          git fetch
+          git reset --mixed origin/main
+          rm -rf docker/web-root/
           mkdir -p docker/web-root  
         scp: |-
           './frontend/web-build/*' => ~/Bike-Shop/docker/web-root/

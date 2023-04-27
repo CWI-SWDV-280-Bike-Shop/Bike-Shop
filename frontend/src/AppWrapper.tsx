@@ -20,6 +20,17 @@ const AppWrapper = () => {
   const dimensions = useWindowDimensions();
   const { isLoggedIn } = useContext(AuthContext);
 
+  const screens = [
+    {"name" : "Home", "component": (props) => <Home {...props} dimensions={dimensions} />},
+    {"name" : "About", "component": (props) => <About {...props} dimensions={dimensions} />},
+    {"name" : "Shop", "component": (props) => <Shop {...props} dimensions={dimensions} />},
+    (isLoggedIn) ?
+      {"name" : "Profile", "component": (props) => <ProfileNavigator {...props} dimensions={dimensions} />} :
+      {"name" : "Login", "component": (props) => <Login {...props} dimensions={dimensions} />},
+    {"name" : "CRUD Playground", "component": (props) => <CRUDPlayground {...props} dimensions={dimensions} />},
+    {"name" : "Cart", "component": (props) => <Cart {...props} dimensions={dimensions} options={{ drawerItemStyle: { display: 'none' } }} />},
+  ]
+
   return (
     <NavigationContainer linking={{ prefixes: [] }}>
       <Drawer.Navigator
@@ -34,31 +45,13 @@ const AppWrapper = () => {
           header: (props) => <NavigationHeader {...props} />,
         }}
       >
-        <Drawer.Screen name="Home">
-          {(props) => <Home {...props} dimensions={dimensions} />}
-        </Drawer.Screen>
-        {/* <Drawer.Screen name="Bikes" component={Bikes} /> 
-        <Drawer.Screen name="Accessories" component={Accessories} />
-        <Drawer.Screen name="Services" component={Services} />*/}
-        <Drawer.Screen name="About" component={About} />
-        <Drawer.Screen name="Shop" component={Shop} />
         {
-          isLoggedIn
-          &&
-          <Drawer.Screen name="Profile">
-            {props => <ProfileNavigator {...props} dimensions={dimensions} />}
-          </Drawer.Screen>
-          ||
-          <Drawer.Screen name="Login" component={Login} />
+          screens.map((item, i) => (
+            <Drawer.Screen name={item.name} key={i}>
+              { item.component }
+            </Drawer.Screen>
+          ))
         }
-        {/* <Drawer.Screen name="Profile" component={ProfileNavigator} />
-        <Drawer.Screen name="Login" component={Login} /> */}
-        <Drawer.Screen name="CRUD Playground" component={CRUDPlayground} />
-        <Drawer.Screen
-          name="Cart"
-          component={Cart}
-          options={{ drawerItemStyle: { display: 'none' } }}
-        />
       </Drawer.Navigator>
     </NavigationContainer>
   );

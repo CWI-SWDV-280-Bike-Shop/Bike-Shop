@@ -187,7 +187,6 @@ const web = StyleSheet.create({
     flexDirection: "row",
   },
   cart: {
-
   }
 });
 

@@ -25,7 +25,7 @@ app.use('*', (req, res, next) => {
 
 // Connect to MongoDB
 mongoose
-  .connect(db.MongoDBAtlas, {
+  .connect(db.MongoDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     ignoreUndefined: true,

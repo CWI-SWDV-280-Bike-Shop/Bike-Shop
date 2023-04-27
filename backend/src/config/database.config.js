@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-const isLocal = process.env.hasOwnProperty('MONGO_USER');
+const isLocal = Object.hasOwn(process.env, "MONGO_USER") && Object.hasOwn(process.env, "MONGO_PASS");
 
 const db = {
   MongoDB: (isLocal) ? `mongodb://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@bikeshop-mongo:27017/BikeShop?authSource=admin` :

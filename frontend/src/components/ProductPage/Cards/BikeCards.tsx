@@ -8,8 +8,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export const ListProducts = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [editModalVisibile, setEditModalVisible] = useState(false);
-  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [message, setMessage] = useState('');
 

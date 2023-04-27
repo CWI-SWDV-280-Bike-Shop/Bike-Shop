@@ -8,6 +8,9 @@ export class NotFound extends UserError {
 export class Unauthorized extends UserError {
   status = 401;
 }
+export class AccessTokenExpired extends Unauthorized {
+  accessTokenExpired = true;
+}
 export class Forbidden extends UserError {
   status = 403;
 }

@@ -44,7 +44,7 @@ app.use(/.*/, (req, res) => {
 
 app.use((err, req, res, next) => {
   if (err instanceof UserError || err instanceof mongoose.Error.ValidationError)
-    res.status(err.status ?? 400).json({ error: err.message });
+    res.status(err.status ?? 400).json({ error: err.message, ...err });
   else if (err) res.status(500).json({ error: 'Something broke!' });
   console.error(err.stack);
 });

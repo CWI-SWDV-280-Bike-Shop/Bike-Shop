@@ -1,23 +1,33 @@
-import { DrawerHeaderProps } from "@react-navigation/drawer";
-import React, { useContext } from "react";
-import { TouchableOpacity, Text, Image, View, StyleSheet, Platform, ScaledSize, useWindowDimensions } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons'
+import { DrawerHeaderProps } from '@react-navigation/drawer';
+import React, { useContext } from 'react';
+import {
+  TouchableOpacity,
+  Text,
+  Image,
+  View,
+  StyleSheet,
+  Platform,
+  ScaledSize,
+  useWindowDimensions,
+} from 'react-native';
+import { colors } from '@/styles/theme/Colors';
+import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '@context/auth.context';
-import { Pressable, } from 'react-native-web-hover'
+import { Pressable } from 'react-native-web-hover';
+import { ShopContext } from '@/context/shop.context';
 
 const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
   return (
     <View style={styles.headerIcons}>
-      <TouchableOpacity style={styles.headerTouchable} onPress={navigation.openDrawer}>
-        <Icon
-          name="menu-outline"
-          size={40}
-          color="#FFF"
-        />
+      <TouchableOpacity
+        style={styles.headerTouchable}
+        onPress={navigation.openDrawer}
+      >
+        <Icon name="menu-outline" size={40} color="#FFF" />
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 //Navigation Header
 export const NavigationHeader = (props: DrawerHeaderProps) => {
@@ -25,18 +35,31 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
   const nav = props.navigation;
   const { isLoggedIn } = useContext(AuthContext);
 
-  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 992) ? true : false }
-  const checkPage = (page) => { return (nav.getState().routeNames[nav.getState().index] == page) }
-  const HoverButton = (props: { title: string, page: string }) => {
+  const checkMobile = (dimensions: ScaledSize) => {
+    return Platform.OS === 'android' ||
+      Platform.OS === 'ios' ||
+      dimensions.width <= 992
+      ? true
+      : false;
+  };
+  const checkPage = (page) => {
+    return nav.getState().routeNames[nav.getState().index] == page;
+  };
+  const HoverButton = (props: { title: string; page: string }) => {
     return (
-      <Pressable style={({ hovered }) => [styles.buttonRoot, hovered && styles.buttonHovered,
-      (checkPage(props.page)) ? styles.active : styles.inactive]}>
+      <Pressable
+        style={({ hovered }) => [
+          styles.buttonRoot,
+          hovered && styles.buttonHovered,
+          checkPage(props.page) ? styles.active : styles.inactive,
+        ]}
+      >
         <TouchableOpacity onPress={() => nav.navigate(props.page)}>
           <Text style={styles.navText}>{props.title}</Text>
         </TouchableOpacity>
       </Pressable>
-    )
-  }
+    );
+  };
 
   const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
     return (
@@ -45,51 +68,77 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
           if (name === 'Cart') {
             return;
           }
-          if (isLoggedIn && name !== 'Login' || !isLoggedIn && name !== 'Profile') {
-            return (<HoverButton key={i} title={name} page={name} />)
+          if (
+            (isLoggedIn && name !== 'Login') ||
+            (!isLoggedIn && name !== 'Profile')
+          ) {
+            return <HoverButton key={i} title={name} page={name} />;
           }
-        })
-        }
+        })}
       </View>
     );
-  }
+  };
 
   const NavigationBar = (props: DrawerHeaderProps) => {
-    return (checkMobile(dimensions)) ? <HamburgerMenu {...props} /> : <DesktopNavbar {...props} />
-  }
+    return checkMobile(dimensions) ? (
+      <HamburgerMenu {...props} />
+    ) : (
+      <DesktopNavbar {...props} />
+    );
+  };
 
   const currentRoute = nav.getState().routeNames[nav.getState().index];
 
   return (
-    <View style={[(currentRoute != "Home" || checkMobile(dimensions)) ? styles.headerView : styles.headerHomeView]} >
+    <View
+      style={[
+        currentRoute != 'Home' || checkMobile(dimensions)
+          ? styles.headerView
+          : styles.headerHomeView,
+      ]}
+    >
       <NavigationBar {...props} />
       <View style={styles.headerLogoParent}>
-        <Image source={require('../../assets/Branding/OfficialLogo-white.png')} style={styles.headerLogo} />
+        <Image
+          source={require('../../assets/Branding/OfficialLogo-white.png')}
+          style={styles.headerLogo}
+        />
       </View>
       <View style={[styles.headerIcons, { justifyContent: 'flex-end' }]}>
         <TouchableOpacity
           style={styles.headerTouchable}
           onPress={() => props.navigation.navigate('Cart')}
         >
-          <Icon name="cart-outline"
-            size={40}
-            color="#FFF"
-          />
+          <CartButton />
         </TouchableOpacity>
       </View>
     </View>
   );
-}
+};
+
+const CartButton = () => {
+  const { quantity } = useContext(ShopContext);
+  return (
+    <View style={styles.cartContainer}>
+      <Icon name="cart-outline" size={40} color="#FFF" />
+      {quantity > 0 && (
+        <View style={styles.cartBadge}>
+          <Text style={styles.cartCount}>{quantity}</Text>
+        </View>
+      )}
+    </View>
+  );
+};
 
 //Header Stylesheet
 const styles = StyleSheet.create({
   active: {
     borderBottomColor: '#fff',
-    borderBottomWidth: 5
+    borderBottomWidth: 5,
   },
   inactive: {
     borderBottomColor: '#ffffff00',
-    borderBottomWidth: 5
+    borderBottomWidth: 5,
   },
   buttonRoot: {},
   buttonHovered: { backgroundColor: '#00000088' },
@@ -97,43 +146,63 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     top: 0,
-    backgroundColor: "#6A7B7600",
-    flexDirection: "row",
+    backgroundColor: '#6A7B7600',
+    flexDirection: 'row',
     paddingTop: 7,
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   headerView: {
-    backgroundColor: "#6A7B76",
-    flexDirection: "row",
+    backgroundColor: '#6A7B76',
+    flexDirection: 'row',
     paddingTop: 7,
-    justifyContent: 'space-around'
+    justifyContent: 'space-around',
   },
   headerIcons: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     padding: 32,
   },
   headerLogoParent: {
-    alignSelf: 'center'
+    alignSelf: 'center',
   },
   headerLogo: {
-    width: 180, height: 120,
+    width: 180,
+    height: 120,
   },
   headerTouchable: {
-    margin: 8
+    margin: 8,
   },
   navBar: {
     flex: 1,
-    flexDirection: "row",
-    alignItems: "center",
-    marginHorizontal: 10
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginHorizontal: 10,
   },
   navText: {
     color: '#FFF',
     textTransform: 'uppercase',
-    fontWeight: "700",
+    fontWeight: '700',
     fontSize: 18,
     margin: 8,
     paddingHorizontal: 5,
-  }
-})
+  },
+  cartContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cartBadge: {
+    position: 'absolute',
+    bottom: -5,
+    left: -5,
+    backgroundColor: colors.feldgrau,
+    borderRadius: 5,
+    minWidth: 20,
+    minHeight: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  cartCount: {
+    color: 'white',
+    fontWeight: 'bold',
+  },
+});

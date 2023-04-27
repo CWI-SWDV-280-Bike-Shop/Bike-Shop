@@ -35,24 +35,24 @@ const AppWrapper = () => {
         }}
       >
         <Drawer.Screen name="Home">
-          {props => <Home {...props} dimensions={dimensions} />}
+          {(props) => <Home {...props} dimensions={dimensions} />}
         </Drawer.Screen>
         {/* <Drawer.Screen name="Bikes" component={Bikes} /> 
         <Drawer.Screen name="Accessories" component={Accessories} />
         <Drawer.Screen name="Services" component={Services} />*/}
         <Drawer.Screen name="About" component={About} />
         <Drawer.Screen name="Shop" component={Shop} />
-        {
-          isLoggedIn
-          &&
+        {(isLoggedIn && (
           <Drawer.Screen name="Profile" component={ProfileNavigator} />
-          ||
-          <Drawer.Screen name="Login" component={Login} />
-        }
+        )) || <Drawer.Screen name="Login" component={Login} />}
         {/* <Drawer.Screen name="Profile" component={ProfileNavigator} />
         <Drawer.Screen name="Login" component={Login} /> */}
         <Drawer.Screen name="CRUD Playground" component={CRUDPlayground} />
-        <Drawer.Screen name='Cart' component={Cart} options={{ drawerItemStyle: { display: 'none' } }} />
+        <Drawer.Screen
+          name="Cart"
+          component={Cart}
+          options={{ drawerItemStyle: { display: 'none' } }}
+        />
       </Drawer.Navigator>
     </NavigationContainer>
   );

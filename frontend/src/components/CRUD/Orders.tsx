@@ -37,6 +37,13 @@ const AddOrder = () => {
     });
   }, []);
 
+  useEffect(() => {
+    const newTotal = items.reduce((previousValue, item) => {
+      return previousValue + item?.price;
+    }, 0);
+    setTotal(newTotal);
+  }, [items]);
+
   const handleAdd = (product: Product) => {
     const newItem = {
       product: product?._id,
@@ -44,7 +51,6 @@ const AddOrder = () => {
       quantity: 1,
     };
     setItems([...items, newItem]);
-    setTotal(total + (product?.price || 0));
   };
 
   const handleSubmit = async () => {

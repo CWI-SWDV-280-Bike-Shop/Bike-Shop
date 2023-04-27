@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, Text, Image } from 'react-native';
 import Layout from '@styles/layout/Layout';
 import { Product } from '@/types/data.types';
 import ProductAPI from '@api/product.api';
 import { formatPrice } from '@/utilities/formatter';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { ShopContext } from '@/context/shop.context';
 
 export const ListProducts = () => {
+  const { addToCart } = useContext(ShopContext);
   const [products, setProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [message, setMessage] = useState('');
@@ -17,6 +19,10 @@ export const ListProducts = () => {
       // setMessage(res.data?.message); // return `message` on the backend??
     });
   }, []);
+
+  const handleAddToCart = (product: Product) => {
+    addToCart(product);
+  };
 
   return (
     <View style={Layout.subsection}>
@@ -30,7 +36,9 @@ export const ListProducts = () => {
                 <Text style={[styles.bodyText]}>{product?.description}</Text>
               </View>
               <View style={[styles.rightSide]}>
-                <> {/* Stock Condition */}
+                <>
+                  {' '}
+                  {/* Stock Condition */}
                   {product?.inStock?.toString() === 'true' && (
                     <>
                       <Text style={[styles.stockText]}>In Stock</Text>
@@ -44,13 +52,20 @@ export const ListProducts = () => {
                 </>
                 {/* <Image source={imgSrc} style={[styles.stars]}/> */}
                 <View style={[styles.descTextContainer]}>
-                  <Text style={[styles.descText]}>{formatPrice(product?.price)}</Text>
+                  <Text style={[styles.descText]}>
+                    {formatPrice(product?.price)}
+                  </Text>
                   <Text style={[styles.descText]}>{product?.subcategory}</Text>
                 </View>
-                <> {/* Add to Cart Condition */}
+                <>
+                  {' '}
+                  {/* Add to Cart Condition */}
                   {product?.inStock?.toString() === 'true' && (
                     <>
-                      <TouchableOpacity style={[styles.button]}>
+                      <TouchableOpacity
+                        style={[styles.button]}
+                        onPress={() => handleAddToCart(product)}
+                      >
                         <Text style={[styles.buttonText]}>Add to Cart</Text>
                       </TouchableOpacity>
                     </>
@@ -85,50 +100,49 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 5,
     flexDirection: 'row',
-    gap: 5
+    gap: 5,
   },
   leftSide: {
-    alignItems: 'center'
+    alignItems: 'center',
   },
   rightSide: {
     flex: 1,
     marginRight: 0,
-    alignItems: 'center'
+    alignItems: 'center',
   },
   heading: {
     fontSize: 30,
   },
   bodyText: {
-    fontSize: 20
+    fontSize: 20,
   },
   stars: {
     flex: 1,
   },
   descTextContainer: {
     flex: 2,
-    fontSize: 15
+    fontSize: 15,
   },
   descText: {
-    paddingVertical: 4
+    paddingVertical: 4,
   },
   stockText: {
     flex: 1,
     fontSize: 15,
-    color: 'gray'
+    color: 'gray',
   },
   button: {
     backgroundColor: '#62929E',
-    padding: 8
+    padding: 8,
   },
   buttonText: {
     color: 'white',
     fontSize: 15,
-    fontWeight: 'bold'
-  }
+    fontWeight: 'bold',
+  },
 });
 
 export default ListProducts;
-
 
 // const ListProducts = () => {
 //   const [products, setProducts] = useState<Product[]>([]);

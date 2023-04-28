@@ -69,12 +69,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
           if (["Cart", "Profile", "Login"].some((e) => name === e)) {
             return;
           }
-          if (
-            (isLoggedIn && name !== 'Login') ||
-            (!isLoggedIn && name !== 'Profile')
-          ) {
-            return <HoverButton key={i} title={name} page={name} />;
-          }
+          return <HoverButton key={i} title={name} page={name} />;
         })}
       </View>
     );

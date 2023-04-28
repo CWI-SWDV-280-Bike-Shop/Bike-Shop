@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
-import { NavigationContainer, NavigationProp } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { NavigationContainer } from '@react-navigation/native';
 import { Home } from '@pages/home';
 import CRUDPlayground from '@pages/CRUDPlayground';
 import 'react-native-gesture-handler';
@@ -42,7 +41,7 @@ const AppWrapper = () => {
     <NavigationContainer linking={{ prefixes: [] }}>
       <Drawer.Navigator
         initialRouteName={(checkMobile(dimensions)) ? "Shop" : "Home"}
-        screenOptions={{
+        screenOptions={{ 
           drawerStyle: {
             backgroundColor: '#6A7B76',
           },

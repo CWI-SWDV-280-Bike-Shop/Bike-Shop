@@ -38,6 +38,17 @@ export const Footer = () => {
             </View>
             <Text style={styles.defaultText}>(203) 446-1785</Text>
           </View>
+
+          <View style={styles.block}>
+            <View style={styles.titleBlock}>
+              <Icon name="logo-instagram" size={15} color="#FFF" />
+              <Text style={[styles.defaultText, styles.title]}>Instagram</Text>
+            </View>
+            <View style={styles.titleBlock}>
+              <Icon name="logo-twitter" size={15} color="#FFF" />
+              <Text style={[styles.defaultText, styles.title]}>Twitter</Text>
+            </View>
+          </View>
           
         </View>
           {/* <View style={[styles.footer]}>

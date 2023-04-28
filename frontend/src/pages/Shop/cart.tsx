@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import {
   View,
   Text,
@@ -7,31 +7,21 @@ import {
   StyleSheet,
 } from 'react-native';
 import { ShopContext } from '@/context/shop.context';
-import { Product, Order } from '@/types/data.types';
+import { Product } from '@/types/data.types';
 import Layout from '@/styles/layout/Layout';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { formatPrice } from '@/utilities/formatter';
-import { AuthContext } from '@/context/auth.context';
-import { colors } from '@/styles/theme/Colors';
 
 const Cart = () => {
-  const { authUser } = useContext(AuthContext);
-  const { products, quantity, total, checkout, removeFromCart, message } =
+  const { products, items, quantity, total, removeFromCart } =
     useContext(ShopContext);
-
-  const [order, setOrder] = useState<Order | null>(null);
-
-  const handleCheckout = async () => {
-    const order = await checkout(products, authUser);
-    setOrder(order);
-  };
 
   return (
     <ScrollView style={Layout.section}>
-      <Text>authUser: {JSON.stringify(authUser)}</Text>
       <Text style={Layout.title}>Cart</Text>
       <Text>Total: {formatPrice(total)}</Text>
       <Text>Quantity: {quantity}</Text>
+      <Text>OrderItems: {JSON.stringify(items)}</Text>
       {products &&
         products.map((product: Product, index: number) => (
           <View style={{ margin: 10 }} key={index}>
@@ -63,20 +53,6 @@ const Cart = () => {
             </TouchableOpacity>
           </View>
         ))}
-      <TouchableOpacity
-        style={[Styles.button, Styles.checkoutBtn]}
-        onPress={handleCheckout}
-      >
-        <Text style={Styles.buttonText}>
-          Checkout <Icon size={15} name="cart-outline" />
-        </Text>
-      </TouchableOpacity>
-      {order && (
-        <>
-          <Text>{message}</Text>
-          <Text>order: {JSON.stringify(order)}</Text>
-        </>
-      )}
     </ScrollView>
   );
 };
@@ -99,8 +75,5 @@ const Styles = StyleSheet.create({
   },
   deleteBtn: {
     backgroundColor: '#941b0c',
-  },
-  checkoutBtn: {
-    backgroundColor: colors.artichoke,
   },
 });

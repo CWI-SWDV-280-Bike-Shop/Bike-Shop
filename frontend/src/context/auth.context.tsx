@@ -14,8 +14,10 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   authUser: null,
   isLoggedIn: false,
-  login: (credentials) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  logout: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  login: (credentials) => {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  logout: () => {},
   message: null,
 });
 

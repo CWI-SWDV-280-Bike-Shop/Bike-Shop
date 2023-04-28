@@ -12,10 +12,6 @@ const CartAPI = {
   async setLocalCart(cart: Product[]) {
     AsyncStorage.setItem('cart', JSON.stringify(cart));
   },
-
-  async clearLocalCart() {
-    AsyncStorage.removeItem('cart');
-  },
 };
 
 export default CartAPI;

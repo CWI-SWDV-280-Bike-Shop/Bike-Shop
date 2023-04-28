@@ -107,6 +107,8 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
       </View>
       <View style={[styles.headerIcons, { justifyContent: 'flex-end' }]}>
       <Popover
+          isVisible={showPopover}
+          onRequestClose={() => setShowPopover(false)}
           popoverStyle={{ backgroundColor: '#ffffff00' }}
           backgroundStyle={{ backgroundColor: "transparent" }}
           from={
@@ -117,7 +119,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
             </TouchableOpacity>
           }
         >
-          <ProfilePopup navigation={props.navigation}/>
+          <ProfilePopup setShowPopover={setShowPopover} navigation={props.navigation}/>
         </Popover>
         <TouchableOpacity
           style={styles.headerTouchable}
@@ -130,7 +132,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
   );
 };
 
-const ProfilePopup = ({navigation}) => {
+const ProfilePopup = ({navigation, setShowPopover}) => {
   const { isLoggedIn, authUser } = useContext(AuthContext);
   const username = isLoggedIn && authUser.name;
   const email = isLoggedIn && authUser.email;
@@ -144,7 +146,10 @@ const ProfilePopup = ({navigation}) => {
           <Text style={styles.profileEmail}>{email}</Text>
           <TouchableOpacity
           style={styles.buttonPrimary}
-          onPress={() => navigation.navigate('Profile')}
+          onPress={() => {
+            setShowPopover(false);
+            navigation.navigate('Profile', { screen: 'Account' });
+          }}
         >
           <Text style={styles.btnFont}>Edit Profile</Text>
         </TouchableOpacity>
@@ -153,7 +158,10 @@ const ProfilePopup = ({navigation}) => {
       <View style={styles.profileLinks}>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Profile')}
+          onPress={() => {
+            setShowPopover(false);
+            navigation.navigate('Profile', { screen: 'Orders' })
+        }}
         >
           <View style={styles.iconlabelGrouping}>
             <Icon name="receipt-outline" size={24} color="#333333ee" />
@@ -163,7 +171,10 @@ const ProfilePopup = ({navigation}) => {
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('Profile')}
+          onPress={() => {
+            setShowPopover(false);
+            navigation.navigate('Profile', { screen: 'Admin' })
+        }}
         >
           <View style={styles.iconlabelGrouping}>
             <Icon name="key-outline" size={24} color="#333333ee" />

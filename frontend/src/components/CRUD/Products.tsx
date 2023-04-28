@@ -6,6 +6,7 @@ import {
   TextInput,
   ScrollView,
   Modal,
+  Image,
   TouchableOpacity,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -15,6 +16,7 @@ import Layout from '@styles/layout/Layout';
 import { Product } from '@/types/data.types';
 import ProductAPI from '@/api/product.api';
 import { formatPrice } from '@/utilities/formatter';
+import * as ImagePicker from 'expo-image-picker';
 
 const AddProduct = () => {
   const [name, setName] = useState('');
@@ -30,9 +32,26 @@ const AddProduct = () => {
   const [color, setColor] = useState('');
   const [size, setSize] = useState('');
   const [gender, setGender] = useState('');
+  const [image, setImage] = useState('');
 
   const [submitted, setSubmitted] = useState(false);
   const [product, setProduct] = useState({} as Product);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.canceled) {
+      setImage(result.assets[0].uri);
+    }
+  };
 
   const handleSubmit = async () => {
     const newProduct: Product = {
@@ -53,6 +72,7 @@ const AddProduct = () => {
     ProductAPI.create(newProduct).then((res) => setProduct(res.data));
     setSubmitted(true);
   };
+
 
   return (
     <View style={Layout.subsection}>
@@ -235,6 +255,9 @@ const AddProduct = () => {
       )}
 
       <Text>Image Upload: {'TODO'}</Text>
+      <Button title="Upload Image" onPress={pickImage} />
+      <Text>Placeolder to separate buttons</Text>
+      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }}/>}
 
       <Button title="submit" onPress={handleSubmit} />
 

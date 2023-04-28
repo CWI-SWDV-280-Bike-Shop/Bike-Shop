@@ -68,6 +68,7 @@ const AddProduct = () => {
       color,
       size,
       gender,
+      image
     };
     ProductAPI.create(newProduct).then((res) => setProduct(res.data));
     setSubmitted(true);
@@ -345,6 +346,8 @@ const ListProducts = () => {
             <Text>price: {formatPrice(product?.price)}</Text>
             <Text>imageIds: {product?.imageIds}</Text>
             <Text>inStock: {product?.inStock?.toString()}</Text>
+            <Text>Image:</Text>
+            <Image source = {{uri: product?.image}}></Image>
             <>
               {product?.category === 'Bikes' && (
                 <>

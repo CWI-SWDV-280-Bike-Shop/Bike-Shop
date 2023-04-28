@@ -5,7 +5,7 @@ import { Orders } from './orders';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-export const Profile = ({ navigation }) => {
+export const Profile = ({ navigation, dimensions }) => {
   return (
     <View style={[styles.container]}>
       <View style={[styles.contentContainer]}>

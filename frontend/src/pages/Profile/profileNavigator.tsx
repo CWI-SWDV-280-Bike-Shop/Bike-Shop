@@ -11,7 +11,7 @@ export const ProfileNavigator = ({dimensions} : {dimensions : ScaledSize}) => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Profile"
+        name="Options"
         component={Profile}
         options={{ headerShown: false }}
       />

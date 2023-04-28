@@ -9,7 +9,7 @@ import { NavigationHeader } from '@/components/Navigation/Header';
 import { Login } from '@pages/login';
 import { ProfileNavigator } from '@/pages/Profile/profileNavigator';
 import { About } from './pages/about';
-import { Dimensions, ScaledSize, useWindowDimensions } from 'react-native';
+import { Dimensions, Platform, ScaledSize, useWindowDimensions } from 'react-native';
 import { Shop } from './pages/Shop/shop';
 import { AuthContext } from '@context/auth.context';
 import Cart from './pages/Shop/cart';
@@ -19,6 +19,13 @@ const Drawer = createDrawerNavigator();
 const AppWrapper = () => {
   const dimensions = useWindowDimensions();
   const { isLoggedIn, authUser } = useContext(AuthContext);
+  const checkMobile = (dimensions: ScaledSize) => {
+    return Platform.OS === 'android' ||
+      Platform.OS === 'ios' ||
+      dimensions.width <= 992
+      ? true
+      : false;
+  };
 
   const screens = [
     {"name" : "Home", "component": (props) => <Home {...props} dimensions={dimensions} />},
@@ -34,6 +41,7 @@ const AppWrapper = () => {
   return (
     <NavigationContainer linking={{ prefixes: [] }}>
       <Drawer.Navigator
+        initialRouteName={(checkMobile(dimensions)) ? "Shop" : "Home"}
         screenOptions={{
           drawerStyle: {
             backgroundColor: '#6A7B76',

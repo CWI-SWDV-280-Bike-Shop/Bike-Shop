@@ -153,7 +153,7 @@ export const Login = (props: DrawerHeaderProps) => {
 
               {
                 formInfo.map((item, i) => (
-                  <View>
+                  <View key={i}>
                     <Text style={styles.label}>{item.label}</Text>
                     <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
                       value={item.stateValue}
@@ -168,7 +168,7 @@ export const Login = (props: DrawerHeaderProps) => {
               <Text style={[Layout.bodyText]}>Address</Text>
               {
                 formAddr.map((item, i) => (
-                  <View>
+                  <View key={i}>
                     <Text style={styles.label}>{item.label}</Text>
                     <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
                       value={item.stateValue}

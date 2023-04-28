@@ -12,7 +12,10 @@ export const baseRouter = (routeOptions) => {
         async (req, res) =>
           res
             .status(200)
-            .json(await handler({ ...req.params, ...req.body, ...req.query, files: req.files })),
+            .json(await handler(
+              { ...req.params, ...req.body, ...req.query, files: req.files },
+              { appBaseURL: new URL(`${req.protocol}://${req.host}`).href })
+            ),
         "name",
         { value: handler.name }
       )

@@ -2,8 +2,10 @@ import React, {useState} from 'react';
 import {  Text, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '@context/auth.context';
+import UserAPI from '@api/user.api';
 import { useContext } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
+import { Product, Order, User, OrderItem } from "@/types/data.types";
 
 export const Account = () => {
 
@@ -12,10 +14,20 @@ export const Account = () => {
     const { isLoggedIn, authUser } = useContext(AuthContext);
     const username = isLoggedIn && authUser.name;
     const email = isLoggedIn && authUser.email;
+    const password = isLoggedIn && authUser.password;
+    const [user, setUser] = useState({} as User);
+
+    UserAPI.getById(authUser._id).then((res) => setUser(res.data));
 
     const [form, setForm] = useState({
       "username" : username,
-      "email" : email
+      "email" : email,
+      "password" : password,
+      "phone": user.phone,
+      "street": user.address?.street,
+      "state": user.address?.state,
+      "zipcode": user.address?.zip,
+      "country": user.address?.country,
       });
 
     const fields = [
@@ -23,9 +35,10 @@ export const Account = () => {
       {"name": "email", "label": "Email"},
       {"name": "password", "label": "Password"},
       {"name": "phone", "label": "Phone"},
-      {"name": "address", "label": "Address"},
+      {"name": "street", "label": "Address"},
       {"name": "state", "label": "State"},
       {"name": "zipcode", "label": "Zip Code"},
+      {"name": "country", "label": "Country"},
     ]
 
     return (
@@ -38,7 +51,7 @@ export const Account = () => {
         <View style={styles.accountDetails}>
           {
             fields.map((item, i) => (
-              <View style={styles.row}>
+              <View style={styles.row} key={i}>
                 <Text style={styles.label}>{item.label}</Text>
                 <TextInput value={form[item.name]} style={styles.editBox} />
               </View>

@@ -89,6 +89,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
   },
   profileLinks: {
+    paddingVertical: 20,
     marginHorizontal: 40,
     flexDirection: 'column',
     columnGap: 15,
@@ -144,6 +145,7 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   button: {
+    marginVertical: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     gap: 20,

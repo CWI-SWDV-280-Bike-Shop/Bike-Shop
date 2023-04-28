@@ -8,10 +8,9 @@ import { Text, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Layout from '@styles/layout/Layout';
+import { InputModeOptions } from "react-native"
 
-export const Login = (props: DrawerHeaderProps) => {
-  //Window Dimensions
-  const dimensions = useWindowDimensions();
+export const LoginScreen = ({props} : {props: DrawerHeaderProps}) => {
   //Auth connection
   const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
   //Login Logic
@@ -27,6 +26,48 @@ export const Login = (props: DrawerHeaderProps) => {
       props.navigation.navigate("Profile");
     }
   };
+  return (
+    <View>
+      <Text style={[Layout.header]}>Login</Text>
+        <Text style={[Layout.bodyText]}>
+          Please login to see your profile.
+        </Text>
+        <View>
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={[styles.editBox]}
+            placeholder='Email'
+            value={email}
+            onChangeText={(value) => setEmail(value)}
+          />
+        </View>
+        <View>
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={[styles.editBox]}
+            placeholder='Password'
+            value={password}
+            onChangeText={(value) => setPassword(value)}
+            secureTextEntry={true}
+          />
+        </View>
+        {message && <Text style={[Layout.errorText]}>{message}</Text>}
+        <Text style={[Layout.errorText]}>{loginError}</Text>
+        <View style={styles.rowBottom}>
+          <TouchableOpacity style={styles.buttonPrimary} onPressIn={(submit)}>
+            <Text style={styles.btnFont}>Login</Text>
+            <Icon name="log-in-outline" size={30} color="#FFF"/>
+          </TouchableOpacity>
+        </View>
+    </View>
+  )
+}
+
+export const Login = (props: DrawerHeaderProps) => {
+  //Window Dimensions
+  const dimensions = useWindowDimensions();
+  //Auth connection
+  const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
   //Register Logic
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
@@ -48,45 +89,59 @@ export const Login = (props: DrawerHeaderProps) => {
     setRegAddress({ ...regAddress, [fieldName]: value });
   };
 
-  const LoginScreen = () => {
-    return (
-      <View>
-        <Text style={[Layout.header]}>Login</Text>
-          <Text style={[Layout.bodyText]}>
-            Please login to see your profile.
-          </Text>
-          <View>
-            <Text style={styles.label}>Email</Text>
-            <TextInput
-              style={[styles.editBox]}
-              placeholder='Email'
-              value={email}
-              onChangeText={(value) => setEmail(value)}
-            />
-          </View>
-          <View>
-            <Text style={styles.label}>Password</Text>
-            <TextInput
-              style={[styles.editBox]}
-              placeholder='Password'
-              value={password}
-              onChangeText={(value) => setPassword(value)}
-              secureTextEntry={true}
-            />
-          </View>
-          {message && <Text style={[Layout.errorText]}>{message}</Text>}
-          <Text style={[Layout.errorText]}>{loginError}</Text>
-          <View style={styles.rowBottom}>
-            <TouchableOpacity style={styles.buttonPrimary} onPressIn={(submit)}>
-              <Text style={styles.btnFont}>Login</Text>
-              <Icon name="log-in-outline" size={30} color="#FFF"/>
-            </TouchableOpacity>
-          </View>
-      </View>
-    )
-  }
-
   const RegisterScreen = () => {
+    const formInfo = [
+      {
+        "label": "Full Name", 
+        "stateValue": regName, 
+        "setState": setRegName
+      },
+      {
+        "label": "Email",
+        "inputMode": 'email',
+        "stateValue": regEmail, 
+        "setState": setRegEmail
+      },
+      {
+        "label": "Password", 
+        "stateValue": regPassword, 
+        "setState": setRegPassword
+      },
+      {
+        "label": "Confirm Password", 
+        "stateValue": confirmPassword, 
+        "setState": setConfirmPassword
+      },
+      {
+        "label": "Phone", 
+        "inputMode": "tel",
+        "stateValue": regPhone, 
+        "setState": setRegPhone
+      },
+    ]
+    const formAddr = [
+      {
+        "label": "Street", 
+        "stateValue": regAddress.street
+      },
+      {
+        "label": "City", 
+        "stateValue": regAddress.city
+      },
+      {
+        "label": "State", 
+        "stateValue": regAddress.state
+      },
+      {
+        "label": "Zipcode", 
+        "inputMode": "numeric",
+        "stateValue": regAddress.zip
+      },
+      {
+        "label": "Country", 
+        "stateValue": regAddress.country
+      }
+    ]
     return (
       <View>
         <Text style={[Layout.header]}>New here?</Text>
@@ -96,68 +151,43 @@ export const Login = (props: DrawerHeaderProps) => {
             <View style={dimensions.width <= 800 ? styles.infoContainer : styles.infoContainerSmaller}>
               <Text style={[Layout.bodyText]}>Information</Text>
 
-              <View>
-              <Text style={styles.label}>Full Name</Text>
-              <TextInput style={styles.editBox} placeholder='Full Name'
-                value={regName}
-                onChangeText={(value) => setRegName(value)}
-              />
-              </View>
-              <TextInput style={styles.editBox} inputMode='email' placeholder='Email'
-                value={regEmail}
-                onChangeText={(value) => setRegEmail(value)}
-              />
-              <TextInput style={styles.editBox} placeholder='Password' secureTextEntry={true}
-                value={regPassword}
-                onChangeText={(value) => setRegPassword(value)}
-              />
-              <TextInput style={styles.editBox} placeholder='Confirm Password' secureTextEntry={true}
-                value={confirmPassword}
-                onChangeText={(value) => setConfirmPassword(value)}
-              />
-              <TextInput style={styles.editBox} inputMode='tel' placeholder='Phone Number'
-                value={regPhone}
-                onChangeText={(value) => setRegPhone(value)}
-              />
+              {
+                formInfo.map((item, i) => (
+                  <View>
+                    <Text style={styles.label}>{item.label}</Text>
+                    <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
+                      value={item.stateValue}
+                      onChangeText={(value) => item.setState(value)}
+                    />
+                  </View>
+                ))
+              }
             </View>
 
             <View style={dimensions.width <= 800 ? styles.addressContainerSmaller : styles.addressContainer}>
               <Text style={[Layout.bodyText]}>Address</Text>
-              <TextInput style={styles.editBox} placeholder='Street'
-                value={regAddress.street}
-                onChangeText={(value) => onChangeAddress('street', value)}
-              />
-              <TextInput style={styles.editBox} placeholder='City'
-                value={regAddress.city}
-                onChangeText={(value) => onChangeAddress('city', value)}
-              />
-              <TextInput style={styles.editBox} placeholder='State'
-                value={regAddress.state}
-                onChangeText={(value) => onChangeAddress('state', value)}
-              />
-              <TextInput style={styles.editBox} inputMode='numeric' placeholder='Zipcode'
-                value={regAddress.zip}
-                onChangeText={(value) => onChangeAddress('zip', value)}
-              />
-              <TextInput style={styles.editBox} placeholder='Country'
-                value={regAddress.country}
-                onChangeText={(value) => onChangeAddress('country', value)}
-              />
+              {
+                formAddr.map((item, i) => (
+                  <View>
+                    <Text style={styles.label}>{item.label}</Text>
+                    <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
+                      value={item.stateValue}
+                      onChangeText={(value) => onChangeAddress(item.label.toLowerCase(), value)}
+                    />
+                  </View>
+                ))
+              }
             </View>
 
           </View>
           {message && <Text style={[Layout.errorText]}>{message}</Text>}
           <Text style={[Layout.errorText]}>{errorMessage}</Text>
-          <TouchableOpacity style={Layout.button}
-            onPressIn={regSubmit}
-          >
-            <Icon
-              name="person-add-outline"
-              size={60}
-              color="#FFF"
-            />
-            <Text style={Layout.buttonContent}>New Account</Text>
-          </TouchableOpacity>
+          <View style={styles.rowBottom}>
+            <TouchableOpacity style={styles.buttonPrimary} onPressIn={(regSubmit)}>
+              <Icon name="person-add-outline" size={30} color="#FFF"/>
+              <Text style={styles.btnFont}>Register Account</Text>
+            </TouchableOpacity>
+          </View>
 
           {isLoggedIn && (
             <View>
@@ -203,7 +233,7 @@ export const Login = (props: DrawerHeaderProps) => {
   return (
     <ScrollView style={[Layout.container]}>
       <View style={[Layout.contentContainer]}>
-        <LoginScreen/>
+        <LoginScreen props={props}/>
 
         {isLoggedIn && (
           <View>

@@ -1,5 +1,5 @@
-import { DrawerHeaderProps } from '@react-navigation/drawer';
-import React, { useContext, useState } from 'react';
+import { DrawerHeaderProps, DrawerNavigationProp } from '@react-navigation/drawer';
+import React, { Dispatch, SetStateAction, useContext, useState } from 'react';
 import {
   TouchableOpacity,
   Text,
@@ -16,6 +16,7 @@ import { AuthContext } from '@context/auth.context';
 import { Pressable } from 'react-native-web-hover';
 import { ShopContext } from '@/context/shop.context';
 import Popover from "react-native-popover-view";
+import { LoginScreen } from '@pages/login';
 
 const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
   return (
@@ -114,7 +115,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
             </TouchableOpacity>
           }
         >
-          <ProfilePopup setShowPopover={setShowPopover} navigation={props.navigation}/>
+          <ProfilePopup setShowPopover={setShowPopover} props={props}/>
         </Popover>
         <TouchableOpacity
           style={styles.headerTouchable}
@@ -127,7 +128,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
   );
 };
 
-const ProfilePopup = ({navigation, setShowPopover}) => {
+const ProfilePopup = ({props, setShowPopover} : {props: DrawerHeaderProps, setShowPopover: Dispatch<SetStateAction<boolean>>}) => {
   const { isLoggedIn, authUser, logout } = useContext(AuthContext);
   const username = isLoggedIn && authUser.name;
   const email = isLoggedIn && authUser.email;
@@ -143,7 +144,7 @@ const ProfilePopup = ({navigation, setShowPopover}) => {
           style={styles.buttonPrimary}
           onPress={() => {
             setShowPopover(false);
-            navigation.navigate('Profile', { screen: 'Account' });
+            props.navigation.navigate('Profile', { screen: 'Account' });
           }}
         >
           <Text style={styles.btnFont}>Edit Profile</Text>
@@ -155,7 +156,7 @@ const ProfilePopup = ({navigation, setShowPopover}) => {
           style={styles.button}
           onPress={() => {
             setShowPopover(false);
-            navigation.navigate('Profile', { screen: 'Orders' })
+            props.navigation.navigate('Profile', { screen: 'Orders' })
         }}
         >
           <View style={styles.iconlabelGrouping}>
@@ -168,7 +169,7 @@ const ProfilePopup = ({navigation, setShowPopover}) => {
           style={styles.button}
           onPress={() => {
             setShowPopover(false);
-            navigation.navigate('Profile', { screen: 'Admin' })
+            props.navigation.navigate('Profile', { screen: 'Admin' })
         }}
         >
           <View style={styles.iconlabelGrouping}>
@@ -193,7 +194,8 @@ const ProfilePopup = ({navigation, setShowPopover}) => {
     //Login Screen
     //Needs to pull responsive login component from login
     <View style={styles.popoverBody}>
-      <View style={styles.profileRow}>
+      <LoginScreen props={props} />
+      {/* <View style={styles.profileRow}>
         <View style={styles.profileDetails}>
         <TouchableOpacity
             style={styles.buttonPrimary}
@@ -214,7 +216,7 @@ const ProfilePopup = ({navigation, setShowPopover}) => {
             <Text style={styles.btnFont}>Register</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </View> */}
     </View>
   )
 }

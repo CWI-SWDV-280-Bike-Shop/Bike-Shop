@@ -3,6 +3,7 @@ import { StyleSheet } from 'react-native';
 export default StyleSheet.create({
   // Layout
   container: {
+    backgroundColor: '#fff',
     flex: 1,
     flexDirection: 'column',
   },
@@ -89,7 +90,7 @@ export default StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: '#D3D5D4',
+    backgroundColor: '#fff',
     alignItems: "center",
     paddingBottom: 50,
   },

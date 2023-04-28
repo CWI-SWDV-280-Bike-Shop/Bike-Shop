@@ -48,6 +48,43 @@ export const Login = (props: DrawerHeaderProps) => {
     setRegAddress({ ...regAddress, [fieldName]: value });
   };
 
+  const LoginScreen = () => {
+    return (
+      <View>
+        <Text style={[Layout.header]}>Login</Text>
+          <Text style={[Layout.bodyText]}>
+            Please login to see your profile.
+          </Text>
+          <TextInput
+            style={[Layout.textArea]}
+            placeholder='Email'
+            value={email}
+            onChangeText={(value) => setEmail(value)}
+          />
+          <TextInput
+            style={[Layout.textArea]}
+            placeholder='Password'
+            value={password}
+            onChangeText={(value) => setPassword(value)}
+            secureTextEntry={true}
+          />
+          {message && <Text style={[Layout.errorText]}>{message}</Text>}
+          <Text style={[Layout.errorText]}>{loginError}</Text>
+          <TouchableOpacity
+            style={Layout.button}
+            onPressIn={(submit)}
+          >
+            <Icon
+              name="log-in-outline"
+              size={60}
+              color="#FFF"
+            />
+            <Text style={Layout.buttonContent}> Login</Text>
+          </TouchableOpacity>
+      </View>
+    )
+  }
+
   const regSubmit = () => {
 
     if (regName == '' || regEmail == '' || regPassword == '' || regPhone == '') {
@@ -78,36 +115,7 @@ export const Login = (props: DrawerHeaderProps) => {
   return (
     <ScrollView style={[Layout.container]}>
       <View style={[Layout.contentContainer]}>
-        <Text style={[Layout.header]}>Login</Text>
-        <Text style={[Layout.bodyText]}>
-          Please login to see your profile.
-        </Text>
-        <TextInput
-          style={[Layout.textArea]}
-          placeholder='Email'
-          value={email}
-          onChangeText={(value) => setEmail(value)}
-        />
-        <TextInput
-          style={[Layout.textArea]}
-          placeholder='Password'
-          value={password}
-          onChangeText={(value) => setPassword(value)}
-          secureTextEntry={true}
-        />
-        {message && <Text style={[Layout.errorText]}>{message}</Text>}
-        <Text style={[Layout.errorText]}>{loginError}</Text>
-        <TouchableOpacity
-          style={Layout.button}
-          onPressIn={(submit)}
-        >
-          <Icon
-            name="log-in-outline"
-            size={60}
-            color="#FFF"
-          />
-          <Text style={Layout.buttonContent}> Login</Text>
-        </TouchableOpacity>
+        <LoginScreen/>
 
         {isLoggedIn && (
           <View>

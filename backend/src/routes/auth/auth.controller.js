@@ -23,11 +23,6 @@ const AuthController = {
       role,
     });
 
-    const accessToken = jwt.sign({ userId: user }, config.secret, {
-      expiresIn: config.accessTokenExpiration,
-    });
-    let refreshToken = await RefreshToken.createToken(user);
-
     // check if user w/ email already exists before creating new User
     const checkEmail = await User.findOne({ email });
     if (checkEmail) throw new Conflict('A user already exists with that email');

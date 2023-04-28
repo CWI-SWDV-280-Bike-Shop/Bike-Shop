@@ -330,6 +330,8 @@ const ListProducts = () => {
             <Text>price: {formatPrice(product?.price)}</Text>
             {/* <Text>image: {product?.images?.[0]?.url}</Text> */}
             <Text>inStock: {product?.inStock?.toString()}</Text>
+            <Text>Image:</Text>
+            <Image source = {{uri: product?.image}}></Image>
             <>
               {product?.category === 'Bikes' && (
                 <>

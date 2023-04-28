@@ -8,7 +8,7 @@ import { AuthContext } from '@context/auth.context';
 import { useContext } from 'react';
 
 export const Profile = ({ navigation, dimensions }) => {
-  const { isLoggedIn, authUser } = useContext(AuthContext);
+  const { isLoggedIn, authUser, logout } = useContext(AuthContext);
   const username = isLoggedIn && authUser.name;
   const email = isLoggedIn && authUser.email;
 
@@ -48,7 +48,10 @@ export const Profile = ({ navigation, dimensions }) => {
           </View>
           <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          navigation.navigate('Login')
+          logout();
+        }}>
           <View style={styles.iconlabelGrouping}>
             <Icon name="log-out-outline" size={24} color="#333333ee" />
             <Text style={styles.buttonContent}>Logout</Text>

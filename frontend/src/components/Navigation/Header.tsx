@@ -133,11 +133,11 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
 };
 
 const ProfilePopup = ({navigation, setShowPopover}) => {
-  const { isLoggedIn, authUser } = useContext(AuthContext);
+  const { isLoggedIn, authUser, logout } = useContext(AuthContext);
   const username = isLoggedIn && authUser.name;
   const email = isLoggedIn && authUser.email;
 
-  return (
+  return (isLoggedIn) ? (
     <View style={styles.popoverBody}>
       <View style={styles.profileRow}>
         <View style={styles.profileImage}><Icon name="person-circle-outline" size={100} color="#FFF" /></View>
@@ -182,7 +182,10 @@ const ProfilePopup = ({navigation, setShowPopover}) => {
           </View>
           <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={() => {
+          setShowPopover(false);
+          logout();
+        }}>
           <View style={styles.iconlabelGrouping}>
             <Icon name="log-out-outline" size={24} color="#333333ee" />
             <Text style={styles.buttonContent}>Logout</Text>
@@ -190,6 +193,12 @@ const ProfilePopup = ({navigation, setShowPopover}) => {
           <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
         </TouchableOpacity>
       </View>
+    </View>
+  ) : (
+    //Login Screen
+    //Code really should be reused from login component but I would need to change a bunch of stuff first, so ---> Todo?
+    <View style={styles.popoverBody}>
+
     </View>
   )
 }

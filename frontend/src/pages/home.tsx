@@ -114,7 +114,6 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
                 {mission}
               </Text>
             </View>
-            <Footer />
         </View>
       </View>
       </ScrollView>

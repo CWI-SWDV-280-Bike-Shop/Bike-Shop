@@ -66,7 +66,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
     return (
       <View style={styles.navBar}>
         {navigation.getState().routeNames.map((name, i) => {
-          if (name === 'Cart' || name === 'Profile') {
+          if (["Cart", "Profile", "Login"].some((e) => name === e)) {
             return;
           }
           if (

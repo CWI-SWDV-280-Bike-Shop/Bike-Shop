@@ -196,9 +196,30 @@ const ProfilePopup = ({navigation, setShowPopover}) => {
     </View>
   ) : (
     //Login Screen
-    //Code really should be reused from login component but I would need to change a bunch of stuff first, so ---> Todo?
+    //Needs to pull responsive login component from login
     <View style={styles.popoverBody}>
-
+      <View style={styles.profileRow}>
+        <View style={styles.profileDetails}>
+        <TouchableOpacity
+            style={styles.buttonPrimary}
+            onPress={() => {
+              setShowPopover(false);
+              navigation.navigate('Login');
+            }}
+          >
+            <Text style={styles.btnFont}>Login</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonPrimary}
+            onPress={() => {
+              setShowPopover(false);
+              navigation.navigate('Login');
+            }}
+          >
+            <Text style={styles.btnFont}>Register</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   )
 }

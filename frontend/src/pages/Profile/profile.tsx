@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Orders } from './orders';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthContext } from '@context/auth.context';
 import { useContext } from 'react';
 
@@ -59,13 +56,6 @@ export const Profile = ({ navigation, dimensions }) => {
           <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
         </TouchableOpacity>
       </View>
-      {/* <View style={[styles.contentContainer]}>
-        <Text style={[styles.header]}>Welcome, {username}</Text>
-        <View style={styles.buttonRow}>
-          
-        </View>
-        <View style={styles.buttonRow}></View>
-      </View> */}
     </View >
   );
 };

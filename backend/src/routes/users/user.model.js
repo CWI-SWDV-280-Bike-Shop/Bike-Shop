@@ -18,8 +18,7 @@ const UserSchema = new Schema(
     address: AddressSchema,
     role: {
       type: String,
-      enum: ['Admin', 'Customer', ''],
-      default: 'Customer',
+      enum: ['admin', 'customer', 'unauthenticated'],
     },
     orders: [
       {

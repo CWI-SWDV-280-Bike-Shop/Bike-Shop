@@ -26,26 +26,37 @@ async function safeOrder(data) {
 }
 
 class OrderController extends BaseController(Order) {
-  static find(query = {}) {
-    return Order.find({
-      ...query,
-      items: {
-        $elemMatch: query.items ?? {}
-      }
-    });
+  static auth = {
+    ...super.auth,
+    isOwnedByUser: (order, user) => order.customer?._id?.toString() === user._id?.toString()
+  };
+
+  static async find(query = {}) {
+    return {
+      type: 'read',
+      data: await Order.find({
+        ...query,
+        items: {
+          $elemMatch: query.items ?? {}
+        }
+      })
+    };
   }
 
-  static async create(data) {
-    return super.create(await safeOrder(data));
+  static async getById({ id } = {}) {
+    return {
+      type: 'read',
+      data: await Order.findById(id)
+    }
   }
 
-  static async update(data) {
-    return super.update(await safeOrder(data));
-  }
-
-  static getById({ id } = {}) {
-    return Order.findById(id);
-  }
+    static async create(data) {
+      return super.create(await safeOrder(data));
+    }
+  
+    static async update(data) {
+      return super.update(await safeOrder(data));
+    }
 }
 
 export default OrderController;

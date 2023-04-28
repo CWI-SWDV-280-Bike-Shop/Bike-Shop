@@ -18,6 +18,8 @@ import { AuthContext } from '@/context/auth.context';
 import { colors } from '@/styles/theme/Colors';
 import { DrawerHeaderProps } from '@react-navigation/drawer';
 
+
+
 const Cart = (props: DrawerHeaderProps) => {
   //these prices are based off of https://www.ups.com/assets/resources/webcontent/en_US/daily_rates.pdf
   const streetBikeShipping = 16.10;

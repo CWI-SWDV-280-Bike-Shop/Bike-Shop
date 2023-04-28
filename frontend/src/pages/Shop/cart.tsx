@@ -26,14 +26,15 @@ const Cart = (props: DrawerHeaderProps) => {
   const mountainBikeShipping = 19.45;
   const eBikeShipping = 38.99;
   const accessoriesShipping = 11.67;
-
+  //Auth
   const { authUser, isLoggedIn } = useContext(AuthContext);
+  //Shop
   const { products, quantity, total, checkout, removeFromCart, message } = useContext(ShopContext);
-
+  //Responsive
   const dimensions = useWindowDimensions();
   const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
   const responsive = checkMobile(dimensions) ? mobile : web;
-
+  //Set Order
   const [order, setOrder] = useState<Order | null>(null);
 
   const handleCheckout = async () => {
@@ -64,26 +65,26 @@ const Cart = (props: DrawerHeaderProps) => {
     return cost;
   }
 
-  // const ListOrderItems = (items: OrderItem[]) => {
-  //   let orderItems = "\n";
-  //   items.map((item: OrderItem) => {
-  //     orderItems += "Product: " + item.product + " "
-  //     orderItems += "Item Price: " + formatPrice(item.price) + " "
-  //     orderItems += '\n'
-  //   });
-  //   return orderItems;
-  // }
+  const ListOrderItems = (products: Product[]) => {
+    let orderItems = "\n";
+    products.map((item: Product) => {
+      orderItems += "Product: " + item.name + " "
+      orderItems += "Item Price: " + formatPrice(item.price) + " "
+      orderItems += '\n'
+    });
+    return orderItems;
+  }
 
   return (
     <View style={[Styles.container, responsive.container]}>
       <View style={[Styles.cart, responsive.cart]}>
         <Text style={[Styles.bodyText, { fontWeight: 'bold', fontSize: 30 }]}>Are your ready to checkout?  {isLoggedIn ? authUser.name + '?' : <Text />}</Text>
         <Text style={Styles.bodyText}>Quantity of Items/Services: {quantity}</Text>
-        {/* <Text style={Styles.bodyText}>OrderItems: {items && ListOrderItems(items)}</Text> */}
+        <Text style={Styles.bodyText}>Ordered Items: {products && ListOrderItems(products)}</Text>
         <Text style={Styles.bodyText}>Sub Total: {formatPrice(total)}</Text>
         <Text style={Styles.bodyText}>Shipping: {products && formatPrice(calculateShipping(products))}</Text>
-        <Text style={Styles.bodyText}>Total:{formatPrice(total * 1.06)}</Text>
-        <Text style={Styles.bodyText}>Quantity: {quantity}</Text>
+        {/* <Text style={Styles.bodyText}>Total:{formatPrice(total * 1.06)}</Text> */}
+        {/* <Text style={Styles.bodyText}>Quantity: {quantity}</Text> */}
         <Text style={Styles.bodyText}>State Tax: {formatPrice(total * 0.06)}</Text>
         <Text style={Styles.bodyText}>Grand Total:{formatPrice((total * 1.06) + (products && calculateShipping(products)))}</Text>
         {
@@ -95,12 +96,18 @@ const Cart = (props: DrawerHeaderProps) => {
         }
         <TouchableOpacity
           style={[Styles.button, Styles.checkoutBtn]}
-          onPress={isLoggedIn ? () => handleCheckout : () => props.navigation.navigate("Login")}
+          onPress={isLoggedIn ? () => handleCheckout() : () => props.navigation.navigate("Login")}
         >
           <Text style={Styles.buttonText}>
-            Checkout <Icon size={20} name="checkbox-outline" />
+            Checkout <Icon size={20} name="cart-outline" />
           </Text>
         </TouchableOpacity>
+        {order && (
+          <>
+            <Text>{message}</Text>
+            <Text>order: {JSON.stringify(order)}</Text>
+          </>
+        )}
       </View>
       <View style={Styles.cartScroll}>
         <ScrollView >

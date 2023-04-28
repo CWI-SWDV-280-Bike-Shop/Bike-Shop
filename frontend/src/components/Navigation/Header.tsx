@@ -195,28 +195,19 @@ const ProfilePopup = ({props, setShowPopover} : {props: DrawerHeaderProps, setSh
     //Needs to pull responsive login component from login
     <View style={styles.popoverBody}>
       <LoginScreen props={props} />
-      {/* <View style={styles.profileRow}>
+      <View style={styles.profileRow}>
         <View style={styles.profileDetails}>
-        <TouchableOpacity
-            style={styles.buttonPrimary}
-            onPress={() => {
-              setShowPopover(false);
-              navigation.navigate('Login');
-            }}
-          >
-            <Text style={styles.btnFont}>Login</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonPrimary}
             onPress={() => {
               setShowPopover(false);
-              navigation.navigate('Login');
+              props.navigation.navigate('Login');
             }}
           >
             <Text style={styles.btnFont}>Register</Text>
           </TouchableOpacity>
         </View>
-      </View> */}
+      </View>
     </View>
   )
 }
@@ -301,16 +292,21 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   buttonPrimary: {
-    backgroundColor: '#477B61',
-    paddingHorizontal: 30,
+    flexDirection: 'row',
+    borderColor: '#477B61',
+    borderWidth: 3,
+    backgroundColor: '#477B6100',
+    paddingHorizontal: 20,
     paddingVertical: 10,
-    alignContent: 'center',
-    justifyContent: 'center',
+    alignItems: 'center',
     borderRadius: 5,
   },
   btnFont: {
+    fontSize: 18,
+    paddingHorizontal: 10,
+    textTransform: 'uppercase',
     fontWeight: 'bold',
-    color: '#fff',
+    color: '#477B61',
   },
   button: {
     marginVertical: 10,

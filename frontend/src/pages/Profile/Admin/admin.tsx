@@ -231,7 +231,46 @@ const Column = ({
             /></View>
       </View> */
 }
+//User Crude
+const createUser = (userData: User) => {
+  UserAPI.create(userData)
+    .then((response) => {
+      // handle success response
+      console.log(response.data);
+    })
+    .catch((error) => {
+      // handle error
+      console.log(error.response.data);
+    });
+};
 
+
+{/*
+const updateUser = (userId:string, updatedUserData:User) => {
+  UserAPI.update(user._id, updatedUserData)
+    .then((response) => {
+      // handle success response
+      console.log(response.data);
+    })
+    .catch((error) => {
+      // handle error
+      console.log(error.response.data);
+    });
+};
+ */}
+
+ 
+const deleteUser = (userId:string) => {
+  UserAPI.delete(userId)
+    .then((response) => {
+      // handle success response
+      console.log(response.data);
+    })
+    .catch((error) => {
+      // handle error
+      console.log(error.response.data);
+    });
+};
 const UsersTableHeader = ({
   labels,
   properties,
@@ -255,6 +294,9 @@ const UsersTableHeader = ({
             <TextInput style={styles.createNew} placeholder={label} />
           </View>
         ))}
+        <TouchableOpacity onPress={() => createUser({ name: '', email: '', role: '', phone: '', address: { street: '', city: '', state: '', zip: '', country: '' } })}>
+          <Icon onPress={createUser} name="person-add-outline" size={20} />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -262,12 +304,39 @@ const UsersTableHeader = ({
 
 const UserElement = ({ user }: { user: User }) => {
   const [showPopover, setShowPopover] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [name, setName] = useState(user.name);
+  const [email, setemail] = useState(user.email);
+  const [phone, setphone] = useState(user.phone);
+  const [address, setaddress] = useState(user.address);
+  const [role, setrole] = useState(user.role);
 
+
+  const handleUpdate = () => {
+    update(user._id,
+       { name, email,phone, address,role});
+    
+    setEditing(false);
+  };
   return (
     <Row>
       <View style={styles.col}>
         <Icon name="square-outline" size={20} color="#000" />
       </View>
+
+      {editing ? (
+        <>
+          <TextInput value={name} onChangeText={setName} />
+          <TextInput value={email} onChangeText={setemail} />
+          <TextInput value={phone} onChangeText={setphone} />
+          <TextInput value={address} onChangeText={setaddress} />
+          <TextInput value={role} onChangeText={setrole} />
+
+          {/* Add more text inputs for each field you want to edit */}
+        </>
+      ) : (
+        <>
+
       <Column>{user?._id}</Column>
       <Column>{user?.name}</Column>
       <Column>{user?.email}</Column>
@@ -279,6 +348,8 @@ const UserElement = ({ user }: { user: User }) => {
       <Column>{user?.address?.state}</Column>
       <Column>{user?.address?.zip}</Column>
       <Column>{user?.address?.country}</Column>
+      </>
+      )}
       <View style={[styles.col, { alignItems: "center" }]}>
         {/* POPOVER*/}
         <Popover
@@ -290,16 +361,21 @@ const UserElement = ({ user }: { user: User }) => {
               <Icon name="ellipsis-vertical" size={20} color="#000" />
             </TouchableOpacity>
           }
-        >
-          <View style={styles.popIcon}>
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.update} name="create-outline" size={20} />
-            </TouchableOpacity>
+        > <View style={styles.popIcon}>
+        {editing ? (
+          <TouchableOpacity onPress={handleUpdate}>
+            <Icon name="save-outline" size={20} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => setEditing(true)}>
+            <Icon name="create-outline" size={20} />
+          </TouchableOpacity>
+        )}
 
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.delete} name="trash-outline" size={20} />
-            </TouchableOpacity>
-          </View>
+        <TouchableOpacity onPress={deleteUser}>
+          <Icon name="trash-outline" size={20} />
+        </TouchableOpacity>
+      </View>
         </Popover>
 
         {/* <Menu>

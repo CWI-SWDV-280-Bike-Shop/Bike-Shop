@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -7,26 +7,26 @@ import {
   ScrollView,
   Modal,
   TouchableOpacity,
-} from 'react-native';
-import Styles from './Styles';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Picker } from '@react-native-picker/picker';
-import Layout from '@styles/layout/Layout';
-import UserAPI from '@api/user.api';
-import { User } from '@/types/data.types';
+} from "react-native";
+import Styles from "./Styles";
+import Icon from "react-native-vector-icons/Ionicons";
+import { Picker } from "@react-native-picker/picker";
+import Layout from "@styles/layout/Layout";
+import UserAPI from "@api/user.api";
+import { User } from "@/types/data.types";
 
 const AddUser = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState({
-    street: '',
-    city: '',
-    state: '',
-    zip: '',
-    country: '',
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "",
   });
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState("");
 
   const [submitted, setSubmitted] = useState(false);
   const [user, setUser] = useState({} as User);
@@ -85,31 +85,31 @@ const AddUser = () => {
       <TextInput
         style={Layout.input}
         value={address.street}
-        onChangeText={(value) => onChangeAddress('street', value)}
+        onChangeText={(value) => onChangeAddress("street", value)}
       />
       <Text>City</Text>
       <TextInput
         style={Layout.input}
         value={address.city}
-        onChangeText={(value) => onChangeAddress('city', value)}
+        onChangeText={(value) => onChangeAddress("city", value)}
       />
       <Text>State</Text>
       <TextInput
         style={Layout.input}
         value={address.state}
-        onChangeText={(value) => onChangeAddress('state', value)}
+        onChangeText={(value) => onChangeAddress("state", value)}
       />
       <Text>Zip</Text>
       <TextInput
         style={Layout.input}
         value={address.zip}
-        onChangeText={(value) => onChangeAddress('zip', value)}
+        onChangeText={(value) => onChangeAddress("zip", value)}
       />
       <Text>Country</Text>
       <TextInput
         style={Layout.input}
         value={address.country}
-        onChangeText={(value) => onChangeAddress('country', value)}
+        onChangeText={(value) => onChangeAddress("country", value)}
       />
 
       <Text>Role</Text>
@@ -132,7 +132,7 @@ const ListUsers = () => {
   const [editModalVisibile, setEditModalVisible] = useState(false);
   const [deleteModalVisibile, setDeleteModalVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
     UserAPI.getAll().then((res) => setUsers(res.data));
@@ -218,17 +218,17 @@ const ListUsers = () => {
 };
 
 const EditUser = ({ user, visible, onClose, onSave }) => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phone, setPhone] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [address, setAddress] = useState({
-    street: '',
-    city: '',
-    state: '',
-    zip: '',
-    country: '',
+    street: "",
+    city: "",
+    state: "",
+    zip: "",
+    country: "",
   });
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState("");
 
   const onChangeAddress = (fieldName: string, value: string) => {
     setAddress({ ...address, [fieldName]: value });
@@ -236,19 +236,19 @@ const EditUser = ({ user, visible, onClose, onSave }) => {
 
   useEffect(() => {
     if (user) {
-      setName(user?.name || '');
-      setEmail(user?.email || '');
-      setPhone(user?.phone || '');
+      setName(user?.name || "");
+      setEmail(user?.email || "");
+      setPhone(user?.phone || "");
       setAddress(
         user?.address || {
-          street: '',
-          city: '',
-          state: '',
-          zip: '',
-          country: '',
+          street: "",
+          city: "",
+          state: "",
+          zip: "",
+          country: "",
         }
       );
-      setRole(user?.role || '');
+      setRole(user?.role || "");
     }
   }, [user]);
 
@@ -296,31 +296,31 @@ const EditUser = ({ user, visible, onClose, onSave }) => {
         <TextInput
           style={Layout.input}
           value={address.street}
-          onChangeText={(value) => onChangeAddress('street', value)}
+          onChangeText={(value) => onChangeAddress("street", value)}
         />
         <Text>City</Text>
         <TextInput
           style={Layout.input}
           value={address.city}
-          onChangeText={(value) => onChangeAddress('city', value)}
+          onChangeText={(value) => onChangeAddress("city", value)}
         />
         <Text>State</Text>
         <TextInput
           style={Layout.input}
           value={address.state}
-          onChangeText={(value) => onChangeAddress('state', value)}
+          onChangeText={(value) => onChangeAddress("state", value)}
         />
         <Text>Zip</Text>
         <TextInput
           style={Layout.input}
           value={address.zip}
-          onChangeText={(value) => onChangeAddress('zip', value)}
+          onChangeText={(value) => onChangeAddress("zip", value)}
         />
         <Text>Country</Text>
         <TextInput
           style={Layout.input}
           value={address.country}
-          onChangeText={(value) => onChangeAddress('country', value)}
+          onChangeText={(value) => onChangeAddress("country", value)}
         />
 
         <Text>Role</Text>
@@ -366,7 +366,7 @@ const DeleteUser = ({ user, visible, onClose, onDelete }) => {
   return (
     <Modal visible={visible} animationType="slide">
       <View>
-        <Text style={{ fontWeight: 'bold' }}>
+        <Text style={{ fontWeight: "bold" }}>
           Are you sure you want to delete the following user?
         </Text>
         <View style={Layout.card} key={user?._id}>

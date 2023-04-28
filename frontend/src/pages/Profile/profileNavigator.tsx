@@ -1,15 +1,20 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from "@react-navigation/stack";
 import { Profile } from './profile';
 import { Orders } from './orders';
 import { Account } from './account';
 import { Admin } from './Admin/admin';
 import { ScaledSize } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 
-const Stack = createNativeStackNavigator();
+const Stack = createStackNavigator();
 
 export const ProfileNavigator = ({dimensions} : {dimensions : ScaledSize}) => {
   return (
-    <Stack.Navigator>
+  <NavigationContainer independent={true}>
+    <Stack.Navigator
+      screenOptions={{
+        cardStyle: { backgroundColor: "#fff" },
+      }}>
       <Stack.Screen
         name="Options"
         component={Profile}
@@ -21,5 +26,6 @@ export const ProfileNavigator = ({dimensions} : {dimensions : ScaledSize}) => {
             {props => <Admin {...props} dimensions={dimensions} />}
       </Stack.Screen>
     </Stack.Navigator>
+  </NavigationContainer>
   );
 };

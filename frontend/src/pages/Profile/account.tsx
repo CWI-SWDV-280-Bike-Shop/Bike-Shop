@@ -1,122 +1,133 @@
 import React, {useState} from 'react';
-import {  Text, StyleSheet, View, TouchableOpacity, Modal, TextInput } from 'react-native';
+import {  Text, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { AuthContext } from '@context/auth.context';
+import { useContext } from 'react';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export const Account = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [editType, setEditType] = useState("");
+    const { isLoggedIn, authUser } = useContext(AuthContext);
+    const username = isLoggedIn && authUser.name;
+    const email = isLoggedIn && authUser.email;
+
+    const [form, setForm] = useState({
+      "username" : username,
+      "email" : email
+      });
+
+    const fields = [
+      {"name": "username", "label": "Username"},
+      {"name": "email", "label": "Email"},
+      {"name": "password", "label": "Password"},
+      {"name": "phone", "label": "Phone"},
+      {"name": "address", "label": "Address"},
+      {"name": "state", "label": "State"},
+      {"name": "zipcode", "label": "Zip Code"},
+    ]
 
     return (
       <View style={[styles.container]}>
-
-        <Modal
-          visible = {modalVisible}
-          transparent= {true}
-          animationType='slide'
-        >
-          <View style={[styles.modalView]}>
-            <Text style={[styles.modalText]}>New {editType}:</Text>
-            <TextInput 
-              style={[styles.textInput]}
-              editable
-              maxLength={20}
-            />
-            <Text style={[styles.modalText]}>Confirm {editType}:</Text>
-            <TextInput 
-              style={[styles.textInput]}
-              editable
-              maxLength={20}
-            />
-            <TouchableOpacity style={[styles.submitButton]}>
-              <Text style={[styles.submitText]}>Submit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => 
-                {
-                  setModalVisible(!modalVisible);
-                  setEditType("");
-                }
-            }>
-              <Text style={[styles.cancelText]}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
-
-        <View style={[styles.contentContainer]}>
-          <Text style={[styles.bodyText]}>
-            Account Information:
-          </Text>
-
-          <View style={[styles.infoRow]}>
-
-            <View style={[styles.infoCol]}>
-              <Text style={[styles.rowTitle]}>Username:</Text>
-            </View>
-
-            <View style={[styles.infoCol]}>
-              <Text style={[styles.rowDescription]}>user_name</Text>
-            </View>
-
-            <View style={[styles.infoCol]}>
-              <TouchableOpacity 
-                style={[styles.editButton]}
-                onPress={() => {setModalVisible(true); setEditType("Username");}}
-              >
-                <Icon name="create-outline" size={30} style={[styles.icon]}></Icon>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-          <View style={[styles.infoRow]}>
-
-            <View style={[styles.infoCol]}>
-              <Text style={[styles.rowTitle]}>Password:</Text>
-            </View>
-
-            <View style={[styles.infoCol]}>
-              <Text style={[styles.rowDescription]}>********</Text>
-            </View>
-
-            <View style={[styles.infoCol]}>
-              <TouchableOpacity 
-                style={[styles.editButton]}
-                onPress={() => {setModalVisible(true); setEditType("Password");}}
-              >
-                <Icon name="create-outline" size={30} style={[styles.icon]}></Icon>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-          <View style={[styles.infoRow]}>
-
-            <View style={[styles.infoCol]}>
-              <Text style={[styles.rowTitle]}>Email:</Text>
-            </View>
-
-            <View style={[styles.infoCol]}>
-              <Text style={[styles.rowDescription]}>test@user.com</Text>
-            </View>
-
-            <View style={[styles.infoCol]}>
-              <TouchableOpacity 
-                style={[styles.editButton]}
-                onPress={() => {setModalVisible(true); setEditType("Email");}}
-              >
-                <Icon name="create-outline" size={30} style={[styles.icon]}></Icon>
-              </TouchableOpacity>
-            </View>
-
-          </View>
-          <View style={[styles.infoRow]}></View>
-          <View style={[styles.infoRow]}></View>
-          <View style={[styles.infoRow]}></View>
+        <ScrollView>
+        <View style={styles.profileDetails}>
+          <View style={styles.profileImage}><Icon name="person-circle-outline" size={100} color="#FFF" /></View>
+          <Text style={styles.profileName}>{username}</Text>
         </View>
+        <View style={styles.accountDetails}>
+          {
+            fields.map((item, i) => (
+              <View style={styles.row}>
+                <Text style={styles.label}>{item.label}</Text>
+                <TextInput value={form[item.name]} style={styles.editBox} />
+              </View>
+            ))
+          }
+          <View style={styles.rowBottom}>
+            <TouchableOpacity style={styles.buttonPrimary} >
+              <Text style={styles.btnFont}>Save Changes</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        </ScrollView>
       </View>
     );
 };
 
 const styles = StyleSheet.create({
+  profileImage: {
+    width: 150,
+    height: 150,
+    borderRadius: 20,
+    backgroundColor: '#444',
+    margin: 10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  accountDetails: {
+    marginHorizontal: 40,
+    flexDirection: 'column',
+    columnGap: 15,
+    paddingBottom: 60,
+    padding: 5,
+  },
+  row: {
+    justifyContent: 'space-around',
+    paddingHorizontal: 'auto'
+  },
+  rowBottom: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  label: {
+    textTransform: 'uppercase',
+    fontSize: 12,
+    color: '#33333370',
+    fontWeight: 'bold',
+    position: 'relative',
+    bottom: -30,
+    left: 20
+  }, 
+  editBox: {
+    paddingTop: 32,
+    padding: 16,
+    marginBottom: 20,
+    margin: 5,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.42,
+    shadowRadius: 2.22,
+    elevation: 1,
+  },
+  profileDetails: {
+    gap: 15,
+    marginVertical: 20,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  profileName: {
+    fontWeight: 'bold',
+    fontSize: 22,
+  },
+  buttonPrimary: {
+    width: 'fit-content',
+    backgroundColor: '#477B61',
+    paddingHorizontal: 30,
+    paddingVertical: 10,
+    alignContent: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+  },
+  btnFont: {
+    fontWeight: 'bold',
+    color: '#fff',
+  },
   container: {
     flex: 1
   },
@@ -130,66 +141,4 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: "#262626",
   },
-  infoRow: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  infoCol: {
-    flex: 1,
-    alignItems: 'center'
-  },
-  rowTitle: {
-    fontWeight: 'bold',
-    fontSize: 24,
-  },
-  rowDescription: {
-    fontSize: 24,
-  },
-  editButton: {
-    backgroundColor: "#3E6259",
-    padding: 8,
-    borderRadius: 8
-  },
-  icon: {
-    color: "#FFF"
-  }, 
-  modalView: {
-    margin: 20,
-    backgroundColor: "#3E6259",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modalText: {
-    color: '#FFF',
-    fontSize: 20
-  },
-  cancelText: {
-    color: '#FFF',
-    textDecorationLine: 'underline',
-    fontSize: 20
-  },
-  textInput: {
-    backgroundColor: "#FFF",
-    width: '50%'
-  },
-  submitButton: {
-    marginVertical: 10,
-    backgroundColor: "#6A7B76",
-    padding: 10,
-    borderRadius: 10
-  },
-  submitText: {
-    color: "#FFF",
-    fontSize: 20
-  }
 });

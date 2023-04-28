@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setMessage('User logged in successfully!');
         setIsLoggedIn(true);
       })
-      .catch((err) => setMessage('There was an error: \n' + err.message));
+      .catch((err) => setMessage(err.response?.data?.error ?? err.message));
   };
 
   const logout = () => {

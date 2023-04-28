@@ -4,12 +4,17 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Orders } from './orders';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AuthContext } from '@context/auth.context';
+import { useContext } from 'react';
 
 export const Profile = ({ navigation, dimensions }) => {
+  const { isLoggedIn, authUser } = useContext(AuthContext);
+  const username = isLoggedIn && authUser.name;
+
   return (
     <View style={[styles.container]}>
       <View style={[styles.contentContainer]}>
-        <Text style={[styles.header]}>Welcome, user_name</Text>
+        <Text style={[styles.header]}>Welcome, {username}</Text>
         <View style={styles.buttonRow}>
           <View style={styles.buttonCol}>
             <TouchableOpacity

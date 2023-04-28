@@ -18,7 +18,7 @@ const Drawer = createDrawerNavigator();
 
 const AppWrapper = () => {
   const dimensions = useWindowDimensions();
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, authUser } = useContext(AuthContext);
 
   const screens = [
     {"name" : "Home", "component": (props) => <Home {...props} dimensions={dimensions} />},

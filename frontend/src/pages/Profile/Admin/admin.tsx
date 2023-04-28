@@ -212,26 +212,6 @@ const Column = ({
   );
 };
 
-{
-  /* <View style={[styles.col]}><Text>ADD USER</Text></View>
-        <View style={[styles.col]}><Text></Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>name</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>email</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>role</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>phone</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>orders</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>street</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>city</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>state</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>zip</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>country</Text></View>
-        <View style={[styles.col, {alignItems: 'center'}]}><Icon name="md-save"
-              size={30}
-              color="#000000aa"
-            /></View>
-      </View> */
-}
-
 const UsersTableHeader = ({
   labels,
   properties,
@@ -246,15 +226,40 @@ const UsersTableHeader = ({
     Dispatch<SetStateAction<string>>
   ];
 }) => {
+  const [newUserForm, setUserForm] = useState({ 
+    "name": "", 
+    "email": "", 
+    "role": "", 
+    "phone": "", 
+    "orders": "", 
+    "street": "", 
+    "city": "", 
+    "state": "", 
+    "zip": "", 
+    "country": "", 
+  })
   return (
     <View>
       <TableHeader labels={labels} properties={properties} state={state} />
       <View style={styles.row}>
-        {labels.map((label, i) => (
-          <View style={styles.col} key={i}>
-            <TextInput style={styles.createNew} placeholder={label} />
-          </View>
-        ))}
+        {
+          labels.map((label, i) => (
+            (label === "select") ? 
+            <Text></Text> :
+            (label === "options") ? 
+            <TouchableOpacity>
+              <View style={[styles.col]}>
+                <Icon name="md-save" size={30} color="#000000aa"/>
+              </View>
+            </TouchableOpacity>
+             :
+            <View style={styles.col} key={i}>
+              <TextInput style={styles.createNew} placeholder={label} value={newUserForm[label]} onChangeText={(text) => {
+                setUserForm({...newUserForm, [label]: text})
+              }} />
+            </View>
+          ) )
+        }
       </View>
     </View>
   );

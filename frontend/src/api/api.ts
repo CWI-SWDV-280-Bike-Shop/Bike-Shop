@@ -2,17 +2,19 @@ import axios from 'axios';
 import TokenAPI from './token.api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+const url = __DEV__ ? "localhost:8081" : "thebikeshop.app"
+
 const api = axios.create({
-  baseURL: 'http://localhost:8081/api',
+  baseURL: `//${url}/api`,
   headers: {
     'Content-type': 'application/json',
   },
 });
 
 // attach accessToken before api requests
-axios.interceptors.request.use(
-  (config) => {
-    const token = TokenAPI.getLocalAccessToken();
+api.interceptors.request.use(
+  async (config) => {
+    const token = await TokenAPI.getLocalAccessToken();
     if (token) {
       config.headers['x-access-token'] = token;
     }
@@ -24,7 +26,7 @@ axios.interceptors.request.use(
 );
 
 // "gracefully" handle Token errors (token not provided, expired, etc.)
-axios.interceptors.response.use(
+api.interceptors.response.use(
   (response) => {
     return response;
   },
@@ -41,10 +43,11 @@ axios.interceptors.response.use(
       }
 
       // Access token was expired
-      if (error.response.status === 401 && !originalConfig._retry) {
+      if (error.response.data.accessTokenExpired && !originalConfig._retry) {
         originalConfig._retry = true;
       }
 
+      if (!originalConfig._retry) return;
       // use refreshToken to get a new accessToken and update in "localStorage" (AsyncStorage in Expo)
       try {
         const response = await api

@@ -22,7 +22,7 @@ export const FilterParams = () => {
     const [gender, setGender] = useState('');
 
     const handleSubmit = async () => {
-        const newProduct: Product = {
+        const params: Product = {
             description,
             category,
             subcategory,
@@ -37,7 +37,7 @@ export const FilterParams = () => {
             gender,
         };
         useEffect(() => {
-            ProductAPI.getAll().then((res) => setProducts(res.data));
+            ProductAPI.getAll(params).then((res) => setProducts(res.data));
         }, []);
     };
     const [products, setProducts] = useState([]);

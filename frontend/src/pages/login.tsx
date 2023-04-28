@@ -1,4 +1,5 @@
 import AuthAPI from '@/api/auth.api';
+import { DrawerHeaderProps } from "@react-navigation/drawer";
 import { AuthContext } from '@/context/auth.context';
 import { User } from '@/types/data.types';
 import * as React from 'react';
@@ -6,10 +7,10 @@ import { useContext, useState } from 'react';
 import { Text, StyleSheet, View, useWindowDimensions } from 'react-native';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Layout from '@styles/layout/Layout';
+import { InputModeOptions } from "react-native"
 
-export const Login = () => {
-  //Window Dimensions
-  const dimensions = useWindowDimensions();
+export const LoginScreen = ({props} : {props: DrawerHeaderProps}) => {
   //Auth connection
   const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
   //Login Logic
@@ -21,9 +22,52 @@ export const Login = () => {
     if (email == '' || password == "") {
       setLoginError('Please fill out all the fields!');
     } else {
-      login({ email, password });
+      login({ email: email.toLowerCase(), password });
+      props.navigation.navigate("Profile");
     }
   };
+  return (
+    <View>
+      <Text style={[Layout.header]}>Login</Text>
+        <Text style={[Layout.bodyText]}>
+          Please login to see your profile.
+        </Text>
+        <View>
+          <Text style={styles.label}>Email</Text>
+          <TextInput
+            style={[styles.editBox]}
+            placeholder='Email'
+            value={email}
+            onChangeText={(value) => setEmail(value)}
+          />
+        </View>
+        <View>
+          <Text style={styles.label}>Password</Text>
+          <TextInput
+            style={[styles.editBox]}
+            placeholder='Password'
+            value={password}
+            onChangeText={(value) => setPassword(value)}
+            secureTextEntry={true}
+          />
+        </View>
+        {message && <Text style={[Layout.errorText]}>{message}</Text>}
+        <Text style={[Layout.errorText]}>{loginError}</Text>
+        <View style={styles.rowBottom}>
+          <TouchableOpacity style={styles.buttonPrimary} onPressIn={(submit)}>
+            <Text style={styles.btnFont}>Login</Text>
+            <Icon name="log-in-outline" size={30} color="#FFF"/>
+          </TouchableOpacity>
+        </View>
+    </View>
+  )
+}
+
+export const Login = (props: DrawerHeaderProps) => {
+  //Window Dimensions
+  const dimensions = useWindowDimensions();
+  //Auth connection
+  const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
   //Register Logic
   const [regName, setRegName] = useState('');
   const [regEmail, setRegEmail] = useState('');
@@ -45,138 +89,105 @@ export const Login = () => {
     setRegAddress({ ...regAddress, [fieldName]: value });
   };
 
-  const regSubmit = () => {
-    if (regName == '' || regEmail == '' || regPassword == '' || regPhone == '') {
-      setErrorMessage('One or more fields are not filled!');
-    } else if (confirmPassword != regPassword) {
-      setErrorMessage('Password and Confirm Password must match!');
-    } else if (regAddress.city == '' || regAddress.country == "" || regAddress.state == '' || regAddress.street == '' || regAddress.zip == '') {
-      setErrorMessage('Please fill in your whole address.');
-    } else {
-      setErrorMessage('');
-      // register user and then immediately login.
-      const newUser: User = {
-        name: regName,
-        email: regEmail,
-        password: regPassword,
-        phone: regPhone,
-        address: regAddress,
-        role,
-      };
-      // register user and then immediately login.
-      AuthAPI.register(newUser).then(() => login({ email: regEmail, password: regPassword }));
-    }
-  };
-
-  return (
-    <ScrollView style={[styles.container]}>
-      <View style={[styles.contentContainer]}>
-        <Text style={[styles.header]}>Login</Text>
-        <Text style={[styles.bodyText]}>
-          Please login to see your profile.
-        </Text>
-        <TextInput
-          style={[styles.textArea]}
-          placeholder='Email'
-          value={email}
-          onChangeText={(value) => setEmail(value)}
-        />
-        <TextInput
-          style={[styles.textArea]}
-          placeholder='Password'
-          value={password}
-          onChangeText={(value) => setPassword(value)}
-          secureTextEntry={true}
-        />
-        <Text style={[styles.errorText]}>{loginError}</Text>
-        <TouchableOpacity
-          style={styles.button}
-          onPressIn={(submit)}
-        >
-          <Icon
-            name="log-in-outline"
-            size={60}
-            color="#FFF"
-          />
-          <Text style={styles.buttonContent}> Login</Text>
-        </TouchableOpacity>
-        {message && <Text>{message}</Text>}
-
-        {isLoggedIn && (
-          <View>
-            <Text>_id: {authUser._id}</Text>
-            <Text>name: {authUser.name}</Text>
-            <Text>email: {authUser.email}</Text>
-            <Text>role: {authUser.role}</Text>
-            <Text>accessToken: {authUser.accessToken}</Text>
-            <Text>refreshToken: {authUser.refreshToken}</Text>
-          </View>
-        )}
-        <View style={styles.contentContainer}>
-          <Text style={[styles.header]}>New here? Please sign up!</Text>
+  const RegisterScreen = () => {
+    const formInfo = [
+      {
+        "label": "Full Name", 
+        "stateValue": regName, 
+        "setState": setRegName
+      },
+      {
+        "label": "Email",
+        "inputMode": 'email',
+        "stateValue": regEmail, 
+        "setState": setRegEmail
+      },
+      {
+        "label": "Password", 
+        "stateValue": regPassword, 
+        "setState": setRegPassword
+      },
+      {
+        "label": "Confirm Password", 
+        "stateValue": confirmPassword, 
+        "setState": setConfirmPassword
+      },
+      {
+        "label": "Phone", 
+        "inputMode": "tel",
+        "stateValue": regPhone, 
+        "setState": setRegPhone
+      },
+    ]
+    const formAddr = [
+      {
+        "label": "Street", 
+        "stateValue": regAddress.street
+      },
+      {
+        "label": "City", 
+        "stateValue": regAddress.city
+      },
+      {
+        "label": "State", 
+        "stateValue": regAddress.state
+      },
+      {
+        "label": "Zipcode", 
+        "inputMode": "numeric",
+        "stateValue": regAddress.zip
+      },
+      {
+        "label": "Country", 
+        "stateValue": regAddress.country
+      }
+    ]
+    return (
+      <View>
+        <Text style={[Layout.header]}>New here?</Text>
+          <Text style={[Layout.bodyText]}>Please sign up!</Text>
           <View style={dimensions.width <= 800 ? styles.registrationContainerSmaller : styles.registrationContainer}>
 
             <View style={dimensions.width <= 800 ? styles.infoContainer : styles.infoContainerSmaller}>
-              <Text style={[styles.bodyText]}>Information</Text>
-              <TextInput style={styles.textArea} placeholder='Full Name'
-                value={regName}
-                onChangeText={(value) => setRegName(value)}
-              />
-              <TextInput style={styles.textArea} inputMode='email' placeholder='Email'
-                value={regEmail}
-                onChangeText={(value) => setRegEmail(value)}
-              />
-              <TextInput style={styles.textArea} placeholder='Password' secureTextEntry={true}
-                value={regPassword}
-                onChangeText={(value) => setRegPassword(value)}
-              />
-              <TextInput style={styles.textArea} placeholder='Confirm Password' secureTextEntry={true}
-                value={confirmPassword}
-                onChangeText={(value) => setConfirmPassword(value)}
-              />
-              <TextInput style={styles.textArea} inputMode='tel' placeholder='Phone Number'
-                value={regPhone}
-                onChangeText={(value) => setRegPhone(value)}
-              />
+              <Text style={[Layout.bodyText]}>Information</Text>
+
+              {
+                formInfo.map((item, i) => (
+                  <View>
+                    <Text style={styles.label}>{item.label}</Text>
+                    <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
+                      value={item.stateValue}
+                      onChangeText={(value) => item.setState(value)}
+                    />
+                  </View>
+                ))
+              }
             </View>
 
             <View style={dimensions.width <= 800 ? styles.addressContainerSmaller : styles.addressContainer}>
-              <Text style={[styles.bodyText]}>Address</Text>
-              <TextInput style={styles.textArea} placeholder='Country'
-                value={regAddress.country}
-                onChangeText={(value) => onChangeAddress('country', value)}
-              />
-              <TextInput style={styles.textArea} placeholder='State'
-                value={regAddress.state}
-                onChangeText={(value) => onChangeAddress('state', value)}
-              />
-              <TextInput style={styles.textArea} placeholder='City'
-                value={regAddress.city}
-                onChangeText={(value) => onChangeAddress('city', value)}
-              />
-              <TextInput style={styles.textArea} placeholder='Street'
-                value={regAddress.street}
-                onChangeText={(value) => onChangeAddress('street', value)}
-              />
-              <TextInput style={styles.textArea} inputMode='numeric' placeholder='Zipcode'
-                value={regAddress.zip}
-                onChangeText={(value) => onChangeAddress('zip', value)}
-              />
+              <Text style={[Layout.bodyText]}>Address</Text>
+              {
+                formAddr.map((item, i) => (
+                  <View>
+                    <Text style={styles.label}>{item.label}</Text>
+                    <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
+                      value={item.stateValue}
+                      onChangeText={(value) => onChangeAddress(item.label.toLowerCase(), value)}
+                    />
+                  </View>
+                ))
+              }
             </View>
 
           </View>
-          <Text style={[styles.errorText]}>{errorMessage}</Text>
-          <TouchableOpacity style={styles.buttonNewAccount}
-            onPressIn={regSubmit}
-          >
-            <Icon
-              name="person-add-outline"
-              size={60}
-              color="#03312E"
-            />
-            <Text style={styles.buttonNewAccountContent}>New Account</Text>
-          </TouchableOpacity>
-          {message && <Text>{message}</Text>}
+          {message && <Text style={[Layout.errorText]}>{message}</Text>}
+          <Text style={[Layout.errorText]}>{errorMessage}</Text>
+          <View style={styles.rowBottom}>
+            <TouchableOpacity style={styles.buttonPrimary} onPressIn={(regSubmit)}>
+              <Icon name="person-add-outline" size={30} color="#FFF"/>
+              <Text style={styles.btnFont}>Register Account</Text>
+            </TouchableOpacity>
+          </View>
 
           {isLoggedIn && (
             <View>
@@ -188,6 +199,54 @@ export const Login = () => {
               <Text>refreshToken: {authUser.refreshToken}</Text>
             </View>
           )}
+      </View>
+    )
+  }
+
+  const regSubmit = () => {
+
+    if (regName == '' || regEmail == '' || regPassword == '' || regPhone == '') {
+      setErrorMessage('One or more fields are not filled!');
+    } else if (confirmPassword != regPassword) {
+      setErrorMessage('Password and Confirm Password must match!');
+    } else if (regAddress.city == '' || regAddress.country == "" || regAddress.state == '' || regAddress.street == '' || regAddress.zip == '') {
+      setErrorMessage('Please fill in your whole address.');
+    } else {
+      setErrorMessage('');
+      // register user and then immediately login.
+      const newUser: User = {
+        name: regName,
+        email: regEmail.toLowerCase(),
+        password: regPassword,
+        phone: regPhone,
+        address: regAddress,
+        role,
+      };
+      // register user and then immediately login.
+      AuthAPI.register(newUser).then(() => {
+        login({ email: regEmail, password: regPassword });
+        props.navigation.navigate("Profile");
+      });
+    }
+  };
+
+  return (
+    <ScrollView style={[Layout.container]}>
+      <View style={[Layout.contentContainer]}>
+        <LoginScreen props={props}/>
+
+        {isLoggedIn && (
+          <View>
+            <Text>_id: {authUser._id}</Text>
+            <Text>name: {authUser.name}</Text>
+            <Text>email: {authUser.email}</Text>
+            <Text>role: {authUser.role}</Text>
+            <Text>accessToken: {authUser.accessToken}</Text>
+            <Text>refreshToken: {authUser.refreshToken}</Text>
+          </View>
+        )}
+        <View style={Layout.contentContainer}>
+          <RegisterScreen/>
         </View>
       </View>
     </ScrollView>
@@ -195,114 +254,67 @@ export const Login = () => {
 };
 
 const styles = StyleSheet.create({
+  rowBottom: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  buttonPrimary: {
+    flexDirection: 'row',
+    backgroundColor: '#477B61',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  btnFont: {
+    fontSize: 18,
+    paddingHorizontal: 10,
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  label: {
+    textTransform: 'uppercase',
+    fontSize: 12,
+    color: '#33333370',
+    fontWeight: 'bold',
+    position: 'relative',
+    bottom: -30,
+    left: 20
+  }, 
+  editBox: {
+    paddingTop: 32,
+    padding: 16,
+    marginBottom: 20,
+    margin: 5,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.42,
+    shadowRadius: 2.22,
+    elevation: 1,
+  },
   infoContainer: {
-    marginRight: 15,
+    marginLeft: 0,
   },
   addressContainer: {
-    marginLeft: 15,
+    marginLeft: 0,
   },
   registrationContainer: {
     flex: 1,
     flexDirection: "row"
   },
-  infoContainerSmaller:{
+  infoContainerSmaller: {
     marginRight: 0
   },
-  addressContainerSmaller:{
+  addressContainerSmaller: {
     marginLeft: 0
   },
-  registrationContainerSmaller:{
-    flex:1,
+  registrationContainerSmaller: {
+    flex: 1,
     flexDirection: "column",
-  },
-  container: {
-    flex: 1,
-  },
-  contentContainer: {
-    flex: 1,
-    backgroundColor: '#D3D5D4',
-    alignItems: "center",
-    paddingBottom: 50,
-  },
-  header: {
-    marginTop: 10,
-    fontSize: 45,
-    color: "#262626",
-    textAlign: 'center',
-  },
-  header2: {
-    marginBottom: 10,
-    fontSize: 35,
-    color: "#262626",
-    textAlign: 'center',
-  },
-  bodyText: {
-    marginLeft: 10,
-    marginTop: 15,
-    fontSize: 24,
-    color: "#262626",
-    textAlign: "center",
-  },
-  errorText: {
-    marginLeft: 10,
-    marginTop: 15,
-    fontSize: 24,
-    color: "#dc143c",
-    textAlign: "center",
-  },
-  textArea: {
-    margin: 15,
-    fontSize: 24,
-    backgroundColor: "#FFF",
-    borderColor: "#03312E",
-    borderWidth: 2,
-    borderRadius: 10,
-    minWidth: 300,
-    padding: 5,
-  },
-  button: {
-    flexDirection: "row",
-    backgroundColor: "#03312E",
-    padding: 10,
-    margin: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    elevation: 24,
-  },
-  buttonContent: {
-    color: "#FFFFFF",
-    textAlign: 'center',
-    fontSize: 20,
-    padding: 5,
-  },
-  buttonNewAccount: {
-    flexDirection: "row",
-    borderColor: "#03312E",
-    borderWidth: 3,
-    padding: 10,
-    margin: 15,
-    borderRadius: 10,
-    alignItems: 'center',
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.58,
-    shadowRadius: 16.00,
-    elevation: 24,
-  },
-  buttonNewAccountContent: {
-    color: "#03312E",
-    textAlign: 'center',
-    fontSize: 20,
-    padding: 5,
   },
 });

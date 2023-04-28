@@ -18,6 +18,7 @@ export const Slide = ({name, description, imgSrc, btnName}) => {
 };
 
 const styles = StyleSheet.create({
+
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',

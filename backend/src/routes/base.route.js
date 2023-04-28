@@ -12,7 +12,7 @@ export const baseRouter = (routeOptions) => {
         async (req, res) =>
           res
             .status(200)
-            .json(await handler({ ...req.params, ...req.body, ...req.query })),
+            .json(await handler({ ...req.params, ...req.body, ...req.query, files: req.files })),
         "name",
         { value: handler.name }
       )
@@ -22,4 +22,4 @@ export const baseRouter = (routeOptions) => {
   return router;
 }
 
-export const baseCRUD = (controller) => baseRouter([['get', '/', controller.find], ['get', '/:id', controller.getById], ['post', '/', controller.create], ['put', '/:id', controller.update], ['delete', '/:id', controller.delete]]);
+export const baseCRUD = (controller, options) => baseRouter([['get', '/', controller.find], ['get', '/:id', controller.getById], ['post', '/', controller.create], ['put', '/:id', controller.update], ['delete', '/:id', controller.delete]].map((route) => [...route, options]));

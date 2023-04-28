@@ -12,7 +12,7 @@ dotenv.config();
 const app = express();
 
 // Configure Express App Instance
-app.set('query parser', 'extended')
+app.set('query parser', 'extended');
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cors());
@@ -25,7 +25,7 @@ app.use('*', (req, res, next) => {
 
 // Connect to MongoDB
 mongoose
-  .connect(db.MongoDBAtlas, {
+  .connect(db.MongoDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     ignoreUndefined: true,
@@ -44,7 +44,7 @@ app.use(/.*/, (req, res) => {
 
 app.use((err, req, res, next) => {
   if (err instanceof UserError || err instanceof mongoose.Error.ValidationError)
-    res.status(err.status ?? 400).json({ error: err.message });
+    res.status(err.status ?? 400).json({ error: err.message, ...err });
   else if (err) res.status(500).json({ error: 'Something broke!' });
   console.error(err.stack);
 });

@@ -1,7 +1,7 @@
 import React, {
   Dispatch,
-  ReactComponentElement,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -12,8 +12,6 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  ViewComponent,
-  Button,
   Platform
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -27,6 +25,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Pressable } from "react-native-web-hover";
 import Popover from "react-native-popover-view";
 import { ScaledSize } from 'react-native';
+import { AuthContext } from "@/context/auth.context";
 
 // Search can be implemented like I did sorting, button needs selector for which field to search
 // Need a wrapper or something that calls this so I can do more complex features
@@ -231,23 +230,41 @@ const UsersTableHeader = ({
     "email": "", 
     "role": "", 
     "phone": "", 
-    "orders": "", 
     "street": "", 
     "city": "", 
     "state": "", 
     "zip": "", 
     "country": "", 
   })
+  const createNewUser = () => {
+    const user : User = {
+      name: newUserForm.name,
+      email: newUserForm.email,
+      password: 'DEFAULT',
+      role: newUserForm.role,
+      phone: newUserForm.phone,
+      address: {
+          street: newUserForm.street,
+          city: newUserForm.city,
+          state: newUserForm.state,
+          zip: newUserForm.zip,
+          country: newUserForm.country,
+        }
+      }
+    UserAPI.create(user).then((res) => {
+      console.log(res)
+    });
+  }
   return (
     <View>
       <TableHeader labels={labels} properties={properties} state={state} />
       <View style={styles.row}>
         {
           labels.map((label, i) => (
-            (label === "select" || label === "id") ? 
-            <Text></Text> :
+            (label === "select" || label === "id" || label === "orders") ? 
+            <View style={styles.col} key={i}><TextInput style={styles.createNew} placeholder={label}></TextInput></View> :
             (label === "options") ? 
-            <TouchableOpacity>
+            <TouchableOpacity onPress={createNewUser} key={i}>
               <View style={[styles.col]}>
                 <Icon name="md-save" size={30} color="#000000aa"/>
               </View>

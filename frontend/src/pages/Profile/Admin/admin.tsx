@@ -244,7 +244,7 @@ const UsersTableHeader = ({
       <View style={styles.row}>
         {
           labels.map((label, i) => (
-            (label === "select") ? 
+            (label === "select" || label === "id") ? 
             <Text></Text> :
             (label === "options") ? 
             <TouchableOpacity>

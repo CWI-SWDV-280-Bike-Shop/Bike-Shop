@@ -282,9 +282,32 @@ const UsersTableHeader = ({
   );
 };
 
-const UserElement = ({ user }: { user: User }) => {
+const ModificationContextMenu = () => {
   const [showPopover, setShowPopover] = useState(false);
+  return (
+    <Popover
+      popoverStyle={{ backgroundColor: '#4D535D' }}
+      backgroundStyle={{ backgroundColor: "transparent" }}
+      from={
+        <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
+          <Icon name="ellipsis-vertical" size={20} color="#000" />
+        </TouchableOpacity>
+      }
+    >
+      <View style={styles.popIcon}>
+        <TouchableOpacity>
+          <Icon onPress={UserAPI.update} color="#fff" name="create-outline" size={30} />
+        </TouchableOpacity>
 
+        <TouchableOpacity>
+          <Icon onPress={UserAPI.delete} color="#ff3f2e" name="trash-outline" size={30} />
+        </TouchableOpacity>
+      </View>
+    </Popover>
+  )
+}
+
+const UserElement = ({ user }: { user: User }) => {
   return (
     <Row>
       <View style={styles.col}>
@@ -302,33 +325,13 @@ const UserElement = ({ user }: { user: User }) => {
       <Column>{user?.address?.zip}</Column>
       <Column>{user?.address?.country}</Column>
       <View style={[styles.col, { alignItems: "center" }]}>
-        <Popover
-          popoverStyle={{ backgroundColor: '#4D535D' }}
-          backgroundStyle={{ backgroundColor: "transparent" }}
-          from={
-            <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
-              <Icon name="ellipsis-vertical" size={20} color="#000" />
-            </TouchableOpacity>
-          }
-        >
-          <View style={styles.popIcon}>
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.update} color="#fff" name="create-outline" size={30} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.delete} color="#ff3f2e" name="trash-outline" size={30} />
-            </TouchableOpacity>
-          </View>
-        </Popover>
+        <ModificationContextMenu/>
       </View>
     </Row>
   );
 };
 
 function ProductElement({ product }: { product: Product }) {
-  const [showPopover, setShowPopover] = useState(false);
-
   return (
     <Row>
       <View style={styles.col}>
@@ -343,56 +346,13 @@ function ProductElement({ product }: { product: Product }) {
       <Column>{product?.imageIds}</Column>
       <Column>{product?.inStock}</Column>
       <View style={[styles.col, { alignItems: "center" }]}>
-        {/* POPOVER*/}
-        <Popover
-          backgroundStyle={{ backgroundColor: "transparent" }}
-          from={
-            <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
-              <Icon name="ellipsis-vertical" size={20} color="#000" />
-            </TouchableOpacity>
-          }
-        >
-          <View style={styles.popIcon}>
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.update} name="create-outline" size={20} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.delete} name="trash-outline" size={20} />
-            </TouchableOpacity>
-          </View>
-        </Popover>
+        <ModificationContextMenu/>
       </View>
     </Row>
   );
 }
-{
-  /*
-const OrderElement = ({ order }: { order: Order }) => (
-  <Row>
-    <View style={styles.col}>
-      <Icon name="square-outline" size={20} color="#000" />
-    </View>
-    <Column>{order?._id}</Column>
-    <Column>
-      {typeof order?.customer === "string"
-        ? order?.customer
-        : order?.customer?.name}
-    </Column>
-    <Column>{order?.createdAt}</Column>
-    <Column>{order?.items.length}</Column>
-    <Column>{formatPrice(order?.total)}</Column>
-    <Column>{order?.updatedAt}</Column>
-    <View style={[styles.col, { alignItems: "center" }]}>
-      <Icon name="ellipsis-vertical" size={20} color="#000" />
-    </View>
-  </Row>
-);
-*/
-}
 
 function OrderElement({ order }: { order: Order }) {
-  const [showPopover, setShowPopover] = useState(false);
   return (
     <Row>
       <View style={styles.col}>
@@ -409,25 +369,7 @@ function OrderElement({ order }: { order: Order }) {
       <Column>{formatPrice(order?.total)}</Column>
       <Column>{order?.updatedAt}</Column>
       <View style={[styles.col, { alignItems: "center" }]}>
-        {/* POPOVER*/}
-        <Popover
-          backgroundStyle={{ backgroundColor: "transparent" }}
-          from={
-            <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
-              <Icon name="ellipsis-vertical" size={20} color="#000" />
-            </TouchableOpacity>
-          }
-        >
-          <View style={styles.popIcon}>
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.update} name="create-outline" size={20} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.delete} name="trash-outline" size={20} />
-            </TouchableOpacity>
-          </View>
-        </Popover>
+        <ModificationContextMenu/>
       </View>
     </Row>
   );
@@ -626,14 +568,6 @@ export const Admin = ({dimensions} : {dimensions : ScaledSize}) => {
       </View>
      ) : (
       <View style={[styles.container]}>
-          {/* <View style={styles.topBar}>
-          <TouchableOpacity style={styles.button}>
-            <Icon name="moon"
-                size={20}
-                color="#000"
-              />
-          </TouchableOpacity>
-          </View> */}
           <NavigationContainer independent={true}>
               <AdminPages/>
           </NavigationContainer>

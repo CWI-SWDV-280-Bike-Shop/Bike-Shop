@@ -295,18 +295,16 @@ const UserElement = ({ user }: { user: User }) => {
       <Column>{user?.email}</Column>
       <Column>{user?.role}</Column>
       <Column>{user?.phone}</Column>
-      <Column>0</Column>
+      <Column>{user?.orders?.length}</Column>
       <Column>{user?.address?.street}</Column>
       <Column>{user?.address?.city}</Column>
       <Column>{user?.address?.state}</Column>
       <Column>{user?.address?.zip}</Column>
       <Column>{user?.address?.country}</Column>
       <View style={[styles.col, { alignItems: "center" }]}>
-        {/* POPOVER*/}
         <Popover
+          popoverStyle={{ backgroundColor: '#4D535D' }}
           backgroundStyle={{ backgroundColor: "transparent" }}
-          // placement={PopoverPlacement.TOP}
-          // isVisible={showPopover}
           from={
             <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
               <Icon name="ellipsis-vertical" size={20} color="#000" />
@@ -315,29 +313,14 @@ const UserElement = ({ user }: { user: User }) => {
         >
           <View style={styles.popIcon}>
             <TouchableOpacity>
-              <Icon onPress={UserAPI.update} name="create-outline" size={20} />
+              <Icon onPress={UserAPI.update} color="#fff" name="create-outline" size={30} />
             </TouchableOpacity>
 
             <TouchableOpacity>
-              <Icon onPress={UserAPI.delete} name="trash-outline" size={20} />
+              <Icon onPress={UserAPI.delete} color="#ff3f2e" name="trash-outline" size={30} />
             </TouchableOpacity>
           </View>
         </Popover>
-
-        {/* <Menu>
-        <MenuTrigger>
-        <Icon name="ellipsis-vertical"
-          size={20}
-          color="#000"
-        />
-        </MenuTrigger>
-        <MenuOptions>
-          <MenuOption onSelect={() => alert(`Save`)} text="Save" />
-          <MenuOption onSelect={() => alert(`Delete`)}>
-            <Text style={{ color: 'red' }}>Delete</Text>
-          </MenuOption>
-        </MenuOptions>
-      </Menu> */}
       </View>
     </Row>
   );
@@ -796,8 +779,9 @@ const styles = StyleSheet.create({
     color: "#262626",
   },
   popIcon: {
+    borderRadius: 5,
     flexDirection: "row",
-    padding: 5,
-    margin: 2,
+    padding: 15,
+    gap: 15,
   },
 });

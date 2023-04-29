@@ -5,6 +5,7 @@ import { AuthContext } from '@context/auth.context';
 import { useContext } from 'react';
 
 export const Profile = ({ navigation, dimensions }) => {
+  console.log(navigation.getState());
   const { isLoggedIn, authUser, logout } = useContext(AuthContext);
   const username = isLoggedIn && authUser.name;
   const email = isLoggedIn && authUser.email;

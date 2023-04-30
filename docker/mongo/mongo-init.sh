@@ -1,6 +1,6 @@
 set -e
 
-mongo <<EOF
+mongosh <<EOF
 use $MONGO_DBNAME
 
 db.createUser({

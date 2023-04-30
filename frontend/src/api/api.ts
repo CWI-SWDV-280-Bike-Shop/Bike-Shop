@@ -52,7 +52,7 @@ api.interceptors.response.use(
       try {
         const response = await api
           .post('/auth/refresh', {
-            refreshToken: TokenAPI.getLocalRefreshToken(),
+            refreshToken: await TokenAPI.getLocalRefreshToken(),
           })
           .then((res) => res.data);
 

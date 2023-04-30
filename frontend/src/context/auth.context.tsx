@@ -14,10 +14,8 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>({
   authUser: null,
   isLoggedIn: false,
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  login: (credentials) => {},
-  // eslint-disable-next-line @typescript-eslint/no-empty-function
-  logout: () => {},
+  login: (credentials) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  logout: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   message: null,
 });
 
@@ -50,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setMessage('User logged in successfully!');
         setIsLoggedIn(true);
       })
-      .catch((err) => setMessage('There was an error: \n' + err.message));
+      .catch((err) => setMessage(err.response?.data?.error ?? err.message));
   };
 
   const logout = () => {

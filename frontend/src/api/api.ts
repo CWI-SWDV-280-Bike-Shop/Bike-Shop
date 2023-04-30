@@ -47,7 +47,7 @@ api.interceptors.response.use(
         originalConfig._retry = true;
       }
 
-      if (!originalConfig._retry) return;
+      if (!originalConfig._retry) return Promise.reject(error);
       // use refreshToken to get a new accessToken and update in "localStorage" (AsyncStorage in Expo)
       try {
         const response = await api

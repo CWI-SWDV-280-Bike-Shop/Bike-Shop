@@ -17,11 +17,16 @@ const Item = () => {
     <View style={styles.item}>
       <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
       <View style={styles.priceBubble}>
-        <Text style={styles.priceText}>${price}</Text>
+        <Text style={styles.priceText} numberOfLines={1}>${price}</Text>
       </View>
       <View style={styles.itemName}>
         <Text style={styles.itemNameText} numberOfLines={1}>Globe Hybrid Globe Hybrid Globe Hybrid</Text>
-        <Text style={styles.itemStockText}>In Stock</Text>
+        <View style={styles.subheader}>
+          <Text style={styles.itemStockText}>In Stock</Text>
+          <View style={styles.tag}>
+            <Text style={styles.tagText} numberOfLines={1}>Mountain</Text>
+          </View>
+        </View>
       </View>
       <View style={styles.itemTray}>
         <View style={styles.colors}>
@@ -135,6 +140,22 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '700',
     textTransform: 'uppercase'
+  },
+  subheader: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  tag: {
+    padding: 5,
+    paddingHorizontal: 5,
+    borderRadius: 3,
+    backgroundColor: '#999'
+  },
+  tagText: {
+    color: '#fff',
+    textTransform: 'uppercase',
+    fontWeight: '700',
+    fontSize: 14,
   },
   backgroundimage: {
     flex: 1,

@@ -127,6 +127,17 @@ const document = {
   ],
 };
 
+type UserState = {
+  asc?: boolean,
+  setAsc?: Dispatch<SetStateAction<boolean>>,
+  field?: string,
+  setField?: Dispatch<SetStateAction<string>>,
+  users?: User[],
+  setUser?: React.Dispatch<React.SetStateAction<User[]>>
+  selectedRows? : String[]
+  setSelectedRows?: React.Dispatch<React.SetStateAction<String[]>>
+}
+
 const NavigationMenu = ({ navigation }) => {
   const checkPage = (page) => {
     return (
@@ -159,14 +170,7 @@ const TableHeader = ({
 }: {
   labels: string[];
   properties: string[];
-  state?: {
-    asc?: boolean,
-    setAsc?: Dispatch<SetStateAction<boolean>>,
-    field?: string,
-    setField?: Dispatch<SetStateAction<string>>,
-    users?: User[],
-    setUser?: React.Dispatch<React.SetStateAction<User[]>>
-  };
+  state?: UserState;
 }) => {
   return (
     <View style={[styles.row, styles.rowHeader]}>
@@ -214,14 +218,7 @@ const UsersTableHeader = ({
 }: {
   labels: string[];
   properties: string[];
-  state: {
-    asc?: boolean,
-    setAsc?: Dispatch<SetStateAction<boolean>>,
-    field?: string,
-    setField?: Dispatch<SetStateAction<string>>,
-    users?: User[],
-    setUser?: React.Dispatch<React.SetStateAction<User[]>>
-  };
+  state: UserState;
 }) => {
   const [newUserForm, setUserForm] = useState({ 
     "name": "", 
@@ -234,14 +231,7 @@ const UsersTableHeader = ({
     "zip": "", 
     "country": "", 
   })
-  const createNewUser = ({state} : {state: {
-    asc?: boolean,
-    setAsc?: Dispatch<SetStateAction<boolean>>,
-    field?: string,
-    setField?: Dispatch<SetStateAction<string>>,
-    users?: User[],
-    setUser?: React.Dispatch<React.SetStateAction<User[]>>
-    }}) => {
+  const createNewUser = ({state} : {state: UserState}) => {
     const user : User = {
       name: newUserForm.name,
       email: newUserForm.email,
@@ -282,7 +272,7 @@ const UsersTableHeader = ({
                 </View>
               </TouchableOpacity>
             </Column>
-             :
+            :
             <Column key={i}>
               <TextInput style={styles.createNew} placeholder={label} value={newUserForm[label]} onChangeText={(text) => {
                 setUserForm({...newUserForm, [label]: text});
@@ -295,14 +285,7 @@ const UsersTableHeader = ({
   );
 };
 
-const ModificationContextMenu = ({userid, state} : {userid?: string, state?: 
-  {asc?: boolean,
-    setAsc?: Dispatch<SetStateAction<boolean>>,
-    field?: string,
-    setField?: Dispatch<SetStateAction<string>>,
-    users?: User[],
-    setUser?: React.Dispatch<React.SetStateAction<User[]>>}
-  ;}) => {
+const ModificationContextMenu = ({id, state} : {id?: string, state?: UserState}) => {
   const [showPopover, setShowPopover] = useState(false);
   return (
     <Popover
@@ -321,9 +304,9 @@ const ModificationContextMenu = ({userid, state} : {userid?: string, state?:
 
         <TouchableOpacity>
           <Icon onPress={() => {
-            UserAPI.delete(userid).then((res) => {
+            UserAPI.delete(id).then((res) => {
               console.log("User deleted: ", res)
-              state.setUser(state.users.filter((u) => u._id != userid))
+              state.setUser(state.users.filter((u) => u._id != id))
             });
           }} color="#ff3f2e" name="trash-outline" size={30} />
         </TouchableOpacity>
@@ -333,16 +316,7 @@ const ModificationContextMenu = ({userid, state} : {userid?: string, state?:
 }
 
 const UserElement = ({ user, state }: { 
-  user: User, state: {
-    asc?: boolean,
-    setAsc?: Dispatch<SetStateAction<boolean>>,
-    field?: string,
-    setField?: Dispatch<SetStateAction<string>>,
-    users?: User[],
-    setUser?: React.Dispatch<React.SetStateAction<User[]>>
-    selectedRows? : String[]
-    setSelectedRows?: React.Dispatch<React.SetStateAction<String[]>>
-  };  
+  user: User, state: UserState;  
 }) => {  
   const selectRow = (id, remove) => {
     console.log(state.selectedRows);
@@ -373,7 +347,7 @@ const UserElement = ({ user, state }: {
       <Column>{user?.address?.zip}</Column>
       <Column>{user?.address?.country}</Column>
       <Column width={50}>
-        <ModificationContextMenu userid={user._id} state={state}/>
+        <ModificationContextMenu id={user._id} state={state}/>
       </Column>
     </Row>
   );

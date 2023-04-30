@@ -340,12 +340,26 @@ const UserElement = ({ user, state }: {
     setField?: Dispatch<SetStateAction<string>>,
     users?: User[],
     setUser?: React.Dispatch<React.SetStateAction<User[]>>
-  };
-}) => {
+    selectedRows? : String[]
+    setSelectedRows?: React.Dispatch<React.SetStateAction<String[]>>
+  };  
+}) => {  
+  const selectRow = (id, remove) => {
+    console.log(state.selectedRows);
+    (remove) ?
+    state.setSelectedRows(state.selectedRows.filter((r) => r != id)) :
+    state.setSelectedRows([...state.selectedRows, id]);
+  }
+  const [check, setCheck] = useState(false);
   return (
     <Row>
       <Column width={50}>
-        <Icon name="square-outline" size={20} color="#000" />
+        <TouchableOpacity onPress={() => {
+          setCheck(!check);
+          selectRow(user._id, check);
+          }}>
+          <Icon name={(check) ? "checkbox-outline" :"square-outline"} size={20} color="#000" />
+        </TouchableOpacity>
       </Column>
       <Column width={80}>{user?._id}</Column>
       <Column>{user?.name}</Column>
@@ -410,6 +424,7 @@ function OrderElement({ order }: { order: Order }) {
 }
 
 function ListUsers({ navigation }) {
+  const [selectedRows, setSelectedRows] = useState([]);
   const [users, setUser] = useState([{}] as [User]);
   useEffect(() => {
     UserAPI.getAll().then((res) => setUser(res.data));
@@ -444,7 +459,7 @@ function ListUsers({ navigation }) {
           <FlatList
             data={sortData(users)}
             renderItem={({ item, index }) => (
-              <UserElement user={item} key={index} state={{users, setUser}} />
+              <UserElement user={item} key={index} state={{users, setUser, selectedRows, setSelectedRows}} />
             )}
             keyExtractor={(user: User) => user?._id}
             ListHeaderComponent={() => (

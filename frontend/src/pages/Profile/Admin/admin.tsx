@@ -258,9 +258,10 @@ const UsersTableHeader = ({
       }
     UserAPI.create(user).then((res) => {
       console.log("User created: ", res);
-      (res.status == 200) ?
-        state.setUser([...state.users, user]) :
-        {};
+      if (res.status == 200){
+        user._id = res.data._id;
+        state.setUser([...state.users, user])
+      };
     });
   }
   return (
@@ -322,7 +323,7 @@ const ModificationContextMenu = ({userid, state} : {userid?: string, state?:
           <Icon onPress={() => {
             UserAPI.delete(userid).then((res) => {
               console.log("User deleted: ", res)
-              //state.setUsers(state.users.filter((user) => user._id !== new));
+              state.setUser(state.users.filter((u) => u._id != userid))
             });
           }} color="#ff3f2e" name="trash-outline" size={30} />
         </TouchableOpacity>

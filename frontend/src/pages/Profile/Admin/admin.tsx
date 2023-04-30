@@ -164,8 +164,8 @@ const TableHeader = ({
     setAsc?: Dispatch<SetStateAction<boolean>>,
     field?: string,
     setField?: Dispatch<SetStateAction<string>>,
-    users?: [User],
-    setUser?: React.Dispatch<React.SetStateAction<[User]>>
+    users?: User[],
+    setUser?: React.Dispatch<React.SetStateAction<User[]>>
   };
 }) => {
   return (
@@ -219,8 +219,8 @@ const UsersTableHeader = ({
     setAsc?: Dispatch<SetStateAction<boolean>>,
     field?: string,
     setField?: Dispatch<SetStateAction<string>>,
-    users?: [User],
-    setUser?: React.Dispatch<React.SetStateAction<[User]>>
+    users?: User[],
+    setUser?: React.Dispatch<React.SetStateAction<User[]>>
   };
 }) => {
   const [newUserForm, setUserForm] = useState({ 
@@ -239,8 +239,8 @@ const UsersTableHeader = ({
     setAsc?: Dispatch<SetStateAction<boolean>>,
     field?: string,
     setField?: Dispatch<SetStateAction<string>>,
-    users?: [User],
-    setUser?: React.Dispatch<React.SetStateAction<[User]>>
+    users?: User[],
+    setUser?: React.Dispatch<React.SetStateAction<User[]>>
     }}) => {
     const user : User = {
       name: newUserForm.name,
@@ -275,7 +275,7 @@ const UsersTableHeader = ({
             <Column key={i} width={80}></Column> :
             (label === "options") ? 
             <Column width={50} key={i}>
-              <TouchableOpacity onPress={() => createNewUser(state)}>
+              <TouchableOpacity onPress={() => createNewUser({state})}>
                 <View style={[styles.col]}>
                   <Icon name="md-save" size={30} color="#000000aa"/>
                 </View>
@@ -299,8 +299,8 @@ const ModificationContextMenu = ({userid, state} : {userid?: string, state?:
     setAsc?: Dispatch<SetStateAction<boolean>>,
     field?: string,
     setField?: Dispatch<SetStateAction<string>>,
-    users?: [User],
-    setUser?: React.Dispatch<React.SetStateAction<[User]>>}
+    users?: User[],
+    setUser?: React.Dispatch<React.SetStateAction<User[]>>}
   ;}) => {
   const [showPopover, setShowPopover] = useState(false);
   return (
@@ -337,8 +337,8 @@ const UserElement = ({ user, state }: {
     setAsc?: Dispatch<SetStateAction<boolean>>,
     field?: string,
     setField?: Dispatch<SetStateAction<string>>,
-    users?: [User],
-    setUser?: React.Dispatch<React.SetStateAction<[User]>>
+    users?: User[],
+    setUser?: React.Dispatch<React.SetStateAction<User[]>>
   };
 }) => {
   return (

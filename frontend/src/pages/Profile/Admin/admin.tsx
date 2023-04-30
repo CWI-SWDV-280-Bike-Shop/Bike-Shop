@@ -159,18 +159,20 @@ const TableHeader = ({
 }: {
   labels: string[];
   properties: string[];
-  state?: [
-    boolean,
-    Dispatch<SetStateAction<boolean>>,
-    string,
-    Dispatch<SetStateAction<string>>
-  ];
+  state?: {
+    asc?: boolean,
+    setAsc?: Dispatch<SetStateAction<boolean>>,
+    field?: string,
+    setField?: Dispatch<SetStateAction<string>>,
+    users?: [User],
+    setUser?: React.Dispatch<React.SetStateAction<[User]>>
+  };
 }) => {
   return (
     <View style={[styles.row, styles.rowHeader]}>
       {labels.map((label, i) =>
         label != "options" && label != "select" ? (
-          <View style={[styles.col, styles.headerElement]} key={i}>
+          <Column header={true} key={i} width={(label === "id" || label === "orders") ? 80 : 150}>
             <Text style={styles.rowHeaderText}>{label}</Text>
             <TouchableOpacity
               onPressOut={() => {
@@ -180,11 +182,11 @@ const TableHeader = ({
             >
               <Icon name="swap-vertical" size={20} color="#000000aa" />
             </TouchableOpacity>
-          </View>
+          </Column>
         ) : (
-          <View style={[styles.col, styles.headerElement]} key={i}>
+          <Column header={true} width={50} key={i}>
             <Text style={styles.rowHeaderText}>{label}</Text>
-          </View>
+          </Column>
         )
       )}
     </View>
@@ -197,15 +199,9 @@ const Row = ({ children }: { children?: Children }) => (
   </Pressable>
 );
 
-const Column = ({
-  overflow,
-  children,
-}: {
-  overflow?: boolean;
-  children?: Children;
-}) => {
+const Column = ({overflow, width=150, header, children }: {overflow?: boolean; width?: number; header?: boolean; children?: Children;}) => {
   return (
-    <View style={styles.col}>
+    <View style={[styles.col, {width: width}, (header) ? styles.headerElement : {}]}>
       <Text numberOfLines={overflow ? 10 : 1}>{children}</Text>
     </View>
   );
@@ -218,12 +214,14 @@ const UsersTableHeader = ({
 }: {
   labels: string[];
   properties: string[];
-  state: [
-    boolean,
-    Dispatch<SetStateAction<boolean>>,
-    string,
-    Dispatch<SetStateAction<string>>
-  ];
+  state: {
+    asc?: boolean,
+    setAsc?: Dispatch<SetStateAction<boolean>>,
+    field?: string,
+    setField?: Dispatch<SetStateAction<string>>,
+    users?: [User],
+    setUser?: React.Dispatch<React.SetStateAction<[User]>>
+  };
 }) => {
   const [newUserForm, setUserForm] = useState({ 
     "name": "", 
@@ -236,7 +234,14 @@ const UsersTableHeader = ({
     "zip": "", 
     "country": "", 
   })
-  const createNewUser = () => {
+  const createNewUser = ({state} : {state: {
+    asc?: boolean,
+    setAsc?: Dispatch<SetStateAction<boolean>>,
+    field?: string,
+    setField?: Dispatch<SetStateAction<string>>,
+    users?: [User],
+    setUser?: React.Dispatch<React.SetStateAction<[User]>>
+    }}) => {
     const user : User = {
       name: newUserForm.name,
       email: newUserForm.email,
@@ -252,7 +257,10 @@ const UsersTableHeader = ({
         }
       }
     UserAPI.create(user).then((res) => {
-      console.log(res)
+      console.log("User created: ", res);
+      (res.status == 200) ?
+        state.setUser([...state.users, user]) :
+        {};
     });
   }
   return (
@@ -261,20 +269,24 @@ const UsersTableHeader = ({
       <View style={styles.row}>
         {
           labels.map((label, i) => (
-            (label === "select" || label === "id" || label === "orders") ? 
-            <View style={styles.col} key={i}><TextInput style={styles.createNew} placeholder={label}></TextInput></View> :
+            (label === "select") ?
+            <Column width={50} key={i}></Column> :
+            (label === "id" || label === "orders") ? 
+            <Column key={i} width={80}></Column> :
             (label === "options") ? 
-            <TouchableOpacity onPress={createNewUser} key={i}>
-              <View style={[styles.col]}>
-                <Icon name="md-save" size={30} color="#000000aa"/>
-              </View>
-            </TouchableOpacity>
+            <Column width={50} key={i}>
+              <TouchableOpacity onPress={() => createNewUser(state)}>
+                <View style={[styles.col]}>
+                  <Icon name="md-save" size={30} color="#000000aa"/>
+                </View>
+              </TouchableOpacity>
+            </Column>
              :
-            <View style={styles.col} key={i}>
+            <Column key={i}>
               <TextInput style={styles.createNew} placeholder={label} value={newUserForm[label]} onChangeText={(text) => {
-                setUserForm({...newUserForm, [label]: text})
+                setUserForm({...newUserForm, [label]: text});
               }} />
-            </View>
+            </Column>
           ) )
         }
       </View>
@@ -282,7 +294,14 @@ const UsersTableHeader = ({
   );
 };
 
-const ModificationContextMenu = () => {
+const ModificationContextMenu = ({userid, state} : {userid?: string, state?: 
+  {asc?: boolean,
+    setAsc?: Dispatch<SetStateAction<boolean>>,
+    field?: string,
+    setField?: Dispatch<SetStateAction<string>>,
+    users?: [User],
+    setUser?: React.Dispatch<React.SetStateAction<[User]>>}
+  ;}) => {
   const [showPopover, setShowPopover] = useState(false);
   return (
     <Popover
@@ -300,33 +319,47 @@ const ModificationContextMenu = () => {
         </TouchableOpacity>
 
         <TouchableOpacity>
-          <Icon onPress={UserAPI.delete} color="#ff3f2e" name="trash-outline" size={30} />
+          <Icon onPress={() => {
+            UserAPI.delete(userid).then((res) => {
+              console.log("User deleted: ", res)
+              //state.setUsers(state.users.filter((user) => user._id !== new));
+            });
+          }} color="#ff3f2e" name="trash-outline" size={30} />
         </TouchableOpacity>
       </View>
     </Popover>
   )
 }
 
-const UserElement = ({ user }: { user: User }) => {
+const UserElement = ({ user, state }: { 
+  user: User, state: {
+    asc?: boolean,
+    setAsc?: Dispatch<SetStateAction<boolean>>,
+    field?: string,
+    setField?: Dispatch<SetStateAction<string>>,
+    users?: [User],
+    setUser?: React.Dispatch<React.SetStateAction<[User]>>
+  };
+}) => {
   return (
     <Row>
-      <View style={styles.col}>
+      <Column width={50}>
         <Icon name="square-outline" size={20} color="#000" />
-      </View>
-      <Column>{user?._id}</Column>
+      </Column>
+      <Column width={80}>{user?._id}</Column>
       <Column>{user?.name}</Column>
       <Column>{user?.email}</Column>
       <Column>{user?.role}</Column>
       <Column>{user?.phone}</Column>
-      <Column>{user?.orders?.length}</Column>
+      <Column width={80}>{user?.orders?.length}</Column>
       <Column>{user?.address?.street}</Column>
       <Column>{user?.address?.city}</Column>
       <Column>{user?.address?.state}</Column>
       <Column>{user?.address?.zip}</Column>
       <Column>{user?.address?.country}</Column>
-      <View style={[styles.col, { alignItems: "center" }]}>
-        <ModificationContextMenu/>
-      </View>
+      <Column width={50}>
+        <ModificationContextMenu userid={user._id} state={state}/>
+      </Column>
     </Row>
   );
 };
@@ -377,6 +410,10 @@ function OrderElement({ order }: { order: Order }) {
 
 function ListUsers({ navigation }) {
   const [users, setUser] = useState([{}] as [User]);
+  useEffect(() => {
+    UserAPI.getAll().then((res) => setUser(res.data));
+  }, []);
+
   const [asc, setAsc] = useState(true);
   const [field, setField] = useState("name");
 
@@ -388,11 +425,8 @@ function ListUsers({ navigation }) {
     );
   };
 
-  useEffect(() => {
-    UserAPI.getAll().then((res) => setUser(res.data));
-  }, []);
-
   const [searchProductsText, _searchProductsText] = useState("Search");
+  const userData = document.routes.find((e) => e.route == "Users");
   return (
     <View style={styles.rowSimple}>
       <NavigationMenu navigation={navigation} />
@@ -409,15 +443,15 @@ function ListUsers({ navigation }) {
           <FlatList
             data={sortData(users)}
             renderItem={({ item, index }) => (
-              <UserElement user={item} key={index} />
+              <UserElement user={item} key={index} state={{users, setUser}} />
             )}
             keyExtractor={(user: User) => user?._id}
             ListHeaderComponent={() => (
               <UsersTableHeader
-                state={[asc, setAsc, field, setField]}
-                labels={document.routes.find((e) => e.route == "Users").labels}
+                state={{asc, setAsc, field, setField, users, setUser}}
+                labels={userData.labels}
                 properties={
-                  document.routes.find((e) => e.route == "Users").properties
+                  userData.properties
                 }
               />
             )}
@@ -435,13 +469,10 @@ function ListProducts({ navigation }) {
 
   const sortData = (data) => {
     return data.sort((a, b) => {
-      try {
+      if(a[field] != undefined && b[field] != undefined) {
         return asc
           ? b[field].localeCompare(a[field])
           : a[field].localeCompare(b[field]);
-      } catch (error) {
-        console.log(error);
-        return data;
       }
     });
   };
@@ -471,7 +502,7 @@ function ListProducts({ navigation }) {
             keyExtractor={(product: Product) => product?._id}
             ListHeaderComponent={() => (
               <TableHeader
-                state={[asc, setAsc, field, setField]}
+                state={{asc, setAsc, field, setField}}
                 labels={
                   document.routes.find((e) => e.route == "Products").labels
                 }
@@ -530,7 +561,7 @@ function ListOrders({ navigation }) {
             keyExtractor={(order: Order) => order?._id}
             ListHeaderComponent={() => (
               <TableHeader
-                state={[asc, setAsc, field, setField]}
+                state={{asc, setAsc, field, setField}}
                 labels={document.routes.find((e) => e.route == "Orders").labels}
                 properties={
                   document.routes.find((e) => e.route == "Orders").properties
@@ -545,6 +576,7 @@ function ListOrders({ navigation }) {
 }
 
 export const Admin = ({dimensions} : {dimensions : ScaledSize}) => {
+  //Gather the data
   const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 992) ? true : false }
   const Stack = createStackNavigator();
   function AdminPages() {
@@ -699,7 +731,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   col: {
-    flex: 1,
     padding: ".5rem",
   },
   header: {

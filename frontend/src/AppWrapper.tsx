@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { LinkingOptions, NavigationContainer, ParamListBase } from '@react-navigation/native';
 import { Home } from '@pages/home';
 import CRUDPlayground from '@pages/CRUDPlayground';
 import 'react-native-gesture-handler';
@@ -12,6 +12,7 @@ import { Dimensions, Platform, ScaledSize, useWindowDimensions } from 'react-nat
 import { Shop } from './pages/Shop/shop';
 import { AuthContext } from '@context/auth.context';
 import Cart from './pages/Shop/cart';
+import * as Linking from 'expo-linking';
 
 const Drawer = createDrawerNavigator();
 
@@ -37,10 +38,35 @@ const AppWrapper = () => {
     {"name" : "Cart", "component": (props) => <Cart {...props} dimensions={dimensions} options={{ drawerItemStyle: { display: 'none' } }} />},
   ]
 
+  const prefix = Linking.createURL('/');
+
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      screens: {
+        Home: '/',
+        About: 'About',
+        Shop: 'Shop',
+        Profile: {
+          path: 'Profile/',
+          screens: {
+            Options: 'Profile/Options',
+            Orders: 'Profile/Orders',
+            Account: '/Account',
+            Admin: 'Profile/Admin',
+          },
+        },
+        Login: 'Login',
+        CRUDPlayground: 'CRUDPlayground',
+        Cart: 'Cart',
+      }
+    },
+  } as LinkingOptions<ParamListBase>;
+
   return (
-    <NavigationContainer linking={{ prefixes: [] }}>
+    <NavigationContainer linking={linking}>
       <Drawer.Navigator
-        initialRouteName={(checkMobile(dimensions)) ? "Shop" : "Home"}
+        /* initialRouteName={(checkMobile(dimensions)) ? "Shop" : "Home"} */
         screenOptions={{ 
           drawerStyle: {
             backgroundColor: '#6A7B76',

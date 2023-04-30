@@ -38,6 +38,7 @@ services:
     volumes:
       - mongodb:/data/db
       - ./docker/mongo:/docker-entrypoint-initdb.d/
+      - ./docker/mongo:/etc/
     networks:
       - app-network
     ports:

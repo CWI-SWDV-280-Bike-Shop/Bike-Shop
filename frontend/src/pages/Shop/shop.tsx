@@ -1,17 +1,20 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, ScrollView, ImageBackground } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, ImageBackground, FlatList } from 'react-native';
 import Layout from '@styles/layout/Layout';
 // import BikeCards from '@components/ProductPage/Cards/BikeCards'
 import { Search_Bar } from '@/components/ProductPage/searchBar';
 import { ItemCard } from '@components/ProductPage/Cards/ItemCards';
 import { Footer } from '@components/Footer';
 import { FilterParams } from '@components/ProductPage/filter';
-import { ListProducts } from '@components/ProductPage/Cards/BikeCards'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { useEffect, useState } from 'react';
+import ProductAPI from '@/api/product.api';
+import { Product } from '@/types/data.types';
 
-const Item = () => {
-  const price = (Math.random() * (1000 - 100 + 1) + 100).toFixed(2);
+const Item = ({ product }: { product: Product }) => {
+  //const price = (Math.random() * (1000 - 100 + 1) + 100).toFixed(2);
+  const price = product.price;
   const color = () => ["tomato", "cornflowerblue", "beige", "brown", "brickred"][Math.floor(Math.random() * 5)];
   return (
     <View style={styles.item}>
@@ -20,12 +23,16 @@ const Item = () => {
         <Text style={styles.priceText} numberOfLines={1}>${price}</Text>
       </View>
       <View style={styles.itemName}>
-        <Text style={styles.itemNameText} numberOfLines={1}>Globe Hybrid Globe Hybrid Globe Hybrid</Text>
+        <Text style={styles.itemNameText} numberOfLines={1}>{product.name}</Text>
         <View style={styles.subheader}>
-          <Text style={styles.itemStockText}>In Stock</Text>
-          <View style={styles.tag}>
-            <Text style={styles.tagText} numberOfLines={1}>Mountain</Text>
-          </View>
+          <Text style={styles.itemStockText} numberOfLines={1}>{(product.inStock) ? "In stock" : "Out of stock"}</Text>
+          {
+          (product.subcategory) ? (
+            <View style={styles.tag}>
+              <Text style={styles.tagText} numberOfLines={1}>{product.subcategory}</Text>
+            </View>
+           ) : (<View></View>)
+          }
         </View>
       </View>
       <View style={styles.itemTray}>
@@ -43,6 +50,42 @@ const Item = () => {
   )
 }
 
+function ListProducts() {
+  const [products, setProducts] = useState([]);
+  const [asc, setAsc] = useState(true);
+  const [field, setField] = useState("name");
+
+  const sortData = (data) => {
+    return data.sort((a, b) => {
+      if(b[field] != undefined && a[field] != undefined) {
+        return asc
+          ? b[field].localeCompare(a[field])
+          : a[field].localeCompare(b[field]);
+      }
+    });
+  };
+
+  useEffect(() => {
+    ProductAPI.getAll().then((res) => setProducts(res.data));
+  }, []);
+  return (
+    <View style={styles.products}>
+        {products && (
+          <FlatList
+            data={sortData(products)}
+            initialNumToRender={10}
+            numColumns={4}
+            renderItem={({ item, index }) => (
+              <Item product={item} key={index} />
+            )}
+            keyExtractor={(product: Product) => product?._id}
+          />
+        )}
+    </View>
+  );
+}
+
+
 export const Shop = () => {
   return (
     <View style={styles.container}>
@@ -53,18 +96,7 @@ export const Shop = () => {
           <Text>OPTIONS</Text>
         </View>
       <ScrollView>
-        <View style={styles.products}>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
-          <Item/>
-        </View>
+          <ListProducts/>
       </ScrollView>
     </View>
   );
@@ -76,7 +108,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: 'salmon',
+    backgroundColor: '#ffffff00',
   },
   toolbar: {
     width: 'auto',
@@ -86,14 +118,13 @@ const styles = StyleSheet.create({
   },
   products: {
     flex: 3,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: 'column',
     backgroundColor: '#dee',
-    gap: 30,
     padding: 30,
   },
   item: {
-    width: 370,
+    margin: 15,
+    width: 390,
     height: 370,
     padding: 10,
     backgroundColor: '#fff',
@@ -135,7 +166,7 @@ const styles = StyleSheet.create({
     fontSize: 30
   },
   itemStockText: {
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     color: '#999',
     fontSize: 18,
     fontWeight: '700',
@@ -156,6 +187,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     fontWeight: '700',
     fontSize: 14,
+    maxWidth: 150
   },
   backgroundimage: {
     flex: 1,

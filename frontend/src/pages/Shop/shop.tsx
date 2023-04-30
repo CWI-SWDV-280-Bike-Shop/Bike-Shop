@@ -75,8 +75,9 @@ const styles = StyleSheet.create({
   },
   toolbar: {
     width: 'auto',
-    paddingHorizontal: 40,
-    backgroundColor: 'cornflowerblue',
+    padding: 40,
+    backgroundColor: '#dee',
+    gap: 10,
   },
   products: {
     flex: 3,

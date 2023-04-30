@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
   ViewComponent,
   Button,
-  Platform
+  Platform,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import UserAPI from "@api/user.api";
@@ -26,7 +26,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { Pressable } from "react-native-web-hover";
 import Popover from "react-native-popover-view";
-import { ScaledSize } from 'react-native';
+import { ScaledSize } from "react-native";
 
 // Search can be implemented like I did sorting, button needs selector for which field to search
 // Need a wrapper or something that calls this so I can do more complex features
@@ -232,18 +232,6 @@ const Column = ({
       </View> */
 }
 //User Crude
-const createUser = (userData: User) => {
-  UserAPI.create(userData)
-    .then((response) => {
-      // handle success response
-      console.log(response.data);
-    })
-    .catch((error) => {
-      // handle error
-      console.log(error.response.data);
-    });
-};
-
 {
   /*
 const updateUser = (userId:string, updatedUserData:User) => {
@@ -260,17 +248,6 @@ const updateUser = (userId:string, updatedUserData:User) => {
  */
 }
 
-const deleteUser = (userId: string) => {
-  UserAPI.delete(userId)
-    .then((response) => {
-      // handle success response
-      console.log(response.data);
-    })
-    .catch((error) => {
-      // handle error
-      console.log(error.response.data);
-    });
-};
 const UsersTableHeader = ({
   labels,
   properties,
@@ -285,6 +262,29 @@ const UsersTableHeader = ({
     Dispatch<SetStateAction<string>>
   ];
 }) => {
+  const createUser = (userData: User) => {
+    UserAPI.create(userData)
+      .then((response) => {
+        // handle success response
+        console.log(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error.response.data);
+      });
+  };
+
+  const deleteUser = (userId: string) => {
+    UserAPI.delete(userId)
+      .then((response) => {
+        // handle success response
+        console.log(response.data);
+      })
+      .catch((error) => {
+        // handle error
+        console.log(error.response.data);
+      });
+  };
   return (
     <View>
       <TableHeader labels={labels} properties={properties} state={state} />
@@ -389,7 +389,6 @@ const UserElement = ({ user }: { user: User }) => {
             <TouchableOpacity onPress={deleteUser}>
               <Icon name="trash-outline" size={20} />
             </TouchableOpacity>
-            git
           </View>
         </Popover>
 
@@ -688,8 +687,14 @@ function ListOrders({ navigation }) {
   );
 }
 
-export const Admin = ({dimensions} : {dimensions : ScaledSize}) => {
-  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 992) ? true : false }
+export const Admin = ({ dimensions }: { dimensions: ScaledSize }) => {
+  const checkMobile = (dimensions: ScaledSize) => {
+    return Platform.OS === "android" ||
+      Platform.OS === "ios" ||
+      dimensions.width <= 992
+      ? true
+      : false;
+  };
   const Stack = createStackNavigator();
   function AdminPages() {
     return (
@@ -705,14 +710,14 @@ export const Admin = ({dimensions} : {dimensions : ScaledSize}) => {
       </Stack.Navigator>
     );
   }
-    return (checkMobile(dimensions)) ? (
-      <View style={styles.wholePage}>
-        <Icon name="sad-outline" size={60} color="#000" />
-        <Text style={styles.wholePageMessage}>Why not use web for admin?</Text>
-      </View>
-     ) : (
-      <View style={[styles.container]}>
-          {/* <View style={styles.topBar}>
+  return checkMobile(dimensions) ? (
+    <View style={styles.wholePage}>
+      <Icon name="sad-outline" size={60} color="#000" />
+      <Text style={styles.wholePageMessage}>Why not use web for admin?</Text>
+    </View>
+  ) : (
+    <View style={[styles.container]}>
+      {/* <View style={styles.topBar}>
           <TouchableOpacity style={styles.button}>
             <Icon name="moon"
                 size={20}
@@ -720,24 +725,24 @@ export const Admin = ({dimensions} : {dimensions : ScaledSize}) => {
               />
           </TouchableOpacity>
           </View> */}
-          <NavigationContainer independent={true}>
-              <AdminPages/>
-          </NavigationContainer>
-      </View>
-     );
+      <NavigationContainer independent={true}>
+        <AdminPages />
+      </NavigationContainer>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
   wholePage: {
     flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
     gap: 30,
   },
   wholePageMessage: {
     fontSize: 22,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   //Navigation Bar Styles
   active: {

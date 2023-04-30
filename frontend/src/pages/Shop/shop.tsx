@@ -8,9 +8,11 @@ import { Footer } from '@components/Footer';
 import { FilterParams } from '@components/ProductPage/filter';
 import { ListProducts } from '@components/ProductPage/Cards/BikeCards'
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Item = () => {
   const price = (Math.random() * (1000 - 100 + 1) + 100).toFixed(2);
+  const color = () => ["tomato", "cornflowerblue", "beige", "brown", "brickred"][Math.floor(Math.random() * 5)];
   return (
     <View style={styles.item}>
       <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
@@ -23,12 +25,12 @@ const Item = () => {
       </View>
       <View style={styles.itemTray}>
         <View style={styles.colors}>
-          <View style={styles.colorBox}></View>
-          <View style={styles.colorBox}></View>
-          <View style={styles.colorBox}></View>
+          <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
+          <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
+          <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
         </View>
-        <TouchableOpacity style={styles.buttonPrimary}>
-          <Text style={styles.btnFont}>Add to Cart</Text>
+        <TouchableOpacity style={[styles.buttonRound, styles.offsetButton]}>
+          <Icon name="cart-outline" size={40} color="#FFF" />
         </TouchableOpacity>
       </View>
       </ImageBackground>
@@ -144,6 +146,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
   },
+  buttonRound: {
+    backgroundColor: '#42b66d',
+    borderRadius: 100,
+    alignContent: 'center',
+    justifyContent: 'center',
+    padding: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.52,
+    shadowRadius: 2.22,
+    elevation: 10,
+  },
   btnFont: {
     fontWeight: 'bold',
     textTransform: 'uppercase',
@@ -152,7 +169,7 @@ const styles = StyleSheet.create({
   itemTray: {
     width: "100%",
     position: 'relative',
-    top: 180,
+    top: 170,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -175,7 +192,12 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.32,
     shadowRadius: 2.22,
     elevation: 10,
-  }
+  },
+  offsetButton: {
+    position: 'relative',
+    top: 5,
+    left: 30,
+  },
 })
 
 /*   <View style={[Layout.searchFilter]}>

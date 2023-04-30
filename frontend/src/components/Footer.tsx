@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     columnGap: 10,
     marginBottom: 10,
+    alignItems: 'center',
   },
   container: {
     backgroundColor: '#000',

@@ -36,15 +36,20 @@ const Cart = (props: DrawerHeaderProps) => {
   const responsive = checkMobile(dimensions) ? mobile : web;
   //Set Order
   const [order, setOrder] = useState<Order | null>(null);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleCheckout = async () => {
-    const order = await checkout(products, authUser);
-    setOrder(order);
+    if (products) {
+      const order = await checkout(products, authUser);
+      setOrder(order);
+    }
+    else {
+      setErrorMessage('Your have nothing in your cart!')
+    }
   };
 
   const calculateShipping = (products: Product[]) => {
     let cost = 0;
-
     products.map(product => {
       if (product.category == 'Bikes') {
         if (product.subcategory == 'Mountain') {
@@ -58,9 +63,9 @@ const Cart = (props: DrawerHeaderProps) => {
       else if (product.category == 'Accessories') {
         cost += accessoriesShipping;
       }
-      else if (product.category == 'Services') {
-        cost += 0;
-      }
+      // else if (product.category == 'Services') { Dumb logic that does not need to be here. Must have been sleep deprived this day.
+      //   cost += 0;
+      // }
     });
     return cost;
   }
@@ -80,7 +85,7 @@ const Cart = (props: DrawerHeaderProps) => {
       <View style={[Styles.cart, responsive.cart]}>
         <Text style={[Styles.bodyText, { fontWeight: 'bold', fontSize: 30 }]}>Are your ready to checkout?  {isLoggedIn ? authUser.name + '?' : <Text />}</Text>
         <Text style={Styles.bodyText}>Quantity of Items/Services: {quantity}</Text>
-        <Text style={Styles.bodyText}>Ordered Items: {products && ListOrderItems(products)}</Text>
+        <Text style={Styles.bodyText}>Ordered Items: {quantity == 0 || null ? 'There is nothing in your cart' : (products && ListOrderItems(products))}</Text>
         <Text style={Styles.bodyText}>Sub Total: {formatPrice(total)}</Text>
         <Text style={Styles.bodyText}>Shipping: {products && formatPrice(calculateShipping(products))}</Text>
         {/* <Text style={Styles.bodyText}>Total:{formatPrice(total * 1.06)}</Text> */}
@@ -96,12 +101,13 @@ const Cart = (props: DrawerHeaderProps) => {
         }
         <TouchableOpacity
           style={[Styles.button, Styles.checkoutBtn]}
-          onPress={isLoggedIn ? () => handleCheckout() : () => props.navigation.navigate("Login")}
+          onPress={isLoggedIn ? () => handleCheckout() : () => props.navigation.navigate("Login", { navTo: 'Cart' })}
         >
           <Text style={Styles.buttonText}>
             Checkout <Icon size={20} name="cart-outline" />
           </Text>
         </TouchableOpacity>
+        <Text>{errorMessage}</Text>{/* This does not have Styles yet TODO */}
         {order && (
           <>
             <Text>{message}</Text>
@@ -142,38 +148,12 @@ const Cart = (props: DrawerHeaderProps) => {
                   </Text>
                 </TouchableOpacity>
               </View>
-            ))}
+            ))
+            ||
+            <Text style={Styles.bodyText}>Add things to your cart in the Shop page and they will show up right here!</Text>
+            }
         </ScrollView>
-
       </View>
-      {/* <View style={Styles.cart}>
-        <Text>Sub Total: {formatPrice(total)}</Text>
-        <Text>Total:</Text>
-        <Text>Quantity: {quantity}</Text>
-        {isLoggedIn ? <Text>Proceed to Checkout</Text> : <Text onPress={() => props.navigation.navigate("Login")}>Please Login to checkout your items</Text>}
-        <TouchableOpacity
-          style={[Styles.button]}
-          onPress={isLoggedIn ? () => console.log("Checkout") : () => { return; }}
-        >
-          <Text style={Styles.buttonText}>
-            Checkout<Icon size={15} name="checkbox-outline" />
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[Styles.button, Styles.checkoutBtn]}
-          onPress={handleCheckout}
-        >
-          <Text style={Styles.buttonText}>
-            Checkout <Icon size={15} name="cart-outline" />
-          </Text>
-        </TouchableOpacity>
-        {order && (
-          <>
-            <Text>{message}</Text>
-            <Text>order: {JSON.stringify(order)}</Text>
-          </>
-        )}
-    </View> */}
     </View >
   );
 };

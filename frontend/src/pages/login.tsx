@@ -4,61 +4,67 @@ import { AuthContext } from '@/context/auth.context';
 import { User } from '@/types/data.types';
 import * as React from 'react';
 import { useContext, useState } from 'react';
-import { Text, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { Text, StyleSheet, View, useWindowDimensions, Button } from 'react-native';
 import { ScrollView, TextInput, TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Layout from '@styles/layout/Layout';
 import { InputModeOptions } from "react-native"
 
-export const LoginScreen = ({props} : {props: DrawerHeaderProps}) => {
+export const LoginScreen = ({ props }: { props: DrawerHeaderProps }, route) => {
   //Auth connection
   const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
   //Login Logic
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
+  // Nav Logic
+  const navigateTo = route.navTo == null ? "Profile" : JSON.stringify(route.navTo);
 
   const submit = () => {
     if (email == '' || password == "") {
       setLoginError('Please fill out all the fields!');
     } else {
+      console.log('before Login');
       login({ email: email.toLowerCase(), password });
-      props.navigation.navigate("Profile");
+      console.log('after Login');
+      console.log("message: " + message)
+      props.navigation.navigate(navigateTo);
+      console.log('after go back')
     }
   };
   return (
     <View>
       <Text style={[Layout.header]}>Login</Text>
-        <Text style={[Layout.bodyText]}>
-          Please login to see your profile.
-        </Text>
-        <View>
-          <Text style={styles.label}>Email</Text>
-          <TextInput
-            style={[styles.editBox]}
-            placeholder='Email'
-            value={email}
-            onChangeText={(value) => setEmail(value)}
-          />
-        </View>
-        <View>
-          <Text style={styles.label}>Password</Text>
-          <TextInput
-            style={[styles.editBox]}
-            placeholder='Password'
-            value={password}
-            onChangeText={(value) => setPassword(value)}
-            secureTextEntry={true}
-          />
-        </View>
-        {message && <Text style={[Layout.errorText]}>{message}</Text>}
-        <Text style={[Layout.errorText]}>{loginError}</Text>
-        <View style={styles.rowBottom}>
-          <TouchableOpacity style={styles.buttonPrimary} onPressIn={(submit)}>
-            <Text style={styles.btnFont}>Login</Text>
-            <Icon name="log-in-outline" size={30} color="#FFF"/>
-          </TouchableOpacity>
-        </View>
+      <Text style={[Layout.bodyText]}>
+        Please login to see your profile.
+      </Text>
+      <View>
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={[styles.editBox]}
+          placeholder='Email'
+          value={email}
+          onChangeText={(value) => setEmail(value)}
+        />
+      </View>
+      <View>
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={[styles.editBox]}
+          placeholder='Password'
+          value={password}
+          onChangeText={(value) => setPassword(value)}
+          secureTextEntry={true}
+        />
+      </View>
+      {message && <Text style={[Layout.errorText]}>{message}</Text>}
+      <Text style={[Layout.errorText]}>{loginError}</Text>
+      <View style={styles.rowBottom}>
+        <TouchableOpacity style={styles.buttonPrimary} onPressIn={(submit)}>
+          <Text style={styles.btnFont}>Login</Text>
+          <Icon name="log-in-outline" size={30} color="#FFF" />
+        </TouchableOpacity>
+      </View>
     </View>
   )
 }
@@ -92,7 +98,7 @@ const RegisterScreen = ({props} : {props: DrawerHeaderProps}) => {
       // register user and then immediately login.
       AuthAPI.register(newUser).then(() => {
         login({ email: regEmail, password: regPassword });
-        props.navigation.navigate("Profile");
+        props.navigation.navigate("Cart");
       });
     }
   };
@@ -235,8 +241,10 @@ export const Login = (props: DrawerHeaderProps) => {
   return (
     <ScrollView style={[Layout.container]}>
       <View style={[Layout.contentContainer]}>
-        <LoginScreen props={props}/>
-
+        <LoginScreen props={props} />
+        <TouchableOpacity onPress={() => { props.navigation.goBack() }}>
+          <Text  >Test</Text>
+        </TouchableOpacity>
         {isLoggedIn && (
           <View>
             <Text>_id: {authUser._id}</Text>
@@ -283,7 +291,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     bottom: -30,
     left: 20
-  }, 
+  },
   editBox: {
     paddingTop: 32,
     padding: 16,

@@ -2,7 +2,7 @@ type Data = {
   _id?: string;
   createdAt?: string;
   updatedAt?: string;
-};
+}; 
 
 // Auth
 export type Credentials = {

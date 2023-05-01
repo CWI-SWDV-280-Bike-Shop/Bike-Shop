@@ -134,8 +134,8 @@ type UserState = {
   setField?: Dispatch<SetStateAction<string>>,
   users?: User[],
   setUser?: React.Dispatch<React.SetStateAction<User[]>>
-  selectedRows? : String[]
-  setSelectedRows?: React.Dispatch<React.SetStateAction<String[]>>
+  selectedRows? : string[]
+  setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
 }
 
 const NavigationMenu = ({ navigation }) => {
@@ -251,7 +251,7 @@ const UsersTableHeader = ({
       if (res.status == 200){
         user._id = res.data._id;
         state.setUser([...state.users, user])
-      };
+      }
     });
   }
   return (

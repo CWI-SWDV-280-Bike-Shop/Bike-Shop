@@ -228,8 +228,8 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
             ))
           }
         </View>
-        <Footer />
-    </View>
-  </ScrollView>
+        <Footer dimensions={dimensions}/>
+      </View>
+    </ScrollView>
     );
   };

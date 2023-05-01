@@ -12,7 +12,7 @@ import { InputModeOptions } from "react-native"
 
 export const LoginScreen = ({props} : {props: DrawerHeaderProps}) => {
   //Auth connection
-  const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
+  const { authUser, login, message } = useContext(AuthContext);
   //Login Logic
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -67,7 +67,7 @@ const RegisterScreen = ({props} : {props: DrawerHeaderProps}) => {
   //Window Dimensions
   const dimensions = useWindowDimensions();
   //Auth connection
-  const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
+  const { authUser, login, message } = useContext(AuthContext);
   const [role, setRole] = useState('Customer'); //setting default role... this is kinda sloppy
 
   const regSubmit = () => {
@@ -214,7 +214,7 @@ const RegisterScreen = ({props} : {props: DrawerHeaderProps}) => {
           </TouchableOpacity>
         </View>
 
-        {isLoggedIn && (
+        {authUser && (
           <View>
             <Text>_id: {authUser._id}</Text>
             <Text>name: {authUser.name}</Text>
@@ -230,14 +230,14 @@ const RegisterScreen = ({props} : {props: DrawerHeaderProps}) => {
 
 export const Login = (props: DrawerHeaderProps) => {
   //Auth connection
-  const { authUser, isLoggedIn } = useContext(AuthContext);
+  const { authUser } = useContext(AuthContext);
   
   return (
     <ScrollView style={[Layout.container]}>
       <View style={[Layout.contentContainer]}>
         <LoginScreen props={props}/>
 
-        {isLoggedIn && (
+        {authUser && (
           <View>
             <Text>_id: {authUser._id}</Text>
             <Text>name: {authUser.name}</Text>

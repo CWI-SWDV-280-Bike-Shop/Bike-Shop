@@ -35,7 +35,6 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 export const NavigationHeader = (props: DrawerHeaderProps) => {
   const dimensions = useWindowDimensions();
   const nav = props.navigation;
-  const { isLoggedIn } = useContext(AuthContext);
 
   const checkMobile = (dimensions: ScaledSize) => {
     return Platform.OS === 'android' ||
@@ -129,11 +128,11 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
 };
 
 const ProfilePopup = ({props, setShowPopover} : {props: DrawerHeaderProps, setShowPopover: Dispatch<SetStateAction<boolean>>}) => {
-  const { isLoggedIn, authUser, logout } = useContext(AuthContext);
-  const username = isLoggedIn && authUser.name;
-  const email = isLoggedIn && authUser.email;
+  const { authUser, logout } = useContext(AuthContext);
+  const username = authUser && authUser.name;
+  const email = authUser && authUser.email;
 
-  return (isLoggedIn) ? (
+  return authUser ? (
     <View style={styles.popoverBody}>
       <View style={styles.profileRow}>
         <View style={styles.profileImage}><Icon name="person-circle-outline" size={100} color="#FFF" /></View>

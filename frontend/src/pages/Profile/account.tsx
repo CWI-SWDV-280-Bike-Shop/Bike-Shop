@@ -17,10 +17,10 @@ import { DrawerHeaderProps } from '@react-navigation/drawer';
 export const Account = (props: DrawerHeaderProps) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [editType, setEditType] = useState('');
-  const { isLoggedIn, authUser } = useContext(AuthContext);
-  const username = isLoggedIn && authUser.name;
-  const email = isLoggedIn && authUser.email;
-  const password = isLoggedIn && authUser.password;
+  const { authUser } = useContext(AuthContext);
+  const username = authUser && authUser.name;
+  const email = authUser && authUser.email;
+  const password = authUser && authUser.password;
   const [user, setUser] = useState({} as User);
 
   useEffect(() => {

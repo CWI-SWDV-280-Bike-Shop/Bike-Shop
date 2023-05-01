@@ -21,13 +21,13 @@ const Drawer = createDrawerNavigator();
 
 const AppWrapper = () => {
   const dimensions = useWindowDimensions();
-  const { isLoggedIn } = useContext(AuthContext);
+  const { authUser } = useContext(AuthContext);
 
   const screens = [
     {"name" : "Home", "component": (props) => <Home {...props} dimensions={dimensions} />},
     {"name" : "About", "component": (props) => <About {...props} dimensions={dimensions} />},
     {"name" : "Shop", "component": (props) => <Shop {...props} dimensions={dimensions} />},
-    (isLoggedIn) ?
+    authUser ?
       {"name" : "Profile", "component": (props) => <Profile {...props} dimensions={dimensions} />} :
       {"name" : "Login", "component": (props) => <Login {...props} dimensions={dimensions} />},
     {"name" : "Orders", "component": (props) => <Orders {...props} dimensions={dimensions} />},

@@ -5,7 +5,6 @@ import { AuthUser, Credentials } from '@/types/data.types';
 
 type AuthContextType = {
   authUser: AuthUser | null;
-  isLoggedIn: boolean;
   login: (credentials: Credentials) => void;
   logout: () => void;
   message: string | null;
@@ -13,7 +12,6 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>({
   authUser: null,
-  isLoggedIn: false,
   login: (credentials) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   logout: () => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   message: null,
@@ -21,7 +19,6 @@ export const AuthContext = createContext<AuthContextType>({
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [authUser, setAuthUser] = useState<AuthUser | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [message, setMessage] = useState(null);
 
   // initialize authUser with localStorage if present
@@ -31,7 +28,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const localAuthUser = (await TokenAPI.getLocalAuthUser()) as AuthUser;
       if (localAuthUser) {
         setAuthUser(localAuthUser);
-        setIsLoggedIn(true);
         setMessage('User fetched from localStorage');
       }
     };
@@ -46,7 +42,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setAuthUser(user);
         TokenAPI.setLocalAuthUser(user);
         setMessage('User logged in successfully!');
-        setIsLoggedIn(true);
       })
       .catch((err) => setMessage(err.response?.data?.error ?? err.message));
   };
@@ -54,13 +49,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const logout = () => {
     setAuthUser(null);
     TokenAPI.removeLocalAuthUser();
-    setIsLoggedIn(false);
     setMessage('User logged out');
   };
 
   return (
     <AuthContext.Provider
-      value={{ authUser, isLoggedIn, login, logout, message }}
+      value={{ authUser, login, logout, message }}
     >
       {children}
     </AuthContext.Provider>

@@ -45,10 +45,6 @@ const AppWrapper = () => {
       component: (props) => <Profile {...props} dimensions={dimensions} />,
     },
     {
-      name: 'Login',
-      component: (props) => <Profile {...props} dimensions={dimensions} />,
-    },
-    {
       name: 'Orders',
       component: (props) => <Orders {...props} dimensions={dimensions} />,
     },

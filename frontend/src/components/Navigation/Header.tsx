@@ -36,205 +36,115 @@ const HamburgerMenu = ({ navigation }: DrawerHeaderProps) => {
 
 //Navigation Header
 export const NavigationHeader = (props: DrawerHeaderProps) => {
-<<<<<<< HEAD
   const dimensions = useWindowDimensions();
   const nav = props.navigation;
-=======
-	const dimensions = useWindowDimensions();
-	const nav = props.navigation;
-	const { isLoggedIn } = useContext(AuthContext);
->>>>>>> 61cea4c ((WIP) re-working login navigation logic)
+  const { authUser } = useContext(AuthContext);
 
-	const checkMobile = (dimensions: ScaledSize) => {
-		return Platform.OS === 'android' ||
-			Platform.OS === 'ios' ||
-			dimensions.width <= 992
-			? true
-			: false;
-	};
-	const checkPage = (page) => {
-		return nav.getState().routeNames[nav.getState().index] == page;
-	};
-	const HoverButton = (props: { title: string; page: string }) => {
-		return (
-			<Pressable
-				style={({ hovered }) => [
-					styles.buttonRoot,
-					hovered && styles.buttonHovered,
-					checkPage(props.page) ? styles.active : styles.inactive,
-				]}
-			>
-				<TouchableOpacity onPress={() => nav.navigate(props.page)}>
-					<Text style={styles.navText}>{props.title}</Text>
-				</TouchableOpacity>
-			</Pressable>
-		);
-	};
+  const checkMobile = (dimensions: ScaledSize) => {
+    return Platform.OS === 'android' ||
+      Platform.OS === 'ios' ||
+      dimensions.width <= 992
+      ? true
+      : false;
+  };
+  const checkPage = (page) => {
+    return nav.getState().routeNames[nav.getState().index] == page;
+  };
+  const HoverButton = (props: { title: string; page: string }) => {
+    return (
+      <Pressable
+        style={({ hovered }) => [
+          styles.buttonRoot,
+          hovered && styles.buttonHovered,
+          checkPage(props.page) ? styles.active : styles.inactive,
+        ]}
+      >
+        <TouchableOpacity onPress={() => nav.navigate(props.page)}>
+          <Text style={styles.navText}>{props.title}</Text>
+        </TouchableOpacity>
+      </Pressable>
+    );
+  };
 
-	const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
-		return (
-			<View style={styles.navBar}>
-				{navigation.getState().routeNames.map((name, i) => {
-					if (
-						[
-							'Cart',
-							'Profile',
-							'Login',
-							'Orders',
-							'Account',
-							'Admin',
-							'Checkout',
-						].some((e) => name === e)
-					) {
-						return;
-					}
-					return <HoverButton key={i} title={name} page={name} />;
-				})}
-			</View>
-		);
-	};
+  const DesktopNavbar = ({ navigation }: DrawerHeaderProps) => {
+    return (
+      <View style={styles.navBar}>
+        {navigation.getState().routeNames.map((name, i) => {
+          if (
+            [
+              'Cart',
+              'Profile',
+              'Login',
+              'Orders',
+              'Account',
+              'Admin',
+              'Checkout',
+            ].some((e) => name === e)
+          ) {
+            return;
+          }
+          return <HoverButton key={i} title={name} page={name} />;
+        })}
+      </View>
+    );
+  };
 
-	const NavigationBar = (props: DrawerHeaderProps) => {
-		return checkMobile(dimensions) ? (
-			<HamburgerMenu {...props} />
-		) : (
-			<DesktopNavbar {...props} />
-		);
-	};
+  const NavigationBar = (props: DrawerHeaderProps) => {
+    return checkMobile(dimensions) ? (
+      <HamburgerMenu {...props} />
+    ) : (
+      <DesktopNavbar {...props} />
+    );
+  };
 
-	const currentRoute = nav.getState().routeNames[nav.getState().index];
-	const [showPopover, setShowPopover] = useState(false);
-	return (
-		<View
-			style={[
-				currentRoute != 'Home' || checkMobile(dimensions)
-					? styles.headerView
-					: styles.headerHomeView,
-			]}
-		>
-			<NavigationBar {...props} />
-			<View style={styles.headerLogoParent}>
-				<Image
-					source={require('../../assets/Branding/OfficialLogo-white.png')}
-					style={styles.headerLogo}
-				/>
-			</View>
-			<View style={[styles.headerIcons, { justifyContent: 'flex-end' }]}>
-				<Popover
-					isVisible={showPopover}
-					onRequestClose={() => setShowPopover(false)}
-					popoverStyle={{ backgroundColor: '#ffffff00' }}
-					backgroundStyle={{ backgroundColor: 'transparent' }}
-					from={
-						<TouchableOpacity
-							style={[
-								styles.headerTouchable,
-								checkMobile(dimensions) ? { display: 'none' } : {},
-							]}
-							onPress={() => setShowPopover(!showPopover)}
-						>
-							<ProfileButton />
-						</TouchableOpacity>
-					}
-				>
-					<ProfilePopup setShowPopover={setShowPopover} props={props} />
-				</Popover>
-				<TouchableOpacity
-					style={styles.headerTouchable}
-					onPress={() => props.navigation.navigate('Cart')}
-				>
-					<CartButton />
-				</TouchableOpacity>
-			</View>
-		</View>
-	);
+  const currentRoute = nav.getState().routeNames[nav.getState().index];
+  const [showPopover, setShowPopover] = useState(false);
+  return (
+    <View
+      style={[
+        currentRoute != 'Home' || checkMobile(dimensions)
+          ? styles.headerView
+          : styles.headerHomeView,
+      ]}
+    >
+      <NavigationBar {...props} />
+      <View style={styles.headerLogoParent}>
+        <Image
+          source={require('../../assets/Branding/OfficialLogo-white.png')}
+          style={styles.headerLogo}
+        />
+      </View>
+      <View style={[styles.headerIcons, { justifyContent: 'flex-end' }]}>
+        <Popover
+          isVisible={showPopover}
+          onRequestClose={() => setShowPopover(false)}
+          popoverStyle={{ backgroundColor: '#ffffff00' }}
+          backgroundStyle={{ backgroundColor: 'transparent' }}
+          from={
+            <TouchableOpacity
+              style={[
+                styles.headerTouchable,
+                checkMobile(dimensions) ? { display: 'none' } : {},
+              ]}
+              onPress={() => setShowPopover(!showPopover)}
+            >
+              <ProfileButton />
+            </TouchableOpacity>
+          }
+        >
+          <ProfilePopup setShowPopover={setShowPopover} props={props} />
+        </Popover>
+        <TouchableOpacity
+          style={styles.headerTouchable}
+          onPress={() => props.navigation.navigate('Cart')}
+        >
+          <CartButton />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
 };
 
-<<<<<<< HEAD
-const ProfilePopup = ({props, setShowPopover} : {props: DrawerHeaderProps, setShowPopover: Dispatch<SetStateAction<boolean>>}) => {
-  const { authUser, logout } = useContext(AuthContext);
-  const username = authUser && authUser.name;
-  const email = authUser && authUser.email;
-
-  return authUser ? (
-    <View style={styles.popoverBody}>
-      <View style={styles.profileRow}>
-        <View style={styles.profileImage}><Icon name="person-circle-outline" size={100} color="#FFF" /></View>
-        <View style={styles.profileDetails}>
-          <Text style={styles.profileName}>{username}</Text>
-          <Text style={styles.profileEmail}>{email}</Text>
-          <TouchableOpacity
-          style={styles.buttonPrimary}
-          onPress={() => {
-            setShowPopover(false);
-            props.navigation.navigate('Account');
-          }}
-        >
-          <Text style={styles.btnFont}>Edit Profile</Text>
-        </TouchableOpacity>
-        </View>
-      </View>
-      <View style={styles.profileLinks}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            setShowPopover(false);
-            props.navigation.navigate('Orders')
-        }}
-        >
-          <View style={styles.iconlabelGrouping}>
-            <Icon name="receipt-outline" size={24} color="#333333ee" />
-            <Text style={styles.buttonContent}>Orders</Text>
-          </View>
-          <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => {
-            setShowPopover(false);
-            props.navigation.navigate('Admin')
-        }}
-        >
-          <View style={styles.iconlabelGrouping}>
-            <Icon name="key-outline" size={24} color="#333333ee" />
-            <Text style={styles.buttonContent}>Admin</Text>
-          </View>
-          <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {
-          setShowPopover(false);
-          logout();
-        }}>
-          <View style={styles.iconlabelGrouping}>
-            <Icon name="log-out-outline" size={24} color="#333333ee" />
-            <Text style={styles.buttonContent}>Logout</Text>
-          </View>
-          <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
-        </TouchableOpacity>
-      </View>
-    </View>
-  ) : (
-    //Login Screen
-    //Needs to pull responsive login component from login
-    <View style={styles.popoverBody}>
-      <LoginScreen props={props} />
-      <View style={styles.profileRow}>
-        <View style={styles.profileDetails}>
-          <TouchableOpacity
-            style={styles.buttonPrimary}
-            onPress={() => {
-              setShowPopover(false);
-              props.navigation.navigate('Login');
-            }}
-          >
-            <Text style={styles.btnFont}>Register</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  )
-}
-=======
 const ProfilePopup = ({
 	props,
 	setShowPopover,
@@ -242,11 +152,11 @@ const ProfilePopup = ({
 	props: DrawerHeaderProps;
 	setShowPopover: Dispatch<SetStateAction<boolean>>;
 }) => {
-	const { isLoggedIn, authUser, logout } = useContext(AuthContext);
-	const username = isLoggedIn && authUser.name;
-	const email = isLoggedIn && authUser.email;
+	const { authUser, logout } = useContext(AuthContext);
+	const username = authUser && authUser.name;
+	const email = authUser && authUser.email;
 
-	return isLoggedIn ? (
+	return authUser ? (
 		<View style={styles.popoverBody}>
 			<View style={styles.profileRow}>
 				<View style={styles.profileImage}>
@@ -329,7 +239,6 @@ const ProfilePopup = ({
 		</View>
 	);
 };
->>>>>>> 61cea4c ((WIP) re-working login navigation logic)
 
 const ProfileButton = () => {
 	return (

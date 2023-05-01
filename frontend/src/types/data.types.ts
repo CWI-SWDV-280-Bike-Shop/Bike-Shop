@@ -54,7 +54,7 @@ export type Product = Data & {
   color?: string;
   size?: string;
   gender?: string;
-  image?: any;
+  newImages?: Blob;
 };
 
 // Order

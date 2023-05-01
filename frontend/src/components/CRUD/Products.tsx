@@ -18,13 +18,20 @@ import ProductAPI from '@/api/product.api';
 import { formatPrice } from '@/utilities/formatter';
 import * as ImagePicker from 'expo-image-picker';
 
+const withNewImage = async (images, newImage) =>
+  newImage
+    ? {
+        images: [...images, { newImageIndex: 0 }],
+        newImages: await (await fetch(newImage)).blob(),
+      }
+    : {};
 const AddProduct = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [price, setPrice] = useState(0);
-  const [image, setimage] = useState('');
+  const [images, setImages] = useState([]);
   const [inStock, setInStock] = useState(true);
   const [brand, setBrand] = useState('');
   const [material, setMaterial] = useState('');
@@ -60,7 +67,7 @@ const AddProduct = () => {
       category,
       subcategory,
       price,
-      image,
+      ...withNewImage(images, image),
       inStock,
       brand,
       material,
@@ -68,7 +75,6 @@ const AddProduct = () => {
       color,
       size,
       gender,
-      image
     };
     ProductAPI.create(newProduct).then((res) => setProduct(res.data));
     setSubmitted(true);
@@ -270,7 +276,6 @@ const AddProduct = () => {
           <Text>category: {product?.category}</Text>
           <Text>subcategory: {product?.subcategory}</Text>
           <Text>price: {formatPrice(product?.price)}</Text>
-          <Text>image: {product?.image}</Text>
           <Text>inStock: {product?.inStock?.toString()}</Text>
           {product?.category === 'Bikes' && (
             <>
@@ -344,10 +349,9 @@ const ListProducts = () => {
             <Text>category: {product?.category}</Text>
             <Text>subcategory: {product?.subcategory}</Text>
             <Text>price: {formatPrice(product?.price)}</Text>
-            <Text>image: {product?.image}</Text>
             <Text>inStock: {product?.inStock?.toString()}</Text>
             <Text>Image:</Text>
-            <Image source = {{uri: product?.image}}></Image>
+            <Image source = {{uri: product?.newImages?.[0]}}></Image>
             <>
               {product?.category === 'Bikes' && (
                 <>
@@ -402,7 +406,7 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [price, setPrice] = useState(0);
-  const [image, setimage] = useState([]);
+  const [images, setImages] = useState([]);
   const [inStock, setInStock] = useState(true);
   const [brand, setBrand] = useState('');
   const [material, setMaterial] = useState('');
@@ -421,7 +425,7 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
       setCategory(product?.category || '');
       setSubcategory(product?.subcategory || '');
       setPrice(product?.price || 0);
-      setimage(product?.image || '');
+      setImages(product?.images || []);
       setInStock(product?.inStock || true);
       setBrand(product?.brand || '');
       setMaterial(product?.material || '');
@@ -440,7 +444,6 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
       category,
       subcategory,
       price,
-      image,
       inStock,
       brand,
       material,
@@ -678,7 +681,6 @@ const DeleteProduct = ({ product, visible, onClose, onDelete }) => {
           <Text>category: {product?.category}</Text>
           <Text>subcategory: {product?.subcategory}</Text>
           <Text>price: {formatPrice(product?.price)}</Text>
-          <Text>image: {product?.image}</Text>
           <Text>inStock: {product?.inStock?.toString()}</Text>
           <>
             {product?.category === 'Bikes' && (

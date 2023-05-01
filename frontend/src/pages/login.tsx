@@ -63,145 +63,12 @@ export const LoginScreen = ({props} : {props: DrawerHeaderProps}) => {
   )
 }
 
-export const Login = (props: DrawerHeaderProps) => {
+const RegisterScreen = ({props} : {props: DrawerHeaderProps}) => {
   //Window Dimensions
   const dimensions = useWindowDimensions();
   //Auth connection
   const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
-  //Register Logic
-  const [regName, setRegName] = useState('');
-  const [regEmail, setRegEmail] = useState('');
-  const [regPassword, setRegPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [regPhone, setRegPhone] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [regAddress, setRegAddress] = useState({
-    street: '',
-    city: '',
-    state: '',
-    zip: '',
-    country: '',
-  });
-
   const [role, setRole] = useState('Customer'); //setting default role... this is kinda sloppy
-
-  const onChangeAddress = (fieldName: string, value: string) => {
-    setRegAddress({ ...regAddress, [fieldName]: value });
-  };
-
-  const RegisterScreen = () => {
-    const formInfo = [
-      {
-        "label": "Full Name", 
-        "stateValue": regName, 
-        "setState": setRegName
-      },
-      {
-        "label": "Email",
-        "inputMode": 'email',
-        "stateValue": regEmail, 
-        "setState": setRegEmail
-      },
-      {
-        "label": "Password", 
-        "stateValue": regPassword, 
-        "setState": setRegPassword
-      },
-      {
-        "label": "Confirm Password", 
-        "stateValue": confirmPassword, 
-        "setState": setConfirmPassword
-      },
-      {
-        "label": "Phone", 
-        "inputMode": "tel",
-        "stateValue": regPhone, 
-        "setState": setRegPhone
-      },
-    ]
-    const formAddr = [
-      {
-        "label": "Street", 
-        "stateValue": regAddress.street
-      },
-      {
-        "label": "City", 
-        "stateValue": regAddress.city
-      },
-      {
-        "label": "State", 
-        "stateValue": regAddress.state
-      },
-      {
-        "label": "Zipcode", 
-        "inputMode": "numeric",
-        "stateValue": regAddress.zip
-      },
-      {
-        "label": "Country", 
-        "stateValue": regAddress.country
-      }
-    ]
-    return (
-      <View>
-        <Text style={[Layout.header]}>New here?</Text>
-          <Text style={[Layout.bodyText]}>Please sign up!</Text>
-          <View style={dimensions.width <= 800 ? styles.registrationContainerSmaller : styles.registrationContainer}>
-
-            <View style={dimensions.width <= 800 ? styles.infoContainer : styles.infoContainerSmaller}>
-              <Text style={[Layout.bodyText]}>Information</Text>
-
-              {
-                formInfo.map((item, i) => (
-                  <View key={i}>
-                    <Text style={styles.label}>{item.label}</Text>
-                    <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
-                      value={item.stateValue}
-                      onChangeText={(value) => item.setState(value)}
-                    />
-                  </View>
-                ))
-              }
-            </View>
-
-            <View style={dimensions.width <= 800 ? styles.addressContainerSmaller : styles.addressContainer}>
-              <Text style={[Layout.bodyText]}>Address</Text>
-              {
-                formAddr.map((item, i) => (
-                  <View key={i}>
-                    <Text style={styles.label}>{item.label}</Text>
-                    <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
-                      value={item.stateValue}
-                      onChangeText={(value) => onChangeAddress(item.label.toLowerCase(), value)}
-                    />
-                  </View>
-                ))
-              }
-            </View>
-
-          </View>
-          {message && <Text style={[Layout.errorText]}>{message}</Text>}
-          <Text style={[Layout.errorText]}>{errorMessage}</Text>
-          <View style={styles.rowBottom}>
-            <TouchableOpacity style={styles.buttonPrimary} onPressIn={(regSubmit)}>
-              <Icon name="person-add-outline" size={30} color="#FFF"/>
-              <Text style={styles.btnFont}>Register Account</Text>
-            </TouchableOpacity>
-          </View>
-
-          {isLoggedIn && (
-            <View>
-              <Text>_id: {authUser._id}</Text>
-              <Text>name: {authUser.name}</Text>
-              <Text>email: {authUser.email}</Text>
-              <Text>role: {authUser.role}</Text>
-              <Text>accessToken: {authUser.accessToken}</Text>
-              <Text>refreshToken: {authUser.refreshToken}</Text>
-            </View>
-          )}
-      </View>
-    )
-  }
 
   const regSubmit = () => {
 
@@ -209,7 +76,7 @@ export const Login = (props: DrawerHeaderProps) => {
       setErrorMessage('One or more fields are not filled!');
     } else if (confirmPassword != regPassword) {
       setErrorMessage('Password and Confirm Password must match!');
-    } else if (regAddress.city == '' || regAddress.country == "" || regAddress.state == '' || regAddress.street == '' || regAddress.zip == '') {
+    } else if (regAddress.city == '' || regAddress.country == "" || regAddress.state == '' || regAddress.street == '' || regAddress.zipcode == '') {
       setErrorMessage('Please fill in your whole address.');
     } else {
       setErrorMessage('');
@@ -229,7 +96,142 @@ export const Login = (props: DrawerHeaderProps) => {
       });
     }
   };
+  
+  //Register Logic
+  const [regName, setRegName] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPassword, setRegPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [regPhone, setRegPhone] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [regAddress, setRegAddress] = useState({
+    street: '',
+    city: '',
+    state: '',
+    zipcode: '',
+    country: '',
+  });
+  
+  const onChangeAddress = (fieldName: string, value: string) => {
+    setRegAddress({ ...regAddress, [fieldName]: value });
+  };
+  const formInfo = [
+    {
+      "label": "Full Name", 
+      "stateValue": regName, 
+      "setState": setRegName
+    },
+    {
+      "label": "Email",
+      "inputMode": 'email',
+      "stateValue": regEmail, 
+      "setState": setRegEmail
+    },
+    {
+      "label": "Password", 
+      "stateValue": regPassword, 
+      "setState": setRegPassword
+    },
+    {
+      "label": "Confirm Password", 
+      "stateValue": confirmPassword, 
+      "setState": setConfirmPassword
+    },
+    {
+      "label": "Phone", 
+      "inputMode": "tel",
+      "stateValue": regPhone, 
+      "setState": setRegPhone
+    },
+  ]
+  const formAddr = [
+    {
+      "label": "Street", 
+      "stateValue": regAddress.street
+    },
+    {
+      "label": "City", 
+      "stateValue": regAddress.city
+    },
+    {
+      "label": "State", 
+      "stateValue": regAddress.state
+    },
+    {
+      "label": "Zipcode", 
+      "inputMode": "numeric",
+      "stateValue": regAddress.zipcode
+    },
+    {
+      "label": "Country", 
+      "stateValue": regAddress.country
+    }
+  ]
+  return (
+    <View>
+      <Text style={[Layout.header]}>New here?</Text>
+        <Text style={[Layout.bodyText]}>Please sign up!</Text>
+        <View style={dimensions.width <= 800 ? styles.registrationContainerSmaller : styles.registrationContainer}>
 
+          <View style={dimensions.width <= 800 ? styles.infoContainer : styles.infoContainerSmaller}>
+            <Text style={[Layout.bodyText]}>Information</Text>
+
+            {
+              formInfo.map((item, i) => (
+                <View key={i}>
+                  <Text style={styles.label}>{item.label}</Text>
+                  <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
+                    value={item.stateValue}
+                    onChangeText={(value) => item.setState(value)}
+                  />
+                </View>
+              ))
+            }
+          </View>
+
+          <View style={dimensions.width <= 800 ? styles.addressContainerSmaller : styles.addressContainer}>
+            <Text style={[Layout.bodyText]}>Address</Text>
+            {
+              formAddr.map((item, i) => (
+                <View key={i}>
+                  <Text style={styles.label}>{item.label}</Text>
+                  <TextInput style={styles.editBox} inputMode={item.inputMode as InputModeOptions} placeholder={item.label}
+                    value={item.stateValue}
+                    onChangeText={(value) => onChangeAddress(item.label.toLowerCase(), value)}
+                  />
+                </View>
+              ))
+            }
+          </View>
+
+        </View>
+        {message && <Text style={[Layout.errorText]}>{message}</Text>}
+        <Text style={[Layout.errorText]}>{errorMessage}</Text>
+        <View style={styles.rowBottom}>
+          <TouchableOpacity style={styles.buttonPrimary} onPressIn={(regSubmit)}>
+            <Icon name="person-add-outline" size={30} color="#FFF"/>
+            <Text style={styles.btnFont}>Register Account</Text>
+          </TouchableOpacity>
+        </View>
+
+        {isLoggedIn && (
+          <View>
+            <Text>_id: {authUser._id}</Text>
+            <Text>name: {authUser.name}</Text>
+            <Text>email: {authUser.email}</Text>
+            <Text>role: {authUser.role}</Text>
+            <Text>accessToken: {authUser.accessToken}</Text>
+            <Text>refreshToken: {authUser.refreshToken}</Text>
+          </View>
+        )}
+    </View>
+  )
+}
+
+export const Login = (props: DrawerHeaderProps) => {
+  //Auth connection
+  const { authUser, isLoggedIn } = useContext(AuthContext);
+  
   return (
     <ScrollView style={[Layout.container]}>
       <View style={[Layout.contentContainer]}>
@@ -246,7 +248,7 @@ export const Login = (props: DrawerHeaderProps) => {
           </View>
         )}
         <View style={Layout.contentContainer}>
-          <RegisterScreen/>
+          <RegisterScreen props={props}/>
         </View>
       </View>
     </ScrollView>

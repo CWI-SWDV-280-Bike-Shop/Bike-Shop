@@ -6,9 +6,9 @@ import { useContext } from 'react';
 
 export const Profile = ({ navigation, dimensions }) => {
   console.log(navigation.getState());
-  const { isLoggedIn, authUser, logout } = useContext(AuthContext);
-  const username = isLoggedIn && authUser.name;
-  const email = isLoggedIn && authUser.email;
+  const { authUser, logout } = useContext(AuthContext);
+  const username = authUser && authUser.name;
+  const email = authUser && authUser.email;
 
   return (
     <View style={[styles.container]}>

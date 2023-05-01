@@ -25,54 +25,23 @@ import * as Linking from 'expo-linking';
 const Drawer = createDrawerNavigator();
 
 const AppWrapper = () => {
-	const dimensions = useWindowDimensions();
-	const { isLoggedIn } = useContext(AuthContext);
 
-	const screens = [
-		{
-			name: 'Home',
-			component: (props) => <Home {...props} dimensions={dimensions} />,
-		},
-		{
-			name: 'About',
-			component: (props) => <About {...props} dimensions={dimensions} />,
-		},
-		{
-			name: 'Shop',
-			component: (props) => <Shop {...props} dimensions={dimensions} />,
-		},
-		isLoggedIn
-			? {
-					name: 'Profile',
-					component: (props) => <Profile {...props} dimensions={dimensions} />,
-			  }
-			: {
-					name: 'Login',
-					component: (props) => <Login {...props} dimensions={dimensions} />,
-			  },
-		{
-			name: 'Orders',
-			component: (props) => <Orders {...props} dimensions={dimensions} />,
-		},
-		{
-			name: 'Account',
-			component: (props) => <Account {...props} dimensions={dimensions} />,
-		},
-		{
-			name: 'Admin',
-			component: (props) => <Admin {...props} dimensions={dimensions} />,
-		},
-		{
-			name: 'CRUD Playground',
-			component: (props) => (
-				<CRUDPlayground {...props} dimensions={dimensions} />
-			),
-		},
-		{
-			name: 'Cart',
-			component: (props) => <Cart {...props} dimensions={dimensions} />,
-		},
-	];
+  const dimensions = useWindowDimensions();
+  const { authUser } = useContext(AuthContext);
+
+  const screens = [
+    {"name" : "Home", "component": (props) => <Home {...props} dimensions={dimensions} />},
+    {"name" : "About", "component": (props) => <About {...props} dimensions={dimensions} />},
+    {"name" : "Shop", "component": (props) => <Shop {...props} dimensions={dimensions} />},
+    authUser ?
+      {"name" : "Profile", "component": (props) => <Profile {...props} dimensions={dimensions} />} :
+      {"name" : "Login", "component": (props) => <Login {...props} dimensions={dimensions} />},
+    {"name" : "Orders", "component": (props) => <Orders {...props} dimensions={dimensions} />},
+    {"name" : "Account", "component": (props) => <Account {...props} dimensions={dimensions} />},
+    {"name" : "Admin", "component": (props) => <Admin {...props} dimensions={dimensions} />},
+    {"name" : "CRUD Playground", "component": (props) => <CRUDPlayground {...props} dimensions={dimensions} />},
+    {"name" : "Cart", "component": (props) => <Cart {...props} dimensions={dimensions} options={{ drawerItemStyle: { display: 'none' } }} />},
+  ]
 
 	const prefix = Linking.createURL('/');
 

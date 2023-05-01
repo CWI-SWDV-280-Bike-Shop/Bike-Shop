@@ -7,7 +7,7 @@ import { AuthContext } from '@context/auth.context';
 import { User } from '@/types/data.types';
 
 const Login = () => {
-  const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
+  const { authUser, login, message } = useContext(AuthContext);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -37,7 +37,7 @@ const Login = () => {
 
       {message && <Text>{message}</Text>}
 
-      {isLoggedIn && (
+      {authUser && (
         <View>
           <Text>id: {authUser._id}</Text>
           <Text>name: {authUser?.name}</Text>
@@ -64,7 +64,7 @@ const Logout = () => {
 };
 
 const Register = () => {
-  const { authUser, isLoggedIn, login, message } = useContext(AuthContext);
+  const { authUser, login, message } = useContext(AuthContext);
 
   // initialize component state
   const [name, setName] = useState('');
@@ -177,7 +177,7 @@ const Register = () => {
 
       {message && <Text>{message}</Text>}
 
-      {isLoggedIn && (
+      {authUser && (
         <View>
           <Text>id: {authUser._id}</Text>
           <Text>name: {authUser?.name}</Text>

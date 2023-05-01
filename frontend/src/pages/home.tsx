@@ -6,6 +6,7 @@ import Swiper from 'react-native-web-swiper';
 import { Slide } from '@components/Slide';
 //Footer Import
 import { Footer } from '@components/Footer';
+import { useState } from 'react';
 
 const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
 
@@ -83,9 +84,10 @@ const mission = [`Our mission at Wheely Good Bikes is to provide high-quality bi
                 `At the heart of our mission is a dedication to promoting eco-friendly transportation options and helping our community reduce its carbon footprint.`]
 
 export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
+  const [scrollPos, setScrollPos] = useState(0);
   //A little helper guy
   const responsiveWizard = (value) => dimensions.width * (value/1920)
-  const mobile = StyleSheet.create({
+  const styles = StyleSheet.create({
     button: {
       paddingVertical: 10,
       paddingHorizontal: 30,
@@ -179,9 +181,18 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
       paddingBottom: 70,
       backgroundColor: '#1F302D',
     },
+    headerBack: {
+      display: (checkMobile(dimensions)) ? 'none' : 'flex',
+      height: 140,
+      zIndex: 2,
+      width: '100%',
+      backgroundColor: '#000',
+      opacity: Math.min(scrollPos/200, 1),
+      position: 'absolute',
+      top: 0,
+    },
   });
   
-  const styles = mobile;
   const content = [
     {
       "image": require('../assets/Images/home_bikes.jpg'),
@@ -200,7 +211,11 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
     }
   ]
   return (
-    <ScrollView>
+    <>
+    <View style={styles.headerBack}></View>
+    <ScrollView scrollEventThrottle={32} onScroll={(event) => {
+      setScrollPos(event.nativeEvent.contentOffset.y);
+     }} >
       <View style={[styles.container]}>
         <View style={[styles.slidesContainer]}>
           <CustomSwiper dimensions={dimensions}/>
@@ -231,5 +246,6 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
         <Footer dimensions={dimensions}/>
       </View>
     </ScrollView>
+    </>
     );
   };

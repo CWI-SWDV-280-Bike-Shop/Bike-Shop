@@ -87,13 +87,26 @@ function ListProducts() {
 
 
 export const Shop = () => {
+  const [labels, setLabels] = useState([]);
+  useEffect(() => {
+    ProductAPI.getLabels().then((res) => setLabels(res.data));
+  }, []);
+  console.log(labels);
   return (
     <View style={styles.container}>
       <View style={styles.toolbar}>
-          <Text>OPTIONS</Text>
-          <Text>OPTIONS</Text>
-          <Text>OPTIONS</Text>
-          <Text>OPTIONS</Text>
+          {Object.keys(labels).map((label, i) => (
+          <View key={i}>
+            <Text style={styles.optionsHeader}>{label}</Text>
+            <View>
+              {
+                labels[label].map((value, i) => (
+                  <Text style={styles.optionsText}>{value}</Text>
+                ))
+              }
+            </View>
+          </View>
+        ))}
         </View>
       <ScrollView>
           <ListProducts/>
@@ -105,6 +118,16 @@ export const Shop = () => {
 export default Shop;
 
 const styles = StyleSheet.create({
+  /* Filter Styles */
+  optionsHeader: {
+    fontWeight: '700',
+    fontSize: 18,
+    textTransform: 'uppercase',
+  },
+  optionsText: {
+
+  },
+  /* Main Styles */
   container: {
     flex: 1,
     flexDirection: 'row',

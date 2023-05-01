@@ -18,6 +18,8 @@ const OrderSchema = new Schema(
       ref: 'User',
     },
     items: [ItemSchema],
+    shipping: Number,
+    tax: Number,
     total: Number,
   },
   { timestamps: true }

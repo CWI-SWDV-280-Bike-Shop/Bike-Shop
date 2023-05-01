@@ -43,16 +43,6 @@ const Cart = (props: DrawerHeaderProps) => {
 	const [order, setOrder] = useState<Order | null>(null);
 	const [errorMessage, setErrorMessage] = useState('');
 
-	// const handleCheckout = async () => {
-	//   if (products) {
-	//     const order = await checkout(products, authUser);
-	//     setOrder(order);
-	//   }
-	//   else {
-	//     setErrorMessage('Your have nothing in your cart!')
-	//   }
-	// };
-
 	const handleCheckout = () => {
 		props.navigation.navigate('Checkout');
 	};

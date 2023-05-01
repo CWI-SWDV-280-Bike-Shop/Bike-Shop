@@ -3,26 +3,33 @@ import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '@context/auth.context';
 import { useContext } from 'react';
+import { LoginScreen } from '../login';
+import { DrawerHeaderProps } from '@react-navigation/drawer';
 
-export const Profile = ({ navigation, dimensions }) => {
+export const Profile = (props: DrawerHeaderProps) => {
+  const { navigation } = props;
   console.log(navigation.getState());
   const { authUser, logout } = useContext(AuthContext);
   const username = authUser && authUser.name;
   const email = authUser && authUser.email;
 
-  return (
+  return !authUser ? (
+    <LoginScreen props={props} />
+  ) : (
     <View style={[styles.container]}>
       <View style={styles.profileRow}>
-        <View style={styles.profileImage}><Icon name="person-circle-outline" size={100} color="#FFF" /></View>
+        <View style={styles.profileImage}>
+          <Icon name="person-circle-outline" size={100} color="#FFF" />
+        </View>
         <View style={styles.profileDetails}>
           <Text style={styles.profileName}>{username}</Text>
           <Text style={styles.profileEmail}>{email}</Text>
           <TouchableOpacity
-          style={styles.buttonPrimary}
-          onPress={() => navigation.navigate('Account')}
-        >
-          <Text style={styles.btnFont}>Edit Profile</Text>
-        </TouchableOpacity>
+            style={styles.buttonPrimary}
+            onPress={() => navigation.navigate('Account')}
+          >
+            <Text style={styles.btnFont}>Edit Profile</Text>
+          </TouchableOpacity>
         </View>
       </View>
       <View style={styles.profileLinks}>
@@ -34,7 +41,7 @@ export const Profile = ({ navigation, dimensions }) => {
             <Icon name="receipt-outline" size={24} color="#333333ee" />
             <Text style={styles.buttonContent}>Orders</Text>
           </View>
-          <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
+          <Icon name="chevron-forward-outline" size={24} color="#333333ee" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button}
@@ -44,27 +51,29 @@ export const Profile = ({ navigation, dimensions }) => {
             <Icon name="key-outline" size={24} color="#333333ee" />
             <Text style={styles.buttonContent}>Admin</Text>
           </View>
-          <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
+          <Icon name="chevron-forward-outline" size={24} color="#333333ee" />
         </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => {
-          navigation.navigate('Login')
-          logout();
-        }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            logout();
+          }}
+        >
           <View style={styles.iconlabelGrouping}>
             <Icon name="log-out-outline" size={24} color="#333333ee" />
             <Text style={styles.buttonContent}>Logout</Text>
           </View>
-          <Icon name="chevron-forward-outline" size={24} color="#333333ee"/>
+          <Icon name="chevron-forward-outline" size={24} color="#333333ee" />
         </TouchableOpacity>
       </View>
-    </View >
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   profileImage: {
     width: 150,
@@ -73,7 +82,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#444',
     margin: 10,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   profileRow: {
     flexDirection: 'row',
@@ -89,7 +98,7 @@ const styles = StyleSheet.create({
     columnGap: 15,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#33333342'
+    borderColor: '#33333342',
   },
   profileDetails: {
     gap: 15,
@@ -125,7 +134,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     justifyContent: 'center',
     borderRadius: 5,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 1,

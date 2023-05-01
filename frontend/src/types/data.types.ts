@@ -46,7 +46,6 @@ export type Product = Data & {
   category?: string;
   subcategory?: string;
   price?: number;
-  imageIds?: string[];
   inStock?: boolean;
   brand?: string;
   material?: string;
@@ -54,7 +53,8 @@ export type Product = Data & {
   color?: string;
   size?: string;
   gender?: string;
-  image?: any;
+  newImages?: Blob;
+  images?: ({ newImageIndex: number } | { id: string })[];
 };
 
 // Order

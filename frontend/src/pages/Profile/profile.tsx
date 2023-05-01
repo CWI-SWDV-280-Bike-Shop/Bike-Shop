@@ -8,7 +8,6 @@ import { DrawerHeaderProps } from '@react-navigation/drawer';
 
 export const Profile = (props: DrawerHeaderProps) => {
   const { navigation } = props;
-  console.log(navigation.getState());
   const { authUser, logout } = useContext(AuthContext);
   const username = authUser && authUser.name;
   const email = authUser && authUser.email;

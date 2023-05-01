@@ -229,7 +229,7 @@ const ProfilePopup = ({
 						style={styles.buttonPrimary}
 						onPress={() => {
 							setShowPopover(false);
-							props.navigation.navigate('Login');
+							props.navigation.navigate('Profile');
 						}}
 					>
 						<Text style={styles.btnFont}>Register</Text>

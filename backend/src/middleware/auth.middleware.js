@@ -4,7 +4,6 @@ import config from '../config/auth.config.js';
 import User from '../routes/users/user.model.js';
 import { Unauthorized, InternalError, AccessTokenExpired } from '../errors/errors.js';
 import { AsyncLocalStorage } from 'async_hooks';
-import { roles } from '../roles.js';
 
 export const authContext = new AsyncLocalStorage();
 const { TokenExpiredError } = jwt;
@@ -20,10 +19,10 @@ export async function addPermissions(req, _, next) {
     if (error instanceof TokenExpiredError) accessTokenExpired = true;
     else throw error;
   }
-  const role = roles[user?.role ?? "unauthenticated"];
+  const rolePermissions = config.permissions[user?.role ?? "unauthenticated"];
   authContext.run({
     user,
-    role,
+    rolePermissions,
     accessTokenExpired
   }, () => {
     next();

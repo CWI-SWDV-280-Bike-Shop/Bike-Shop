@@ -4,11 +4,19 @@ import { ProductParams } from '@/types/parameter.types';
 
 const ProductAPI = {
   create(data: Product) {
-    return api.post('/products', data);
+    return api.post('/products', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+    });
   },
 
   update(id: string, data: Product) {
-    return api.put(`/products/${id}`, data);
+    return api.put('/products', data, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+  });
   },
 
   delete(id: string) {

@@ -53,6 +53,7 @@ export type Product = Data & {
   wheelSize?: string;
   color?: string;
   size?: string;
+  newImages?: Blob;
 };
 
 // Order

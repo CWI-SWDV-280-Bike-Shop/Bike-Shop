@@ -18,13 +18,20 @@ import ProductAPI from '@/api/product.api';
 import { formatPrice } from '@/utilities/formatter';
 import * as ImagePicker from 'expo-image-picker';
 
+const withNewImage = async (images, newImage) =>
+  newImage
+    ? {
+        images: [...images, { newImageIndex: 0 }],
+        newImages: await (await fetch(newImage)).blob(),
+      }
+    : {};
 const AddProduct = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [price, setPrice] = useState(0);
-  const [images, setimages] = useState([]);
+  const [image, setImage] = useState('');
   const [inStock, setInStock] = useState(true);
   const [brand, setBrand] = useState('');
   const [material, setMaterial] = useState('');
@@ -58,7 +65,7 @@ const AddProduct = () => {
       category,
       subcategory,
       price,
-      images,
+      ...(await withNewImage([], image)),
       inStock,
       brand,
       material,
@@ -95,10 +102,10 @@ const AddProduct = () => {
         selectedValue={category}
         onValueChange={(value) => setCategory(value)}
       >
-        <Picker.Item label="-Select Category-" />
-        <Picker.Item label="Bikes" value="Bikes" />
-        <Picker.Item label="Accessories" value="Accessories" />
-        <Picker.Item label="Services" value="Services" />
+        <Picker.Item label='-Select Category-' />
+        <Picker.Item label='Bikes' value='Bikes' />
+        <Picker.Item label='Accessories' value='Accessories' />
+        <Picker.Item label='Services' value='Services' />
       </Picker>
 
       {category === 'Bikes' && (
@@ -109,10 +116,10 @@ const AddProduct = () => {
             selectedValue={subcategory}
             onValueChange={(value) => setSubcategory(value)}
           >
-            <Picker.Item label="-Select Bike Subcategory-" />
-            <Picker.Item label="Mountain" value="Mountain" />
-            <Picker.Item label="Electric" value="Electric" />
-            <Picker.Item label="Street" value="Street" />
+            <Picker.Item label='-Select Bike Subcategory-' />
+            <Picker.Item label='Mountain' value='Mountain' />
+            <Picker.Item label='Electric' value='Electric' />
+            <Picker.Item label='Street' value='Street' />
           </Picker>
         </>
       )}
@@ -124,14 +131,14 @@ const AddProduct = () => {
             selectedValue={subcategory}
             onValueChange={(value) => setSubcategory(value)}
           >
-            <Picker.Item label="-Select Accesssory Subcategory-" />
-            <Picker.Item label="Tires" value="Tires" />
-            <Picker.Item label="Brakes" value="Brakes" />
-            <Picker.Item label="Lights" value="Lights" />
-            <Picker.Item label="Frames" value="Frames" />
-            <Picker.Item label="Chains" value="Chains" />
-            <Picker.Item label="Pedals" value="Pedals" />
-            <Picker.Item label="Tubes" value="Tubes" />
+            <Picker.Item label='-Select Accesssory Subcategory-' />
+            <Picker.Item label='Tires' value='Tires' />
+            <Picker.Item label='Brakes' value='Brakes' />
+            <Picker.Item label='Lights' value='Lights' />
+            <Picker.Item label='Frames' value='Frames' />
+            <Picker.Item label='Chains' value='Chains' />
+            <Picker.Item label='Pedals' value='Pedals' />
+            <Picker.Item label='Tubes' value='Tubes' />
           </Picker>
         </>
       )}
@@ -143,16 +150,16 @@ const AddProduct = () => {
             selectedValue={subcategory}
             onValueChange={(value) => setSubcategory(value)}
           >
-            <Picker.Item label="-Select Service Subcategory-" />
-            <Picker.Item label="Tune" value="Tune" />
+            <Picker.Item label='-Select Service Subcategory-' />
+            <Picker.Item label='Tune' value='Tune' />
             <Picker.Item
-              label="Wheel and Tire Maintenance"
-              value="Wheel and Tire Maintenance"
+              label='Wheel and Tire Maintenance'
+              value='Wheel and Tire Maintenance'
             />
-            <Picker.Item label="Assembly" value="Assembly" />
+            <Picker.Item label='Assembly' value='Assembly' />
             <Picker.Item
-              label="Shifting and Brakes"
-              value="Shifting and Brakes"
+              label='Shifting and Brakes'
+              value='Shifting and Brakes'
             />
           </Picker>
         </>
@@ -171,8 +178,8 @@ const AddProduct = () => {
         selectedValue={inStock}
         onValueChange={(value) => setInStock(value)}
       >
-        <Picker.Item label="true" value={true} />
-        <Picker.Item label="false" value={false} />
+        <Picker.Item label='true' value={true} />
+        <Picker.Item label='false' value={false} />
       </Picker>
 
       {category === 'Bikes' && (
@@ -190,9 +197,9 @@ const AddProduct = () => {
             selectedValue={material}
             onValueChange={(value) => setMaterial(value)}
           >
-            <Picker.Item label="Aluminum" value="Aluminum"></Picker.Item>
-            <Picker.Item label="Steel" value="Steel"></Picker.Item>
-            <Picker.Item label="Carbon" value="Carbon"></Picker.Item>
+            <Picker.Item label='Aluminum' value='Aluminum'></Picker.Item>
+            <Picker.Item label='Steel' value='Steel'></Picker.Item>
+            <Picker.Item label='Carbon' value='Carbon'></Picker.Item>
           </Picker>
 
           <Text>Wheel Size</Text>
@@ -201,13 +208,13 @@ const AddProduct = () => {
             selectedValue={wheelSize}
             onValueChange={(value) => setWheelSize(value)}
           >
-            <Picker.Item label="20in" value="20in"></Picker.Item>
-            <Picker.Item label="24in" value="24in"></Picker.Item>
-            <Picker.Item label="26in" value="26in"></Picker.Item>
-            <Picker.Item label="27.5in" value="27.5in"></Picker.Item>
-            <Picker.Item label="29in" value="29in"></Picker.Item>
-            <Picker.Item label="700c" value="700c"></Picker.Item>
-            <Picker.Item label="650b" value="650b"></Picker.Item>
+            <Picker.Item label='20in' value='20in'></Picker.Item>
+            <Picker.Item label='24in' value='24in'></Picker.Item>
+            <Picker.Item label='26in' value='26in'></Picker.Item>
+            <Picker.Item label='27.5in' value='27.5in'></Picker.Item>
+            <Picker.Item label='29in' value='29in'></Picker.Item>
+            <Picker.Item label='700c' value='700c'></Picker.Item>
+            <Picker.Item label='650b' value='650b'></Picker.Item>
           </Picker>
 
           <Text>Color</Text>
@@ -216,15 +223,15 @@ const AddProduct = () => {
             selectedValue={color}
             onValueChange={(value) => setColor(value)}
           >
-            <Picker.Item label="Red" value="Red"></Picker.Item>
-            <Picker.Item label="Orange" value="Orange"></Picker.Item>
-            <Picker.Item label="Yellow" value="Yellow"></Picker.Item>
-            <Picker.Item label="Green" value="Green"></Picker.Item>
-            <Picker.Item label="Blue" value="Blue"></Picker.Item>
-            <Picker.Item label="Purple" value="Purple"></Picker.Item>
-            <Picker.Item label="Black" value="Black"></Picker.Item>
-            <Picker.Item label="White" value="White"></Picker.Item>
-            <Picker.Item label="Grey" value="Grey"></Picker.Item>
+            <Picker.Item label='Red' value='Red'></Picker.Item>
+            <Picker.Item label='Orange' value='Orange'></Picker.Item>
+            <Picker.Item label='Yellow' value='Yellow'></Picker.Item>
+            <Picker.Item label='Green' value='Green'></Picker.Item>
+            <Picker.Item label='Blue' value='Blue'></Picker.Item>
+            <Picker.Item label='Purple' value='Purple'></Picker.Item>
+            <Picker.Item label='Black' value='Black'></Picker.Item>
+            <Picker.Item label='White' value='White'></Picker.Item>
+            <Picker.Item label='Grey' value='Grey'></Picker.Item>
           </Picker>
 
           <Text>Size</Text>
@@ -233,19 +240,21 @@ const AddProduct = () => {
             selectedValue={size}
             onValueChange={(value) => setSize(value)}
           >
-            <Picker.Item label="Small" value="Small"></Picker.Item>
-            <Picker.Item label="Medium" value="Medium"></Picker.Item>
-            <Picker.Item label="Large" value="Large"></Picker.Item>
+            <Picker.Item label='Small' value='Small'></Picker.Item>
+            <Picker.Item label='Medium' value='Medium'></Picker.Item>
+            <Picker.Item label='Large' value='Large'></Picker.Item>
           </Picker>
         </>
       )}
 
       <Text>Image Upload: {'TODO'}</Text>
-      <Button title="Upload Image" onPress={pickImage} />
+      <Button title='Upload Image' onPress={pickImage} />
       <Text>Placeolder to separate buttons</Text>
-      {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }}/>}
+      {image && (
+        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+      )}
 
-      <Button title="submit" onPress={handleSubmit} />
+      <Button title='submit' onPress={handleSubmit} />
 
       {submitted && (
         <View>
@@ -255,7 +264,6 @@ const AddProduct = () => {
           <Text>category: {product?.category}</Text>
           <Text>subcategory: {product?.subcategory}</Text>
           <Text>price: {formatPrice(product?.price)}</Text>
-          {/* <Text>image: {product?.image}</Text> */}
           <Text>inStock: {product?.inStock?.toString()}</Text>
           {product?.category === 'Bikes' && (
             <>
@@ -328,10 +336,9 @@ const ListProducts = () => {
             <Text>category: {product?.category}</Text>
             <Text>subcategory: {product?.subcategory}</Text>
             <Text>price: {formatPrice(product?.price)}</Text>
-            {/* <Text>image: {product?.images?.[0]?.url}</Text> */}
             <Text>inStock: {product?.inStock?.toString()}</Text>
             <Text>Image:</Text>
-            <Image source = {{uri: product?.image}}></Image>
+            <Image source={{ uri: product?.newImages?.[0] }}></Image>
             <>
               {product?.category === 'Bikes' && (
                 <>
@@ -349,7 +356,7 @@ const ListProducts = () => {
                 onPress={() => handleEdit(product)}
               >
                 <Text style={Styles.buttonText}>
-                  Edit <Icon size={15} name="create-outline"></Icon>
+                  Edit <Icon size={15} name='create-outline'></Icon>
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -357,7 +364,7 @@ const ListProducts = () => {
                 onPress={() => handleDelete(product)}
               >
                 <Text style={Styles.buttonText}>
-                  Delete <Icon size={15} name="trash-outline"></Icon>
+                  Delete <Icon size={15} name='trash-outline'></Icon>
                 </Text>
               </TouchableOpacity>
             </View>
@@ -385,7 +392,7 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [price, setPrice] = useState(0);
-  const [image, setimage] = useState([]);
+  const [images, setImages] = useState([]);
   const [inStock, setInStock] = useState(true);
   const [brand, setBrand] = useState('');
   const [material, setMaterial] = useState('');
@@ -403,7 +410,7 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
       setCategory(product?.category || '');
       setSubcategory(product?.subcategory || '');
       setPrice(product?.price || 0);
-      setimage(product?.image || '');
+      setImages(product?.images || []);
       setInStock(product?.inStock || true);
       setBrand(product?.brand || '');
       setMaterial(product?.material || '');
@@ -421,7 +428,6 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
       category,
       subcategory,
       price,
-      image,
       inStock,
       brand,
       material,
@@ -647,7 +653,6 @@ const DeleteProduct = ({ product, visible, onClose, onDelete }) => {
           <Text>category: {product?.category}</Text>
           <Text>subcategory: {product?.subcategory}</Text>
           <Text>price: {formatPrice(product?.price)}</Text>
-          <Text>image: {product?.image}</Text>
           <Text>inStock: {product?.inStock?.toString()}</Text>
           <>
             {product?.category === 'Bikes' && (

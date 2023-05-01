@@ -98,7 +98,7 @@ export const Shop = () => {
           {Object.keys(labels).map((label, i) => (
           <View key={i}>
             <Text style={styles.optionsHeader}>{label}</Text>
-            <View>
+            <View style={styles.optionSubheader}>
               {
                 labels[label].map((value, i) => (
                   <Text style={styles.optionsText}>{value}</Text>
@@ -123,6 +123,10 @@ const styles = StyleSheet.create({
     fontWeight: '700',
     fontSize: 18,
     textTransform: 'uppercase',
+  },
+  optionSubheader: {
+    paddingVertical: 10,
+    gap: 10,
   },
   optionsText: {
 

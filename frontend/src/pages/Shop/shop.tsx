@@ -50,29 +50,32 @@ const Item = ({ product }: { product: Product }) => {
   )
 }
 
-function ListProducts() {
-  const [products, setProducts] = useState([]);
-  const [asc, setAsc] = useState(true);
-  const [field, setField] = useState("name");
+function ListProducts(state) {
+  const [products, setProducts] = useState([{}] as [Product]);
+  useEffect(() => {
+    ProductAPI.getAll({[state.filterField]: state.filterValue}).then((res) => setProducts(res.data));
+  }, [state.filterField, state.filterValue]);
 
   const sortData = (data) => {
     return data.sort((a, b) => {
-      if(b[field] != undefined && a[field] != undefined) {
-        return asc
-          ? b[field].localeCompare(a[field])
-          : a[field].localeCompare(b[field]);
+      if(b[state.field] != undefined && a[state.field] != undefined) {
+        return state.asc
+          ? b[state.field].localeCompare(a[state.field])
+          : a[state.field].localeCompare(b[state.field]);
       }
     });
   };
 
-  useEffect(() => {
-    ProductAPI.getAll().then((res) => setProducts(res.data));
-  }, []);
+  const filterData = (data : Product[]) => {
+    return data.filter((item) => item[state.filterField] === state.filterValue
+    );
+  };
+
   return (
     <View style={styles.products}>
         {products && (
           <FlatList
-            data={sortData(products)}
+            data={filterData(products)}
             initialNumToRender={10}
             numColumns={4}
             renderItem={({ item, index }) => (
@@ -88,10 +91,27 @@ function ListProducts() {
 
 export const Shop = () => {
   const [labels, setLabels] = useState([]);
+  const [asc, setAsc] = useState(true);
+  const [sortfield, sortsetField] = useState("name");
+  const [filterField, filterSetField] = useState("category");
+  const [filterValue, filterSetValue] = useState("Bikes");
+
+  const state = {
+    labels: labels,
+    setLabels: setLabels,
+    asc: asc,
+    setAsc: setAsc,
+    field: sortfield,
+    setField: sortsetField,
+    filterField: filterField,
+    filterSetField: filterSetField,
+    filterValue: filterValue,
+    filterSetValue: filterSetValue
+  }
+
   useEffect(() => {
     ProductAPI.getLabels().then((res) => setLabels(res.data));
   }, []);
-  console.log(labels);
   return (
     <View style={styles.container}>
       <View style={styles.toolbar}>
@@ -101,7 +121,12 @@ export const Shop = () => {
             <View style={styles.optionSubheader}>
               {
                 labels[label].map((value, i) => (
-                  <Text style={styles.optionsText}>{value}</Text>
+                  <TouchableOpacity key={i} onPress={() => {
+                    state.filterSetField(label);
+                    state.filterSetValue(value);
+                  }}>
+                    <Text style={styles.optionsText}>{value}</Text>
+                  </TouchableOpacity>
                 ))
               }
             </View>
@@ -109,7 +134,7 @@ export const Shop = () => {
         ))}
         </View>
       <ScrollView>
-          <ListProducts/>
+          <ListProducts state={state}/>
       </ScrollView>
     </View>
   );

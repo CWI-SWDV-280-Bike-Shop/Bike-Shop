@@ -26,21 +26,21 @@ const Item = ({ product }: { product: Product }) => {
         <Text style={styles.itemNameText} numberOfLines={1}>{product.name}</Text>
         <View style={styles.subheader}>
           <Text style={styles.itemStockText} numberOfLines={1}>{(product.inStock) ? "In stock" : "Out of stock"}</Text>
-          {
-          (product.subcategory) ? (
+          {(product.subcategory) ? (
             <View style={styles.tag}>
               <Text style={styles.tagText} numberOfLines={1}>{product.subcategory}</Text>
             </View>
-           ) : (<View></View>)
-          }
+           ) : (<View></View>)}
         </View>
       </View>
       <View style={styles.itemTray}>
-        <View style={styles.colors}>
-          <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
-          <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
-          <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
-        </View>
+          {(product.category == "Bike" || product.category == "Bikes") ? (
+            <View style={styles.colors}>
+              <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
+              <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
+              <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
+            </View>
+          ): (<View></View>)}
         <TouchableOpacity style={[styles.buttonRound, styles.offsetButton]}>
           <Icon name="cart-outline" size={40} color="#FFF" />
         </TouchableOpacity>

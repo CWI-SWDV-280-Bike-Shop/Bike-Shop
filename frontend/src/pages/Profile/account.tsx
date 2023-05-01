@@ -6,8 +6,9 @@ import UserAPI from '@api/user.api';
 import { useContext } from 'react';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Product, Order, User, OrderItem } from "@/types/data.types";
+import { DrawerHeaderProps } from '@react-navigation/drawer';
 
-export const Account = () => {
+export const Account = (props: DrawerHeaderProps) => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [editType, setEditType] = useState("");
@@ -16,6 +17,10 @@ export const Account = () => {
     const email = isLoggedIn && authUser.email;
     const password = isLoggedIn && authUser.password;
     const [user, setUser] = useState({} as User);
+
+    if(authUser == undefined){
+      props.navigation.navigate("Login")
+    }
 
     UserAPI.getById(authUser._id).then((res) => setUser(res.data));
 

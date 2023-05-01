@@ -6,9 +6,12 @@ import 'react-native-gesture-handler';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { NavigationHeader } from '@/components/Navigation/Header';
 import { Login } from '@pages/login';
-import { ProfileNavigator } from '@/pages/Profile/profileNavigator';
 import { About } from './pages/about';
-import { Dimensions, Platform, ScaledSize, useWindowDimensions } from 'react-native';
+import { Profile } from './pages/Profile/profile';
+import { Orders } from './pages/Profile/orders';
+import { Account } from './pages/Profile/account';
+import { Admin } from './pages/Profile/Admin/admin';
+import { Platform, ScaledSize, useWindowDimensions } from 'react-native';
 import { Shop } from './pages/Shop/shop';
 import { AuthContext } from '@context/auth.context';
 import Cart from './pages/Shop/cart';
@@ -18,22 +21,18 @@ const Drawer = createDrawerNavigator();
 
 const AppWrapper = () => {
   const dimensions = useWindowDimensions();
-  const { isLoggedIn, authUser } = useContext(AuthContext);
-  const checkMobile = (dimensions: ScaledSize) => {
-    return Platform.OS === 'android' ||
-      Platform.OS === 'ios' ||
-      dimensions.width <= 992
-      ? true
-      : false;
-  };
+  const { isLoggedIn } = useContext(AuthContext);
 
   const screens = [
     {"name" : "Home", "component": (props) => <Home {...props} dimensions={dimensions} />},
     {"name" : "About", "component": (props) => <About {...props} dimensions={dimensions} />},
     {"name" : "Shop", "component": (props) => <Shop {...props} dimensions={dimensions} />},
     (isLoggedIn) ?
-      {"name" : "Profile", "component": (props) => <ProfileNavigator {...props} dimensions={dimensions} />} :
+      {"name" : "Profile", "component": (props) => <Profile {...props} dimensions={dimensions} />} :
       {"name" : "Login", "component": (props) => <Login {...props} dimensions={dimensions} />},
+    {"name" : "Orders", "component": (props) => <Orders {...props} dimensions={dimensions} />},
+    {"name" : "Account", "component": (props) => <Account {...props} dimensions={dimensions} />},
+    {"name" : "Admin", "component": (props) => <Admin {...props} dimensions={dimensions} />},
     {"name" : "CRUD Playground", "component": (props) => <CRUDPlayground {...props} dimensions={dimensions} />},
     {"name" : "Cart", "component": (props) => <Cart {...props} dimensions={dimensions} options={{ drawerItemStyle: { display: 'none' } }} />},
   ]
@@ -47,15 +46,11 @@ const AppWrapper = () => {
         Home: '/',
         About: 'About',
         Shop: 'Shop',
-        Profile: {
-          path: 'Profile/',
-          screens: {
-            Options: 'Profile/Options',
-            Orders: 'Profile/Orders',
-            Account: '/Account',
-            Admin: 'Profile/Admin',
-          },
-        },
+        Profile: 'Profile',
+        Options: 'Options',
+        Orders: 'Orders',
+        Account: 'Account',
+        Admin: 'Admin',
         Login: 'Login',
         CRUDPlayground: 'CRUDPlayground',
         Cart: 'Cart',

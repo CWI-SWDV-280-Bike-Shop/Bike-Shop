@@ -67,7 +67,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
     return (
       <View style={styles.navBar}>
         {navigation.getState().routeNames.map((name, i) => {
-          if (["Cart", "Profile", "Login"].some((e) => name === e)) {
+          if (["Cart", "Profile", "Login", "Orders", "Account", "Admin"].some((e) => name === e)) {
             return;
           }
           return <HoverButton key={i} title={name} page={name} />;
@@ -144,7 +144,7 @@ const ProfilePopup = ({props, setShowPopover} : {props: DrawerHeaderProps, setSh
           style={styles.buttonPrimary}
           onPress={() => {
             setShowPopover(false);
-            props.navigation.navigate('Profile', { screen: 'Account' });
+            props.navigation.navigate('Account');
           }}
         >
           <Text style={styles.btnFont}>Edit Profile</Text>
@@ -156,7 +156,7 @@ const ProfilePopup = ({props, setShowPopover} : {props: DrawerHeaderProps, setSh
           style={styles.button}
           onPress={() => {
             setShowPopover(false);
-            props.navigation.navigate('Profile', { screen: 'Orders' })
+            props.navigation.navigate('Orders')
         }}
         >
           <View style={styles.iconlabelGrouping}>
@@ -169,7 +169,7 @@ const ProfilePopup = ({props, setShowPopover} : {props: DrawerHeaderProps, setSh
           style={styles.button}
           onPress={() => {
             setShowPopover(false);
-            props.navigation.navigate('Profile', { screen: 'Admin' })
+            props.navigation.navigate('Admin')
         }}
         >
           <View style={styles.iconlabelGrouping}>

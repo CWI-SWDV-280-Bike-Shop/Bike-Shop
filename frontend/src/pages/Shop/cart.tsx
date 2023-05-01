@@ -88,8 +88,6 @@ const Cart = (props: DrawerHeaderProps) => {
         <Text style={Styles.bodyText}>Ordered Items: {quantity == 0 || null ? 'There is nothing in your cart' : (products && ListOrderItems(products))}</Text>
         <Text style={Styles.bodyText}>Sub Total: {formatPrice(total)}</Text>
         <Text style={Styles.bodyText}>Shipping: {products && formatPrice(calculateShipping(products))}</Text>
-        {/* <Text style={Styles.bodyText}>Total:{formatPrice(total * 1.06)}</Text> */}
-        {/* <Text style={Styles.bodyText}>Quantity: {quantity}</Text> */}
         <Text style={Styles.bodyText}>State Tax: {formatPrice(total * 0.06)}</Text>
         <Text style={Styles.bodyText}>Grand Total:{formatPrice((total * 1.06) + (products && calculateShipping(products)))}</Text>
         {
@@ -101,7 +99,7 @@ const Cart = (props: DrawerHeaderProps) => {
         }
         <TouchableOpacity
           style={[Styles.button, Styles.checkoutBtn]}
-          onPress={isLoggedIn ? () => handleCheckout() : () => props.navigation.navigate("Login", { navTo: 'Cart' })}
+          onPress={isLoggedIn ? () => handleCheckout() : () => props.navigation.navigate("Login")}
         >
           <Text style={Styles.buttonText}>
             Checkout <Icon size={20} name="cart-outline" />

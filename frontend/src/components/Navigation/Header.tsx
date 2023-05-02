@@ -366,13 +366,13 @@ const styles = StyleSheet.create({
 		width: '100%',
 		position: 'absolute',
 		top: 0,
-		backgroundColor: '#6A7B7600',
+		backgroundColor: '#3E6259',
 		flexDirection: 'row',
 		paddingTop: 7,
 		justifyContent: 'space-around',
 	},
 	headerView: {
-		backgroundColor: '#6A7B76',
+		backgroundColor: '#3E6259',
 		flexDirection: 'row',
 		paddingTop: 7,
 		justifyContent: 'space-around',
@@ -380,7 +380,7 @@ const styles = StyleSheet.create({
 	headerIcons: {
 		flex: 1,
 		flexDirection: 'row',
-		padding: 32,
+		padding: 25,
 	},
 	headerLogoParent: {
 		alignSelf: 'center',

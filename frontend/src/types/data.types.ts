@@ -67,3 +67,9 @@ export type Order = Data & {
   items?: OrderItem[];
   total?: number;
 };
+
+// Cart
+export type CartItem = {
+  product: Product;
+  quantity: number;
+};

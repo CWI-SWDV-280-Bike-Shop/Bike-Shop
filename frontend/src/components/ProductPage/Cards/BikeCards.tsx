@@ -16,19 +16,14 @@ export const ListProducts = () => {
   useEffect(() => {
     ProductAPI.getAll().then((res) => {
       setProducts(res.data);
-      // setMessage(res.data?.message); // return `message` on the backend??
     });
   }, []);
-
-  const handleAddToCart = (product: Product) => {
-    addToCart(product);
-  };
 
   return (
     <View style={Layout.subsection}>
       {products &&
-        products.map((product) => (
-          <View style={styles.product} key={product._id}>
+        products.map((product: Product, index: number) => (
+          <View style={styles.product} key={index}>
             <View style={[styles.card]}>
               <View style={[styles.leftSide]}>
                 {/* <Image source={imgSrc} style={[styles.bikeImage]}/> */}
@@ -64,7 +59,7 @@ export const ListProducts = () => {
                     <>
                       <TouchableOpacity
                         style={[styles.button]}
-                        onPress={() => handleAddToCart(product)}
+                        onPress={() => addToCart(product)}
                       >
                         <Text style={[styles.buttonText]}>Add to Cart</Text>
                       </TouchableOpacity>

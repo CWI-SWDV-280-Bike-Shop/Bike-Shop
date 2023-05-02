@@ -1,89 +1,143 @@
-import React, {
-  ReactNode,
-  createContext,
-  useState,
-  useEffect,
-  useContext,
-} from 'react';
-import { AuthUser, Order, OrderItem, Product } from '@/types/data.types';
+import React, { ReactNode, createContext, useState, useEffect } from 'react';
+import {
+  AuthUser,
+  Order,
+  OrderItem,
+  Product,
+  CartItem,
+} from '@/types/data.types';
 import CartAPI from '@/api/cart.api';
 import { AuthContext } from './auth.context';
 import OrderAPI from '@/api/order.api';
 
 type ShopContextType = {
-  products: Product[] | null;
-  quantity: number | null;
-  total: number | null;
+  cartItems: CartItem[];
+  quantity: number;
+  total: number;
   addToCart: (newProduct: Product) => void;
   removeFromCart: (removedProduct: Product) => void;
-  checkout: (products: Product[], authUser: AuthUser) => Promise<Order>;
+  deleteFromCart: (removedProduct: Product) => void;
+  checkout: (cartItems: CartItem[], authUser: AuthUser) => Promise<Order>;
   message: string | null;
 };
 
 export const ShopContext = createContext<ShopContextType>({
-  products: null,
-  quantity: null,
-  total: null,
+  cartItems: [],
+  quantity: 0,
+  total: 0,
   addToCart: (newProduct) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   removeFromCart: (removedProduct) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  checkout: (products, authUser) => Promise.resolve({} as Order), // eslint-disable-line @typescript-eslint/no-empty-function
+  deleteFromCart: (deletedProduct) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
+  checkout: (cartItems, authUser) => Promise.resolve({} as Order), // eslint-disable-line @typescript-eslint/no-empty-function
   message: null,
 });
 
 export const ShopProvider = ({ children }: { children: ReactNode }) => {
-  const [products, setProducts] = useState<Product[] | null>(null);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [quantity, setQuantity] = useState(null);
   const [total, setTotal] = useState(null);
   const [message, setMessage] = useState(null);
 
   // fetch cart from localStorage
   useEffect(() => {
-    const fetchLocalCartProducts = async () => {
-      const localCartProducts = (await CartAPI.getLocalCart()) as Product[];
-      if (localCartProducts) {
-        setProducts(localCartProducts);
+    const fetchLocalCartItems = async () => {
+      const localCartItems = (await CartAPI.getLocalCart()) as CartItem[];
+      if (localCartItems) {
+        setCartItems(localCartItems);
       }
     };
-    fetchLocalCartProducts();
-    setMessage('Cart products fetched from local storage');
+    fetchLocalCartItems();
+    setMessage('Cart items fetched from local storage');
   }, []);
 
   // Update cart
   useEffect(() => {
-    if (products) {
+    if (cartItems) {
       // Calculate total
-      const newTotal = products.reduce((previousValue, item) => {
-        return previousValue + item?.price;
+      const newTotal = cartItems.reduce((previousValue, item) => {
+        return previousValue + item.product.price * item.quantity;
       }, 0);
       setTotal(newTotal);
 
-      // Set Quantity
-      setQuantity(products.length);
+      // Set Total Quantity
+      const newQuantity = cartItems.reduce((previousValue, item) => {
+        return previousValue + item.quantity;
+      }, 0);
+      setQuantity(newQuantity);
     }
-  }, [products]);
+  }, [cartItems]);
 
   const addToCart = (newProduct: Product) => {
-    const updatedProducts = products ? [...products, newProduct] : [newProduct];
-    setProducts(updatedProducts);
-    CartAPI.setLocalCart(updatedProducts);
+    const existingCartItem = cartItems.find((cartItem: CartItem) => {
+      return cartItem.product._id === newProduct._id;
+    });
+
+    const updatedCartItems = existingCartItem
+      ? // if the item exists in the cart, increase the quantity
+        cartItems.map((cartItem: CartItem) => {
+          if (cartItem.product._id === newProduct._id) {
+            return {
+              ...cartItem,
+              quantity: cartItem.quantity + 1,
+            };
+          } else {
+            return cartItem;
+          }
+        })
+      : // otherwise, create a new item
+        [...cartItems, { product: newProduct, quantity: 1 }];
+
+    setCartItems(updatedCartItems);
+    CartAPI.setLocalCart(updatedCartItems);
   };
 
   const removeFromCart = (removedProduct: Product) => {
-    const updatedProducts = products.filter((product: Product) => {
-      return product._id !== removedProduct._id;
-    });
-    setProducts(updatedProducts);
-    CartAPI.setLocalCart(updatedProducts);
+    const existingCartItem = cartItems.find(
+      (cartItem: CartItem) => cartItem.product._id === removedProduct._id
+    );
+    if (existingCartItem) {
+      const updatedCartItems =
+        existingCartItem.quantity > 1 // if item exists in the cart, decrease quantity
+          ? cartItems.map((cartItem: CartItem) => {
+              return cartItem.product._id === removedProduct._id
+                ? {
+                    ...cartItem,
+                    quantity: cartItem.quantity - 1,
+                  }
+                : cartItem;
+            })
+          : // otherwise, remove the item
+            cartItems.filter(
+              (cartItem: CartItem) =>
+                cartItem.product._id !== removedProduct._id
+            );
+      setCartItems(updatedCartItems);
+      CartAPI.setLocalCart(updatedCartItems);
+    }
+  };
+
+  const deleteFromCart = (deletedProduct: Product) => {
+    const existingCartItem = cartItems.find(
+      (cartItem: CartItem) => cartItem.product._id === deletedProduct._id
+    );
+
+    if (existingCartItem) {
+      const updatedCartItems = cartItems.filter(
+        (cartItem: CartItem) => cartItem.product._id !== deletedProduct._id
+      );
+      setCartItems(updatedCartItems);
+      CartAPI.setLocalCart(updatedCartItems);
+    }
   };
 
   // build order from products
-  const checkout = async (products: Product[], authUser: AuthUser) => {
+  const checkout = async (cartItems: CartItem[], authUser: AuthUser) => {
     const customerId = authUser._id;
 
-    const orderItems: OrderItem[] = products.map((product: Product) => ({
-      product: product?._id,
-      price: product?.price,
-      quantity: 1,
+    const orderItems: OrderItem[] = cartItems.map((cartItem: CartItem) => ({
+      product: cartItem.product._id,
+      price: cartItem.product.price,
+      quantity: cartItem.quantity,
     }));
 
     const newOrder: Order = {
@@ -95,7 +149,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
     const response = await OrderAPI.create(newOrder);
     const order = response.data;
 
-    setProducts([]);
+    setCartItems([]);
     CartAPI.clearLocalCart();
     setMessage('Order placed successfully');
 
@@ -105,9 +159,10 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
   return (
     <ShopContext.Provider
       value={{
-        products,
+        cartItems,
         addToCart,
         removeFromCart,
+        deleteFromCart,
         checkout,
         message,
         total,

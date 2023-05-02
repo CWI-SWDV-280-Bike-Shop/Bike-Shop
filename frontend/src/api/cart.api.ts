@@ -1,15 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Product } from '@/types/data.types';
+import { CartItem } from '@/types/data.types';
 
 const CartAPI = {
   async getLocalCart() {
     const localCart = await AsyncStorage.getItem('cart');
     if (!localCart) return null;
-    const cart = JSON.parse(localCart) as Product[];
-    return cart;
+    const cart = JSON.parse(localCart);
+    return cart as CartItem[];
   },
 
-  async setLocalCart(cart: Product[]) {
+  async setLocalCart(cart: CartItem[]) {
     AsyncStorage.setItem('cart', JSON.stringify(cart));
   },
 

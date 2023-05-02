@@ -149,7 +149,7 @@ const Filters = (props) => {
 export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
   const [asc, setAsc] = useState(true);
   const [sortfield, sortsetField] = useState("price");
-  const [filterObject, filterSet] = useState({"category": {$in : ["Bikes"]}});
+  const [filterObject, filterSet] = useState({"category": {$in : ["Bikes"]}, $text: { $search: "Spearfish" }});
   const [checkMarks, setCheckMarks] = useState({"Bikes": true});
 
   const state = {
@@ -177,10 +177,11 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
     },
   });
 
+  const [searchProductsText, _searchProductsText] = useState("");
   return (
     <View style={styles.container}>
       <View style={responsive.toolbar}>
-        <Filters filterState={filterState}/>
+        <Filters filterState={filterState} dimensions={dimensions}/>
       </View>
     
       <ScrollView>
@@ -218,8 +219,8 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
             <Icon name="search-sharp" size={30} color="#000" />
             <TextInput
               style={styles.textInput}
-              //onChangeText={_searchProductsText}
-              //value={searchProductsText}
+              onChangeText={_searchProductsText}
+              value={searchProductsText}
               placeholder='Search'
             />
           </View>

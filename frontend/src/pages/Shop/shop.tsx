@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, ScrollView, ImageBackground, FlatList } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, ImageBackground, FlatList, ScaledSize } from 'react-native';
 import Layout from '@styles/layout/Layout';
 // import BikeCards from '@components/ProductPage/Cards/BikeCards'
 import { Search_Bar } from '@/components/ProductPage/searchBar';
@@ -8,11 +8,13 @@ import { Footer } from '@components/Footer';
 import { FilterParams } from '@components/ProductPage/filter';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 import ProductAPI from '@/api/product.api';
 import { Product } from '@/types/data.types';
 import Checkbox from 'expo-checkbox';
 import { ShopContext } from '@/context/shop.context';
+import { DrawerHeaderProps } from '@react-navigation/drawer';
+import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 const Item = ({ product }: { product: Product }) => {
   const { addToCart } = useContext(ShopContext);
@@ -93,17 +95,52 @@ function ListProducts({state}) {
   );
 }
 
-
-export const Shop = () => {
+const Filters = ({ filterState }) => {
+  const state = filterState.state;
   const [labels, setLabels] = useState([]);
+  useEffect(() => {
+    ProductAPI.getLabels().then((res) => setLabels(res.data));
+  }, []);
+
+  return (
+    <View style={styles.toolbar}>
+    <ScrollView>
+      <Text style={styles.optionsMainText}>Filters</Text>
+      {Object.keys(labels).map((label, i) => (
+      <View style={styles.options} key={i}>
+        <Text style={styles.optionsHeader}>{label}</Text>
+        <View style={styles.optionSubheader}>
+          {
+            labels[label].map((value, i) => (
+              <View style={styles.checkBoxRow} key={i}>
+                <Checkbox value={filterState.checkMarks[value] || false} onValueChange={() => {
+                  filterState.setCheckMarks({...filterState.checkMarks, [value] : !filterState.checkMarks[value]});
+                  const filters = (!Object.keys(state.filterObject).includes(label)) ? {...state.filterObject, [label] : {$in : []}} : {...state.filterObject};
+                  state.filterSet( 
+                    (filters[label].$in.includes(value)) ?
+                    {...filters, [label] : {$in : filters[label].$in.filter((e)=>e!=value)}}
+                    : {...filters, [label] : {$in : [...filters[label].$in, value]}} );
+                  }}/>
+                <Text style={styles.optionsText}>{value}</Text>
+              </View>
+            ))
+          }
+        </View>
+      </View>
+    ))}
+    </ScrollView>
+  </View>
+  )
+}
+
+
+export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
   const [asc, setAsc] = useState(true);
   const [sortfield, sortsetField] = useState("price");
   const [filterObject, filterSet] = useState({"category": {$in : ["Bikes"]}});
   const [checkMarks, setCheckMarks] = useState({"Bikes": true});
 
   const state = {
-    labels: labels,
-    setLabels: setLabels,
     asc: asc,
     setAsc: setAsc,
     field: sortfield,
@@ -112,41 +149,30 @@ export const Shop = () => {
     filterSet: filterSet,
   }
 
-  useEffect(() => {
-    ProductAPI.getLabels().then((res) => setLabels(res.data));
-  }, []);
+  const filterState = {
+    state: state,
+    checkMarks: checkMarks,
+    setCheckMarks: setCheckMarks,
+  }
+
+  const responsive = StyleSheet.create({
+    /* Sort Styles */
+    toolbar: {
+      display: (254+700 < dimensions.width) ? 'flex' : 'none',
+    },
+  });
+
   return (
     <View style={styles.container}>
-      <View style={styles.toolbar}>
-        <ScrollView>
-          <Text style={styles.optionsMainText}>Filters</Text>
-          {Object.keys(labels).map((label, i) => (
-          <View style={styles.options} key={i}>
-            <Text style={styles.optionsHeader}>{label}</Text>
-            <View style={styles.optionSubheader}>
-              {
-                labels[label].map((value, i) => (
-                  <View style={styles.checkBoxRow} key={i}>
-                    <Checkbox value={checkMarks[value] || false} onValueChange={() => {
-                      setCheckMarks({...checkMarks, [value] : !checkMarks[value]});
-                      const filters = (!Object.keys(filterObject).includes(label)) ? {...filterObject, [label] : {$in : []}} : {...filterObject};
-                      state.filterSet( 
-                        (filters[label].$in.includes(value)) ?
-                        {...filters, [label] : {$in : filters[label].$in.filter((e)=>e!=value)}}
-                        : {...filters, [label] : {$in : [...filters[label].$in, value]}} );
-                      }}/>
-                    <Text style={styles.optionsText}>{value}</Text>
-                  </View>
-                ))
-              }
-            </View>
-          </View>
-        ))}
-        </ScrollView>
+      <View style={responsive.toolbar}>
+        <Filters filterState={filterState}/>
       </View>
-
+    
       <ScrollView>
         <View style={styles.sortBar}>
+          <View style={styles.sortBarCol}>
+            <OpenFilters filterState={filterState}/>
+          </View>
           <View style={styles.sortBarCol}>
             <Text style={styles.sortTextHeader}>Sort Options: </Text>
           </View>
@@ -179,6 +205,44 @@ export const Shop = () => {
   );
 };
 
+{/* <TouchableOpacity
+      style={[
+        styles.headerTouchable,
+        checkMobile(dimensions) ? { display: 'none' } : {},
+      ]}
+      onPress={() => setShowPopover(!showPopover)}
+    > 
+      <ProfileButton />
+    </TouchableOpacity> */}
+
+const OpenFilters = ({ filterState }) => {
+  const [showPopover, setShowPopover] = useState(false);
+  return (
+    <Popover
+      isVisible={showPopover}
+      onRequestClose={() => setShowPopover(false)}
+      //popoverStyle={{ backgroundColor: '#ffffff00' }}
+      //backgroundStyle={{ backgroundColor: 'transparent' }}
+      placement={PopoverPlacement.FLOATING}
+      from={
+        <TouchableOpacity style={styles.filterShowBtn} onPress={() => setShowPopover(!showPopover)}>
+          <Text style={styles.filterShowText}>FILTERS</Text>
+        </TouchableOpacity>
+      }
+    >
+      <FilterPopup setShowPopover={setShowPopover} filterState={filterState} />
+    </Popover>
+  )
+}
+
+const FilterPopup = ({ setShowPopover, filterState }) => {
+  return (
+    <View>
+      <Filters filterState={filterState} />
+    </View>
+  )
+}
+
 export default Shop;
 
 const styles = StyleSheet.create({
@@ -208,6 +272,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     padding: ".5rem",
+  },
+  filterShowBtn: {
+    backgroundColor: '#3e6259',
+    padding: 10,
+    paddingHorizontal: 15,
+    borderRadius: 20,
+  },
+  filterShowText: {
+    color: '#fff',
+    fontSize: 16,
+    textTransform: 'uppercase',
+    paddingHorizontal: 5,
+    fontWeight: "700",
   },
   /* Filter Styles */
   optionsMainText: {
@@ -261,6 +338,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     backgroundColor: '#dee',
+    padding: 10,
   },
   item: {
     margin: 15,

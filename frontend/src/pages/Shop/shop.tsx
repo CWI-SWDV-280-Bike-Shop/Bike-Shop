@@ -50,11 +50,13 @@ const Item = ({ product }: { product: Product }) => {
   )
 }
 
+//{ field: { $in: [<value1>, <value2>, ... <valueN> ] } }
+
 function ListProducts({state}) {
   const [products, setProducts] = useState([{}] as [Product]);
   useEffect(() => {
     console.log(state.filterField, state.filterValue);
-    ProductAPI.getAll({[state.filterField]: state.filterValue, "subcategory": "Electric"}).then((res) => setProducts(res.data));
+    ProductAPI.getAll({[state.filterField]: state.filterValue,  "subcategory": "Electric"}).then((res) => setProducts(res.data));
   }, [state.filterField, state.filterValue]);
 
   const sortData = (data) => {

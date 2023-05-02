@@ -252,15 +252,15 @@ const styles = StyleSheet.create({
   },
   toolbar: {
     width: 'auto',
-    padding: 40,
+    padding: 20,
     backgroundColor: '#dee',
     gap: 10,
   },
   products: {
     flex: 3,
     flexDirection: 'column',
+    justifyContent: 'center',
     backgroundColor: '#dee',
-    padding: 30,
   },
   item: {
     margin: 15,

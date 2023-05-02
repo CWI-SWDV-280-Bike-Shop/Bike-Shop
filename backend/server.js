@@ -2,8 +2,8 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
+import { mongoose } from './src/mongoose.js';
 import router from './src/routes/router.js';
-import mongoose from 'mongoose';
 import db from './src/config/database.config.js';
 import { NotFound, UserError } from './src/errors/errors.js';
 dotenv.config();

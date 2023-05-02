@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import { mongoose } from '../../mongoose.js';
 import jwt from 'jsonwebtoken';
 import User from '../users/user.model.js';
 import RefreshToken from '../../routes/auth/refreshToken.model.js';

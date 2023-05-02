@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import { mongoose } from '../../mongoose.js';
 import config from '../../config/auth.config.js';
 import { v4 as uuidv4 } from 'uuid';
 const Schema = mongoose.Schema;
@@ -8,6 +8,7 @@ const RefreshTokenSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    autopopulate: true,
   },
   expiryDate: Date,
 });

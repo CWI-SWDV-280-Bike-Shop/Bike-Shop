@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, ScrollView, ImageBackground, FlatList, ScaledSize } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, ImageBackground, FlatList, ScaledSize, TextInput } from 'react-native';
 import Layout from '@styles/layout/Layout';
 // import BikeCards from '@components/ProductPage/Cards/BikeCards'
 import { Search_Bar } from '@/components/ProductPage/searchBar';
@@ -214,6 +214,15 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
               <Icon name="swap-vertical" size={20} color="#000000aa" />
             </TouchableOpacity>
           </View>
+          <View style={styles.searchBar}>
+            <Icon name="search-sharp" size={30} color="#000" />
+            <TextInput
+              style={styles.textInput}
+              //onChangeText={_searchProductsText}
+              //value={searchProductsText}
+              placeholder='Search'
+            />
+          </View>
           </ScrollView>
         </View>
           <ListProducts state={state}/>
@@ -251,6 +260,19 @@ const FilterPopup = (props) => {
 export default Shop;
 
 const styles = StyleSheet.create({
+  searchBar: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  textInput: {
+    height: 30,
+    margin: 12,
+    borderWidth: 1,
+    borderColor: "#343",
+    color: '#343',
+    padding: 10,
+    borderRadius: 20,
+  },
   popoverLarge: {
     width: 300,
   },

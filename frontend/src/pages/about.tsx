@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize, Image } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize } from 'react-native';
 import Swiper from 'react-native-swiper/src';
 
 // Slide component imports
@@ -10,92 +10,145 @@ const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'andr
 const onlyMobile = (code) => { if ((Platform.OS === 'android' || Platform.OS === 'ios')){ return code } }
 const onlyWeb = (code) => { if (Platform.OS === 'web'){ return code } }
 
-// const CustomSwiper = ({dimensions} : {dimensions : ScaledSize}) => {
-//   return (
-//     <Swiper 
-//     loop
-//     timeout={5}
-//     springConfig={{ speed: 5, bounciness: 1, }}
-//     controlsProps={{
-//       prevTitle: '⮜',
-//       nextTitle: '⮞',
-//       dotsTouchable: true,
-//       dotsPos: 'bottom',
-//       prevPos: (checkMobile(dimensions)) ? false : 'left', 
-//       nextPos: (checkMobile(dimensions)) ? false : 'right', 
-//       nextTitleStyle: {
-//         fontSize: 38,
-//         fontWeight: '900',
-//         color: '#fff'
-//       },
-//       prevTitleStyle: {
-//         fontSize: 38,
-//         fontWeight: '900',
-//         color: '#fff'
-//       },
-//     }}>
-//       <Slide
-//             name={'From Michael Scott'}
-//             description={
-//                 '"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"'
-//             }
-//             imgSrc={require('@assets/Images/background1.png')}
-//             btnName={'Shop'}
-//           />
-//           <Slide
-//             name={'From Jim Halpert'}
-//             description={
-//                 '"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"'
-//             }
-//             imgSrc={require('@assets/Images/background2.png')}
-//             btnName={'Accessories'}
-//           />
-//           <Slide
-//             name={'From Dwight Shrute'}
-//             description={'"This shop opened up down the road from my beet farm, its nice enough."'}
-//             imgSrc={require('@assets/Images/background3.png')}
-//             btnName={'Shop'}
-//           />
-//           <Slide
-//             name={'From Creed Bratton'}
-//             description={
-//                 '"I just wandered into this shop one day and left with a new bike! Thanks man!"'
-//             }
-//             imgSrc={require('@assets/Images/background1.png')}
-//             btnName={'Shop'}
-//           />
-//           <Slide
-//             name={'From Stanley Hudson'}
-//             description={
-//               '"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."'
-//             }
-//             imgSrc={require('@assets/Images/background2.png')}
-//             btnName={'Repair'}
-//           />
-//             <Slide
-//             name={'From David Wallace'}
-//             description={
-//               '"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."'
-//             }
-//             imgSrc={require('@assets/Images/background3.png')}
-//             btnName={'Repair'}
-//           />
-//     </Swiper>
-//   );
-// }
+const CustomSwiper = ({dimensions} : {dimensions : ScaledSize}) => {
+  return (
+    <Swiper 
+    loop
+    timeout={5}
+    springConfig={{ speed: 5, bounciness: 1, }}
+    controlsProps={{
+      prevTitle: '⮜',
+      nextTitle: '⮞',
+      dotsTouchable: true,
+      dotsPos: 'bottom',
+      prevPos: (checkMobile(dimensions)) ? false : 'left', 
+      nextPos: (checkMobile(dimensions)) ? false : 'right', 
+      nextTitleStyle: {
+        fontSize: 38,
+        fontWeight: '900',
+        color: '#fff'
+      },
+      prevTitleStyle: {
+        fontSize: 38,
+        fontWeight: '900',
+        color: '#fff'
+      },
+    }}>
+      <Slide
+            name={'From Michael Scott'}
+            description={
+                '"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"'
+            }
+            imgSrc={require('@assets/Images/background1.png')}
+            btnName={'Shop'}
+          />
+          <Slide
+            name={'From Jim Halpert'}
+            description={
+                '"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"'
+            }
+            imgSrc={require('@assets/Images/background2.png')}
+            btnName={'Accessories'}
+          />
+          <Slide
+            name={'From Dwight Shrute'}
+            description={'"This shop opened up down the road from my beet farm, its nice enough."'}
+            imgSrc={require('@assets/Images/background3.png')}
+            btnName={'Shop'}
+          />
+          <Slide
+            name={'From Creed Bratton'}
+            description={
+                '"I just wandered into this shop one day and left with a new bike! Thanks man!"'
+            }
+            imgSrc={require('@assets/Images/background1.png')}
+            btnName={'Shop'}
+          />
+          <Slide
+            name={'From Stanley Hudson'}
+            description={
+              '"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."'
+            }
+            imgSrc={require('@assets/Images/background2.png')}
+            btnName={'Repair'}
+          />
+            <Slide
+            name={'From David Wallace'}
+            description={
+              '"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."'
+            }
+            imgSrc={require('@assets/Images/background3.png')}
+            btnName={'Repair'}
+          />
+    </Swiper>
+  );
+}
 
 export const About = () => {
   const slideNames = ['Testimonials'];
   return (
     <View style={[styles.container]}>
+      <View style={[styles.slidesContainer]}>
+        <Swiper>
+          <Slide
+            name={'From Michael Scott'}
+            description={
+                '"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"'
+            }
+            imgSrc={require('@assets/Images/background1.png')}
+            btnName={'Shop'}
+          />
+          <Slide
+            name={'From Jim Halpert'}
+            description={
+                '"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"'
+            }
+            imgSrc={require('@assets/Images/background2.png')}
+            btnName={'Accessories'}
+          />
+          <Slide
+            name={'From Dwight Shrute'}
+            description={'"This shop opened up down the road from my beet farm, its nice enough."'}
+            imgSrc={require('@assets/Images/background3.png')}
+            btnName={'Shop'}
+          />
+          <Slide
+            name={'From Creed Bratton'}
+            description={
+                '"I just wandered into this shop one day and left with a new bike! Thanks man!"'
+            }
+            imgSrc={require('@assets/Images/background1.png')}
+            btnName={'Shop'}
+          />
+          <Slide
+            name={'From Stanley Hudson'}
+            description={
+              '"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."'
+            }
+            imgSrc={require('@assets/Images/background2.png')}
+            btnName={'Repair'}
+          />
+            <Slide
+            name={'From David Wallace'}
+            description={
+              '"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."'
+            }
+            imgSrc={require('@assets/Images/background3.png')}
+            btnName={'Repair'}
+          />
+        </Swiper>
+      </View>
       <View style={[styles.contentContainer]}>
         <ScrollView>
-        <View style={[styles.quoteRow]}>
+          {/* <View style={[styles.titleRow]}>
+            <Text style={[styles.title]}>Wheely Good Bikes</Text>
+          </View> */}
+          <View style={[styles.quoteRow]}>
             <Text style={[styles.quote]}>
               "We aren't just a bike shop, we're a community."
             </Text>
           </View>
-        <View style={[styles.missionStatementRow]}>
+          <View style={[styles.missionStatementRow]}>
             <Text style={[styles.missionStatement]}>
               Our mission at Wheely Good Bikes is to provide high-quality
               bicycles and accessories that promote a healthy and sustainable
@@ -109,31 +162,23 @@ export const About = () => {
               community reduce its carbon footprint.
             </Text>
           </View>
-        <View style={[styles.testimonialContainer]}>
-          <Image source={require('../assets/Branding/profile-black.png')} style={[styles.imageV1]} />
-          <Text style={[styles.testimonialV1]}>"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"                            - Michael Scott</Text>
-        </View>
-        <View style={[styles.testimonialContainer]}>
-          <Text style={[styles.testimonialV2]}>"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"                                      - Jim Halpert</Text>
-          <Image source={require('../assets/Branding/profile-black.png')} style={[styles.imageV2]} />
-        </View>
-        <View style={[styles.testimonialContainer]}>
-          <Image source={require('../assets/Branding/profile-black.png')} style={[styles.imageV1]} />
-          <Text style={[styles.testimonialV1]}>"This shop opened up down the road from my beet farm, its nice enough."      - Dwight Shrute</Text>
-        </View>
-        <View style={[styles.testimonialContainer]}>
-          <Text style={[styles.testimonialV2]}>"I just wandered into this shop one day and left with a new bike! Thanks man!"      - Creed Bratton</Text>
-          <Image source={require('../assets/Branding/profile-black.png')} style={[styles.imageV2]} />
-        </View>
-        <View style={[styles.testimonialContainer]}>
-          <Image source={require('../assets/Branding/profile-black.png')} style={[styles.imageV1]} />
-          <Text style={[styles.testimonialV1]}>"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."                                 - Stanley Hudson</Text>
-        </View>
-        <View style={[styles.testimonialContainer]}>
-          <Text style={[styles.testimonialV2]}>"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs." - David Wallace</Text>
-          <Image source={require('../assets/Branding/profile-black.png')} style={[styles.imageV2]} />
-        </View>
-        <View><Text></Text></View>
+          <View style={[styles.footer]}>
+            <Text style={[styles.footerText]}>The Bicycle Shop</Text>
+            <Text style={[styles.footerText]}>
+              <Icon name="navigate-outline" size={15} color="#FFF" /> 1234
+              Something Blvd, Boise, ID 83706
+            </Text>
+            <Text style={[styles.footerText]}>Monday - Friday | 9am - 8pm</Text>
+            <Text style={[styles.footerText]}>
+              <Icon name="receipt-outline" size={15} color="#FFF" />{' '}
+              contact@thebicycleshop.com
+            </Text>
+            <Text style={[styles.footerText]}>
+              <Icon name="phone-portrait-outline" size={15} color="#FFF" />{' '}
+              (208)123-4567
+            </Text>
+            <Text style={[styles.footerText]}>© Copyright 2023</Text>
+          </View>
         </ScrollView>
       </View>
     </View>
@@ -173,15 +218,19 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingVertical: 20,
+    backgroundColor: '#6A7B76',
+    borderColor: '#03312E',
+    borderWidth: 15,
     width: '100%',
   },
   quote: {
     fontSize: 27,
-    color: 'black',
+    color: 'white',
+    textShadowColor: 'rgba(0, 0, 0, 0.85)',
+    textShadowOffset: { width: -1, height: 1 },
+    textShadowRadius: 10,
     fontStyle: 'italic',
     textAlign: 'center',
-    paddingLeft: 15,
-    paddingRight: 15,
   },
   missionStatementRow: {
     flexDirection: 'row',
@@ -193,37 +242,20 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     fontSize: 20,
-    color: 'black',
+    color: '#03312E',
     paddingLeft: 15,
     paddingRight: 15,
   },
-  imageV1: {
-    borderRadius: 100,
-    width: 100,
-    height: 100,
-    marginRight: 20,
-    marginLeft: 20,
+  footer: {
+    backgroundColor: '#6A7B76',
+    paddingTop: 7,
+    paddingBottom: 7,
   },
-  imageV2: {
-    borderRadius: 100,
-    width: 100,
-    height: 100,
-    marginLeft: 35,
+  footerText: {
+    alignSelf: 'center',
+    color: 'white',
+    paddingTop: 1,
+    paddingBottom: 1,
+    fontWeight: 'bold',
   },
-  testimonialV1: {
-    width: 250,
-    marginLeft: 0,
-  },
-  testimonialV2: {
-    width: 210,
-    marginLeft: 30,
-    marginRight: -15,
-  },
-  testimonialContainer: {
-    flexDirection: 'row',
-    paddingLeft: 5,
-    paddingRight: 5,
-    paddingBottom: 5,
-    alignItems: 'center',
-  }
 });

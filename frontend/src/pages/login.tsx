@@ -42,7 +42,7 @@ export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
 			<View>
 				<Text style={styles.label}>Email</Text>
 				<TextInput
-					style={[Layout.input]}
+					style={[styles.editBox]}
 					placeholder="Email"
 					value={email}
 					onChangeText={(value) => setEmail(value)}
@@ -51,7 +51,7 @@ export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
 			<View>
 				<Text style={styles.label}>Password</Text>
 				<TextInput
-					style={[Layout.input]}
+					style={[styles.editBox]}
 					placeholder="Password"
 					value={password}
 					onChangeText={(value) => setPassword(value)}
@@ -61,7 +61,7 @@ export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
 			{message && <Text style={[Layout.errorText]}>{message}</Text>}
 			<Text style={[Layout.errorText]}>{loginError}</Text>
 			<View style={styles.rowBottom}>
-				<TouchableOpacity style={Layout.button} onPressIn={submit}>
+				<TouchableOpacity style={styles.buttonPrimary} onPressIn={submit}>
 					<Text style={styles.btnFont}>Login</Text>
 					<Icon name="log-in-outline" size={30} color="#FFF" />
 				</TouchableOpacity>
@@ -207,9 +207,9 @@ export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 						<View key={i}>
 							<Text style={styles.label}>{item.label}</Text>
 							<TextInput
-								style={Layout.input}
+								style={styles.editBox}
 								inputMode={item.inputMode as InputModeOptions}
-								placeholder={''}
+								placeholder={item.label}
 								value={item.stateValue}
 								onChangeText={(value) => item.setState(value)}
 							/>
@@ -229,9 +229,9 @@ export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 						<View key={i}>
 							<Text style={styles.label}>{item.label}</Text>
 							<TextInput
-								style={Layout.input}
+								style={styles.editBox}
 								inputMode={item.inputMode as InputModeOptions}
-								placeholder={''}
+								placeholder={item.label}
 								value={item.stateValue}
 								onChangeText={(value) =>
 									onChangeAddress(item.label.toLowerCase(), value)
@@ -244,7 +244,7 @@ export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 			{message && <Text style={[Layout.errorText]}>{message}</Text>}
 			<Text style={[Layout.errorText]}>{errorMessage}</Text>
 			<View style={styles.rowBottom}>
-				<TouchableOpacity style={Layout.button} onPressIn={regSubmit}>
+				<TouchableOpacity style={styles.buttonPrimary} onPressIn={regSubmit}>
 					<Icon name="person-add-outline" size={30} color="#FFF" />
 					<Text style={styles.btnFont}>Register Account</Text>
 				</TouchableOpacity>
@@ -319,21 +319,21 @@ const styles = StyleSheet.create({
 		bottom: -30,
 		left: 20,
 	},
-	// editBox: {
-	// 	paddingTop: 32,
-	// 	padding: 16,
-	// 	marginBottom: 20,
-	// 	margin: 5,
-	// 	borderRadius: 10,
-	// 	shadowColor: '#000',
-	// 	shadowOffset: {
-	// 		width: 0,
-	// 		height: 1,
-	// 	},
-	// 	shadowOpacity: 0.42,
-	// 	shadowRadius: 2.22,
-	// 	elevation: 1,
-	// },
+	editBox: {
+		paddingTop: 32,
+		padding: 16,
+		marginBottom: 20,
+		margin: 5,
+		borderRadius: 10,
+		shadowColor: '#000',
+		shadowOffset: {
+			width: 0,
+			height: 1,
+		},
+		shadowOpacity: 0.42,
+		shadowRadius: 2.22,
+		elevation: 1,
+	},
 	infoContainer: {
 		marginLeft: 0,
 	},

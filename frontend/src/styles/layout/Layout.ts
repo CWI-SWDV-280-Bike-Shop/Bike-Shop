@@ -46,7 +46,6 @@ export default StyleSheet.create({
   errorText: {
     marginLeft: 10,
     marginTop: 15,
-    marginBottom: 15,
     fontSize: 24,
     color: '#dc143c',
     textAlign: 'center',

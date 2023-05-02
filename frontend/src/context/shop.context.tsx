@@ -13,8 +13,6 @@ import OrderAPI from '@/api/order.api';
 type ShopContextType = {
   cartItems: CartItem[];
   quantity: number;
-  shipping: number;
-  tax: number;
   total: number;
   addToCart: (newProduct: Product) => void;
   removeFromCart: (removedProduct: Product) => void;
@@ -26,8 +24,6 @@ type ShopContextType = {
 export const ShopContext = createContext<ShopContextType>({
   cartItems: [],
   quantity: 0,
-  shipping: 0,
-  tax: 0,
   total: 0,
   addToCart: (newProduct) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   removeFromCart: (removedProduct) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
@@ -39,8 +35,6 @@ export const ShopContext = createContext<ShopContextType>({
 export const ShopProvider = ({ children }: { children: ReactNode }) => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [quantity, setQuantity] = useState(0);
-  const [tax, setTax] = useState(0);
-  const [shipping, setShipping] = useState(0);
   const [total, setTotal] = useState(0);
   const [message, setMessage] = useState(null);
 
@@ -64,7 +58,6 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
         return previousValue + item.product.price * item.quantity;
       }, 0);
       setTotal(newTotal);
-      setTax(newTotal * 1.06);
 
       // Set Total Quantity
       const newQuantity = cartItems.reduce((previousValue, item) => {
@@ -168,8 +161,6 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
       value={{
         cartItems,
         quantity,
-        shipping,
-        tax,
         total,
         addToCart,
         removeFromCart,

@@ -11,6 +11,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { useEffect, useState } from 'react';
 import ProductAPI from '@/api/product.api';
 import { Product } from '@/types/data.types';
+import Checkbox from 'expo-checkbox';
 
 const Item = ({ product }: { product: Product }) => {
   //const price = (Math.random() * (1000 - 100 + 1) + 100).toFixed(2);
@@ -50,14 +51,12 @@ const Item = ({ product }: { product: Product }) => {
   )
 }
 
-//{ field: { $in: [<value1>, <value2>, ... <valueN> ] } }
-
 function ListProducts({state}) {
   const [products, setProducts] = useState([{}] as [Product]);
   useEffect(() => {
-    console.log(state.filterField, state.filterValue);
-    ProductAPI.getAll({[state.filterField]: state.filterValue,  "subcategory": "Electric"}).then((res) => setProducts(res.data));
-  }, [state.filterField, state.filterValue]);
+    console.dir(state.filterObject);
+    ProductAPI.getAll(state.filterObject).then((res) => setProducts(res.data));
+  }, [state.filterObject]);
 
   const sortData = (data) => {
     return data.sort((a, b) => {
@@ -91,8 +90,12 @@ export const Shop = () => {
   const [labels, setLabels] = useState([]);
   const [asc, setAsc] = useState(true);
   const [sortfield, sortsetField] = useState("name");
-  const [filterField, filterSetField] = useState("category");
-  const [filterValue, filterSetValue] = useState("Bikes");
+  const [filterObject, filterSet] = useState({"category": {$in : ["Bikes"]}});
+  const [checkMarks, setCheckMarks] = useState({});
+
+  //{ field: { $in: [<value1>, <value2>, ... <valueN> ] } }
+  //{[state.filterField]: state.filterValue,  "subcategory": "Electric"}
+
 
   const state = {
     labels: labels,
@@ -101,10 +104,8 @@ export const Shop = () => {
     setAsc: setAsc,
     field: sortfield,
     setField: sortsetField,
-    filterField: filterField,
-    filterSetField: filterSetField,
-    filterValue: filterValue,
-    filterSetValue: filterSetValue
+    filterObject: filterObject,
+    filterSet: filterSet,
   }
 
   useEffect(() => {
@@ -119,12 +120,17 @@ export const Shop = () => {
             <View style={styles.optionSubheader}>
               {
                 labels[label].map((value, i) => (
-                  <TouchableOpacity key={i} onPress={() => {
-                    state.filterSetField(label);
-                    state.filterSetValue(value);
-                  }}>
+                  <View style={styles.checkBoxRow} key={i}>
+                    <Checkbox value={checkMarks[value] || false} onValueChange={() => {
+                      setCheckMarks({...checkMarks, [value] : !checkMarks[value]});
+                      const filters = (!Object.keys(filterObject).includes(label)) ? {...filterObject, [label] : {$in : []}} : {...filterObject};
+                      state.filterSet( 
+                        (filters[label].$in.includes(value)) ?
+                        {...filters, [label] : {$in : filters[label].$in.filter((e)=>e!=value)}}
+                        : {...filters, [label] : {$in : [...filters[label].$in, value]}} );
+                      }}/>
                     <Text style={styles.optionsText}>{value}</Text>
-                  </TouchableOpacity>
+                  </View>
                 ))
               }
             </View>
@@ -153,6 +159,12 @@ const styles = StyleSheet.create({
   },
   optionsText: {
 
+  },
+  checkBoxRow: {
+    flexDirection: 'row',
+    gap: 10,
+    padding: 5,
+    textAlignVertical: 'center',
   },
   /* Main Styles */
   container: {

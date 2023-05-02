@@ -2,7 +2,8 @@ import { DrawerHeaderProps } from "@react-navigation/drawer";
 import * as React from "react";
 import { Text, StyleSheet, View, Button, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-//(props: DrawerHeaderProps) => props.navigation.navigate("Shop")
+import Layout from '@/styles/layout/Layout';
+import { colors } from '@/styles/theme/Colors';
 
 export const OrderConfirmation = (props: DrawerHeaderProps) => {
   return (
@@ -20,36 +21,38 @@ export const OrderConfirmation = (props: DrawerHeaderProps) => {
             color="green"
           />
           <Text style={[styles.bodyThanks]}>Thank you for your order!</Text>
-          <Text style={[styles.bodyConfirmation]}>
-            Your confirmation number is
-          </Text>
+          <Text style={[styles.bodyConfirmation]}>Your Order number is</Text>
           <Text style={[styles.bodyOrderNumber]}>order._id</Text>
         </View>
         <View>
-          <Text
-            style={[styles.bodyShop]}
+          <TouchableOpacity
+            style={[Layout.button, { margin: 10 }]}
             onPress={() => {
-              props.navigation.navigate("Shop");
+              props.navigation.navigate('Shop');
             }}
           >
-            Continue Shopping
-          </Text>
+            <Text style={Layout.buttonContent}>Continue Shopping</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              Layout.button,
+              {
+                margin: 10,
+                backgroundColor: colors.xanadu,
+              },
+            ]}
+            onPress={() => {
+              props.navigation.navigate('Orders');
+            }}
+          >
+            <Text style={[Layout.buttonContent]}>View Your Orders</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
   );
 };
-{
-  /* <View style={[styles.container]}>
-      <Text style={[styles.bodyText]}>Checkout Confirmation</Text>
-      <View style={[styles.contentContainer]}>
-        <Text style={[styles.header]}>Orders</Text>
-        <Text style={[styles.bodyText]}>Checkout Confirmation</Text>
-        <Text style={[styles.bodyText]}>Checkout Confirmation</Text>
-        <Text style={[styles.bodyText]}>Checkout Confirmation</Text>
-      </View>
-  </View>*/
-}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

@@ -22,7 +22,7 @@ export default StyleSheet.create({
     margin: 5,
     padding: 5,
   },
-  // Texts 
+  // Texts
   title: {
     textAlign: 'center',
     fontWeight: 'bold',
@@ -34,45 +34,46 @@ export default StyleSheet.create({
   header: {
     marginTop: 10,
     fontSize: 45,
-    color: "#262626",
+    color: '#262626',
     textAlign: 'center',
   },
   bodyText: {
     marginTop: 15,
     fontSize: 24,
-    color: "#262626",
-    textAlign: "center",
+    color: '#262626',
+    textAlign: 'center',
   },
   errorText: {
     marginLeft: 10,
     marginTop: 15,
     fontSize: 24,
-    color: "#dc143c",
-    textAlign: "center",
+    color: '#dc143c',
+    textAlign: 'center',
   },
   text: {
     flex: 0.5,
   },
   // Styles
   button: {
-    flexDirection: "row",
-    backgroundColor: "#03312E",
+    flexDirection: 'row',
+    backgroundColor: '#03312E',
     padding: 10,
     marginTop: -15,
     marginBottom: 15,
     borderRadius: 10,
     alignItems: 'center',
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 12,
     },
     shadowOpacity: 0.58,
-    shadowRadius: 16.00,
+    shadowRadius: 16.0,
     elevation: 24,
+    justifyContent: 'center',
   },
   buttonContent: {
-    color: "#FFFFFF",
+    color: '#FFFFFF',
     textAlign: 'center',
     fontSize: 20,
     padding: 5,
@@ -82,7 +83,7 @@ export default StyleSheet.create({
     flexDirection: 'column',
     gap: 8,
     flex: 1,
-    padding: 15
+    padding: 15,
   },
   cardContainer: {
     flex: 15,
@@ -91,7 +92,7 @@ export default StyleSheet.create({
   contentContainer: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: "center",
+    alignItems: 'center',
     paddingBottom: 50,
   },
   input: {
@@ -106,15 +107,15 @@ export default StyleSheet.create({
   textArea: {
     margin: 10,
     fontSize: 24,
-    backgroundColor: "#FFF",
-    borderColor: "#03312E",
+    backgroundColor: '#FFF',
+    borderColor: '#03312E',
     borderWidth: 2,
     borderRadius: 10,
     minWidth: 300,
     padding: 8,
   },
   searchbar: {
-    flex: 2
+    flex: 2,
   },
   searchFilter: {
     flex: 3,

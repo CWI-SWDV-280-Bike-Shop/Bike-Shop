@@ -1,6 +1,7 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useContext } from 'react';
 import {
+<<<<<<< HEAD
 	LinkingOptions,
 	NavigationContainer,
 	ParamListBase,
@@ -20,6 +21,30 @@ import { Shop } from './pages/Shop/shop';
 import Cart from './pages/Shop/cart';
 import Checkout from '@pages/Shop/checkout';
 import * as Linking from 'expo-linking';
+=======
+  LinkingOptions,
+  NavigationContainer,
+  ParamListBase,
+} from "@react-navigation/native";
+import { Home } from "@pages/home";
+import CRUDPlayground from "@pages/CRUDPlayground";
+import "react-native-gesture-handler";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { NavigationHeader } from "@/components/Navigation/Header";
+import { Login } from "@pages/login";
+import { About } from "./pages/about";
+import { Profile } from "./pages/Profile/profile";
+import { Orders } from "./pages/Profile/orders";
+// import { OrderConfirmation } from './pages/Shop/orderConfirmation';
+
+import { Account } from "./pages/Profile/account";
+import { Admin } from "./pages/Profile/Admin/admin";
+import { Platform, ScaledSize, useWindowDimensions } from "react-native";
+import { Shop } from "./pages/Shop/shop";
+import { AuthContext } from "@context/auth.context";
+import Cart from "./pages/Shop/cart";
+import * as Linking from "expo-linking";
+>>>>>>> 16ad443 (small fixes and additions to OrderConfirmation)
 
 const Drawer = createDrawerNavigator();
 
@@ -35,15 +60,37 @@ const AppWrapper = () => {
       name: 'About',
       component: (props) => <About {...props} dimensions={dimensions} />,
     },
+<<<<<<< HEAD
+=======
+    // {
+    //   name: 'OrderConfirmation',
+    //   component: (props) => (
+    //     <OrderConfirmation {...props} dimensions={dimensions} />
+    //   ),
+    // },
+>>>>>>> 16ad443 (small fixes and additions to OrderConfirmation)
     {
       name: 'Shop',
       component: (props) => <Shop {...props} dimensions={dimensions} />,
     },
+<<<<<<< HEAD
     {
       name: 'Profile',
       component: (props) => <Profile {...props} dimensions={dimensions} />,
     },
     {
+=======
+    isLoggedIn
+      ? {
+          name: 'Profile',
+          component: (props) => <Profile {...props} dimensions={dimensions} />,
+        }
+      : {
+          name: 'Login',
+          component: (props) => <Login {...props} dimensions={dimensions} />,
+        },
+    {
+>>>>>>> 16ad443 (small fixes and additions to OrderConfirmation)
       name: 'Orders',
       component: (props) => <Orders {...props} dimensions={dimensions} />,
     },
@@ -63,11 +110,21 @@ const AppWrapper = () => {
     },
     {
       name: 'Cart',
+<<<<<<< HEAD
       component: (props) => <Cart {...props} dimensions={dimensions} />,
     },
     {
       name: 'Checkout',
       component: (props) => <Checkout {...props} dimensions={dimensions} />,
+=======
+      component: (props) => (
+        <Cart
+          {...props}
+          dimensions={dimensions}
+          options={{ drawerItemStyle: { display: 'none' } }}
+        />
+      ),
+>>>>>>> 16ad443 (small fixes and additions to OrderConfirmation)
     },
   ];
 
@@ -83,11 +140,20 @@ const AppWrapper = () => {
         Profile: 'Profile',
         Options: 'Options',
         Orders: 'Orders',
+<<<<<<< HEAD
         Account: 'Account',
         Admin: 'Admin',
         CRUDPlayground: 'CRUDPlayground',
         Cart: 'Cart',
         Checkout: 'Checkout',
+=======
+        // OrderConfirmation: 'OrderConfirmation',
+        Account: 'Account',
+        Admin: 'Admin',
+        Login: 'Login',
+        CRUDPlayground: 'CRUDPlayground',
+        Cart: 'Cart',
+>>>>>>> 16ad443 (small fixes and additions to OrderConfirmation)
       },
     },
   } as LinkingOptions<ParamListBase>;

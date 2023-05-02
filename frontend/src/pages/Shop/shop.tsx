@@ -50,10 +50,11 @@ const Item = ({ product }: { product: Product }) => {
   )
 }
 
-function ListProducts(state) {
+function ListProducts({state}) {
   const [products, setProducts] = useState([{}] as [Product]);
   useEffect(() => {
-    ProductAPI.getAll({[state.filterField]: state.filterValue}).then((res) => setProducts(res.data));
+    console.log(state.filterField, state.filterValue);
+    ProductAPI.getAll({[state.filterField]: state.filterValue, "subcategory": "Electric"}).then((res) => setProducts(res.data));
   }, [state.filterField, state.filterValue]);
 
   const sortData = (data) => {
@@ -66,16 +67,11 @@ function ListProducts(state) {
     });
   };
 
-  const filterData = (data : Product[]) => {
-    return data.filter((item) => item[state.filterField] === state.filterValue
-    );
-  };
-
   return (
     <View style={styles.products}>
         {products && (
           <FlatList
-            data={filterData(products)}
+            data={products}
             initialNumToRender={10}
             numColumns={4}
             renderItem={({ item, index }) => (

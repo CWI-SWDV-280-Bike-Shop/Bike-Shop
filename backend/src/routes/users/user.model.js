@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import { mongoose } from '../../../src/mongoose.js';
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
@@ -30,6 +30,7 @@ const UserSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: 'Order',
+        autopopulate: { maxDepth: 1 },
       },
     ],
   },

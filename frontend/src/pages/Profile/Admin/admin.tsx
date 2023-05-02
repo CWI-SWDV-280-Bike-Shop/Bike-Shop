@@ -139,6 +139,17 @@ type UserState = {
   setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
 }
 
+type ProductState = {
+  asc?: boolean,
+  setAsc?: Dispatch<SetStateAction<boolean>>,
+  field?: string,
+  setField?: Dispatch<SetStateAction<string>>,
+  products?: Product[],
+  setProducts?: React.Dispatch<React.SetStateAction<Product[]>>
+  selectedRows?: string[]
+  setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
+}
+
 const NavigationMenu = ({ navigation }) => {
   const checkPage = (page) => {
     return (
@@ -277,6 +288,73 @@ const UsersTableHeader = ({
                   <Column key={i}>
                     <TextInput style={styles.createNew} placeholder={label} value={newUserForm[label]} onChangeText={(text) => {
                       setUserForm({ ...newUserForm, [label]: text });
+                    }} />
+                  </Column>
+          ))
+        }
+      </View>
+    </View>
+  );
+};
+
+const ProductsTableHeader = ({
+  labels,
+  properties,
+  state,
+}: {
+  labels: string[];
+  properties: string[];
+  state: ProductState;
+}) => {
+  const [newProductForm, setProductForm] = useState({
+    "name": "",
+    "description": "",
+    "category": "",
+    "subcategory": "",
+    "price": 0,
+    "images": [],
+    "instock": true,
+  })
+  const createNewProduct = ({ state }: { state: ProductState }) => {
+    const product: Product = {
+      name: newProductForm.name,
+      description: newProductForm.description,
+      category: newProductForm.category,
+      subcategory: newProductForm.subcategory,
+      price: newProductForm.price,
+      imageIds: newProductForm.images,
+      inStock: newProductForm.instock,
+    }
+    ProductAPI.create(product).then((res) => {
+      console.log("Product created: ", res);
+      if (res.status == 200) {
+        product._id = res.data._id;
+        state.setProducts([...state.products, product])
+      }
+    });
+  }
+  return (
+    <View>
+      <TableHeader labels={labels} properties={properties} state={state} />
+      <View style={styles.row}>
+        {
+          labels.map((label, i) => (
+            (label === "select") ?
+              <Column width={50} key={i}></Column> :
+              (label === "id" || label === "orders") ?
+                <Column key={i} width={80}></Column> :
+                (label === "options") ?
+                  <Column width={50} key={i}>
+                    <TouchableOpacity onPress={() => createNewProduct({ state })}>
+                      <View style={[styles.col]}>
+                        <Icon name="md-save" size={30} color="#000000aa" />
+                      </View>
+                    </TouchableOpacity>
+                  </Column>
+                  :
+                  <Column key={i}>
+                    <TextInput style={styles.createNew} placeholder={label} value={newProductForm[label]} onChangeText={(text) => {
+                      setProductForm({ ...newProductForm, [label]: text });
                     }} />
                   </Column>
           ))
@@ -478,6 +556,7 @@ function ListProducts({ navigation }) {
     ProductAPI.getAll().then((res) => setProducts(res.data));
   }, []);
   const [searchUserText, _searchUserText] = useState("Search");
+  const productData = document.routes.find((e) => e.route == "Products");
   return (
     <View style={styles.rowSimple}>
       <NavigationMenu navigation={navigation} />
@@ -497,13 +576,11 @@ function ListProducts({ navigation }) {
               <ProductElement product={item} key={index} isEditMode={isEditMode} setIsEditMode={setIsEditMode} checkMarks={checkMarks} setCheckMarks={setCheckMarks}/>
             )}
             ListHeaderComponent={() => (
-              <TableHeader
-                state={{ asc, setAsc, field, setField }}
-                labels={
-                  document.routes.find((e) => e.route == "Products").labels
-                }
+              <ProductsTableHeader
+                state={{ asc, setAsc, field, setField, products, setProducts }}
+                labels={productData.labels}
                 properties={
-                  document.routes.find((e) => e.route == "Products").properties
+                  productData.properties
                 }
               />
             )}

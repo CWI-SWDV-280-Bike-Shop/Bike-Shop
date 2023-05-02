@@ -3,7 +3,7 @@ import { Text, StyleSheet, View, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '@context/auth.context';
 import { useContext } from 'react';
-import { LoginScreen } from '../login';
+import { LoginScreen, RegisterScreen } from '../login';
 import { DrawerHeaderProps } from '@react-navigation/drawer';
 
 export const Profile = (props: DrawerHeaderProps) => {
@@ -13,7 +13,10 @@ export const Profile = (props: DrawerHeaderProps) => {
   const email = authUser && authUser.email;
 
   return !authUser ? (
-    <LoginScreen props={props} />
+    <>
+      <LoginScreen props={props} />
+      <RegisterScreen props={props} />
+    </>
   ) : (
     <View style={[styles.container]}>
       <View style={styles.profileRow}>

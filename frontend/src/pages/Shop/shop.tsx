@@ -8,12 +8,14 @@ import { Footer } from '@components/Footer';
 import { FilterParams } from '@components/ProductPage/filter';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ProductAPI from '@/api/product.api';
 import { Product } from '@/types/data.types';
 import Checkbox from 'expo-checkbox';
+import { ShopContext } from '@/context/shop.context';
 
 const Item = ({ product }: { product: Product }) => {
+  const { addToCart } = useContext(ShopContext);
   //const price = (Math.random() * (1000 - 100 + 1) + 100).toFixed(2);
   const price = product.price;
   const color = () => ["tomato", "cornflowerblue", "beige", "brown", "brickred"][Math.floor(Math.random() * 5)];
@@ -26,7 +28,7 @@ const Item = ({ product }: { product: Product }) => {
       <View style={styles.itemName}>
         <Text style={styles.itemNameText} numberOfLines={1}>{product.name}</Text>
         <View style={styles.subheader}>
-          <Text style={styles.itemStockText} numberOfLines={1}>{(product.inStock) ? "In stock" : "Out of stock"}</Text>
+          <Text style={[styles.itemStockText, (product.inStock) ? styles.inStock : styles.outStock]} numberOfLines={1}>{(product.inStock) ? "In stock" : "Out of stock"}</Text>
           {(product.subcategory) ? (
             <View style={styles.tag}>
               <Text style={styles.tagText} numberOfLines={1}>{product.subcategory}</Text>
@@ -42,9 +44,15 @@ const Item = ({ product }: { product: Product }) => {
               <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
             </View>
           ): (<View></View>)}
-        <TouchableOpacity style={[styles.buttonRound, styles.offsetButton]}>
-          <Icon name="cart-outline" size={40} color="#FFF" />
-        </TouchableOpacity>
+          {
+            (product.inStock) ? (
+              <TouchableOpacity style={[styles.buttonRound, styles.offsetButton]} onPress={() => {
+                addToCart(product)
+              }}>
+                <Icon name="cart-outline" size={40} color="#FFF" />
+              </TouchableOpacity>
+            ) : (<View></View>)
+          }
       </View>
       </ImageBackground>
     </View>
@@ -231,6 +239,12 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   /* Main Styles */
+  inStock: {
+    color: '#558c55'
+  },
+  outStock: {
+    color: 'tomato'
+  },
   container: {
     flex: 1,
     flexDirection: 'row',
@@ -294,7 +308,7 @@ const styles = StyleSheet.create({
   itemStockText: {
     paddingHorizontal: 10,
     color: '#999',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: '700',
     textTransform: 'uppercase'
   },

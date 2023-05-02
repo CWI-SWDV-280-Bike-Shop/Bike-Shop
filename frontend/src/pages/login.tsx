@@ -28,47 +28,50 @@ export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
 
-	const submit = () => {
-		if (email == '' || password == '') {
-			setLoginError('Please fill out all the fields!');
-		} else {
-			login({ email: email.toLowerCase(), password });
-		}
-	};
-	return (
-		<View>
-			<Text style={[Layout.header]}>Login</Text>
-			<Text style={[Layout.bodyText]}>Please login to see your profile.</Text>
-			<View>
-				<Text style={styles.label}>Email</Text>
-				<TextInput
-					style={[styles.editBox]}
-					placeholder="Email"
-					value={email}
-					onChangeText={(value) => setEmail(value)}
-				/>
-			</View>
-			<View>
-				<Text style={styles.label}>Password</Text>
-				<TextInput
-					style={[styles.editBox]}
-					placeholder="Password"
-					value={password}
-					onChangeText={(value) => setPassword(value)}
-					secureTextEntry={true}
-				/>
-			</View>
-			{message && <Text style={[Layout.errorText]}>{message}</Text>}
-			<Text style={[Layout.errorText]}>{loginError}</Text>
-			<View style={styles.rowBottom}>
-				<TouchableOpacity style={styles.buttonPrimary} onPressIn={submit}>
-					<Text style={styles.btnFont}>Login</Text>
-					<Icon name="log-in-outline" size={30} color="#FFF" />
-				</TouchableOpacity>
-			</View>
-		</View>
-	);
-};
+
+  const submit = () => {
+    if (email == '' || password == "") {
+      setLoginError('Please fill out all the fields!');
+    } else {
+      login({ email: email.toLowerCase(), password });
+    }
+  };
+  return (
+    <View>
+      <Text style={[Layout.header]}>Login</Text>
+      <Text style={[Layout.bodyText]}>
+        Please login to see your profile.
+      </Text>
+      <View>
+        <Text style={styles.label}>Email</Text>
+        <TextInput
+          style={[Layout.input]}
+          placeholder=''
+          value={email}
+          onChangeText={(value) => setEmail(value)}
+        />
+      </View>
+      <View>
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={[Layout.input]}
+          placeholder=''
+          value={password}
+          onChangeText={(value) => setPassword(value)}
+          secureTextEntry={true}
+        />
+      </View>
+      {message && <Text style={[Layout.errorText]}>{message}</Text>}
+      <Text style={[Layout.errorText]}>{loginError}</Text>
+      <View style={styles.rowBottom}>
+        <TouchableOpacity style={Layout.button} onPressIn={(submit)}>
+          <Text style={styles.btnFont}>Login</Text>
+          <Icon name="log-in-outline" size={30} color="#FFF" />
+        </TouchableOpacity>
+      </View>
+    </View>
+  )
+}
 
 export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 	//Window Dimensions
@@ -203,52 +206,43 @@ export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 				>
 					<Text style={[Layout.bodyText]}>Information</Text>
 
-					{formInfo.map((item, i) => (
-						<View key={i}>
-							<Text style={styles.label}>{item.label}</Text>
-							<TextInput
-								style={styles.editBox}
-								inputMode={item.inputMode as InputModeOptions}
-								placeholder={item.label}
-								value={item.stateValue}
-								onChangeText={(value) => item.setState(value)}
-							/>
-						</View>
-					))}
-				</View>
+          {
+            formInfo.map((item, i) => (
+              <View key={i}>
+                <Text style={styles.label}>{item.label}</Text>
+                <TextInput style={Layout.input} inputMode={item.inputMode as InputModeOptions} placeholder={''}
+                  value={item.stateValue}
+                  onChangeText={(value) => item.setState(value)}
+                />
+              </View>
+            ))
+          }
+        </View>
 
-				<View
-					style={
-						dimensions.width <= 800
-							? styles.addressContainerSmaller
-							: styles.addressContainer
-					}
-				>
-					<Text style={[Layout.bodyText]}>Address</Text>
-					{formAddr.map((item, i) => (
-						<View key={i}>
-							<Text style={styles.label}>{item.label}</Text>
-							<TextInput
-								style={styles.editBox}
-								inputMode={item.inputMode as InputModeOptions}
-								placeholder={item.label}
-								value={item.stateValue}
-								onChangeText={(value) =>
-									onChangeAddress(item.label.toLowerCase(), value)
-								}
-							/>
-						</View>
-					))}
-				</View>
-			</View>
-			{message && <Text style={[Layout.errorText]}>{message}</Text>}
-			<Text style={[Layout.errorText]}>{errorMessage}</Text>
-			<View style={styles.rowBottom}>
-				<TouchableOpacity style={styles.buttonPrimary} onPressIn={regSubmit}>
-					<Icon name="person-add-outline" size={30} color="#FFF" />
-					<Text style={styles.btnFont}>Register Account</Text>
-				</TouchableOpacity>
-			</View>
+        <View style={dimensions.width <= 800 ? styles.addressContainerSmaller : styles.addressContainer}>
+          <Text style={[Layout.bodyText]}>Address</Text>
+          {
+            formAddr.map((item, i) => (
+              <View key={i}>
+                <Text style={styles.label}>{item.label}</Text>
+                <TextInput style={Layout.input} inputMode={item.inputMode as InputModeOptions} placeholder={''}
+                  value={item.stateValue}
+                  onChangeText={(value) => onChangeAddress(item.label.toLowerCase(), value)}
+                />
+              </View>
+            ))
+          }
+        </View>
+
+      </View>
+      {message && <Text style={[Layout.errorText]}>{message}</Text>}
+      <Text style={[Layout.errorText]}>{errorMessage}</Text>
+      <View style={styles.rowBottom}>
+        <TouchableOpacity style={Layout.button} onPressIn={(regSubmit)}>
+          <Icon name="person-add-outline" size={30} color="#FFF" />
+          <Text style={styles.btnFont}>Register Account</Text>
+        </TouchableOpacity>
+      </View>
 
 			{authUser && (
 				<View>
@@ -291,67 +285,59 @@ export const Login = (props: DrawerHeaderProps) => {
 };
 
 const styles = StyleSheet.create({
-	rowBottom: {
-		flexDirection: 'row',
-		justifyContent: 'center',
-	},
-	buttonPrimary: {
-		flexDirection: 'row',
-		backgroundColor: '#477B61',
-		paddingHorizontal: 20,
-		paddingVertical: 10,
-		alignItems: 'center',
-		borderRadius: 5,
-	},
-	btnFont: {
-		fontSize: 18,
-		paddingHorizontal: 10,
-		textTransform: 'uppercase',
-		fontWeight: 'bold',
-		color: '#fff',
-	},
-	label: {
-		textTransform: 'uppercase',
-		fontSize: 12,
-		color: '#33333370',
-		fontWeight: 'bold',
-		position: 'relative',
-		bottom: -30,
-		left: 20,
-	},
-	editBox: {
-		paddingTop: 32,
-		padding: 16,
-		marginBottom: 20,
-		margin: 5,
-		borderRadius: 10,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 1,
-		},
-		shadowOpacity: 0.42,
-		shadowRadius: 2.22,
-		elevation: 1,
-	},
-	infoContainer: {
-		marginLeft: 0,
-	},
-	addressContainer: {
-		marginLeft: 0,
-	},
-	registrationContainer: {
-		flex: 1,
-		flexDirection: 'row',
-	},
-	infoContainerSmaller: {
-		marginRight: 0,
-	},
-	addressContainerSmaller: {
-		marginLeft: 0,
-	},
-	registrationContainerSmaller: {
-		flex: 1,
-		flexDirection: 'column',
-	},
+  rowBottom: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  btnFont: {
+    fontSize: 18,
+    paddingHorizontal: 10,
+    textTransform: 'uppercase',
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  label: {
+    textTransform: 'uppercase',
+    fontSize: 12,
+    color: '#33333370',
+    fontWeight: 'bold',
+    position: 'relative',
+    bottom: -30,
+    left: 20
+  },
+  // editBox: {
+  //   paddingTop: 32,
+  //   padding: 16,
+  //   marginBottom: 20,
+  //   margin: 5,
+  //   borderRadius: 10,
+  //   shadowColor: "#000",
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 1,
+  //   },
+  //   shadowOpacity: 0.42,
+  //   shadowRadius: 2.22,
+  //   elevation: 1,
+  // },
+  infoContainer: {
+    marginLeft: 0,
+  },
+  addressContainer: {
+    marginLeft: 0,
+  },
+  registrationContainer: {
+    flex: 1,
+    flexDirection: "row"
+  },
+  infoContainerSmaller: {
+    marginRight: 0
+  },
+  addressContainerSmaller: {
+    marginLeft: 0
+  },
+  registrationContainerSmaller: {
+    flex: 1,
+    flexDirection: "column",
+  },
 });

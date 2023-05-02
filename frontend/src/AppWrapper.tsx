@@ -1,9 +1,9 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 import React, { useContext } from 'react';
 import {
-	LinkingOptions,
-	NavigationContainer,
-	ParamListBase,
+  LinkingOptions,
+  NavigationContainer,
+  ParamListBase,
 } from '@react-navigation/native';
 import { Home } from '@pages/home';
 import CRUDPlayground from '@pages/CRUDPlayground';
@@ -15,9 +15,8 @@ import { Profile } from './pages/Profile/profile';
 import { Orders } from './pages/Profile/orders';
 import { Account } from './pages/Profile/account';
 import { Admin } from './pages/Profile/Admin/admin';
-import { Platform, ScaledSize, useWindowDimensions } from 'react-native';
+import { useWindowDimensions } from 'react-native';
 import { Shop } from './pages/Shop/shop';
-import { AuthContext } from '@context/auth.context';
 import Cart from './pages/Shop/cart';
 import Checkout from '@pages/Shop/checkout';
 import * as Linking from 'expo-linking';
@@ -72,7 +71,7 @@ const AppWrapper = () => {
     },
   ];
 
-	const prefix = Linking.createURL('/');
+  const prefix = Linking.createURL('/');
 
   const linking = {
     prefixes: [prefix],
@@ -93,41 +92,41 @@ const AppWrapper = () => {
     },
   } as LinkingOptions<ParamListBase>;
 
-	return (
-		<NavigationContainer linking={linking}>
-			<Drawer.Navigator
-				/* initialRouteName={(checkMobile(dimensions)) ? "Shop" : "Home"} */
-				screenOptions={{
-					drawerStyle: {
-						backgroundColor: '#6A7B76',
-					},
-					drawerActiveTintColor: '#FFFFFF',
-					drawerActiveBackgroundColor: '#03312E',
-					drawerInactiveTintColor: '#FFFFFF',
-					headerTintColor: '#FFFFFF',
-					header: (props) => <NavigationHeader {...props} />,
-				}}
-			>
-				{screens.map((item, i) => {
-					return ['Cart', 'Checkout', 'Orders', 'Account', 'Admin'].some(
-						(name) => name === item.name
-					) ? (
-						<Drawer.Screen
-							name={item.name}
-							key={i}
-							options={{ drawerItemStyle: { display: 'none' } }}
-						>
-							{item.component}
-						</Drawer.Screen>
-					) : (
-						<Drawer.Screen name={item.name} key={i}>
-							{item.component}
-						</Drawer.Screen>
-					);
-				})}
-			</Drawer.Navigator>
-		</NavigationContainer>
-	);
+  return (
+    <NavigationContainer linking={linking}>
+      <Drawer.Navigator
+        /* initialRouteName={(checkMobile(dimensions)) ? "Shop" : "Home"} */
+        screenOptions={{
+          drawerStyle: {
+            backgroundColor: '#6A7B76',
+          },
+          drawerActiveTintColor: '#FFFFFF',
+          drawerActiveBackgroundColor: '#03312E',
+          drawerInactiveTintColor: '#FFFFFF',
+          headerTintColor: '#FFFFFF',
+          header: (props) => <NavigationHeader {...props} />,
+        }}
+      >
+        {screens.map((item, i) => {
+          return ['Cart', 'Checkout', 'Orders', 'Account', 'Admin'].some(
+            (name) => name === item.name
+          ) ? (
+            <Drawer.Screen
+              name={item.name}
+              key={i}
+              options={{ drawerItemStyle: { display: 'none' } }}
+            >
+              {item.component}
+            </Drawer.Screen>
+          ) : (
+            <Drawer.Screen name={item.name} key={i}>
+              {item.component}
+            </Drawer.Screen>
+          );
+        })}
+      </Drawer.Navigator>
+    </NavigationContainer>
+  );
 };
 
 export default AppWrapper;

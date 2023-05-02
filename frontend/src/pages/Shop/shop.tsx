@@ -97,9 +97,11 @@ function ListProducts({state}) {
   );
 }
 
-const Filters = ({ filterState }) => {
-  const state = filterState.state;
+const Filters = (props) => {
+  const { filterState } = props;
+  const state = props.filterState.state;
   const [labels, setLabels] = useState([]);
+  const [accordian, setAccordian] = useState({});
   useEffect(() => {
     ProductAPI.getLabels().then((res) => setLabels(res.data));
   }, []);
@@ -110,11 +112,19 @@ const Filters = ({ filterState }) => {
       <Text style={styles.optionsMainText}>Filters</Text>
       {Object.keys(labels).map((label, i) => (
       <View style={styles.options} key={i}>
-        <Text style={styles.optionsHeader}>{label}</Text>
+        <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between'}}
+        onPress={() => {
+          (254+700 > props.dimensions.width) ?
+          setAccordian({...Object.fromEntries(Object.entries(accordian).map(([k, v]) => [k, false])), [label] : !accordian[label]}) :
+          setAccordian({...accordian, [label] : !accordian[label]});
+        }}>
+          <Text style={styles.optionsHeader}>{label}</Text>
+          { (accordian[label]) ? <Icon name="chevron-up" size={18}/> : <Icon name="chevron-down" size={18}/> }
+        </TouchableOpacity>
         <View style={styles.optionSubheader}>
           {
             labels[label].map((value, i) => (
-              <View style={styles.checkBoxRow} key={i}>
+              <View style={[styles.checkBoxRow, {display: (accordian[label]) ? 'flex' : 'none'}]} key={i}>
                 <Checkbox value={filterState.checkMarks[value] || false} onValueChange={() => {
                   filterState.setCheckMarks({...filterState.checkMarks, [value] : !filterState.checkMarks[value]});
                   const filters = (!Object.keys(state.filterObject).includes(label)) ? {...state.filterObject, [label] : {$in : []}} : {...state.filterObject};
@@ -177,7 +187,7 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
         <View style={styles.sortBar}>
           <ScrollView horizontal={true}>
           <View style={[styles.sortBarCol, responsive.hideOnDesktop]}>
-            <OpenFilters filterState={filterState}/>
+            <OpenFilters filterState={filterState} dimensions={dimensions}/>
           </View>
           <View style={styles.sortBarCol}>
             <Text style={styles.sortTextHeader}>Sort Options: </Text>
@@ -212,7 +222,7 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
   );
 };
 
-const OpenFilters = ({ filterState }) => {
+const OpenFilters = (props) => {
   const [showPopover, setShowPopover] = useState(false);
   return (
     <Popover
@@ -225,15 +235,15 @@ const OpenFilters = ({ filterState }) => {
         </TouchableOpacity>
       }
     >
-      <FilterPopup setShowPopover={setShowPopover} filterState={filterState} />
+      <FilterPopup {...props} />
     </Popover>
   )
 }
 
-const FilterPopup = ({ setShowPopover, filterState }) => {
+const FilterPopup = (props) => {
   return (
     <View style={styles.popoverLarge}>
-      <Filters filterState={filterState} />
+      <Filters {...props} />
     </View>
   )
 }

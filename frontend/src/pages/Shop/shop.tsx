@@ -62,8 +62,8 @@ function ListProducts({state}) {
     return data.sort((a, b) => {
       if(b[state.field] != undefined && a[state.field] != undefined) {
         return state.asc
-          ? b[state.field].localeCompare(a[state.field])
-          : a[state.field].localeCompare(b[state.field]);
+          ? b[state.field] - a[state.field]
+          : a[state.field] - b[state.field];
       }
     });
   };
@@ -72,7 +72,7 @@ function ListProducts({state}) {
     <View style={styles.products}>
         {products && (
           <FlatList
-            data={products}
+            data={sortData(products)}
             initialNumToRender={10}
             numColumns={4}
             renderItem={({ item, index }) => (
@@ -89,13 +89,9 @@ function ListProducts({state}) {
 export const Shop = () => {
   const [labels, setLabels] = useState([]);
   const [asc, setAsc] = useState(true);
-  const [sortfield, sortsetField] = useState("name");
+  const [sortfield, sortsetField] = useState("price");
   const [filterObject, filterSet] = useState({"category": {$in : ["Bikes"]}});
-  const [checkMarks, setCheckMarks] = useState({});
-
-  //{ field: { $in: [<value1>, <value2>, ... <valueN> ] } }
-  //{[state.filterField]: state.filterValue,  "subcategory": "Electric"}
-
+  const [checkMarks, setCheckMarks] = useState({"Bikes": true});
 
   const state = {
     labels: labels,
@@ -114,8 +110,10 @@ export const Shop = () => {
   return (
     <View style={styles.container}>
       <View style={styles.toolbar}>
+        <ScrollView>
+          <Text style={styles.optionsMainText}>Filters</Text>
           {Object.keys(labels).map((label, i) => (
-          <View key={i}>
+          <View style={styles.options} key={i}>
             <Text style={styles.optionsHeader}>{label}</Text>
             <View style={styles.optionSubheader}>
               {
@@ -136,8 +134,37 @@ export const Shop = () => {
             </View>
           </View>
         ))}
-        </View>
+        </ScrollView>
+      </View>
+
       <ScrollView>
+        <View style={styles.sortBar}>
+          <View style={styles.sortBarCol}>
+            <Text style={styles.sortTextHeader}>Sort Options: </Text>
+          </View>
+          <View style={styles.sortBarCol}>
+            <Text style={styles.sortText}>Price</Text>
+            <TouchableOpacity style={styles.sortBtn}
+              onPressOut={() => {
+                if(sortfield == "price") setAsc(!asc); 
+                else sortsetField("price");
+              }}
+            >
+              <Icon name="swap-vertical" size={20} color="#000000aa" />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.sortBarCol}>
+            <Text style={styles.sortText}>In Stock</Text>
+            <TouchableOpacity style={styles.sortBtn}
+              onPressOut={() => {
+                if(sortfield == "inStock") setAsc(!asc); 
+                else sortsetField("inStock");
+              }}
+            >
+              <Icon name="swap-vertical" size={20} color="#000000aa" />
+            </TouchableOpacity>
+          </View>
+        </View>
           <ListProducts state={state}/>
       </ScrollView>
     </View>
@@ -147,7 +174,44 @@ export const Shop = () => {
 export default Shop;
 
 const styles = StyleSheet.create({
+  /* Sort Styles */
+  sortBtn: {
+    backgroundColor: '#00000030',
+    padding: 5,
+    borderRadius: 5,
+  },
+  sortBar: {
+    backgroundColor: '#dee',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    paddingVertical: 15,
+    paddingHorizontal: 20
+  },
+  sortText: {
+    paddingHorizontal: 5,
+    fontWeight: "700",
+  },
+  sortTextHeader: {
+    fontSize: 16,
+    paddingHorizontal: 5,
+    fontWeight: "700",
+  },
+  sortBarCol: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: ".5rem",
+  },
   /* Filter Styles */
+  optionsMainText: {
+    marginVertical: 20,
+    fontSize: 36,
+  },
+  options: {
+    borderTopWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderColor: '#00000020',
+    paddingVertical: 15,
+  },
   optionsHeader: {
     fontWeight: '700',
     fontSize: 18,

@@ -1,7 +1,7 @@
 import React, {
   Dispatch,
-  ReactComponentElement,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from "react";
@@ -12,8 +12,6 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  ViewComponent,
-  Button,
   Platform
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -27,6 +25,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Pressable } from "react-native-web-hover";
 import Popover from "react-native-popover-view";
 import { ScaledSize } from 'react-native';
+import { AuthContext } from "@/context/auth.context";
+import Checkbox from 'expo-checkbox';
 
 // Search can be implemented like I did sorting, button needs selector for which field to search
 // Need a wrapper or something that calls this so I can do more complex features
@@ -128,6 +128,17 @@ const document = {
   ],
 };
 
+type UserState = {
+  asc?: boolean,
+  setAsc?: Dispatch<SetStateAction<boolean>>,
+  field?: string,
+  setField?: Dispatch<SetStateAction<string>>,
+  users?: User[],
+  setUser?: React.Dispatch<React.SetStateAction<User[]>>
+  selectedRows?: string[]
+  setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
+}
+
 const NavigationMenu = ({ navigation }) => {
   const checkPage = (page) => {
     return (
@@ -160,18 +171,13 @@ const TableHeader = ({
 }: {
   labels: string[];
   properties: string[];
-  state?: [
-    boolean,
-    Dispatch<SetStateAction<boolean>>,
-    string,
-    Dispatch<SetStateAction<string>>
-  ];
+  state?: UserState;
 }) => {
   return (
     <View style={[styles.row, styles.rowHeader]}>
       {labels.map((label, i) =>
         label != "options" && label != "select" ? (
-          <View style={[styles.col, styles.headerElement]} key={i}>
+          <Column header={true} key={i} width={(label === "id" || label === "orders") ? 80 : 150}>
             <Text style={styles.rowHeaderText}>{label}</Text>
             <TouchableOpacity
               onPressOut={() => {
@@ -181,11 +187,11 @@ const TableHeader = ({
             >
               <Icon name="swap-vertical" size={20} color="#000000aa" />
             </TouchableOpacity>
-          </View>
+          </Column>
         ) : (
-          <View style={[styles.col, styles.headerElement]} key={i}>
+          <Column header={true} width={50} key={i}>
             <Text style={styles.rowHeaderText}>{label}</Text>
-          </View>
+          </Column>
         )
       )}
     </View>
@@ -198,39 +204,13 @@ const Row = ({ children }: { children?: Children }) => (
   </Pressable>
 );
 
-const Column = ({
-  overflow,
-  children,
-}: {
-  overflow?: boolean;
-  children?: Children;
-}) => {
+const Column = ({ overflow, width = 150, header, children }: { overflow?: boolean; width?: number; header?: boolean; children?: Children; }) => {
   return (
-    <View style={styles.col}>
+    <View style={[styles.col, { width: width }, (header) ? styles.headerElement : {}]}>
       <Text numberOfLines={overflow ? 10 : 1}>{children}</Text>
     </View>
   );
 };
-
-{
-  /* <View style={[styles.col]}><Text>ADD USER</Text></View>
-        <View style={[styles.col]}><Text></Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>name</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>email</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>role</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>phone</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>orders</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>street</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>city</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>state</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>zip</Text></View>
-        <View style={[styles.col, styles.createNew]}><Text>country</Text></View>
-        <View style={[styles.col, {alignItems: 'center'}]}><Icon name="md-save"
-              size={30}
-              color="#000000aa"
-            /></View>
-      </View> */
-}
 
 const UsersTableHeader = ({
   labels,
@@ -239,155 +219,168 @@ const UsersTableHeader = ({
 }: {
   labels: string[];
   properties: string[];
-  state: [
-    boolean,
-    Dispatch<SetStateAction<boolean>>,
-    string,
-    Dispatch<SetStateAction<string>>
-  ];
+  state: UserState;
 }) => {
+  const [newUserForm, setUserForm] = useState({
+    "name": "",
+    "email": "",
+    "role": "",
+    "phone": "",
+    "street": "",
+    "city": "",
+    "state": "",
+    "zip": "",
+    "country": "",
+  })
+  const createNewUser = ({ state }: { state: UserState }) => {
+    const user: User = {
+      name: newUserForm.name,
+      email: newUserForm.email,
+      password: 'DEFAULT',
+      role: newUserForm.role,
+      phone: newUserForm.phone,
+      address: {
+        street: newUserForm.street,
+        city: newUserForm.city,
+        state: newUserForm.state,
+        zip: newUserForm.zip,
+        country: newUserForm.country,
+      }
+    }
+    UserAPI.create(user).then((res) => {
+      console.log("User created: ", res);
+      if (res.status == 200) {
+        user._id = res.data._id;
+        state.setUser([...state.users, user])
+      }
+    });
+  }
   return (
     <View>
       <TableHeader labels={labels} properties={properties} state={state} />
       <View style={styles.row}>
-        {labels.map((label, i) => (
-          <View style={styles.col} key={i}>
-            <TextInput style={styles.createNew} placeholder={label} />
-          </View>
-        ))}
+        {
+          labels.map((label, i) => (
+            (label === "select") ?
+              <Column width={50} key={i}></Column> :
+              (label === "id" || label === "orders") ?
+                <Column key={i} width={80}></Column> :
+                (label === "options") ?
+                  <Column width={50} key={i}>
+                    <TouchableOpacity onPress={() => createNewUser({ state })}>
+                      <View style={[styles.col]}>
+                        <Icon name="md-save" size={30} color="#000000aa" />
+                      </View>
+                    </TouchableOpacity>
+                  </Column>
+                  :
+                  <Column key={i}>
+                    <TextInput style={styles.createNew} placeholder={label} value={newUserForm[label]} onChangeText={(text) => {
+                      setUserForm({ ...newUserForm, [label]: text });
+                    }} />
+                  </Column>
+          ))
+        }
       </View>
     </View>
   );
 };
 
-const UserElement = ({ user }: { user: User }) => {
+const ModificationContextMenu = ({ id, state, setIsEditMode, isEditMode }: { id?: string, state?: UserState, isEditMode?: boolean, setIsEditMode?: Dispatch<SetStateAction<boolean>> }) => {
   const [showPopover, setShowPopover] = useState(false);
+  return (
+    <Popover
+      popoverStyle={{ backgroundColor: '#4D535D' }}
+      backgroundStyle={{ backgroundColor: "transparent" }}
+      from={
+        <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
+          <Icon name="ellipsis-vertical" size={20} color="#000" />
+        </TouchableOpacity>
+      }
+    >
+      <View style={styles.popIcon}>
+        <TouchableOpacity onPress={ () => setIsEditMode(!isEditMode)}>
+          <Icon color="#fff" name="create-outline" size={30} />
+        </TouchableOpacity>
 
+        <TouchableOpacity>
+          <Icon onPress={() => {
+            UserAPI.delete(id).then((res) => {
+              console.log("User deleted: ", res)
+              state.setUser(state.users.filter((u) => u._id != id))
+            });
+          }} color="#ff3f2e" name="trash-outline" size={30} />
+        </TouchableOpacity>
+      </View>
+    </Popover>
+  )
+}
+
+const UserElement = ({ user, state }: {
+  user: User, state: UserState;
+}) => {
+  const selectRow = (id, remove) => {
+    console.log(state.selectedRows);
+    (remove) ?
+      state.setSelectedRows(state.selectedRows.filter((r) => r != id)) :
+      state.setSelectedRows([...state.selectedRows, id]);
+  }
+  const [check, setCheck] = useState(false);
   return (
     <Row>
-      <View style={styles.col}>
-        <Icon name="square-outline" size={20} color="#000" />
-      </View>
-      <Column>{user?._id}</Column>
+      <Column width={50}>
+        <TouchableOpacity onPress={() => {
+          setCheck(!check);
+          selectRow(user._id, check);
+        }}>
+          <Icon name={(check) ? "checkbox-outline" : "square-outline"} size={20} color="#000" />
+        </TouchableOpacity>
+      </Column>
+      <Column width={80}>{user?._id}</Column>
       <Column>{user?.name}</Column>
       <Column>{user?.email}</Column>
       <Column>{user?.role}</Column>
       <Column>{user?.phone}</Column>
-      <Column>0</Column>
+      <Column width={80}>{user?.orders?.length}</Column>
       <Column>{user?.address?.street}</Column>
       <Column>{user?.address?.city}</Column>
       <Column>{user?.address?.state}</Column>
       <Column>{user?.address?.zip}</Column>
       <Column>{user?.address?.country}</Column>
-      <View style={[styles.col, { alignItems: "center" }]}>
-        {/* POPOVER*/}
-        <Popover
-          backgroundStyle={{ backgroundColor: "transparent" }}
-          // placement={PopoverPlacement.TOP}
-          // isVisible={showPopover}
-          from={
-            <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
-              <Icon name="ellipsis-vertical" size={20} color="#000" />
-            </TouchableOpacity>
-          }
-        >
-          <View style={styles.popIcon}>
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.update} name="create-outline" size={20} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.delete} name="trash-outline" size={20} />
-            </TouchableOpacity>
-          </View>
-        </Popover>
-
-        {/* <Menu>
-        <MenuTrigger>
-        <Icon name="ellipsis-vertical"
-          size={20}
-          color="#000"
-        />
-        </MenuTrigger>
-        <MenuOptions>
-          <MenuOption onSelect={() => alert(`Save`)} text="Save" />
-          <MenuOption onSelect={() => alert(`Delete`)}>
-            <Text style={{ color: 'red' }}>Delete</Text>
-          </MenuOption>
-        </MenuOptions>
-      </Menu> */}
-      </View>
+      <Column width={50}>
+        <ModificationContextMenu id={user._id} state={state} />
+      </Column>
     </Row>
   );
 };
 
-function ProductElement({ product }: { product: Product }) {
-  const [showPopover, setShowPopover] = useState(false);
-
+const ProductElement = ({ product, isEditMode, setIsEditMode, toggleCheckBox, setToggleCheckBox }: { product: Product, isEditMode: boolean, setIsEditMode:Dispatch<SetStateAction<boolean>>, toggleCheckBox: boolean, setToggleCheckBox:Dispatch<SetStateAction<boolean>> }) => {
   return (
     <Row>
       <View style={styles.col}>
         <Icon name="square-outline" size={20} color="#000" />
       </View>
       <Column>{product?._id}</Column>
-      <Column>{product?.name}</Column>
-      <Column>{product?.description}</Column>
-      <Column>{product?.category}</Column>
-      <Column>{product?.subcategory}</Column>
-      <Column>{formatPrice(product?.price)}</Column>
+      <Column>{isEditMode ? <TextInput value={product?.name} /> : product?.name}</Column>
+      <Column>{isEditMode ? <TextInput value={product?.description} /> : product?.description}</Column>
+      <Column>{isEditMode ? <TextInput value={product?.category} /> : product?.category}</Column>
+      <Column>{isEditMode ? <TextInput value={product?.subcategory} /> : product?.subcategory}</Column>
+      <Column>{isEditMode ? <TextInput value={product?.price?.toString()} /> : formatPrice(product?.price)}</Column>
       <Column>{product?.imageIds}</Column>
-      <Column>{product?.inStock}</Column>
+      <Column>{isEditMode ? <Checkbox
+    disabled={false}
+    value={toggleCheckBox}
+    onValueChange={() => setToggleCheckBox(!toggleCheckBox)}
+  />: product?.inStock}</Column>
       <View style={[styles.col, { alignItems: "center" }]}>
-        {/* POPOVER*/}
-        <Popover
-          backgroundStyle={{ backgroundColor: "transparent" }}
-          from={
-            <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
-              <Icon name="ellipsis-vertical" size={20} color="#000" />
-            </TouchableOpacity>
-          }
-        >
-          <View style={styles.popIcon}>
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.update} name="create-outline" size={20} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.delete} name="trash-outline" size={20} />
-            </TouchableOpacity>
-          </View>
-        </Popover>
+        <ModificationContextMenu setIsEditMode={setIsEditMode} />
       </View>
     </Row>
   );
 }
-{
-  /*
-const OrderElement = ({ order }: { order: Order }) => (
-  <Row>
-    <View style={styles.col}>
-      <Icon name="square-outline" size={20} color="#000" />
-    </View>
-    <Column>{order?._id}</Column>
-    <Column>
-      {typeof order?.customer === "string"
-        ? order?.customer
-        : order?.customer?.name}
-    </Column>
-    <Column>{order?.createdAt}</Column>
-    <Column>{order?.items.length}</Column>
-    <Column>{formatPrice(order?.total)}</Column>
-    <Column>{order?.updatedAt}</Column>
-    <View style={[styles.col, { alignItems: "center" }]}>
-      <Icon name="ellipsis-vertical" size={20} color="#000" />
-    </View>
-  </Row>
-);
-*/
-}
+
 
 function OrderElement({ order }: { order: Order }) {
-  const [showPopover, setShowPopover] = useState(false);
   return (
     <Row>
       <View style={styles.col}>
@@ -404,32 +397,19 @@ function OrderElement({ order }: { order: Order }) {
       <Column>{formatPrice(order?.total)}</Column>
       <Column>{order?.updatedAt}</Column>
       <View style={[styles.col, { alignItems: "center" }]}>
-        {/* POPOVER*/}
-        <Popover
-          backgroundStyle={{ backgroundColor: "transparent" }}
-          from={
-            <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
-              <Icon name="ellipsis-vertical" size={20} color="#000" />
-            </TouchableOpacity>
-          }
-        >
-          <View style={styles.popIcon}>
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.update} name="create-outline" size={20} />
-            </TouchableOpacity>
-
-            <TouchableOpacity>
-              <Icon onPress={UserAPI.delete} name="trash-outline" size={20} />
-            </TouchableOpacity>
-          </View>
-        </Popover>
+        <ModificationContextMenu />
       </View>
     </Row>
   );
 }
 
 function ListUsers({ navigation }) {
+  const [selectedRows, setSelectedRows] = useState([]);
   const [users, setUser] = useState([{}] as [User]);
+  useEffect(() => {
+    UserAPI.getAll().then((res) => setUser(res.data));
+  }, []);
+
   const [asc, setAsc] = useState(true);
   const [field, setField] = useState("name");
 
@@ -441,11 +421,8 @@ function ListUsers({ navigation }) {
     );
   };
 
-  useEffect(() => {
-    UserAPI.getAll().then((res) => setUser(res.data));
-  }, []);
-
   const [searchProductsText, _searchProductsText] = useState("Search");
+  const userData = document.routes.find((e) => e.route == "Users");
   return (
     <View style={styles.rowSimple}>
       <NavigationMenu navigation={navigation} />
@@ -462,15 +439,15 @@ function ListUsers({ navigation }) {
           <FlatList
             data={sortData(users)}
             renderItem={({ item, index }) => (
-              <UserElement user={item} key={index} />
+              <UserElement user={item} key={index} state={{ users, setUser, selectedRows, setSelectedRows }} />
             )}
             keyExtractor={(user: User) => user?._id}
             ListHeaderComponent={() => (
               <UsersTableHeader
-                state={[asc, setAsc, field, setField]}
-                labels={document.routes.find((e) => e.route == "Users").labels}
+                state={{ asc, setAsc, field, setField, users, setUser }}
+                labels={userData.labels}
                 properties={
-                  document.routes.find((e) => e.route == "Users").properties
+                  userData.properties
                 }
               />
             )}
@@ -485,16 +462,19 @@ function ListProducts({ navigation }) {
   const [products, setProducts] = useState([]);
   const [asc, setAsc] = useState(true);
   const [field, setField] = useState("name");
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [toggleCheckBox, setToggleCheckBox] = useState(false)
+
+
+
+
 
   const sortData = (data) => {
     return data.sort((a, b) => {
-      try {
+      if (a[field] != undefined && b[field] != undefined) {
         return asc
           ? b[field].localeCompare(a[field])
           : a[field].localeCompare(b[field]);
-      } catch (error) {
-        console.log(error);
-        return data;
       }
     });
   };
@@ -519,12 +499,12 @@ function ListProducts({ navigation }) {
           <FlatList
             data={sortData(products)}
             renderItem={({ item, index }) => (
-              <ProductElement product={item} key={index} />
+              <ProductElement product={item} key={index} isEditMode={isEditMode} setIsEditMode={setIsEditMode} toggleCheckBox={toggleCheckBox} setToggleCheckBox={setToggleCheckBox}/>
             )}
             keyExtractor={(product: Product) => product?._id}
             ListHeaderComponent={() => (
               <TableHeader
-                state={[asc, setAsc, field, setField]}
+                state={{ asc, setAsc, field, setField }}
                 labels={
                   document.routes.find((e) => e.route == "Products").labels
                 }
@@ -583,7 +563,7 @@ function ListOrders({ navigation }) {
             keyExtractor={(order: Order) => order?._id}
             ListHeaderComponent={() => (
               <TableHeader
-                state={[asc, setAsc, field, setField]}
+                state={{ asc, setAsc, field, setField }}
                 labels={document.routes.find((e) => e.route == "Orders").labels}
                 properties={
                   document.routes.find((e) => e.route == "Orders").properties
@@ -597,7 +577,8 @@ function ListOrders({ navigation }) {
   );
 }
 
-export const Admin = ({dimensions} : {dimensions : ScaledSize}) => {
+export const Admin = ({ dimensions }: { dimensions: ScaledSize }) => {
+  //Gather the data
   const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 992) ? true : false }
   const Stack = createStackNavigator();
   function AdminPages() {
@@ -614,26 +595,18 @@ export const Admin = ({dimensions} : {dimensions : ScaledSize}) => {
       </Stack.Navigator>
     );
   }
-    return (checkMobile(dimensions)) ? (
-      <View style={styles.wholePage}>
-        <Icon name="sad-outline" size={60} color="#000" />
-        <Text style={styles.wholePageMessage}>Why not use web for admin?</Text>
-      </View>
-     ) : (
-      <View style={[styles.container]}>
-          {/* <View style={styles.topBar}>
-          <TouchableOpacity style={styles.button}>
-            <Icon name="moon"
-                size={20}
-                color="#000"
-              />
-          </TouchableOpacity>
-          </View> */}
-          <NavigationContainer independent={true}>
-              <AdminPages/>
-          </NavigationContainer>
-      </View>
-     );
+  return (checkMobile(dimensions)) ? (
+    <View style={styles.wholePage}>
+      <Icon name="sad-outline" size={60} color="#000" />
+      <Text style={styles.wholePageMessage}>Why not use web for admin?</Text>
+    </View>
+  ) : (
+    <View style={[styles.container]}>
+      <NavigationContainer independent={true}>
+        <AdminPages />
+      </NavigationContainer>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -760,7 +733,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   col: {
-    flex: 1,
     padding: ".5rem",
   },
   header: {
@@ -774,8 +746,9 @@ const styles = StyleSheet.create({
     color: "#262626",
   },
   popIcon: {
+    borderRadius: 5,
     flexDirection: "row",
-    padding: 5,
-    margin: 2,
+    padding: 15,
+    gap: 15,
   },
 });

@@ -43,7 +43,7 @@ const AddUser = () => {
       address,
       role,
     };
-    UserAPI.create(newUser).then((res) => setUser(res.data));
+    UserAPI.create(newUser).then((res) => {console.log(res); setUser(res.data)});
     setSubmitted(true);
   };
 

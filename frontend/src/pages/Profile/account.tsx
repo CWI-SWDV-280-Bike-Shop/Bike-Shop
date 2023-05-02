@@ -29,7 +29,9 @@ export const Account = (props: DrawerHeaderProps) => {
     }
   }, [authUser]);
 
-  if (authUser) UserAPI.getById(authUser._id).then((res) => setUser(res.data));
+  useEffect(() => {
+    UserAPI.getById(authUser._id).then((res) => setUser(res.data));
+  }, [authUser?._id]);
 
   const [form, setForm] = useState({
     username: username,

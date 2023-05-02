@@ -181,8 +181,8 @@ const TableHeader = ({
             <Text style={styles.rowHeaderText}>{label}</Text>
             <TouchableOpacity
               onPressOut={() => {
-                state[3](properties[i]);
-                state[1](!state[0]);
+                state.setField(properties[i]);
+                state.setAsc(!state.asc);
               }}
             >
               <Icon name="swap-vertical" size={20} color="#000000aa" />
@@ -286,8 +286,9 @@ const UsersTableHeader = ({
   );
 };
 
-const ModificationContextMenu = ({ id, state, setIsEditMode, isEditMode }: { id?: string, state?: UserState, isEditMode?: boolean, setIsEditMode?: Dispatch<SetStateAction<boolean>> }) => {
+const ModificationContextMenu = ({ id, state, setIsEditMode, isEditMode, }: { id?: string, state?: UserState, isEditMode?: {}, setIsEditMode?: Dispatch<SetStateAction<{}>> }) => {
   const [showPopover, setShowPopover] = useState(false);
+  console.log(isEditMode)
   return (
     <Popover
       popoverStyle={{ backgroundColor: '#4D535D' }}
@@ -354,14 +355,14 @@ const UserElement = ({ user, state }: {
   );
 };
 
-const ProductElement = ({ product, isEditMode, setIsEditMode, toggleCheckBox, setToggleCheckBox }: { product: Product, isEditMode: boolean, setIsEditMode:Dispatch<SetStateAction<boolean>>, toggleCheckBox: boolean, setToggleCheckBox:Dispatch<SetStateAction<boolean>> }) => {
+const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setCheckMarks }: { product: Product, isEditMode: {}, setIsEditMode:Dispatch<SetStateAction<{}>>, checkMarks: {}, setCheckMarks:Dispatch<SetStateAction<{}>> }) => {
   return (
     <Row>
       <View style={styles.col}>
         <Icon name="square-outline" size={20} color="#000" />
       </View>
       <Column>{product?._id}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.name} /> : product?.name}</Column>
+      <Column>{isEditMode ? <TextInput value={product?.description} /> : product?.name}</Column>
       <Column>{isEditMode ? <TextInput value={product?.description} /> : product?.description}</Column>
       <Column>{isEditMode ? <TextInput value={product?.category} /> : product?.category}</Column>
       <Column>{isEditMode ? <TextInput value={product?.subcategory} /> : product?.subcategory}</Column>
@@ -369,11 +370,11 @@ const ProductElement = ({ product, isEditMode, setIsEditMode, toggleCheckBox, se
       <Column>{product?.imageIds}</Column>
       <Column>{isEditMode ? <Checkbox
     disabled={false}
-    value={toggleCheckBox}
-    onValueChange={() => setToggleCheckBox(!toggleCheckBox)}
+    value={checkMarks[product?._id] || false}
+    onValueChange={() => setCheckMarks({...checkMarks, [product?._id] : !checkMarks[product?._id]})}
   />: product?.inStock}</Column>
       <View style={[styles.col, { alignItems: "center" }]}>
-        <ModificationContextMenu setIsEditMode={setIsEditMode} />
+        <ModificationContextMenu id={product._id} setIsEditMode={setIsEditMode} />
       </View>
     </Row>
   );
@@ -441,7 +442,6 @@ function ListUsers({ navigation }) {
             renderItem={({ item, index }) => (
               <UserElement user={item} key={index} state={{ users, setUser, selectedRows, setSelectedRows }} />
             )}
-            keyExtractor={(user: User) => user?._id}
             ListHeaderComponent={() => (
               <UsersTableHeader
                 state={{ asc, setAsc, field, setField, users, setUser }}
@@ -462,12 +462,8 @@ function ListProducts({ navigation }) {
   const [products, setProducts] = useState([]);
   const [asc, setAsc] = useState(true);
   const [field, setField] = useState("name");
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [toggleCheckBox, setToggleCheckBox] = useState(false)
-
-
-
-
+  const [isEditMode, setIsEditMode] = useState({});
+  const [checkMarks, setCheckMarks] = useState({});
 
   const sortData = (data) => {
     return data.sort((a, b) => {
@@ -499,9 +495,8 @@ function ListProducts({ navigation }) {
           <FlatList
             data={sortData(products)}
             renderItem={({ item, index }) => (
-              <ProductElement product={item} key={index} isEditMode={isEditMode} setIsEditMode={setIsEditMode} toggleCheckBox={toggleCheckBox} setToggleCheckBox={setToggleCheckBox}/>
+              <ProductElement product={item} key={index} isEditMode={isEditMode} setIsEditMode={setIsEditMode} checkMarks={checkMarks} setCheckMarks={setCheckMarks}/>
             )}
-            keyExtractor={(product: Product) => product?._id}
             ListHeaderComponent={() => (
               <TableHeader
                 state={{ asc, setAsc, field, setField }}
@@ -529,8 +524,8 @@ function ListOrders({ navigation }) {
     return data.sort((a, b) => {
       try {
         return asc
-          ? b[field].localeCompare(a[field])
-          : a[field].localeCompare(b[field]);
+          ? b[field]?.localeCompare(a[field])
+          : a[field]?.localeCompare(b[field]);
       } catch (error) {
         console.log(error);
         return data;
@@ -560,7 +555,6 @@ function ListOrders({ navigation }) {
             renderItem={({ item, index }) => (
               <OrderElement order={item} key={index} />
             )}
-            keyExtractor={(order: Order) => order?._id}
             ListHeaderComponent={() => (
               <TableHeader
                 state={{ asc, setAsc, field, setField }}

@@ -17,6 +17,8 @@ import { DrawerHeaderProps } from '@react-navigation/drawer';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 const Item = ({ product }: { product: Product }) => {
+  //Patch to avoid Nicko's WIP Code
+  //const addToCart = (product : Product) => {};
   const { addToCart } = useContext(ShopContext);
   //const price = (Math.random() * (1000 - 100 + 1) + 100).toFixed(2);
   const price = product.price;
@@ -160,6 +162,9 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
     toolbar: {
       display: (254+700 < dimensions.width) ? 'flex' : 'none',
     },
+    hideOnDesktop: {
+      display: (254+700 > dimensions.width) ? 'flex' : 'none',
+    },
   });
 
   return (
@@ -170,7 +175,8 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
     
       <ScrollView>
         <View style={styles.sortBar}>
-          <View style={styles.sortBarCol}>
+          <ScrollView horizontal={true}>
+          <View style={[styles.sortBarCol, responsive.hideOnDesktop]}>
             <OpenFilters filterState={filterState}/>
           </View>
           <View style={styles.sortBarCol}>
@@ -198,6 +204,7 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
               <Icon name="swap-vertical" size={20} color="#000000aa" />
             </TouchableOpacity>
           </View>
+          </ScrollView>
         </View>
           <ListProducts state={state}/>
       </ScrollView>
@@ -205,24 +212,12 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
   );
 };
 
-{/* <TouchableOpacity
-      style={[
-        styles.headerTouchable,
-        checkMobile(dimensions) ? { display: 'none' } : {},
-      ]}
-      onPress={() => setShowPopover(!showPopover)}
-    > 
-      <ProfileButton />
-    </TouchableOpacity> */}
-
 const OpenFilters = ({ filterState }) => {
   const [showPopover, setShowPopover] = useState(false);
   return (
     <Popover
       isVisible={showPopover}
       onRequestClose={() => setShowPopover(false)}
-      //popoverStyle={{ backgroundColor: '#ffffff00' }}
-      //backgroundStyle={{ backgroundColor: 'transparent' }}
       placement={PopoverPlacement.FLOATING}
       from={
         <TouchableOpacity style={styles.filterShowBtn} onPress={() => setShowPopover(!showPopover)}>
@@ -237,7 +232,7 @@ const OpenFilters = ({ filterState }) => {
 
 const FilterPopup = ({ setShowPopover, filterState }) => {
   return (
-    <View>
+    <View style={styles.popoverLarge}>
       <Filters filterState={filterState} />
     </View>
   )
@@ -246,6 +241,9 @@ const FilterPopup = ({ setShowPopover, filterState }) => {
 export default Shop;
 
 const styles = StyleSheet.create({
+  popoverLarge: {
+    width: 300,
+  },
   /* Sort Styles */
   sortBtn: {
     backgroundColor: '#00000030',

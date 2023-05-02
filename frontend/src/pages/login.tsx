@@ -43,7 +43,6 @@ export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
 				<Text style={styles.label}>Email</Text>
 				<TextInput
 					style={[styles.editBox]}
-					placeholder="Email"
 					value={email}
 					onChangeText={(value) => setEmail(value)}
 				/>
@@ -52,7 +51,6 @@ export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
 				<Text style={styles.label}>Password</Text>
 				<TextInput
 					style={[styles.editBox]}
-					placeholder="Password"
 					value={password}
 					onChangeText={(value) => setPassword(value)}
 					secureTextEntry={true}
@@ -209,7 +207,6 @@ export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 							<TextInput
 								style={styles.editBox}
 								inputMode={item.inputMode as InputModeOptions}
-								placeholder={item.label}
 								value={item.stateValue}
 								onChangeText={(value) => item.setState(value)}
 							/>
@@ -231,7 +228,6 @@ export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 							<TextInput
 								style={styles.editBox}
 								inputMode={item.inputMode as InputModeOptions}
-								placeholder={item.label}
 								value={item.stateValue}
 								onChangeText={(value) =>
 									onChangeAddress(item.label.toLowerCase(), value)
@@ -313,7 +309,7 @@ const styles = StyleSheet.create({
 	label: {
 		textTransform: 'uppercase',
 		fontSize: 12,
-		color: '#33333370',
+		color: '#777',
 		fontWeight: 'bold',
 		position: 'relative',
 		bottom: -30,

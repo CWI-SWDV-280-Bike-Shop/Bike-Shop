@@ -13,7 +13,7 @@ const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'andr
 
 const CustomSwiper = ({dimensions} : {dimensions : ScaledSize}) => {
   return (
-    <Swiper 
+    <Swiper
     loop
     timeout={5}
     springConfig={{ speed: 5, bounciness: 1, }}
@@ -41,7 +41,7 @@ const CustomSwiper = ({dimensions} : {dimensions : ScaledSize}) => {
         description={
           'Shop our collection of bikes built for busy city streets.'
         }
-        imgSrc={require('@assets/Images/citybikestockimg.png')}
+        imgSrc={require('@assets/Images/citybikestockimg.jpg')}
         btnName={'Shop'}
       />
       <Slide
@@ -128,7 +128,7 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
     },
     bodyimage: {
       borderRadius: 200,
-      backgroundColor: '#3fab82'
+      backgroundColor: '#3fab82',
     },
     bodyimageBox: {
       display: (400+650 < dimensions.width) ? 'flex' : 'none',

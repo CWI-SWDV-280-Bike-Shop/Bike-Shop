@@ -1,4 +1,5 @@
-import { mongoose } from '../../../src/mongoose.js';
+import mongoose from 'mongoose';
+import { AddressSchema } from '../../schemas/address.schema.js';
 const Schema = mongoose.Schema;
 
 const ItemSchema = new Schema({
@@ -9,7 +10,6 @@ const ItemSchema = new Schema({
   },
   price: Number,
   quantity: Number,
-  serviceDate: Date,
 });
 
 const OrderSchema = new Schema(
@@ -20,8 +20,7 @@ const OrderSchema = new Schema(
       autopopulate: { maxDepth: 1 },
     },
     items: [ItemSchema],
-    shipping: Number,
-    tax: Number,
+    shippingAddress: AddressSchema,
     total: Number,
   },
   { timestamps: true }

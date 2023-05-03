@@ -27,6 +27,7 @@ import Popover from "react-native-popover-view";
 import { ScaledSize } from 'react-native';
 import { AuthContext } from "@/context/auth.context";
 import Checkbox from 'expo-checkbox';
+import { Picker } from '@react-native-picker/picker';
 
 // Search can be implemented like I did sorting, button needs selector for which field to search
 // Need a wrapper or something that calls this so I can do more complex features
@@ -146,6 +147,17 @@ type ProductState = {
   setField?: Dispatch<SetStateAction<string>>,
   products?: Product[],
   setProducts?: React.Dispatch<React.SetStateAction<Product[]>>
+  selectedRows?: string[]
+  setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
+}
+
+type OrderState = {
+  asc?: boolean,
+  setAsc?: Dispatch<SetStateAction<boolean>>,
+  field?: string,
+  setField?: Dispatch<SetStateAction<string>>,
+  orders?: Order[],
+  setOrders?: React.Dispatch<React.SetStateAction<Order[]>>
   selectedRows?: string[]
   setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
 }
@@ -306,67 +318,122 @@ const ProductsTableHeader = ({
   properties: string[];
   state: ProductState;
 }) => {
-  const [newProductForm, setProductForm] = useState({
-    "name": "",
-    "description": "",
-    "category": "",
-    "subcategory": "",
-    "price": 0,
-    "images": [],
-    "instock": true,
-  })
+  const categories = {
+    Bikes: {
+      subCategories: ['Electric', 'Mountain', 'Street'],
+    },
+    Accessories: {
+      subCategories: ['Tires',
+        'Brakes',
+        'Lights',
+        'Frames',
+        'Chains',
+        'Pedals',
+        'Tubes',],
+    },
+    Services: {
+      subCategories: ['Tune',
+        'Wheel and Tire Maintenance',
+        'Assembly',
+        'Shifting and Brakes'],
+    },
+  };
+
+  const [category, setCategory] = useState('');
+  const [subcategory, setSubcategory] = useState('');
+  const [name, setName] = useState('');
+  const [description, setDescription] = useState('');
+  const [price, setPrice] = useState(0);
+  const [inStock, setInStock] = useState(false);
+
+  const handleCategoryChange = (value: string) => {
+    setCategory(value);
+    setSubcategory('');
+  };
+
+  const handleSubCategoryChange = (value: string) => {
+    setSubcategory(value);
+  };
+
   const createNewProduct = ({ state }: { state: ProductState }) => {
     const product: Product = {
-      name: newProductForm.name,
-      description: newProductForm.description,
-      category: newProductForm.category,
-      subcategory: newProductForm.subcategory,
-      price: newProductForm.price,
-      images: newProductForm.images,
-      inStock: newProductForm.instock,
+      name,
+      description,
+      category,
+      subcategory,
+      price,
+      inStock,
     }
     ProductAPI.create(product).then((res) => {
       console.log("Product created: ", res);
       if (res.status == 200) {
-        product._id = res.data._id;
         state.setProducts([...state.products, product])
       }
     });
   }
+
   return (
     <View>
-      <TableHeader labels={labels} properties={properties} state={state} />
-      <View style={styles.row}>
-        {
-          labels.map((label, i) => (
-            (label === "select") ?
-              <Column width={50} key={i}></Column> :
-              (label === "id" || label === "orders") ?
-                <Column key={i} width={80}></Column> :
-                (label === "options") ?
-                  <Column width={50} key={i}>
-                    <TouchableOpacity onPress={() => createNewProduct({ state })}>
-                      <View style={[styles.col]}>
-                        <Icon name="md-save" size={30} color="#000000aa" />
-                      </View>
-                    </TouchableOpacity>
-                  </Column>
-                  :
-                  <Column key={i}>
-                    <TextInput style={styles.createNew} placeholder={label} value={newProductForm[label]} onChangeText={(text) => {
-                      setProductForm({ ...newProductForm, [label]: text });
-                    }} />
-                  </Column>
-          ))
-        }
-      </View>
+      <Row>
+        <TextInput style={styles.createNew}
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
+        />
+        <TextInput style={styles.createNew}
+          placeholder="Description"
+          value={description}
+          onChangeText={setDescription}
+        />
+        <View>
+          <Text>Category:</Text>
+          <Picker style={styles.createNew}
+            selectedValue={category}
+            onValueChange={handleCategoryChange}
+          >
+            <Picker.Item label="Select a category" value="" />
+            {Object.keys(categories).map((category) => (
+              <Picker.Item key={category} label={category} value={category} />
+            ))}
+          </Picker>
+        </View>
+        {category && categories[category] && (
+          <View>
+            <Text>Subcategory:</Text>
+            <Picker style={styles.createNew}
+              selectedValue={subcategory}
+              onValueChange={handleSubCategoryChange}
+            >
+              <Picker.Item label="Select a subcategory" value="" />
+              {categories[category].subCategories.map((subCategory) => (
+                <Picker.Item
+                  key={subCategory}
+                  label={subCategory}
+                  value={subCategory}
+                />
+              ))}
+            </Picker>
+          </View>
+        )}
+        <TextInput style={styles.createNew}
+          placeholder="Price"
+          value={price.toString()}
+          keyboardType="numeric"
+          onChangeText={(value) => setPrice(isNaN(parseFloat(value)) ? 0 : parseFloat(value))}
+        />
+        <TouchableOpacity onPress={() => createNewProduct({ state })}>
+          <View style={[styles.col]}>
+            <Icon name="md-save" size={30} color="#000000aa" />
+          </View>
+        </TouchableOpacity>
+
+      </Row>
     </View>
   );
-};
+}
 
-const ModificationContextMenu = ({ id, state, setIsEditMode, isEditMode, }: { id?: string, state?: UserState, isEditMode?: {}, setIsEditMode?: Dispatch<SetStateAction<{}>> }) => {
+const ModificationContextMenu = ({ id, objType, state, setIsEditMode, isEditMode, }: { id?: string, objType?: string, state?: any, isEditMode?: {}, setIsEditMode?: Dispatch<SetStateAction<{}>> }) => {
   const [showPopover, setShowPopover] = useState(false);
-  console.log(isEditMode)
   return (
     <Popover
       popoverStyle={{ backgroundColor: '#4D535D' }}
@@ -378,16 +445,27 @@ const ModificationContextMenu = ({ id, state, setIsEditMode, isEditMode, }: { id
       }
     >
       <View style={styles.popIcon}>
-        <TouchableOpacity onPress={ () => setIsEditMode(!isEditMode)}>
+        <TouchableOpacity onPress={() => setIsEditMode(!isEditMode)}>
           <Icon color="#fff" name="create-outline" size={30} />
         </TouchableOpacity>
 
         <TouchableOpacity>
           <Icon onPress={() => {
-            UserAPI.delete(id).then((res) => {
-              console.log("User deleted: ", res)
-              state.setUser(state.users.filter((u) => u._id != id))
-            });
+            (objType == "product") ? () => {
+              ProductAPI.delete(id).then((res) => {
+                state.setProduct(state.products.filter((u) => u._id != id))
+              });
+            } : (objType == "order") ? () => 
+            {
+              OrdersAPI.delete(id).then((res) => {
+                state.setUser(state.orders.filter((u) => u._id != id))
+              });
+            } : () => {
+              UserAPI.delete(id).then((res) => {
+                state.setUser(state.users.filter((u) => u._id != id))
+              });
+            }
+            
           }} color="#ff3f2e" name="trash-outline" size={30} />
         </TouchableOpacity>
       </View>
@@ -427,13 +505,13 @@ const UserElement = ({ user, state }: {
       <Column>{user?.address?.zip}</Column>
       <Column>{user?.address?.country}</Column>
       <Column width={50}>
-        <ModificationContextMenu id={user._id} state={state} />
+        <ModificationContextMenu id={user._id} objType={"user"} state={state} />
       </Column>
     </Row>
   );
 };
 
-const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setCheckMarks }: { product: Product, isEditMode: {}, setIsEditMode:Dispatch<SetStateAction<{}>>, checkMarks: {}, setCheckMarks:Dispatch<SetStateAction<{}>> }) => {
+const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setCheckMarks }: { product: Product, isEditMode: {}, setIsEditMode: Dispatch<SetStateAction<{}>>, checkMarks: {}, setCheckMarks: Dispatch<SetStateAction<{}>> }) => {
   return (
     <Row>
       <View style={styles.col}>
@@ -447,19 +525,25 @@ const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setChe
       <Column>{isEditMode ? <TextInput value={product?.price?.toString()} /> : formatPrice(product?.price)}</Column>
       <Column>product?.images</Column>
       <Column>{isEditMode ? <Checkbox
-    disabled={false}
-    value={checkMarks[product?._id] || false}
-    onValueChange={() => setCheckMarks({...checkMarks, [product?._id] : !checkMarks[product?._id]})}
-  />: product?.inStock}</Column>
+        disabled={false}
+        value={checkMarks[product?._id] || false}
+        onValueChange={() => setCheckMarks({ ...checkMarks, [product?._id]: !checkMarks[product?._id] })}
+      /> : product?.inStock}</Column>
       <View style={[styles.col, { alignItems: "center" }]}>
-        <ModificationContextMenu id={product._id} setIsEditMode={setIsEditMode} />
+        <ModificationContextMenu id={product._id} objType={"product"} setIsEditMode={setIsEditMode} />
       </View>
     </Row>
   );
 }
 
 
-function OrderElement({ order }: { order: Order }) {
+function OrderElement({ order, state }: { order: Order, state: OrderState }) {
+  const selectRow = (id, remove) => {
+    console.log(state.selectedRows);
+    (remove) ?
+      state.setSelectedRows(state.selectedRows.filter((r) => r != id)) :
+      state.setSelectedRows([...state.selectedRows, id]);
+  }
   return (
     <Row>
       <View style={styles.col}>
@@ -476,7 +560,7 @@ function OrderElement({ order }: { order: Order }) {
       <Column>{formatPrice(order?.total)}</Column>
       <Column>{order?.updatedAt}</Column>
       <View style={[styles.col, { alignItems: "center" }]}>
-        <ModificationContextMenu />
+        <ModificationContextMenu id={order._id} objType={"order"}/>
       </View>
     </Row>
   );
@@ -574,7 +658,7 @@ function ListProducts({ navigation }) {
           <FlatList
             data={sortData(products)}
             renderItem={({ item, index }) => (
-              <ProductElement product={item} key={index} isEditMode={isEditMode} setIsEditMode={setIsEditMode} checkMarks={checkMarks} setCheckMarks={setCheckMarks}/>
+              <ProductElement product={item} key={index} isEditMode={isEditMode} setIsEditMode={setIsEditMode} checkMarks={checkMarks} setCheckMarks={setCheckMarks} />
             )}
             ListHeaderComponent={() => (
               <ProductsTableHeader
@@ -593,7 +677,8 @@ function ListProducts({ navigation }) {
 }
 
 function ListOrders({ navigation }) {
-  const [orders, setOrders] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [orders, setOrders] = useState([{}] as [Order]);
   const [asc, setAsc] = useState(true);
   const [field, setField] = useState("name");
 
@@ -630,7 +715,7 @@ function ListOrders({ navigation }) {
           <FlatList
             data={sortData(orders)}
             renderItem={({ item, index }) => (
-              <OrderElement order={item} key={index} />
+              <OrderElement order={item} key={index} state={{ orders, setOrders, selectedRows, setSelectedRows }} />
             )}
             ListHeaderComponent={() => (
               <TableHeader

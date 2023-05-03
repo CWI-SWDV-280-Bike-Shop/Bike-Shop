@@ -5,9 +5,7 @@ import {
   ScrollView,
   TouchableOpacity,
   StyleSheet,
-  ScaledSize,
-  Platform,
-  useWindowDimensions,
+  ImageBackground,
 } from 'react-native';
 import { ShopContext } from '@/context/shop.context';
 import { Product, Order, CartItem } from '@/types/data.types';
@@ -19,215 +17,162 @@ import Colors, { colors } from '@/styles/theme/Colors';
 import { DrawerHeaderProps } from '@react-navigation/drawer';
 
 const Cart = (props: DrawerHeaderProps) => {
-  //these prices are based off of https://www.ups.com/assets/resources/webcontent/en_US/daily_rates.pdf
-  const streetBikeShipping = 16.1;
-  const mountainBikeShipping = 19.45;
-  const eBikeShipping = 38.99;
-  const accessoriesShipping = 11.67;
-  //Auth
   const { authUser } = useContext(AuthContext);
-  //Shop
   const {
     cartItems,
     quantity,
     total,
-    checkout,
     addToCart,
     removeFromCart,
     deleteFromCart,
-    message,
   } = useContext(ShopContext);
-  //Responsive
-  const dimensions = useWindowDimensions();
-  const checkMobile = (dimensions: ScaledSize) => {
-    return Platform.OS === 'android' ||
-      Platform.OS === 'ios' ||
-      dimensions.width <= 1450
-      ? true
-      : false;
-  };
-  const responsive = checkMobile(dimensions) ? mobile : web;
-  //Set Order
-  const [order, setOrder] = useState<Order | null>(null);
-  const [errorMessage, setErrorMessage] = useState('');
-
-  const handleCheckout = () => {
-    props.navigation.navigate('Checkout');
-  };
-
-  const calculateShipping = (cartItems: CartItem[]) => {
-    let cost = 0;
-    cartItems.map((cartItem) => {
-      if (cartItem?.product?.category == 'Bikes') {
-        if (cartItem?.product?.subcategory == 'Mountain') {
-          cost += mountainBikeShipping;
-        } else if (cartItem?.product?.subcategory == 'Street') {
-          cost += streetBikeShipping;
-        } else if (cartItem?.product?.subcategory == 'Electric') {
-          cost += eBikeShipping;
-        }
-      } else if (cartItem?.product?.category == 'Accessories') {
-        cost += accessoriesShipping;
-      }
-      // else if (cartItem?.product?.category == 'Services') { Dumb logic that does not need to be here. Must have been sleep deprived this day.
-      //   cost += 0;
-      // }
-    });
-    return cost;
-  };
-
-  const ListOrderItems = (cartItems: CartItem[]) => {
-    let orderItems = '\n';
-    cartItems.map((item: CartItem) => {
-      orderItems += 'Product: ' + item?.product?.name + ' ';
-      orderItems += 'Item Price: ' + formatPrice(item?.product?.price) + ' ';
-      orderItems += '\n';
-    });
-    return orderItems;
-  };
 
   return (
-    <View style={[Styles.container, responsive.container]}>
-      <View style={[Styles.cart, responsive.cart]}>
-        <Text style={[Styles.bodyText, { fontWeight: 'bold', fontSize: 30 }]}>
-          Are you ready to checkout {authUser ? authUser.name + '?' : <Text />}
-        </Text>
-        <Text style={Styles.bodyText}>
-          Quantity of Items/Services: {quantity}
-        </Text>
-        <Text style={Styles.bodyText}>
-          Ordered Items:{' '}
-          {quantity == 0 || null
-            ? 'There is nothing in your cart'
-            : cartItems && ListOrderItems(cartItems)}
-        </Text>
-        <Text style={Styles.bodyText}>Sub Total: {formatPrice(total)}</Text>
-        <Text style={Styles.bodyText}>
-          Shipping: {cartItems && formatPrice(calculateShipping(cartItems))}
-        </Text>
-        <Text style={Styles.bodyText}>
-          State Tax: {formatPrice(total * 0.06)}
-        </Text>
-        <Text style={Styles.bodyText}>
-          Grand Total:
-          {formatPrice(
-            total * 1.06 + (cartItems && calculateShipping(cartItems))
-          )}
-        </Text>
-        {authUser ? (
-          <Text style={[Styles.bodyText, { fontWeight: 'bold' }]}>
-            Proceed to Checkout
-          </Text>
-        ) : (
-          <Text
-            style={[Styles.bodyText, { fontWeight: 'bold' }]}
-            onPress={() => props.navigation.navigate('Login')}
-          >
-            Please Login to checkout your items
-          </Text>
-        )}
-        <TouchableOpacity
-          style={[Styles.button, Styles.checkoutBtn]}
-          onPress={handleCheckout}
-        >
-          <Text style={Styles.buttonText}>
-            Checkout <Icon size={20} name="cart-outline" />
-          </Text>
-        </TouchableOpacity>
-        <Text>{errorMessage}</Text>
-        {/* This does not have Styles yet TODO */}
-        {order && (
-          <>
-            <Text>{message}</Text>
-            <Text>order: {JSON.stringify(order)}</Text>
-          </>
-        )}
-      </View>
-      <View style={Styles.cartScroll}>
-        <ScrollView>
-          <Text style={Styles.header}>Cart</Text>
-          {(cartItems &&
-            cartItems.map((cartItem: CartItem, index: number) => (
-              <View style={Styles.productCard} key={index}>
-                <View style={{ flex: 2 }}>
-                  <Text style={[Styles.bodyText, Styles.cardText]}>
-                    {index + 1}.
-                  </Text>
-                  <Text style={[Styles.bodyText, Styles.cardText]}>
-                    name: {cartItem?.product?.name}
-                  </Text>
-                  <Text style={[Styles.bodyText, Styles.cardText]}>
-                    _id: {cartItem?.product?._id}
-                  </Text>
-                  <Text style={[Styles.bodyText, Styles.cardText]}>
-                    description: {cartItem?.product?.description}
-                  </Text>
-                  <Text style={[Styles.bodyText, Styles.cardText]}>
-                    category: {cartItem?.product?.category}
-                  </Text>
-                  <Text style={[Styles.bodyText, Styles.cardText]}>
-                    subcategory: {cartItem?.product?.subcategory}
-                  </Text>
-                  <Text style={[Styles.bodyText, Styles.cardText]}>
-                    price: {cartItem?.product?.price}
-                  </Text>
-                  <Text style={[Styles.bodyText, Styles.cardText]}>
-                    imageIds: {cartItem?.product?.imageIds}
-                  </Text>
-                  <Text style={[Styles.bodyText, Styles.cardText]}>
-                    inStock: {cartItem?.product?.inStock}
-                  </Text>
-                  {cartItem?.product?.category === 'Bikes' && (
-                    <>
-                      <Text style={[Styles.bodyText, Styles.cardText]}>
-                        brand: {cartItem?.product?.brand}
-                      </Text>
-                      <Text style={[Styles.bodyText, Styles.cardText]}>
-                        material: {cartItem?.product?.material}
-                      </Text>
-                      <Text style={[Styles.bodyText, Styles.cardText]}>
-                        wheelSize: {cartItem?.product?.wheelSize}
-                      </Text>
-                      <Text style={[Styles.bodyText, Styles.cardText]}>
-                        color: {cartItem?.product?.color}
-                      </Text>
-                      <Text style={[Styles.bodyText, Styles.cardText]}>
-                        size: {cartItem?.product?.size}
-                      </Text>
-                    </>
-                  )}
+    <View style={[Styles.container]}>
+      <Text style={[Styles.title, Styles.bold]}>Cart</Text>
+      <ScrollView>
+        {cartItems.map((cartItem: CartItem, index) => {
+          const firstImage = cartItem.product.images[0] ?? {};
+
+          return (
+            <View style={[Styles.itemCard, Styles.row]} key={index}>
+              {/* Product */}
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                }}
+              >
+                <View style={Styles.productImageContainer}>
+                  {('url' in firstImage && (
+                    <ImageBackground
+                      style={Styles.productImage}
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                      source={firstImage.url}
+                      resizeMode="contain"
+                    />
+                  )) || <Icon name="image-outline" size={128} />}
                 </View>
-                <View style={[Styles.buttonContainer]}>
-                  <Text style={{ textAlign: 'center' }}>
-                    Quantity: {cartItem?.quantity}
-                  </Text>
-                  <TouchableOpacity
-                    style={[Styles.button, Colors.bgBlack]}
-                    onPress={() => addToCart(cartItem?.product)}
-                  >
-                    <Icon size={15} name="add-outline" color={'white'} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[Styles.button, Colors.bgArtichoke]}
-                    onPress={() => removeFromCart(cartItem?.product)}
-                  >
-                    <Icon size={15} name="remove-outline" color={'white'} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={[Styles.button, Styles.deleteBtn]}
-                    onPress={() => deleteFromCart(cartItem?.product)}
-                  >
-                    <Icon size={15} name="trash-outline" color={'white'} />
-                  </TouchableOpacity>
+                <View style={[Styles.productContainer, { minWidth: 200 }]}>
+                  <View style={[Styles.productTextContainer]}>
+                    <Text style={Styles.productName}>
+                      {cartItem?.product?.name} -{' '}
+                      <Text style={Styles.productPrice}>
+                        {formatPrice(cartItem?.product?.price)}
+                      </Text>
+                    </Text>
+                    <Text style={[Styles.productDescription]}>
+                      {cartItem?.product?.description}
+                    </Text>
+
+                    <Text>
+                      <Text style={Styles.productLabel}>Category: </Text>
+                      {cartItem?.product?.category}
+                    </Text>
+                    <Text>
+                      <Text style={Styles.productLabel}>Subcategory: </Text>
+                      {cartItem?.product?.subcategory}
+                    </Text>
+                    {cartItem?.product?.category === 'Bikes' && (
+                      <>
+                        <Text>
+                          <Text style={Styles.productLabel}>Brand: </Text>
+                          {cartItem?.product?.brand}
+                        </Text>
+                        <Text>
+                          <Text style={Styles.productLabel}>Material: </Text>
+                          {cartItem?.product?.material}
+                        </Text>
+                        <Text>
+                          <Text style={Styles.productLabel}>Wheel Size: </Text>
+                          {cartItem?.product?.wheelSize}
+                        </Text>
+                        <Text>
+                          <Text style={Styles.productLabel}>Color: </Text>
+                          {cartItem?.product?.color}
+                        </Text>
+                        <Text>
+                          <Text style={Styles.productLabel}>Size: </Text>
+                          {cartItem?.product?.size}
+                        </Text>
+                        <Text>
+                          <Text style={Styles.productLabel}>Gender: </Text>
+                          {cartItem?.product?.gender}
+                        </Text>
+                      </>
+                    )}
+                  </View>
+                </View>
+
+                <View style={[Styles.center, { gap: 10 }]}>
+                  <Text style={Styles.actionsLabel}>Quantity</Text>
+                  {/* Quantity */}
+                  <View style={[Styles.row, Styles.center]}>
+                    <TouchableOpacity
+                      style={[Styles.button, Colors.bgArtichoke]}
+                      onPress={() => removeFromCart(cartItem?.product)}
+                    >
+                      <Icon size={15} name="remove-outline" color={'white'} />
+                    </TouchableOpacity>
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        margin: 20,
+                        fontSize: 24,
+                      }}
+                    >
+                      {cartItem?.quantity}
+                    </Text>
+                    <TouchableOpacity
+                      style={[Styles.button, Colors.bgBlack]}
+                      onPress={() => addToCart(cartItem?.product)}
+                    >
+                      <Icon size={15} name="add-outline" color={'white'} />
+                    </TouchableOpacity>
+                  </View>
+
+                  {/* Delete */}
+                  <View style={[Styles.center, { width: '100%' }]}>
+                    <Text style={Styles.actionsLabel}>Remove</Text>
+                    <TouchableOpacity
+                      style={[
+                        Styles.button,
+                        Styles.deleteBtn,
+                        { width: '100%' },
+                      ]}
+                      onPress={() => deleteFromCart(cartItem?.product)}
+                    >
+                      <Icon size={15} name="trash-outline" color={'white'} />
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
-            ))) || (
-            <Text style={Styles.bodyText}>
-              Add things to your cart in the Shop page and they will show up
-              right here!
+            </View>
+          );
+        })}
+      </ScrollView>
+      <View style={Styles.checkoutBtnContainer}>
+        <View style={Styles.checkoutTextContainer}>
+          <View style={[Styles.spread, Styles.row]}>
+            <Text style={Styles.checkoutText}>Items:</Text>
+            <Text style={[Styles.checkoutText, Styles.bold]}>{quantity}</Text>
+          </View>
+          <View style={[Styles.spread, Styles.row]}>
+            <Text style={Styles.checkoutText}>Total:</Text>
+            <Text style={[Styles.checkoutText, Styles.bold]}>
+              {formatPrice(total)}
             </Text>
-          )}
-        </ScrollView>
+          </View>
+        </View>
+        <TouchableOpacity
+          style={Styles.checkoutBtn}
+          onPress={() => props.navigation.navigate('Checkout')}
+        >
+          <Text style={Styles.checkoutBtnText}>Checkout</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -235,96 +180,142 @@ const Cart = (props: DrawerHeaderProps) => {
 
 export default Cart;
 
-const mobile = StyleSheet.create({
-  container: {
-    flexDirection: 'column',
-  },
-  cart: {
-    marginTop: 90,
-  },
-});
-
-const web = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-  cart: {},
-});
-
 const Styles = StyleSheet.create({
   container: {
     flex: 1,
-    // flexDirection: "row",
   },
-  cart: {
-    flex: 1.5,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    margin: 5,
-
-    borderWidth: 1,
-    backgroundColor: 'white',
-    borderColor: '#6A7B76',
-    borderRadius: 10,
+  title: {
+    textAlign: 'center',
+    fontSize: 24,
   },
-  cartScroll: {
-    margin: 5,
-
-    flex: 4,
-    flexDirection: 'column',
-    justifyContent: 'center',
-  },
-  productCard: {
+  row: {
     flexDirection: 'row',
-    margin: 10,
-
-    borderWidth: 1,
-    backgroundColor: 'white',
-    borderColor: '#6A7B76',
-    borderRadius: 10,
   },
-  buttonContainer: {
+  spread: {
+    justifyContent: 'space-between',
+  },
+  bold: {
+    fontWeight: 'bold',
+  },
+  center: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  space: {
+    margin: 10,
+  },
+  // Item Cards
+  itemCard: {
+    backgroundColor: 'white',
+    padding: 20,
+    margin: 15,
+    borderRadius: 10,
+    elevation: 1,
+    shadowColor: 'gray',
+    shadowOpacity: 0.9,
+    shadowRadius: 5,
+    justifyContent: 'space-between',
+  },
+
+  // Products
+  productContainer: {
+    gap: 10,
+    flexDirection: 'row',
+    flex: 1,
+    flexWrap: 'wrap',
+  },
+  productImageContainer: {
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 10,
+  },
+  productImage: {
+    width: 150,
+    height: 150,
+    margin: 10,
+  },
+  productTextContainer: {
+    justifyContent: 'center',
+    // flexDirection: 'row',
+    flex: 1,
+    flexWrap: 'wrap',
+  },
+  productName: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginVertical: 10,
+  },
+  productDescription: {
+    fontSize: 18,
+    fontStyle: 'italic',
+    marginBottom: 10,
+  },
+  productPrice: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    color: colors.artichoke,
+  },
+  productLabel: {
+    fontWeight: 'bold',
+  },
+
+  // Actions Buttons
+  actionsLabel: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
   button: {
-    // flex: 1,
-    // flexDirection: "row",
-    height: 50,
-    width: 150,
-    padding: 10,
-    margin: 3,
+    padding: 20,
     borderRadius: 10,
-    // textAlign: 'center',
     justifyContent: 'center',
     alignItems: 'center',
     color: 'white',
   },
-  buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+
+  // Quantity
+  quantityBtn: {},
+  quantityAdd: {},
+  quantityRemove: {},
+  quantityDisplayContainer: {},
+
+  // Delete
+  deleteBtnContainer: {
     justifyContent: 'center',
+    alignItems: 'center',
   },
   deleteBtn: {
     backgroundColor: '#941b0c',
   },
-  checkoutBtn: {
-    backgroundColor: colors.artichoke,
+
+  // Checkout Button
+  checkoutTextContainer: {
+    margin: 10,
   },
-  header: {
-    marginTop: 10,
-    fontSize: 35,
-    color: '#262626',
-    textAlign: 'center',
-  },
-  bodyText: {
-    marginTop: 15,
+  checkoutText: {
     fontSize: 24,
-    color: '#262626',
-    textAlign: 'center',
   },
-  cardText: {
-    margin: 4,
-    fontSize: 15,
+  checkoutBtnContainer: {
+    padding: 20,
+    borderTopLeftRadius: 30,
+    borderTopEndRadius: 30,
+    elevation: 1,
+    shadowColor: 'gray',
+    shadowOffset: { width: 0, height: -1 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+  },
+  checkoutBtn: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    borderRadius: 10,
+    padding: 10,
+    color: 'white',
+    backgroundColor: colors.feldgrau,
+  },
+  checkoutBtnText: {
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });

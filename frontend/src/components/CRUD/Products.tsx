@@ -22,7 +22,7 @@ const AddProduct = () => {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [price, setPrice] = useState(0);
-  const [imageIds, setImageIds] = useState([]);
+  const [image, setimage] = useState('');
   const [inStock, setInStock] = useState(true);
   const [brand, setBrand] = useState('');
   const [material, setMaterial] = useState('');
@@ -41,7 +41,7 @@ const AddProduct = () => {
       category,
       subcategory,
       price,
-      imageIds,
+      image,
       inStock,
       brand,
       material,
@@ -246,7 +246,7 @@ const AddProduct = () => {
           <Text>category: {product?.category}</Text>
           <Text>subcategory: {product?.subcategory}</Text>
           <Text>price: {formatPrice(product?.price)}</Text>
-          <Text>imageIds: {product?.imageIds}</Text>
+          <Text>image: {product?.image}</Text>
           <Text>inStock: {product?.inStock?.toString()}</Text>
           {product?.category === 'Bikes' && (
             <>
@@ -320,7 +320,7 @@ const ListProducts = () => {
             <Text>category: {product?.category}</Text>
             <Text>subcategory: {product?.subcategory}</Text>
             <Text>price: {formatPrice(product?.price)}</Text>
-            <Text>imageIds: {product?.imageIds}</Text>
+            <Text>image: {product?.image}</Text>
             <Text>inStock: {product?.inStock?.toString()}</Text>
             <>
               {product?.category === 'Bikes' && (
@@ -376,7 +376,7 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [price, setPrice] = useState(0);
-  const [imageIds, setImageIds] = useState([]);
+  const [image, setimage] = useState([]);
   const [inStock, setInStock] = useState(true);
   const [brand, setBrand] = useState('');
   const [material, setMaterial] = useState('');
@@ -395,7 +395,7 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
       setCategory(product?.category || '');
       setSubcategory(product?.subcategory || '');
       setPrice(product?.price || 0);
-      setImageIds(product?.imageIds || '');
+      setimage(product?.image || '');
       setInStock(product?.inStock || true);
       setBrand(product?.brand || '');
       setMaterial(product?.material || '');
@@ -414,7 +414,7 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
       category,
       subcategory,
       price,
-      imageIds,
+      image,
       inStock,
       brand,
       material,
@@ -652,7 +652,7 @@ const DeleteProduct = ({ product, visible, onClose, onDelete }) => {
           <Text>category: {product?.category}</Text>
           <Text>subcategory: {product?.subcategory}</Text>
           <Text>price: {formatPrice(product?.price)}</Text>
-          <Text>imageIds: {product?.imageIds}</Text>
+          <Text>image: {product?.image}</Text>
           <Text>inStock: {product?.inStock?.toString()}</Text>
           <>
             {product?.category === 'Bikes' && (

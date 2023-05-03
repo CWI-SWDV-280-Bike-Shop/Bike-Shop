@@ -46,7 +46,7 @@ export type Product = Data & {
   category?: string;
   subcategory?: string;
   price?: number;
-  imageIds?: string[];
+  images?: ({url?: string} | {newImageIndex: number})[];
   inStock?: boolean;
   brand?: string;
   material?: string;

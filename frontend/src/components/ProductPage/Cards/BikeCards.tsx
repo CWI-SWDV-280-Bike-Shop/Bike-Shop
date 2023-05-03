@@ -167,7 +167,7 @@ export default ListProducts;
 //             <Text>category: {product?.category}</Text>
 //             <Text>subcategory: {product?.subcategory}</Text>
 //             <Text>price: {formatPrice(product?.price)}</Text>
-//             <Text>imageIds: {product?.imageIds}</Text>
+//             <Text>image: {product?.image}</Text>
 //             <Text>inStock: {product?.inStock?.toString()}</Text>
 //             <>
 //               {product?.category === 'Bikes' && (

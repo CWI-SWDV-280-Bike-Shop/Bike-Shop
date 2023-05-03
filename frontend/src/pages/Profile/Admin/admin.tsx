@@ -37,92 +37,92 @@ import Checkbox from 'expo-checkbox';
 const document = {
   routes: [
     {
-      route: "Users",
-      icon: "people-outline",
+      route: 'Users',
+      icon: 'people-outline',
       component: ListUsers,
       labels: [
-        "select",
-        "id",
-        "name",
-        "email",
-        "role",
-        "phone",
-        "orders",
-        "street",
-        "city",
-        "state",
-        "zip",
-        "country",
-        "options",
+        'select',
+        'id',
+        'name',
+        'email',
+        'role',
+        'phone',
+        'orders',
+        'street',
+        'city',
+        'state',
+        'zip',
+        'country',
+        'options',
       ],
       properties: [
-        "",
-        "_id",
-        "name",
-        "email",
-        "role",
-        "phone",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
-        "",
+        '',
+        '_id',
+        'name',
+        'email',
+        'role',
+        'phone',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
+        '',
       ],
     },
     {
-      route: "Products",
-      icon: "pricetags-outline",
+      route: 'Products',
+      icon: 'pricetags-outline',
       component: ListProducts,
       labels: [
-        "select",
-        "id",
-        "name",
-        "description",
-        "category",
-        "subcategory",
-        "price",
-        "images",
-        "in stock",
-        "options",
+        'select',
+        'id',
+        'name',
+        'description',
+        'category',
+        'subcategory',
+        'price',
+        'images',
+        'in stock',
+        'options',
       ],
       properties: [
-        "",
-        "_id",
-        "name",
-        "description",
-        "category",
-        "subcategory",
-        "price",
-        "imageIds",
-        "inStock",
-        "",
+        '',
+        '_id',
+        'name',
+        'description',
+        'category',
+        'subcategory',
+        'price',
+        'image',
+        'inStock',
+        '',
       ],
     },
     {
-      route: "Orders",
-      icon: "receipt-outline",
+      route: 'Orders',
+      icon: 'receipt-outline',
       component: ListOrders,
       labels: [
-        "select",
-        "id",
-        "purchased by",
-        "created at",
-        "items",
-        "total",
-        "updated",
-        "options",
+        'select',
+        'id',
+        'purchased by',
+        'created at',
+        'items',
+        'total',
+        'updated',
+        'options',
       ],
       properties: [
-        "",
-        "_id",
-        "customer",
-        "createdAt",
-        "items",
-        "total",
-        "updatedAt",
-        "",
+        '',
+        '_id',
+        'customer',
+        'createdAt',
+        'items',
+        'total',
+        'updatedAt',
+        '',
       ],
     },
   ],
@@ -361,18 +361,50 @@ const ProductElement = ({ product, isEditMode, setIsEditMode, toggleCheckBox, se
         <Icon name="square-outline" size={20} color="#000" />
       </View>
       <Column>{product?._id}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.name} /> : product?.name}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.description} /> : product?.description}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.category} /> : product?.category}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.subcategory} /> : product?.subcategory}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.price?.toString()} /> : formatPrice(product?.price)}</Column>
-      <Column>{product?.imageIds}</Column>
-      <Column>{isEditMode ? <Checkbox
-    disabled={false}
-    value={toggleCheckBox}
-    onValueChange={() => setToggleCheckBox(!toggleCheckBox)}
-  />: product?.inStock}</Column>
-      <View style={[styles.col, { alignItems: "center" }]}>
+      <Column>
+        {isEditMode ? <TextInput value={product?.name} /> : product?.name}
+      </Column>
+      <Column>
+        {isEditMode ? (
+          <TextInput value={product?.description} />
+        ) : (
+          product?.description
+        )}
+      </Column>
+      <Column>
+        {isEditMode ? (
+          <TextInput value={product?.category} />
+        ) : (
+          product?.category
+        )}
+      </Column>
+      <Column>
+        {isEditMode ? (
+          <TextInput value={product?.subcategory} />
+        ) : (
+          product?.subcategory
+        )}
+      </Column>
+      <Column>
+        {isEditMode ? (
+          <TextInput value={product?.price?.toString()} />
+        ) : (
+          formatPrice(product?.price)
+        )}
+      </Column>
+      <Column>{product?.image}</Column>
+      <Column>
+        {isEditMode ? (
+          <Checkbox
+            disabled={false}
+            value={toggleCheckBox}
+            onValueChange={() => setToggleCheckBox(!toggleCheckBox)}
+          />
+        ) : (
+          product?.inStock
+        )}
+      </Column>
+      <View style={[styles.col, { alignItems: 'center' }]}>
         <ModificationContextMenu setIsEditMode={setIsEditMode} />
       </View>
     </Row>

@@ -9,11 +9,26 @@ import Checkbox from 'expo-checkbox';
 import { ShopContext } from '@/context/shop.context';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
-const ItemDetailsPopup = ({ product, dimensions, setShowPopover }: { product: Product, dimensions: ScaledSize, setShowPopover : React.Dispatch<React.SetStateAction<boolean>> }) => {
+type ItemFull = {
+  product: Product, dimensions: ScaledSize, setShowPopover : React.Dispatch<React.SetStateAction<boolean>>, productColors: {
+    Red: string;
+    Orange: string;
+    Yellow: string;
+    Green: string;
+    Blue: string;
+    Purple: string;
+    Black: string;
+    White: string;
+    Grey: string;
+    Pink: string;
+  }
+}
+
+const ItemDetailsPopup = ({ product, dimensions, setShowPopover, productColors }: ItemFull) => {
   const { addToCart } = useContext(ShopContext);
   const details = StyleSheet.create({
     popover: {
-      flexDirection: (254+700 > dimensions.width) ? 'column' : 'row',
+      flexDirection: (254 + 700 > dimensions.width) ? 'column' : 'row',
       flex: 1,
     },
     picture: {
@@ -68,19 +83,19 @@ const ItemDetailsPopup = ({ product, dimensions, setShowPopover }: { product: Pr
   return (
     <View style={[details.popover]}>
       <View style={details.picture}>
-      <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
-      <Text style={[styles.itemStockText, (product.inStock) ? styles.inStock : styles.outStock]} numberOfLines={1}>{(product.inStock) ? "In stock" : "Out of stock"}</Text>
-      </ImageBackground>
+        <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
+          <Text style={[styles.itemStockText, (product.inStock) ? styles.inStock : styles.outStock]} numberOfLines={1}>{(product.inStock) ? "In stock" : "Out of stock"}</Text>
+        </ImageBackground>
       </View>
       <View style={details.info}>
         <Text style={details.brand}>{product.brand}</Text>
         <Text style={details.name}>{product.name}</Text>
         <View style={details.rating}>
-          <Icon name={"star"} color={"gold"} size={22}/>
-          <Icon name={"star"} color={"gold"} size={22}/>
-          <Icon name={"star"} color={"gold"} size={22}/>
-          <Icon name={"star"} color={"gold"} size={22}/>
-          <Icon name={"star-half"} color={"gold"} size={22}/>
+          <Icon name={"star"} color={"gold"} size={22} />
+          <Icon name={"star"} color={"gold"} size={22} />
+          <Icon name={"star"} color={"gold"} size={22} />
+          <Icon name={"star"} color={"gold"} size={22} />
+          <Icon name={"star-half"} color={"gold"} size={22} />
         </View>
         <Text style={details.price}>{product.price.toLocaleString('en-US', {
           style: 'currency',
@@ -92,29 +107,29 @@ const ItemDetailsPopup = ({ product, dimensions, setShowPopover }: { product: Pr
         {(product.subcategory) ? <Text>Subcategory: {product.subcategory}</Text> : <></>}
         {(product.material) ? <Text>Material: {product.material}</Text> : <></>}
         {(product.wheelSize) ? <Text>Wheel Size: {product.wheelSize}</Text> : <></>}
-        { (product.color || product.gender) ?
-        <View style={details.icons}>
+        {(product.color || product.gender) ?
+          <View style={details.icons}>
             <View style={styles.colors}>
-              <View style={[styles.colorBox, {backgroundColor: product.color.toLowerCase()}]}></View>
+              <View style={[styles.colorBox, { backgroundColor: productColors[product.color] }]}></View>
             </View>
             {
-              (product.gender == "Mens") ? <Icon name={"male"} color={"#000"} size={22}/> :
-              (product.gender == "Womens") ? <Icon name={"female"} color={"#000"} size={22}/> :
-              <></>
+              (product.gender == "Mens") ? <Icon name={"male"} color={"#000"} size={22} /> :
+                (product.gender == "Womens") ? <Icon name={"female"} color={"#000"} size={22} /> :
+                  <></>
             }
-        </View> : <></>
+          </View> : <></>
         }
         {
-            (product.inStock) ? (
-              <TouchableOpacity style={details.addCartBtn} onPress={() => {
-                addToCart(product);
-                setShowPopover(false);
-              }}>
-                <Text style={details.addCartBtnText}>Add to cart</Text>
-                <Icon name="cart-outline" size={30} color="#FFF" />
-              </TouchableOpacity>
-            ) : (<View></View>)
-          }
+          (product.inStock) ? (
+            <TouchableOpacity style={details.addCartBtn} onPress={() => {
+              addToCart(product);
+              setShowPopover(false);
+            }}>
+              <Text style={details.addCartBtnText}>Add to cart</Text>
+              <Icon name="cart-outline" size={30} color="#FFF" />
+            </TouchableOpacity>
+          ) : (<View></View>)
+        }
       </View>
     </View>
   )
@@ -124,40 +139,52 @@ const Item = ({ product, dimensions }: { product: Product, dimensions: ScaledSiz
   const [showPopover, setShowPopover] = useState(false);
   //const { addToCart } = useContext(ShopContext);
   const price = product.price;
+  const productColors = {
+    "Red": "tomato",
+    "Orange": "orange",
+    "Yellow": "gold",
+    "Green": "lightgreen",
+    "Blue": "cornflowerblue",
+    "Purple": "purple",
+    "Black": "blakc",
+    "White": "white",
+    "Grey": "gray",
+    "Pink": "pink"
+  };
   //const color = () => ["tomato", "cornflowerblue", "beige", "brown", "brickred"][Math.floor(Math.random() * 5)];
   return (
     <Popover
-    isVisible={showPopover}
-    onRequestClose={() => setShowPopover(false)}
-    placement={(254+700 > dimensions.width) ? PopoverPlacement.AUTO : PopoverPlacement.FLOATING}
-    from={
-    <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
-    <View style={styles.item}>
-      <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
-      <View style={styles.priceBubble}>
-        <Text style={styles.priceText} numberOfLines={1}>{(price) ? price.toLocaleString('en-US', {
-          style: 'currency',
-          currency: 'USD',
-        }) : "$"+price}</Text>
-      </View>
-      <View style={styles.itemName}>
-        <Text style={styles.itemNameText} numberOfLines={1}>{product.name}</Text>
-        <View style={styles.subheader}>
-          <Text style={[styles.itemStockText, (product.inStock) ? styles.inStock : styles.outStock]} numberOfLines={1}>{(product.inStock) ? "In stock" : "Out of stock"}</Text>
-          {(product.subcategory) ? (
-            <View style={styles.tag}>
-              <Text style={styles.tagText} numberOfLines={1}>{product.subcategory}</Text>
-            </View>
-           ) : (<View></View>)}
-        </View>
-      </View>
-      <View style={styles.itemTray}>
-          {(product.category == "Bike" || product.category == "Bikes" && product.color) ? (
-            <View style={styles.colors}>
-              <View style={[styles.colorBox, {backgroundColor: product.color.toLowerCase()}]}></View>
-            </View>
-          ): (<View></View>)}
-          {/* {
+      isVisible={showPopover}
+      onRequestClose={() => setShowPopover(false)}
+      placement={(254 + 700 > dimensions.width) ? PopoverPlacement.AUTO : PopoverPlacement.FLOATING}
+      from={
+        <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
+          <View style={styles.item}>
+            <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
+              <View style={styles.priceBubble}>
+                <Text style={styles.priceText} numberOfLines={1}>{(price) ? price.toLocaleString('en-US', {
+                  style: 'currency',
+                  currency: 'USD',
+                }) : "$" + price}</Text>
+              </View>
+              <View style={styles.itemName}>
+                <Text style={styles.itemNameText} numberOfLines={1}>{product.name}</Text>
+                <View style={styles.subheader}>
+                  <Text style={[styles.itemStockText, (product.inStock) ? styles.inStock : styles.outStock]} numberOfLines={1}>{(product.inStock) ? "In stock" : "Out of stock"}</Text>
+                  {(product.subcategory) ? (
+                    <View style={styles.tag}>
+                      <Text style={styles.tagText} numberOfLines={1}>{product.subcategory}</Text>
+                    </View>
+                  ) : (<View></View>)}
+                </View>
+              </View>
+              <View style={styles.itemTray}>
+                {(product.category == "Bike" || product.category == "Bikes" && product.color) ? (
+                  <View style={styles.colors}>
+                    <View style={[styles.colorBox, { backgroundColor: productColors[product.color] }]}></View>
+                  </View>
+                ) : (<View></View>)}
+                {/* {
             (product.inStock) ? (
               <TouchableOpacity style={[styles.buttonRound, styles.offsetButton]} onPress={() => {
                 addToCart(product)
@@ -166,17 +193,17 @@ const Item = ({ product, dimensions }: { product: Product, dimensions: ScaledSiz
               </TouchableOpacity>
             ) : (<View></View>)
           } */}
-      </View>
-      </ImageBackground>
-    </View>
-    </TouchableOpacity>
-    }>
-    <ItemDetailsPopup product={product} dimensions={dimensions} setShowPopover={setShowPopover}/>
-</Popover>
+              </View>
+            </ImageBackground>
+          </View>
+        </TouchableOpacity>
+      }>
+      <ItemDetailsPopup product={product} dimensions={dimensions} setShowPopover={setShowPopover} productColors={productColors} />
+    </Popover>
   )
 }
 
-function ListProducts({state, dimensions}) {
+function ListProducts({ state, dimensions }) {
   const [products, setProducts] = useState([{}] as [Product]);
   useEffect(() => {
     console.dir(state.filterObject);
@@ -185,7 +212,7 @@ function ListProducts({state, dimensions}) {
 
   const sortData = (data) => {
     return data.sort((a, b) => {
-      if(b[state.field] != undefined && a[state.field] != undefined) {
+      if (b[state.field] != undefined && a[state.field] != undefined) {
         return state.asc
           ? b[state.field] - a[state.field]
           : a[state.field] - b[state.field];
@@ -195,17 +222,17 @@ function ListProducts({state, dimensions}) {
 
   return (
     <View style={styles.products}>
-        {products && (
-          <FlatList
-            data={sortData(products)}
-            initialNumToRender={10}
-            numColumns={4}
-            renderItem={({ item, index }) => (
-              <Item product={item} key={index} dimensions={dimensions} />
-            )}
-            keyExtractor={(product: Product) => product?._id}
-          />
-        )}
+      {products && (
+        <FlatList
+          data={sortData(products)}
+          initialNumToRender={10}
+          numColumns={4}
+          renderItem={({ item, index }) => (
+            <Item product={item} key={index} dimensions={dimensions} />
+          )}
+          keyExtractor={(product: Product) => product?._id}
+        />
+      )}
     </View>
   );
 }
@@ -221,49 +248,49 @@ const Filters = (props) => {
 
   return (
     <View style={styles.toolbar}>
-    <ScrollView>
-      <Text style={styles.optionsMainText}>Filters</Text>
-      {Object.keys(labels).map((label, i) => (
-      <View style={styles.options} key={i}>
-        <TouchableOpacity style={{flexDirection: 'row', justifyContent: 'space-between'}}
-        onPress={() => {
-          (254+700 > props.dimensions.width) ?
-          setAccordian({...Object.fromEntries(Object.entries(accordian).map(([k, v]) => [k, false])), [label] : !accordian[label]}) :
-          setAccordian({...accordian, [label] : !accordian[label]});
-        }}>
-          <Text style={styles.optionsHeader}>{label}</Text>
-          { (accordian[label]) ? <Icon name="chevron-up" size={18}/> : <Icon name="chevron-down" size={18}/> }
-        </TouchableOpacity>
-        <View style={styles.optionSubheader}>
-          {
-            labels[label].map((value, i) => (
-              <View style={[styles.checkBoxRow, {display: (accordian[label]) ? 'flex' : 'none'}]} key={i}>
-                <Checkbox value={filterState.checkMarks[value] || false} onValueChange={() => {
-                  filterState.setCheckMarks({...filterState.checkMarks, [value] : !filterState.checkMarks[value]});
-                  const filters = (!Object.keys(state.filterObject).includes(label)) ? {...state.filterObject, [label] : {$in : []}} : {...state.filterObject};
-                  state.filterSet( 
-                    (filters[label].$in.includes(value)) ?
-                    {...filters, [label] : {$in : filters[label].$in.filter((e)=>e!=value)}}
-                    : {...filters, [label] : {$in : [...filters[label].$in, value]}} );
-                  }}/>
-                <Text style={styles.optionsText}>{value}</Text>
-              </View>
-            ))
-          }
-        </View>
-      </View>
-    ))}
-    </ScrollView>
-  </View>
+      <ScrollView>
+        <Text style={styles.optionsMainText}>Filters</Text>
+        {Object.keys(labels).map((label, i) => (
+          <View style={styles.options} key={i}>
+            <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+              onPress={() => {
+                (254 + 700 > props.dimensions.width) ?
+                  setAccordian({ ...Object.fromEntries(Object.entries(accordian).map(([k, v]) => [k, false])), [label]: !accordian[label] }) :
+                  setAccordian({ ...accordian, [label]: !accordian[label] });
+              }}>
+              <Text style={styles.optionsHeader}>{label}</Text>
+              {(accordian[label]) ? <Icon name="chevron-up" size={18} /> : <Icon name="chevron-down" size={18} />}
+            </TouchableOpacity>
+            <View style={styles.optionSubheader}>
+              {
+                labels[label].map((value, i) => (
+                  <View style={[styles.checkBoxRow, { display: (accordian[label]) ? 'flex' : 'none' }]} key={i}>
+                    <Checkbox value={filterState.checkMarks[value] || false} onValueChange={() => {
+                      filterState.setCheckMarks({ ...filterState.checkMarks, [value]: !filterState.checkMarks[value] });
+                      const filters = (!Object.keys(state.filterObject).includes(label)) ? { ...state.filterObject, [label]: { $in: [] } } : { ...state.filterObject };
+                      state.filterSet(
+                        (filters[label].$in.includes(value)) ?
+                          { ...filters, [label]: { $in: filters[label].$in.filter((e) => e != value) } }
+                          : { ...filters, [label]: { $in: [...filters[label].$in, value] } });
+                    }} />
+                    <Text style={styles.optionsText}>{value}</Text>
+                  </View>
+                ))
+              }
+            </View>
+          </View>
+        ))}
+      </ScrollView>
+    </View>
   )
 }
 
 
-export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
+export const Shop = ({ dimensions }: { dimensions: ScaledSize }) => {
   const [asc, setAsc] = useState(true);
   const [sortfield, sortsetField] = useState("price");
-  const [filterObject, filterSet] = useState<any>({"category": {$in : ["Bikes"]}});
-  const [checkMarks, setCheckMarks] = useState({"Bikes": true});
+  const [filterObject, filterSet] = useState<any>({ "category": { $in: ["Bikes"] } });
+  const [checkMarks, setCheckMarks] = useState({ "Bikes": true });
 
   const state = {
     asc: asc,
@@ -283,67 +310,67 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
   const responsive = StyleSheet.create({
     /* Sort Styles */
     toolbar: {
-      display: (254+700 < dimensions.width) ? 'flex' : 'none',
+      display: (254 + 700 < dimensions.width) ? 'flex' : 'none',
     },
     hideOnDesktop: {
-      display: (254+700 > dimensions.width) ? 'flex' : 'none',
+      display: (254 + 700 > dimensions.width) ? 'flex' : 'none',
     },
   });
 
   const [searchText, setSearchText] = useState("");
   const searchFunc = (text) => {
     setSearchText(text);
-    filterSet({...state.filterObject, "name" : {$regex : text}});
+    filterSet({ ...state.filterObject, "name": { $regex: text } });
   }
   return (
     <View style={styles.container}>
       <View style={responsive.toolbar}>
-        <Filters filterState={filterState} dimensions={dimensions}/>
+        <Filters filterState={filterState} dimensions={dimensions} />
       </View>
-    
+
       <ScrollView>
         <View style={styles.sortBar}>
           <ScrollView horizontal={true}>
-          <View style={[styles.sortBarCol, responsive.hideOnDesktop]}>
-            <OpenFilters filterState={filterState} dimensions={dimensions}/>
-          </View>
-          <View style={styles.sortBarCol}>
-            <Text style={styles.sortTextHeader}>Sort Options: </Text>
-          </View>
-          <View style={styles.sortBarCol}>
-            <Text style={styles.sortText}>Price</Text>
-            <TouchableOpacity style={styles.sortBtn}
-              onPressOut={() => {
-                if(sortfield == "price") setAsc(!asc); 
-                else sortsetField("price");
-              }}
-            >
-              <Icon name="swap-vertical" size={20} color="#000000aa" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.sortBarCol}>
-            <Text style={styles.sortText}>In Stock</Text>
-            <TouchableOpacity style={styles.sortBtn}
-              onPressOut={() => {
-                if(sortfield == "inStock") setAsc(!asc); 
-                else sortsetField("inStock");
-              }}
-            >
-              <Icon name="swap-vertical" size={20} color="#000000aa" />
-            </TouchableOpacity>
-          </View>
-          <View style={styles.searchBar}>
-            <Icon name="search-sharp" size={30} color="#000" />
-            <TextInput
-              style={styles.textInput}
-              onChangeText={searchFunc}
-              value={searchText}
-              placeholder='Search'
-            />
-          </View>
+            <View style={[styles.sortBarCol, responsive.hideOnDesktop]}>
+              <OpenFilters filterState={filterState} dimensions={dimensions} />
+            </View>
+            <View style={styles.sortBarCol}>
+              <Text style={styles.sortTextHeader}>Sort Options: </Text>
+            </View>
+            <View style={styles.sortBarCol}>
+              <Text style={styles.sortText}>Price</Text>
+              <TouchableOpacity style={styles.sortBtn}
+                onPressOut={() => {
+                  if (sortfield == "price") setAsc(!asc);
+                  else sortsetField("price");
+                }}
+              >
+                <Icon name="swap-vertical" size={20} color="#000000aa" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.sortBarCol}>
+              <Text style={styles.sortText}>In Stock</Text>
+              <TouchableOpacity style={styles.sortBtn}
+                onPressOut={() => {
+                  if (sortfield == "inStock") setAsc(!asc);
+                  else sortsetField("inStock");
+                }}
+              >
+                <Icon name="swap-vertical" size={20} color="#000000aa" />
+              </TouchableOpacity>
+            </View>
+            <View style={styles.searchBar}>
+              <Icon name="search-sharp" size={30} color="#000" />
+              <TextInput
+                style={styles.textInput}
+                onChangeText={searchFunc}
+                value={searchText}
+                placeholder='Search'
+              />
+            </View>
           </ScrollView>
         </View>
-          <ListProducts state={state} dimensions={dimensions}/>
+        <ListProducts state={state} dimensions={dimensions} />
       </ScrollView>
     </View>
   );
@@ -527,7 +554,7 @@ const styles = StyleSheet.create({
     position: 'relative',
     top: -60,
     left: 100,
-    maxWidth: 370-120 
+    maxWidth: 370 - 120
   },
   itemNameText: {
     fontSize: 30
@@ -595,7 +622,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 15,
-  }, 
+  },
   colors: {
     flexDirection: 'row',
     gap: 10,

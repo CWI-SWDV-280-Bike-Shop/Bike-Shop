@@ -89,6 +89,7 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
   const responsiveWizard = (value) => dimensions.width * (value/1920)
   const styles = StyleSheet.create({
     button: {
+      height: 50,
       paddingVertical: 10,
       paddingHorizontal: 30,
       backgroundColor: 'transparent',
@@ -97,6 +98,7 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
       borderRadius: 5,
     },
     buttonGroup: {
+      
       marginTop: 20,
       alignItems: 'center',
       justifyContent: 'center',
@@ -145,6 +147,7 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
       color: '#fff'
     },
     block: {
+      flex: 1,
       borderColor: '#3fab82',
       borderTopWidth: 10,
       flexDirection: 'column',
@@ -162,9 +165,14 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
       maxWidth: Math.min(600, dimensions.width * .9),
       backgroundColor: '#3c4b48'
     },
+    mobileWrap: {
+      flexDirection: 'row'
+    },
     basicText: {
-        fontSize: 18,
-        color: '#fff'
+      flex: 1, 
+      flexWrap: 'wrap',
+      fontSize: 18,
+      color: '#fff'
     },
     container: {
       flex: 1,
@@ -232,7 +240,9 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
                 </View>
                 <View style={styles.block}>
                   <Text style={styles.heroText}>{item.hero}</Text>
-                  <Text style={styles.basicText}>{item.content}</Text>
+                  <View style={styles.mobileWrap}>
+                    <Text style={styles.basicText}>{item.content}</Text>
+                  </View>
                   <View style={styles.buttonGroup}>
                     <TouchableOpacity style={styles.button}>
                       <Text style={styles.buttonText}>View {item.hero}</Text>

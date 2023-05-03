@@ -31,111 +31,115 @@ const Cart = (props: DrawerHeaderProps) => {
     <View style={[Styles.container]}>
       <Text style={[Styles.title, Styles.bold]}>Cart</Text>
       <ScrollView>
-        {cartItems.map((cartItem: CartItem, index) => (
-          <View style={[Styles.itemCard, Styles.row]} key={index}>
-            {/* Product */}
-            <View style={[Styles.row, Styles.productContainer]}>
-              <View style={Styles.productImageContainer}>
-                {(cartItem?.product?.image && (
-                  <ImageBackground
-                    style={Styles.productImage}
-                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                    // @ts-ignore
-                    source={cartItem?.product?.image}
-                    resizeMode="contain"
-                  />
-                )) || <Icon name="image-outline" size={128} />}
-              </View>
-              <View style={[Styles.productTextContainer]}>
-                <Text style={Styles.productName}>
-                  {cartItem?.product?.name} -{' '}
-                  <Text style={Styles.productPrice}>
-                    {formatPrice(cartItem?.product?.price)}
+        {cartItems.map((cartItem: CartItem, index) => {
+          const firstImage = cartItem.product.images[0] ?? {};
+
+          return (
+            <View style={[Styles.itemCard, Styles.row]} key={index}>
+              {/* Product */}
+              <View style={[Styles.row, Styles.productContainer]}>
+                <View style={Styles.productImageContainer}>
+                  {('url' in firstImage && (
+                    <ImageBackground
+                      style={Styles.productImage}
+                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                      // @ts-ignore
+                      source={firstImage.url}
+                      resizeMode="contain"
+                    />
+                  )) || <Icon name="image-outline" size={128} />}
+                </View>
+                <View style={[Styles.productTextContainer]}>
+                  <Text style={Styles.productName}>
+                    {cartItem?.product?.name} -{' '}
+                    <Text style={Styles.productPrice}>
+                      {formatPrice(cartItem?.product?.price)}
+                    </Text>
                   </Text>
-                </Text>
-                <Text style={[Styles.productDescription]}>
-                  {cartItem?.product?.description}
-                </Text>
+                  <Text style={[Styles.productDescription]}>
+                    {cartItem?.product?.description}
+                  </Text>
 
-                <Text>
-                  <Text style={Styles.productLabel}>Category: </Text>
-                  {cartItem?.product?.category}
-                </Text>
-                <Text>
-                  <Text style={Styles.productLabel}>Subcategory: </Text>
-                  {cartItem?.product?.subcategory}
-                </Text>
-                {cartItem?.product?.category === 'Bikes' && (
-                  <>
-                    <Text>
-                      <Text style={Styles.productLabel}>Brand: </Text>
-                      {cartItem?.product?.brand}
-                    </Text>
-                    <Text>
-                      <Text style={Styles.productLabel}>Material: </Text>
-                      {cartItem?.product?.material}
-                    </Text>
-                    <Text>
-                      <Text style={Styles.productLabel}>Wheel Size: </Text>
-                      {cartItem?.product?.wheelSize}
-                    </Text>
-                    <Text>
-                      <Text style={Styles.productLabel}>Color: </Text>
-                      {cartItem?.product?.color}
-                    </Text>
-                    <Text>
-                      <Text style={Styles.productLabel}>Size: </Text>
-                      {cartItem?.product?.size}
-                    </Text>
-                    <Text>
-                      <Text style={Styles.productLabel}>Gender: </Text>
-                      {cartItem?.product?.gender}
-                    </Text>
-                  </>
-                )}
+                  <Text>
+                    <Text style={Styles.productLabel}>Category: </Text>
+                    {cartItem?.product?.category}
+                  </Text>
+                  <Text>
+                    <Text style={Styles.productLabel}>Subcategory: </Text>
+                    {cartItem?.product?.subcategory}
+                  </Text>
+                  {cartItem?.product?.category === 'Bikes' && (
+                    <>
+                      <Text>
+                        <Text style={Styles.productLabel}>Brand: </Text>
+                        {cartItem?.product?.brand}
+                      </Text>
+                      <Text>
+                        <Text style={Styles.productLabel}>Material: </Text>
+                        {cartItem?.product?.material}
+                      </Text>
+                      <Text>
+                        <Text style={Styles.productLabel}>Wheel Size: </Text>
+                        {cartItem?.product?.wheelSize}
+                      </Text>
+                      <Text>
+                        <Text style={Styles.productLabel}>Color: </Text>
+                        {cartItem?.product?.color}
+                      </Text>
+                      <Text>
+                        <Text style={Styles.productLabel}>Size: </Text>
+                        {cartItem?.product?.size}
+                      </Text>
+                      <Text>
+                        <Text style={Styles.productLabel}>Gender: </Text>
+                        {cartItem?.product?.gender}
+                      </Text>
+                    </>
+                  )}
+                </View>
+              </View>
+
+              <View style={[Styles.center, { gap: 10 }]}>
+                <Text style={Styles.actionsLabel}>Quantity</Text>
+                {/* Quantity */}
+                <View style={[Styles.row, Styles.center]}>
+                  <TouchableOpacity
+                    style={[Styles.button, Colors.bgArtichoke]}
+                    onPress={() => removeFromCart(cartItem?.product)}
+                  >
+                    <Icon size={15} name="remove-outline" color={'white'} />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      margin: 20,
+                      fontSize: 24,
+                    }}
+                  >
+                    {cartItem?.quantity}
+                  </Text>
+                  <TouchableOpacity
+                    style={[Styles.button, Colors.bgBlack]}
+                    onPress={() => addToCart(cartItem?.product)}
+                  >
+                    <Icon size={15} name="add-outline" color={'white'} />
+                  </TouchableOpacity>
+                </View>
+
+                {/* Delete */}
+                <View style={[Styles.center, { width: '100%' }]}>
+                  <Text style={Styles.actionsLabel}>Remove</Text>
+                  <TouchableOpacity
+                    style={[Styles.button, Styles.deleteBtn, { width: '100%' }]}
+                    onPress={() => deleteFromCart(cartItem?.product)}
+                  >
+                    <Icon size={15} name="trash-outline" color={'white'} />
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-
-            <View style={[Styles.center, { gap: 10 }]}>
-              <Text style={Styles.actionsLabel}>Quantity</Text>
-              {/* Quantity */}
-              <View style={[Styles.row, Styles.center]}>
-                <TouchableOpacity
-                  style={[Styles.button, Colors.bgArtichoke]}
-                  onPress={() => removeFromCart(cartItem?.product)}
-                >
-                  <Icon size={15} name="remove-outline" color={'white'} />
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    textAlign: 'center',
-                    margin: 20,
-                    fontSize: 24,
-                  }}
-                >
-                  {cartItem?.quantity}
-                </Text>
-                <TouchableOpacity
-                  style={[Styles.button, Colors.bgBlack]}
-                  onPress={() => addToCart(cartItem?.product)}
-                >
-                  <Icon size={15} name="add-outline" color={'white'} />
-                </TouchableOpacity>
-              </View>
-
-              {/* Delete */}
-              <View style={[Styles.center, { width: '100%' }]}>
-                <Text style={Styles.actionsLabel}>Remove</Text>
-                <TouchableOpacity
-                  style={[Styles.button, Styles.deleteBtn, { width: '100%' }]}
-                  onPress={() => deleteFromCart(cartItem?.product)}
-                >
-                  <Icon size={15} name="trash-outline" color={'white'} />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        ))}
+          );
+        })}
       </ScrollView>
       <View style={Styles.checkoutBtnContainer}>
         <View style={Styles.checkoutTextContainer}>

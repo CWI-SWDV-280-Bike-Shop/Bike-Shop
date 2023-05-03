@@ -39,7 +39,6 @@ export type User = AuthUser & {
   orders?: [Order];
 };
 
-
 // Product
 export type Product = Data & {
   name?: string;
@@ -47,7 +46,7 @@ export type Product = Data & {
   category?: string;
   subcategory?: string;
   price?: number;
-  image?: string;
+  images?: ({url?: string} | {newImageIndex: number})[];
   inStock?: boolean;
   brand?: string;
   material?: string;

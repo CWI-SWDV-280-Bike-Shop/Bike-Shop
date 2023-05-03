@@ -16,10 +16,11 @@ import { ShopContext } from '@/context/shop.context';
 import { DrawerHeaderProps } from '@react-navigation/drawer';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
-const ItemDetailsPopup = ({ product }: { product: Product }) => {
+const ItemDetailsPopup = ({ product, dimensions, setShowPopover }: { product: Product, dimensions: ScaledSize, setShowPopover : React.Dispatch<React.SetStateAction<boolean>> }) => {
+  const { addToCart } = useContext(ShopContext);
   const details = StyleSheet.create({
     popover: {
-      flexDirection: 'row',
+      flexDirection: (254+700 > dimensions.width) ? 'column' : 'row',
       flex: 1,
     },
     picture: {
@@ -50,12 +51,32 @@ const ItemDetailsPopup = ({ product }: { product: Product }) => {
     },
     rating: {
       flexDirection: 'row'
+    },
+    addCartBtn: {
+      flexDirection: 'row',
+      padding: 5,
+      backgroundColor: '#42B66D',
+      borderRadius: 5,
+      justifyContent: 'center',
+      alignItems: 'center',
+      gap: 10,
+    },
+    addCartBtnText: {
+      color: "#fff",
+      fontSize: 18,
+      fontWeight: '700',
+    },
+    icons: {
+      flexDirection: 'row',
+      padding: 5,
+      gap: 10,
     }
   })
   return (
     <View style={[details.popover]}>
       <View style={details.picture}>
       <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
+      <Text style={[styles.itemStockText, (product.inStock) ? styles.inStock : styles.outStock]} numberOfLines={1}>{(product.inStock) ? "In stock" : "Out of stock"}</Text>
       </ImageBackground>
       </View>
       <View style={details.info}>
@@ -68,37 +89,63 @@ const ItemDetailsPopup = ({ product }: { product: Product }) => {
           <Icon name={"star"} color={"gold"} size={22}/>
           <Icon name={"star-half"} color={"gold"} size={22}/>
         </View>
-        <Text style={details.price}>${product.price}</Text>
-        <Text style={details.label}>Size: {product.size}</Text>
+        <Text style={details.price}>{product.price.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        })}</Text>
         <Text>{product.description}</Text>
-        <Text>Category: {product.category}</Text>
-        <Text>Subcategory: {product.subcategory}</Text>
-        <Text>inStock: {product.inStock}</Text>
-        <Text>Material: {product.material}</Text>
-        <Text>Wheel Size: {product.wheelSize}</Text>
-        <Text>Color: {product.color}</Text>
-        <Text>Gender: {product.gender}</Text>
+        {(product.size) ? <Text style={details.label}>Size: {product.size}</Text> : <></>}
+        {(product.category) ? <Text>Category: {product.category}</Text> : <></>}
+        {(product.subcategory) ? <Text>Subcategory: {product.subcategory}</Text> : <></>}
+        {(product.material) ? <Text>Material: {product.material}</Text> : <></>}
+        {(product.wheelSize) ? <Text>Wheel Size: {product.wheelSize}</Text> : <></>}
+        { (product.color || product.gender) ?
+        <View style={details.icons}>
+            <View style={styles.colors}>
+              <View style={[styles.colorBox, {backgroundColor: product.color.toLowerCase()}]}></View>
+            </View>
+            {
+              (product.gender == "Mens") ? <Icon name={"male"} color={"#000"} size={22}/> :
+              (product.gender == "Womens") ? <Icon name={"female"} color={"#000"} size={22}/> :
+              <></>
+            }
+        </View> : <></>
+        }
+        {
+            (product.inStock) ? (
+              <TouchableOpacity style={details.addCartBtn} onPress={() => {
+                addToCart(product);
+                setShowPopover(false);
+              }}>
+                <Text style={details.addCartBtnText}>Add to cart</Text>
+                <Icon name="cart-outline" size={30} color="#FFF" />
+              </TouchableOpacity>
+            ) : (<View></View>)
+          }
       </View>
     </View>
   )
 }
 
-const Item = ({ product }: { product: Product }) => {
+const Item = ({ product, dimensions }: { product: Product, dimensions: ScaledSize }) => {
   const [showPopover, setShowPopover] = useState(false);
-  const { addToCart } = useContext(ShopContext);
+  //const { addToCart } = useContext(ShopContext);
   const price = product.price;
-  const color = () => ["tomato", "cornflowerblue", "beige", "brown", "brickred"][Math.floor(Math.random() * 5)];
+  //const color = () => ["tomato", "cornflowerblue", "beige", "brown", "brickred"][Math.floor(Math.random() * 5)];
   return (
     <Popover
     isVisible={showPopover}
     onRequestClose={() => setShowPopover(false)}
-    placement={PopoverPlacement.FLOATING}
+    placement={(254+700 > dimensions.width) ? PopoverPlacement.AUTO : PopoverPlacement.FLOATING}
     from={
     <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
     <View style={styles.item}>
       <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
       <View style={styles.priceBubble}>
-        <Text style={styles.priceText} numberOfLines={1}>${price}</Text>
+        <Text style={styles.priceText} numberOfLines={1}>{(price) ? price.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        }) : "$"+price}</Text>
       </View>
       <View style={styles.itemName}>
         <Text style={styles.itemNameText} numberOfLines={1}>{product.name}</Text>
@@ -112,14 +159,12 @@ const Item = ({ product }: { product: Product }) => {
         </View>
       </View>
       <View style={styles.itemTray}>
-          {(product.category == "Bike" || product.category == "Bikes") ? (
+          {(product.category == "Bike" || product.category == "Bikes" && product.color) ? (
             <View style={styles.colors}>
-              <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
-              <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
-              <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
+              <View style={[styles.colorBox, {backgroundColor: product.color.toLowerCase()}]}></View>
             </View>
           ): (<View></View>)}
-          {
+          {/* {
             (product.inStock) ? (
               <TouchableOpacity style={[styles.buttonRound, styles.offsetButton]} onPress={() => {
                 addToCart(product)
@@ -127,18 +172,18 @@ const Item = ({ product }: { product: Product }) => {
                 <Icon name="cart-outline" size={40} color="#FFF" />
               </TouchableOpacity>
             ) : (<View></View>)
-          }
+          } */}
       </View>
       </ImageBackground>
     </View>
     </TouchableOpacity>
     }>
-    <ItemDetailsPopup product={product}/>
+    <ItemDetailsPopup product={product} dimensions={dimensions} setShowPopover={setShowPopover}/>
 </Popover>
   )
 }
 
-function ListProducts({state}) {
+function ListProducts({state, dimensions}) {
   const [products, setProducts] = useState([{}] as [Product]);
   useEffect(() => {
     console.dir(state.filterObject);
@@ -163,7 +208,7 @@ function ListProducts({state}) {
             initialNumToRender={10}
             numColumns={4}
             renderItem={({ item, index }) => (
-              <Item product={item} key={index} />
+              <Item product={item} key={index} dimensions={dimensions} />
             )}
             keyExtractor={(product: Product) => product?._id}
           />
@@ -305,7 +350,7 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
           </View>
           </ScrollView>
         </View>
-          <ListProducts state={state}/>
+          <ListProducts state={state} dimensions={dimensions}/>
       </ScrollView>
     </View>
   );
@@ -473,6 +518,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 15,
+    paddingTop: 20,
     borderRadius: 10,
     position: 'relative',
     top: -25,
@@ -481,7 +527,7 @@ const styles = StyleSheet.create({
   priceText: {
     color: '#fff',
     fontWeight: '800',
-    fontSize: 22,
+    fontSize: 18,
   },
   itemName: {
     flexDirection: 'column',

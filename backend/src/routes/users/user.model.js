@@ -1,4 +1,5 @@
 import { mongoose } from '../../../src/mongoose.js';
+import { AddressSchema } from '../../schemas/address.schema.js';
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema(
@@ -14,13 +15,7 @@ const UserSchema = new Schema(
       required: true,
     },
     phone: String,
-    address: {
-      street: String,
-      city: String,
-      state: String,
-      zip: String,
-      country: String,
-    },
+    address: AddressSchema,
     role: {
       type: String,
       enum: ['Admin', 'Customer', ''],

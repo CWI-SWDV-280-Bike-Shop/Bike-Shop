@@ -12,7 +12,7 @@ export const FilterParams = () => {
     const [category, setCategory] = useState('');
     const [subcategory, setSubcategory] = useState('');
     const [price, setPrice] = useState(0);
-    const [imageIds, setImageIds] = useState([]);
+    const [image, setimage] = useState('');
     const [inStock, setInStock] = useState(true);
     const [brand, setBrand] = useState('');
     const [material, setMaterial] = useState('');
@@ -22,23 +22,23 @@ export const FilterParams = () => {
     const [gender, setGender] = useState('');
 
     const handleSubmit = async () => {
-        const params: Product = {
-            description,
-            category,
-            subcategory,
-            price,
-            imageIds,
-            inStock,
-            brand,
-            material,
-            wheelSize,
-            color,
-            size,
-            gender,
-        };
-        useEffect(() => {
-            ProductAPI.getAll(params).then((res) => setProducts(res.data));
-        }, []);
+      const params: Product = {
+        description,
+        category,
+        subcategory,
+        price,
+        image,
+        inStock,
+        brand,
+        material,
+        wheelSize,
+        color,
+        size,
+        gender,
+      };
+      useEffect(() => {
+        ProductAPI.getAll(params).then((res) => setProducts(res.data));
+      }, []);
     };
     const [products, setProducts] = useState([]);
 

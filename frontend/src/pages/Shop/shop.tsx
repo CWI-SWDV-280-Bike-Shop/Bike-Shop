@@ -30,7 +30,7 @@ const ItemDetailsPopup = ({ product, dimensions, setShowPopover, productColors }
     const rating = (price>3000) ? 5 : (price>1000) ? 4.5 : (price>500) ? 4 : (price>200) ? 3.5 : (price>50) ? 3 : Math.round((Math.random() * 3)/.5)*.5;
     //const rating = Math.round((Math.random() * 6)/.5)*.5;
     const wholeStars = Array(Math.floor(rating)).fill({});
-    const partialStars = (rating%1>0) ? Array().fill({}): [];
+    const partialStars = (rating%1>0) ? Array(1).fill({}): [];
     const emptyStars = Array(5-Math.floor(rating)-partialStars.length).fill({}); [].fill(1, 0, );
     console.log(wholeStars, partialStars, emptyStars);
     return (
@@ -298,7 +298,9 @@ const Filters = (props) => {
 export const Shop = ({ dimensions }: { dimensions: ScaledSize }) => {
   const [asc, setAsc] = useState(true);
   const [sortfield, sortsetField] = useState("price");
-  const [filterObject, filterSet] = useState<any>({ "category": { $in: ["Bikes"] } });
+  type MongoQuery<T> = { [K in keyof T] : T[K] | { $in: T[K][] } | { $regex: string } }
+
+  const [filterObject, filterSet] = useState<MongoQuery<Product>>({ "category": { $in: ["Bikes"] } });
   const [checkMarks, setCheckMarks] = useState({ "Bikes": true });
 
   const state = {

@@ -14,19 +14,20 @@ export const baseRouter = (controller, routeOptions) => {
       ...(options?.middleware ?? []),
       Object.defineProperty(
         async (req, res) => {
-              const action = await controller[methodName]({ ...req.params, ...req.body, ...req.query, files: req.files },{ appBaseURL: new URL(`${req.protocol}://${req.host}`).href } );
+          const action = await controller[methodName]({ ...req.params, ...req.body, ...req.query, files: req.files }, { appBaseURL: new URL(`${req.protocol}://${req.host}`).href });
+          let { data: result } = action;
 
-          if (action.type !== 'unauthed') {
-            const context = authContext.getStore();
-
-            if (!context) throw new InternalError('No authContext store!')
-            const { user, rolePermissions } = context;
-            if (!rolePermissions) throw new InternalError('Role permissions not defined in authContext!');
-            const grant = rolePermissions.collections[controller.modelName]?.[action.type];
-            try {
+          const context = authContext.getStore();
+          if (!context) throw new InternalError('No authContext store!')
+          try {
+            if (action.type !== 'unauthed') {
+              const { user, rolePermissions } = context;
+              if (!rolePermissions) throw new InternalError('Role permissions not defined in authContext!');
+              const modelPermissions = rolePermissions.collections[controller.modelName];
+              const grant = modelPermissions?.[action.type];
               if (!grant) throw new Forbidden();
 
-              const checkOwnershipAndCensorKeys = async (data) => {
+              const checkOwnershipAndCensorKeys = (grant) => async (data) => {
                 const oldData = (await controller.auth.findByPrimary(data)) ?? data;
                 const forbidden = grant.onlyOwn && (!user || !controller.auth.isOwnedByUser(oldData, user));
                 if (forbidden && action.write) throw new Forbidden();
@@ -35,15 +36,23 @@ export const baseRouter = (controller, routeOptions) => {
                 return data;
               }
 
-              action.data = Array.isArray(action.data) ? (await Promise.all(action.data.map(checkOwnershipAndCensorKeys))).filter((d) => d !== undefined) : await checkOwnershipAndCensorKeys(action.data)
-            } catch (error) {
-              if (error instanceof Forbidden && context.accessTokenExpired) throw new AccessTokenExpired();
-              throw error;
+              action.data = Array.isArray(action.data)
+                ? (
+                  await Promise.all(action.data.map(checkOwnershipAndCensorKeys(grant)))
+                ).filter((d) => d !== undefined)
+                : await checkOwnershipAndCensorKeys(grant)(action.data);
+
+              if (action.write) {
+                result = await checkOwnershipAndCensorKeys(modelPermissions?.read)(await action.write(action.data))
+              }
             }
+            res
+              .status(200)
+              .json(result)
+          } catch (error) {
+            if (error instanceof Forbidden && context.accessTokenExpired) throw new AccessTokenExpired();
+            throw error;
           }
-          res
-            .status(200)
-            .json(action.write ? await action.write(action.data) : action.data)
         },
         'name',
         { value: methodName }

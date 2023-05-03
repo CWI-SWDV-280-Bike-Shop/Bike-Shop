@@ -7,22 +7,22 @@ import { colors } from '@/styles/theme/Colors';
 
 export const OrderConfirmation = (props: DrawerHeaderProps) => {
   return (
-    <View style={[styles.container]}>
-      <View style={[styles.contentContainer]}>
-        <View style={[styles.headerContainer]}>
+    <View style={[Styles.container]}>
+      <View style={[Styles.contentContainer]}>
+        <View style={[Styles.headerContainer]}>
           {/*<Icon name="close-outline" size={30} color="black" />*/}
-          <Text style={[styles.header]}>Checkout Confirmation</Text>
+          <Text style={[Styles.header]}>Checkout Confirmation</Text>
         </View>
-        <View style={[styles.bodyContent]}>
+        <View style={[Styles.bodyContent]}>
           <Icon
-            style={[styles.bodyCheckMark]}
+            style={[Styles.bodyCheckMark]}
             name="checkbox-outline"
             size={70}
             color="green"
           />
-          <Text style={[styles.bodyThanks]}>Thank you for your order!</Text>
-          <Text style={[styles.bodyConfirmation]}>Your Order number is</Text>
-          <Text style={[styles.bodyOrderNumber]}>order._id</Text>
+          <Text style={[Styles.bodyThanks]}>Thank you for your order!</Text>
+          <Text style={[Styles.bodyConfirmation]}>Your Order number is</Text>
+          <Text style={[Styles.bodyOrderNumber]}>order._id</Text>
         </View>
         <View>
           <TouchableOpacity
@@ -53,14 +53,14 @@ export const OrderConfirmation = (props: DrawerHeaderProps) => {
   );
 };
 
-const styles = StyleSheet.create({
+const Styles = StyleSheet.create({
   container: {
     flex: 1,
   },
   contentContainer: {
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   header: {
     marginTop: 40,
@@ -72,20 +72,20 @@ const styles = StyleSheet.create({
     //color:"#3E6259",
   },
   headerContainer: {
-    borderBottomColor: "lightgrey",
+    borderBottomColor: 'lightgrey',
     borderBottomWidth: 1,
-    borderStyle: "solid",
+    borderStyle: 'solid',
   },
   bodyContent: {
     margin: 40,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bodyCheckMark: {
     marginBottom: 10,
   },
   bodyThanks: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 30,
   },
   bodyConfirmation: {
@@ -94,14 +94,14 @@ const styles = StyleSheet.create({
   },
   bodyOrderNumber: {
     fontSize: 30,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
   bodyShop: {
     fontSize: 30,
-    borderBottomColor: "black",
+    borderBottomColor: 'black',
     borderWidth: 3,
-    borderStyle: "solid",
+    borderStyle: 'solid',
     padding: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
 });

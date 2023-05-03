@@ -5,6 +5,7 @@ import {
   OrderItem,
   Product,
   CartItem,
+  Address,
 } from '@/types/data.types';
 import CartAPI from '@/api/cart.api';
 import { AuthContext } from './auth.context';
@@ -17,7 +18,11 @@ type ShopContextType = {
   addToCart: (newProduct: Product) => void;
   removeFromCart: (removedProduct: Product) => void;
   deleteFromCart: (removedProduct: Product) => void;
-  checkout: (cartItems: CartItem[], authUser: AuthUser) => Promise<Order>;
+  checkout: (
+    cartItems: CartItem[],
+    authUser: AuthUser,
+    address: Address
+  ) => Promise<Order>;
   message: string | null;
 };
 
@@ -28,7 +33,7 @@ export const ShopContext = createContext<ShopContextType>({
   addToCart: (newProduct) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   removeFromCart: (removedProduct) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
   deleteFromCart: (deletedProduct) => {}, // eslint-disable-line @typescript-eslint/no-empty-function
-  checkout: (cartItems, authUser) => Promise.resolve({} as Order), // eslint-disable-line @typescript-eslint/no-empty-function
+  checkout: (cartItems, authUser, address) => Promise.resolve({} as Order), // eslint-disable-line @typescript-eslint/no-empty-function
   message: null,
 });
 
@@ -131,7 +136,11 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // build order from products
-  const checkout = async (cartItems: CartItem[], authUser: AuthUser) => {
+  const checkout = async (
+    cartItems: CartItem[],
+    authUser: AuthUser,
+    address: Address
+  ) => {
     const customerId = authUser._id;
 
     const orderItems: OrderItem[] = cartItems.map((cartItem: CartItem) => ({
@@ -144,6 +153,7 @@ export const ShopProvider = ({ children }: { children: ReactNode }) => {
       customer: customerId,
       items: orderItems,
       total: total,
+      shippingAddress: address,
     };
 
     const response = await OrderAPI.create(newOrder);

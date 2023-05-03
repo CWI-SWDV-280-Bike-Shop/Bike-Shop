@@ -30,7 +30,7 @@ const Cart = (props: DrawerHeaderProps) => {
   return (
     <View style={[Styles.container]}>
       <Text style={[Styles.title, Styles.bold]}>Cart</Text>
-      <ScrollView style={Styles.itemCardsContainer}>
+      <ScrollView>
         {cartItems.map((cartItem: CartItem, index) => (
           <View style={[Styles.itemCard, Styles.row]} key={index}>
             {/* Product */}
@@ -188,7 +188,6 @@ const Styles = StyleSheet.create({
     margin: 10,
   },
   // Item Cards
-  itemCardsContainer: {},
   itemCard: {
     backgroundColor: 'white',
     padding: 20,
@@ -211,8 +210,8 @@ const Styles = StyleSheet.create({
     padding: 10,
   },
   productImage: {
-    flex: 1,
     width: 150,
+    height: 150,
     margin: 10,
   },
   productTextContainer: {

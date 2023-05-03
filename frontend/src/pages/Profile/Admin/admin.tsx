@@ -322,7 +322,7 @@ const ProductsTableHeader = ({
       category: newProductForm.category,
       subcategory: newProductForm.subcategory,
       price: newProductForm.price,
-      imageIds: newProductForm.images,
+      images: newProductForm.images,
       inStock: newProductForm.instock,
     }
     ProductAPI.create(product).then((res) => {
@@ -445,6 +445,7 @@ const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setChe
       <Column>{isEditMode ? <TextInput value={product?.category} /> : product?.category}</Column>
       <Column>{isEditMode ? <TextInput value={product?.subcategory} /> : product?.subcategory}</Column>
       <Column>{isEditMode ? <TextInput value={product?.price?.toString()} /> : formatPrice(product?.price)}</Column>
+      <Column>product?.images</Column>
       <Column>{isEditMode ? <Checkbox
     disabled={false}
     value={checkMarks[product?._id] || false}

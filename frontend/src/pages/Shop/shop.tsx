@@ -26,6 +26,21 @@ type ItemFull = {
 
 const ItemDetailsPopup = ({ product, dimensions, setShowPopover, productColors }: ItemFull) => {
   const { addToCart } = useContext(ShopContext);
+  const productRating = (price) => {
+    const rating = (price>3000) ? 5 : (price>1000) ? 4.5 : (price>500) ? 4 : (price>200) ? 3.5 : (price>50) ? 3 : Math.round((Math.random() * 3)/.5)*.5;
+    //const rating = Math.round((Math.random() * 6)/.5)*.5;
+    const wholeStars = Array(Math.floor(rating)).fill({});
+    const partialStars = (rating%1>0) ? Array().fill({}): [];
+    const emptyStars = Array(5-Math.floor(rating)-partialStars.length).fill({}); [].fill(1, 0, );
+    console.log(wholeStars, partialStars, emptyStars);
+    return (
+      <View style={details.rating}>
+        { wholeStars.map((e) => <Icon name={"star"} color={"gold"} size={22} /> ) }
+        { partialStars.map((e) => <Icon name={"star-half"} color={"gold"} size={22} /> ) }
+        { emptyStars.map((e) => <Icon name={"star-outline"} color={"gold"} size={22} /> ) }
+      </View>
+    )
+  }
   const details = StyleSheet.create({
     popover: {
       flexDirection: (254 + 700 > dimensions.width) ? 'column' : 'row',
@@ -90,13 +105,7 @@ const ItemDetailsPopup = ({ product, dimensions, setShowPopover, productColors }
       <View style={details.info}>
         <Text style={details.brand}>{product.brand}</Text>
         <Text style={details.name}>{product.name}</Text>
-        <View style={details.rating}>
-          <Icon name={"star"} color={"gold"} size={22} />
-          <Icon name={"star"} color={"gold"} size={22} />
-          <Icon name={"star"} color={"gold"} size={22} />
-          <Icon name={"star"} color={"gold"} size={22} />
-          <Icon name={"star-half"} color={"gold"} size={22} />
-        </View>
+        { productRating(product.price) }
         <Text style={details.price}>{product.price.toLocaleString('en-US', {
           style: 'currency',
           currency: 'USD',

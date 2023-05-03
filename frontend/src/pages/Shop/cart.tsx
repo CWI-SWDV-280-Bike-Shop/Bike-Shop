@@ -65,30 +65,34 @@ const Cart = (props: DrawerHeaderProps) => {
                   <Text style={Styles.productLabel}>Subcategory: </Text>
                   {cartItem?.product?.subcategory}
                 </Text>
-                <Text>
-                  <Text style={Styles.productLabel}>Brand: </Text>
-                  {cartItem?.product?.brand}
-                </Text>
-                <Text>
-                  <Text style={Styles.productLabel}>Material: </Text>
-                  {cartItem?.product?.material}
-                </Text>
-                <Text>
-                  <Text style={Styles.productLabel}>Wheel Size: </Text>
-                  {cartItem?.product?.wheelSize}
-                </Text>
-                <Text>
-                  <Text style={Styles.productLabel}>Color: </Text>
-                  {cartItem?.product?.color}
-                </Text>
-                <Text>
-                  <Text style={Styles.productLabel}>Size: </Text>
-                  {cartItem?.product?.size}
-                </Text>
-                <Text>
-                  <Text style={Styles.productLabel}>Gender: </Text>
-                  {cartItem?.product?.gender}
-                </Text>
+                {cartItem?.product?.category === 'Bikes' && (
+                  <>
+                    <Text>
+                      <Text style={Styles.productLabel}>Brand: </Text>
+                      {cartItem?.product?.brand}
+                    </Text>
+                    <Text>
+                      <Text style={Styles.productLabel}>Material: </Text>
+                      {cartItem?.product?.material}
+                    </Text>
+                    <Text>
+                      <Text style={Styles.productLabel}>Wheel Size: </Text>
+                      {cartItem?.product?.wheelSize}
+                    </Text>
+                    <Text>
+                      <Text style={Styles.productLabel}>Color: </Text>
+                      {cartItem?.product?.color}
+                    </Text>
+                    <Text>
+                      <Text style={Styles.productLabel}>Size: </Text>
+                      {cartItem?.product?.size}
+                    </Text>
+                    <Text>
+                      <Text style={Styles.productLabel}>Gender: </Text>
+                      {cartItem?.product?.gender}
+                    </Text>
+                  </>
+                )}
               </View>
             </View>
 
@@ -211,7 +215,9 @@ const Styles = StyleSheet.create({
     width: 150,
     margin: 10,
   },
-  productTextContainer: {},
+  productTextContainer: {
+    justifyContent: 'center',
+  },
   productName: {
     fontSize: 24,
     fontWeight: 'bold',

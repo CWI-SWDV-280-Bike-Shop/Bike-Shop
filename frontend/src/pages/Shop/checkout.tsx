@@ -205,40 +205,44 @@ const Checkout = (props: DrawerHeaderProps) => {
             <View style={Styles.card}>
               <Text style={Layout.subtitle}>Order Summary</Text>
               <View>
-                {cartItems.map((cartItem: CartItem, index) => (
-                  <View
-                    style={[Styles.row, { justifyContent: 'space-between' }]}
-                    key={index}
-                  >
-                    {/* Product */}
-                    <View style={[Styles.row, { gap: 10 }]}>
-                      <View style={[Styles.center, { padding: 10 }]}>
-                        {(cartItem?.product?.image && (
-                          <ImageBackground
-                            style={Styles.productImage}
-                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                            // @ts-ignore
-                            source={cartItem?.product?.image}
-                            resizeMode="contain"
-                          />
-                        )) || <Icon name="image-outline" size={128} />}
-                      </View>
-                      <View style={{ justifyContent: 'center' }}>
-                        <Text style={Styles.productName}>
-                          {cartItem?.product?.name}{' '}
-                          <Text style={{ fontWeight: 'normal' }}>
-                            x{cartItem?.quantity}
+                {cartItems.map((cartItem: CartItem, index) => {
+                  const firstImage = cartItem?.product?.images[0] ?? {};
+
+                  return (
+                    <View
+                      style={[Styles.row, { justifyContent: 'space-between' }]}
+                      key={index}
+                    >
+                      {/* Product */}
+                      <View style={[Styles.row, { gap: 10 }]}>
+                        <View style={[Styles.center, { padding: 10 }]}>
+                          {('url' in firstImage && (
+                            <ImageBackground
+                              style={Styles.productImage}
+                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                              // @ts-ignore
+                              source={firstImage.url}
+                              resizeMode="contain"
+                            />
+                          )) || <Icon name="image-outline" size={128} />}
+                        </View>
+                        <View style={{ justifyContent: 'center' }}>
+                          <Text style={Styles.productName}>
+                            {cartItem?.product?.name}{' '}
+                            <Text style={{ fontWeight: 'normal' }}>
+                              x{cartItem?.quantity}
+                            </Text>
                           </Text>
+                        </View>
+                      </View>
+                      <View style={Styles.center}>
+                        <Text style={Styles.productPrice}>
+                          {formatPrice(cartItem?.product?.price)}
                         </Text>
                       </View>
                     </View>
-                    <View style={Styles.center}>
-                      <Text style={Styles.productPrice}>
-                        {formatPrice(cartItem?.product?.price)}
-                      </Text>
-                    </View>
-                  </View>
-                ))}
+                  );
+                })}
                 <View>
                   <View style={Styles.space}>
                     <View style={[Styles.spread, Styles.row]}>

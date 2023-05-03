@@ -8,97 +8,63 @@ export default {
   permissions: {
     admin: {
       collections: {
-        orders: [
-          {
-            method: 'create',
-          },
-          {
-            method: 'read',
-          },
-          {
-            method: 'update',
-          },
-          {
-            method: 'delete',
-          },
-        ],
-        users: [
-          {
-            method: 'create',
-          },
-          {
-            method: 'read',
-          },
-          {
-            method: 'update',
-          },
-          {
-            method: 'delete',
-          },
-        ],
-        products: [
-          {
-            method: 'create',
-          },
-          {
-            method: 'read',
-          },
-          {
-            method: 'update',
-          },
-          {
-            method: 'delete',
-          },
-        ],
+        orders: {
+          create: {},
+          read: {},
+          update: {},
+          delete: {},
+        },
+        users: {
+          create: {},
+          read: {},
+          update: {},
+          delete: {},
+        },
+        products: {
+          create: {},
+          read: {},
+          update: {},
+          delete: {},
+        },
       },
     },
     customer: {
       collections: {
-        users: [
-          {
-            method: 'read',
+        users: {
+          read: {
             onlyOwn: true,
             disallowedKeys: ['role', 'password'],
           },
-          {
-            method: 'create',
+          create: {
             onlyOwn: true,
             disallowedKeys: ['role'],
           },
-          {
-            method: 'update',
+          update: {
             onlyOwn: true,
             disallowedKeys: ['role'],
           },
-          {
-            method: 'delete',
+          delete: {
             onlyOwn: true,
           },
-        ],
-        orders: [
-          {
-            method: 'create',
+        },
+        orders: {
+          create: {
             onlyOwn: true,
           },
-          {
-            method: 'read',
+          read: {
             onlyOwn: true,
           },
-        ],
-        products: [
-          {
-            method: 'read',
-          },
-        ],
+        },
+        products: {
+          read: {},
+        },
       },
     },
     unauthenticated: {
       collections: {
-        products: [
-          {
-            method: 'read',
-          },
-        ],
+        products: {
+          read: {},
+        },
       },
     },
   },

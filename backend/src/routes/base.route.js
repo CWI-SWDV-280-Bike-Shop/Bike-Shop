@@ -22,7 +22,7 @@ export const baseRouter = (controller, routeOptions) => {
             if (!context) throw new InternalError('No authContext store!')
             const { user, rolePermissions } = context;
             if (!rolePermissions) throw new InternalError('Role permissions not defined in authContext!');
-            const grant = rolePermissions.collections[controller.modelName]?.find((m) => m.method === action.type);
+            const grant = rolePermissions.collections[controller.modelName]?.[action.type];
             try {
               if (!grant) throw new Forbidden();
 

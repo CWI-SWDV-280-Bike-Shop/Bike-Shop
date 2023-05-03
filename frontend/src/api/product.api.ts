@@ -15,6 +15,10 @@ const ProductAPI = {
     return api.delete(`/products/${id}`);
   },
 
+  getLabels() {
+    return api.get('/productlabels');
+  },
+
   getAll(params?: ProductParams) {
     return api.get('/products', { params });
   },

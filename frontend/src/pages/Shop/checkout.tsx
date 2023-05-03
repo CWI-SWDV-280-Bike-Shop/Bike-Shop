@@ -27,7 +27,7 @@ export const Checkout = (props: DrawerHeaderProps) => {
   const { products, quantity, total, checkout, removeFromCart, message } = useContext(ShopContext);
   //Responsive
   const dimensions = useWindowDimensions();
-  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
+  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 768) ? true : false }
   const responsive = checkMobile(dimensions) ? mobile : web;
   //Set Order
   const [order, setOrder] = useState<Order | null>(null);
@@ -98,32 +98,23 @@ export const Checkout = (props: DrawerHeaderProps) => {
           </View>
           <View style={Styles.shippingInfo}>
             <View style={Styles.shippingDetails}>
-              <View><Text>First Name</Text></View>
-              <View><TextInput style={Styles.shippingInput}/></View>
+              <View style={Styles.shippingDetailsRight}><TextInput style={Styles.shippingInput} placeholder="First Name" placeholderTextColor={"grey"}/></View>
             </View>
-            <View style={Styles.shippingDetails}>
-              <View><Text>Last Name</Text></View>
-              <View><TextInput style={Styles.shippingInput}/></View>
+            <View>
+              <View style={Styles.shippingDetailsRight}><TextInput style={Styles.shippingInput} placeholder="Last Name" placeholderTextColor={"grey"}/></View>
             </View>
-            <View style={Styles.shippingDetails}>
-              <View><Text>Postal Code</Text></View>
-              <View><TextInput style={Styles.shippingInput}/></View>
+            <View>
+              <View style={Styles.shippingDetailsRight}><TextInput style={Styles.shippingInput} placeholder="Postal Code" placeholderTextColor={"grey"}/></View>
             </View>
-            <View style={Styles.shippingDetails}>
-              <View><Text>Address Line 1</Text></View>
-              <View><TextInput style={Styles.shippingInput}/></View>
+            <View>
+              <View style={Styles.shippingDetailsRight}><TextInput style={Styles.shippingInput} placeholder="Address 1" placeholderTextColor={"grey"}/></View>
             </View>
-            <View style={Styles.shippingDetails}>
-              <View><Text>Address Line 2</Text></View>
-              <View><TextInput style={Styles.shippingInput}/></View>
+            <View>
+              <View style={Styles.shippingDetailsRight}><TextInput style={Styles.shippingInput} placeholder="City" placeholderTextColor={"grey"}/></View>
             </View>
-            <View style={Styles.shippingDetails}>
-              <View><Text>City</Text></View>
-              <View><TextInput style={Styles.shippingInput}/></View>
-            </View>
-            <View style={Styles.shippingDetails}>
-              <View><Text>State</Text></View>
-              <View><Picker
+            <View>
+              <View style={Styles.shippingDetailsLeft}><Text>State</Text></View>
+              <View style={Styles.shippingDetailsRight}><Picker
                         style={Layout.input}
                         selectedValue={state}
                         onValueChange={(value) => setState(value)}
@@ -181,9 +172,9 @@ export const Checkout = (props: DrawerHeaderProps) => {
                         <Picker.Item label="Wyoming" value="Wyoming" />
                     </Picker></View>
             </View>
-            <View style={Styles.shippingDetails}>
-              <View><Text>Country</Text></View>
-              <View><Picker
+            <View>
+              <View style={Styles.shippingDetailsLeft}><Text>Country</Text></View>
+              <View style={Styles.shippingDetailsRight}><Picker
                         style={Layout.input}
                         selectedValue={country}
                         onValueChange={(value) => setCountry(value)}
@@ -194,20 +185,18 @@ export const Checkout = (props: DrawerHeaderProps) => {
                         <Picker.Item label="Mexico" value="Mexico" />
                     </Picker></View>
             </View>
-            <View style={Styles.shippingDetails}>
-              <View><Text>Phone</Text></View>
-              <View><TextInput style={Styles.shippingInput}/></View>
+            <View>
+              <View style={Styles.shippingDetailsRight}><TextInput style={Styles.shippingInput} placeholder="Phone" placeholderTextColor={"grey"}/></View>
             </View>
-            <View style={Styles.shippingDetails}>
-              <View><Text>Email</Text></View>
-              <View><TextInput style={Styles.shippingInput}/></View>
+            <View>
+              <View style={Styles.shippingDetailsRight}><TextInput style={Styles.shippingInput} placeholder="Email" placeholderTextColor={"grey"}/></View>
             </View>
           </View>
         </ScrollView>
       </View>
       <View style={[Styles.cart, responsive.cart]}>
-        <View style={Styles.summaryBox}>
-          <View style={Styles.headerBox}>
+        <View style={Styles.summaryBox, responsive.summaryBox}>
+          <View style={Styles.headerBoxRight}>
             <Text style={Styles.header}>Summary</Text>
           </View>
           <Text style={Styles.bodyText}>Shipping: {products && formatPrice(calculateShipping(products))}</Text>
@@ -215,11 +204,11 @@ export const Checkout = (props: DrawerHeaderProps) => {
           <Text style={Styles.bodyText}>State Tax: {formatPrice(total * 0.06)}</Text>
           <Text style={Styles.bodyText}>Total:{formatPrice((total * 1.06) + (products && calculateShipping(products)))}</Text>
         </View>
-        <View style={Styles.inYourCart}>
-          <View style={Styles.headerBox}>
-            <Text style={Styles.header}>Summary</Text>
+        <View style={Styles.inYourCart, responsive.inYourCart}>
+          <View style={Styles.headerBoxRight}>
+            <Text style={Styles.header}>In Your Cart &#40;{quantity}&#41;</Text>
           </View>
-          <Text style={Styles.bodyText}>Quantity of Items/Services: {quantity}</Text>
+          {/* <Text style={Styles.bodyText}>Quantity of Items/Services: {quantity}</Text> */}
           <Text style={Styles.bodyText}>Shipping: {products && formatPrice(calculateShipping(products))}</Text>
           <Text style={Styles.bodyText}>Ordered Items: {quantity == 0 || null ? 'There is nothing in your cart' : (products && ListOrderItems(products))}</Text>
           <Text>{errorMessage}</Text>{/* This does not have Styles yet TODO */}
@@ -231,12 +220,29 @@ export const Checkout = (props: DrawerHeaderProps) => {
 
 export default Checkout;
 
+
 const mobile = StyleSheet.create({
   container: {
+    // flexDirection: "row",
     flexDirection: "column",
   },
   cart: {
-    marginTop: 90,
+  },
+  inYourCart: {
+    margin: 5,
+    borderWidth: 2,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flex: 1,
+    flexDirection: "column",
+  },
+  summaryBox: {
+    margin: 5,
+    borderWidth: 2,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flex: 1,
+    flexDirection: "column",
   },
 });
 
@@ -245,11 +251,28 @@ const web = StyleSheet.create({
     flexDirection: "row",
   },
   cart: {
-  }
+  },
+  inYourCart: {
+    margin: 5,
+    borderWidth: 2,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flex: 1,
+    flexDirection: "column",
+  },
+  summaryBox: {
+    margin: 5,
+    borderWidth: 2,
+    backgroundColor: 'white',
+    borderRadius: 10,
+    flex: 1,
+    flexDirection: "column",
+  },
 });
 
 const Styles = StyleSheet.create({
   container: {
+    flexDirection: "row",
     padding: 10,
     flex: 1,
   },
@@ -329,6 +352,14 @@ const Styles = StyleSheet.create({
     alignContent: 'flex-start',
     borderRadius: 5,
   },
+  headerBoxRight: {
+    // marginTop: 10,
+    fontSize: 35,
+    backgroundColor: '#a6a4a4',
+    color: "white",
+    alignContent: 'flex-start',
+    borderRadius: 5,
+  },
   bodyText: {
     marginTop: 15,
     fontSize: 24,
@@ -340,15 +371,23 @@ const Styles = StyleSheet.create({
     fontSize: 15,
   },
   shippingInput: {
-    // margin: 5,
-    // padding: 10,
     borderWidth: 1,
     borderRadius: 5,
-    width: 100,
+    width: 200,
+	padding: 5,
+	marginBottom: 5,
   },
   shippingDetails: {
-    // alignItems: 'center',
+	flex: 4,
+    flexDirection: "row",
+  },
+  shippingDetailsLeft: {
+	alignContent: 'flex-start',
+  },
+  shippingDetailsRight: {
+	justifyContent: 'flex-end',
   }
+
 });
 
 

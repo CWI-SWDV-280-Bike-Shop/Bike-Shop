@@ -151,17 +151,6 @@ type ProductState = {
   setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-type OrderState = {
-  asc?: boolean,
-  setAsc?: Dispatch<SetStateAction<boolean>>,
-  field?: string,
-  setField?: Dispatch<SetStateAction<string>>,
-  orders?: Order[],
-  setOrders?: React.Dispatch<React.SetStateAction<Order[]>>
-  selectedRows?: string[]
-  setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
-}
-
 const NavigationMenu = ({ navigation }) => {
   const checkPage = (page) => {
     return (
@@ -537,13 +526,7 @@ const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setChe
 }
 
 
-function OrderElement({ order, state }: { order: Order, state: OrderState }) {
-  const selectRow = (id, remove) => {
-    console.log(state.selectedRows);
-    (remove) ?
-      state.setSelectedRows(state.selectedRows.filter((r) => r != id)) :
-      state.setSelectedRows([...state.selectedRows, id]);
-  }
+function OrderElement({ order }: { order: Order }) {
   return (
     <Row>
       <View style={styles.col}>
@@ -677,8 +660,7 @@ function ListProducts({ navigation }) {
 }
 
 function ListOrders({ navigation }) {
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [orders, setOrders] = useState([{}] as [Order]);
+  const [orders, setOrders] = useState([]);
   const [asc, setAsc] = useState(true);
   const [field, setField] = useState("name");
 
@@ -715,7 +697,7 @@ function ListOrders({ navigation }) {
           <FlatList
             data={sortData(orders)}
             renderItem={({ item, index }) => (
-              <OrderElement order={item} key={index} state={{ orders, setOrders, selectedRows, setSelectedRows }} />
+              <OrderElement order={item} key={index} />
             )}
             ListHeaderComponent={() => (
               <TableHeader

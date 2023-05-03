@@ -48,6 +48,8 @@ const Item = ({ product }: { product: Product }) => {
               <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
             </View>
           ): (<View></View>)}
+          <TouchableOpacity>
+          </TouchableOpacity>
           {
             (product.inStock) ? (
               <TouchableOpacity style={[styles.buttonRound, styles.offsetButton]} onPress={() => {
@@ -149,7 +151,7 @@ const Filters = (props) => {
 export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
   const [asc, setAsc] = useState(true);
   const [sortfield, sortsetField] = useState("price");
-  const [filterObject, filterSet] = useState({"category": {$in : ["Bikes"]}, $text: { $search: "Spearfish" }});
+  const [filterObject, filterSet] = useState<any>({"category": {$in : ["Bikes"]}});
   const [checkMarks, setCheckMarks] = useState({"Bikes": true});
 
   const state = {
@@ -177,7 +179,11 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
     },
   });
 
-  const [searchProductsText, _searchProductsText] = useState("");
+  const [searchText, setSearchText] = useState("");
+  const searchFunc = (text) => {
+    setSearchText(text);
+    filterSet({...state.filterObject, "name" : {$regex : text}});
+  }
   return (
     <View style={styles.container}>
       <View style={responsive.toolbar}>
@@ -219,8 +225,8 @@ export const Shop = ({dimensions} : {dimensions : ScaledSize}) => {
             <Icon name="search-sharp" size={30} color="#000" />
             <TextInput
               style={styles.textInput}
-              onChangeText={_searchProductsText}
-              value={searchProductsText}
+              onChangeText={searchFunc}
+              value={searchText}
               placeholder='Search'
             />
           </View>
@@ -356,7 +362,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: '#ffffff00',
+    backgroundColor: '#dee',
   },
   toolbar: {
     width: 'auto',

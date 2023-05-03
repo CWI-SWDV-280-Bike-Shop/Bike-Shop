@@ -16,14 +16,85 @@ import { ShopContext } from '@/context/shop.context';
 import { DrawerHeaderProps } from '@react-navigation/drawer';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
+const ItemDetailsPopup = ({ product }: { product: Product }) => {
+  const details = StyleSheet.create({
+    popover: {
+      flexDirection: 'row',
+      flex: 1,
+    },
+    picture: {
+      width: 400,
+      height: 400,
+      margin: 10,
+    },
+    info: {
+      width: 300,
+      padding: 20,
+      flexDirection: 'column',
+      flex: 1,
+      gap: 10,
+    },
+    name: {
+      fontSize: 18,
+      fontWeight: "600",
+    },
+    brand: {
+      fontSize: 16,
+    },
+    price: {
+      fontWeight: "800",
+      fontSize: 16,
+    },
+    label: {
+      fontSize: 14,
+    },
+    rating: {
+      flexDirection: 'row'
+    }
+  })
+  return (
+    <View style={[details.popover]}>
+      <View style={details.picture}>
+      <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
+      </ImageBackground>
+      </View>
+      <View style={details.info}>
+        <Text style={details.brand}>{product.brand}</Text>
+        <Text style={details.name}>{product.name}</Text>
+        <View style={details.rating}>
+          <Icon name={"star"} color={"gold"} size={22}/>
+          <Icon name={"star"} color={"gold"} size={22}/>
+          <Icon name={"star"} color={"gold"} size={22}/>
+          <Icon name={"star"} color={"gold"} size={22}/>
+          <Icon name={"star-half"} color={"gold"} size={22}/>
+        </View>
+        <Text style={details.price}>${product.price}</Text>
+        <Text style={details.label}>Size: {product.size}</Text>
+        <Text>{product.description}</Text>
+        <Text>Category: {product.category}</Text>
+        <Text>Subcategory: {product.subcategory}</Text>
+        <Text>inStock: {product.inStock}</Text>
+        <Text>Material: {product.material}</Text>
+        <Text>Wheel Size: {product.wheelSize}</Text>
+        <Text>Color: {product.color}</Text>
+        <Text>Gender: {product.gender}</Text>
+      </View>
+    </View>
+  )
+}
+
 const Item = ({ product }: { product: Product }) => {
-  //Patch to avoid Nicko's WIP Code
-  //const addToCart = (product : Product) => {};
+  const [showPopover, setShowPopover] = useState(false);
   const { addToCart } = useContext(ShopContext);
-  //const price = (Math.random() * (1000 - 100 + 1) + 100).toFixed(2);
   const price = product.price;
   const color = () => ["tomato", "cornflowerblue", "beige", "brown", "brickred"][Math.floor(Math.random() * 5)];
   return (
+    <Popover
+    isVisible={showPopover}
+    onRequestClose={() => setShowPopover(false)}
+    placement={PopoverPlacement.FLOATING}
+    from={
+    <TouchableOpacity onPress={() => setShowPopover(!showPopover)}>
     <View style={styles.item}>
       <ImageBackground source={require("../../assets/Images/stolen_bike_image.jpg")} resizeMode="contain" style={styles.backgroundimage}>
       <View style={styles.priceBubble}>
@@ -48,8 +119,6 @@ const Item = ({ product }: { product: Product }) => {
               <View style={[styles.colorBox, {backgroundColor: color()}]}></View>
             </View>
           ): (<View></View>)}
-          <TouchableOpacity>
-          </TouchableOpacity>
           {
             (product.inStock) ? (
               <TouchableOpacity style={[styles.buttonRound, styles.offsetButton]} onPress={() => {
@@ -62,6 +131,10 @@ const Item = ({ product }: { product: Product }) => {
       </View>
       </ImageBackground>
     </View>
+    </TouchableOpacity>
+    }>
+    <ItemDetailsPopup product={product}/>
+</Popover>
   )
 }
 

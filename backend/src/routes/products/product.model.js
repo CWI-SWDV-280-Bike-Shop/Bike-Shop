@@ -1,6 +1,13 @@
 import { mongoose } from '../../mongoose.js';
 const Schema = mongoose.Schema;
 
+const ImageSchema = new Schema(
+  {
+    id: String,
+  },
+  { _id: false }
+);
+
 const ProductSchema = new Schema(
   {
     name: String,
@@ -29,7 +36,7 @@ const ProductSchema = new Schema(
       ],
     },
     price: Number,
-    imageIds: [String],
+    images: [ImageSchema],
     inStock: Boolean,
     brand: String,
     material: {

@@ -1,19 +1,12 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, ScrollView, ImageBackground, FlatList, ScaledSize, TextInput } from 'react-native';
-import Layout from '@styles/layout/Layout';
-// import BikeCards from '@components/ProductPage/Cards/BikeCards'
-import { Search_Bar } from '@/components/ProductPage/searchBar';
-import { ItemCard } from '@components/ProductPage/Cards/ItemCards';
-import { Footer } from '@components/Footer';
-import { FilterParams } from '@components/ProductPage/filter';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import ProductAPI from '@/api/product.api';
 import { Product } from '@/types/data.types';
 import Checkbox from 'expo-checkbox';
 import { ShopContext } from '@/context/shop.context';
-import { DrawerHeaderProps } from '@react-navigation/drawer';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
 
 const ItemDetailsPopup = ({ product, dimensions, setShowPopover }: { product: Product, dimensions: ScaledSize, setShowPopover : React.Dispatch<React.SetStateAction<boolean>> }) => {

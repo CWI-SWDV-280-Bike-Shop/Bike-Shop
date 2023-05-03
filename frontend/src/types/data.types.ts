@@ -4,6 +4,14 @@ type Data = {
   updatedAt?: string;
 };
 
+export type Address = {
+  street?: string;
+  city?: string;
+  state?: string;
+  zip?: string;
+  country?: string;
+};
+
 // Auth
 export type Credentials = {
   email: string;
@@ -27,13 +35,7 @@ export type AuthUser = Data & {
 // User
 export type User = AuthUser & {
   phone?: string;
-  address?: {
-    street?: string;
-    city?: string;
-    state?: string;
-    zip?: string;
-    country?: string;
-  };
+  address?: Address;
   orders?: [Order];
 };
 
@@ -59,11 +61,11 @@ export type OrderItem = Data & {
   product: Product | string;
   price: number;
   quantity: number;
-  serviceDate?: string;
 };
 
 export type Order = Data & {
   customer?: User | string;
   items?: OrderItem[];
+  shippingAddress: Address;
   total?: number;
 };

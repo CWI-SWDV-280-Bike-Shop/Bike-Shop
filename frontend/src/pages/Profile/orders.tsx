@@ -1,8 +1,25 @@
 import * as React from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {  Text, StyleSheet, View } from 'react-native';
 import { OrderList } from '@/components/Profile/OrderList';
+import { AuthContext } from '@/context/auth.context';
+import OrderAPI from '@/api/order.api';
+import { Order } from '@/types/data.types';
 
-export const Orders = () => {
+export const Orders = () => { 
+    const { authUser } = useContext(AuthContext);
+    const [orders, setOrders] = useState([] as Order);
+
+    // retrieves orders for user
+    useEffect(() => {
+      OrderAPI.getAll({customer: authUser._id})
+              .then((res) => {
+                setOrders(res.data); 
+              })
+    }, []);
+
+    console.log(orders);
+
     return (
       <View style={[styles.container]}>
         <View style={[styles.contentContainer]}>
@@ -10,7 +27,7 @@ export const Orders = () => {
           <Text style={[styles.bodyText]}>
             Recent orders for your account: 
           </Text>
-          <OrderList orders={testOrders}/>
+          <OrderList orders={orders}/>
         </View>
       </View>
     );
@@ -35,21 +52,3 @@ const styles = StyleSheet.create({
     color: "#262626"
   },
 });
-
-const testOrders = [
-  {
-      date: "01/23/2022",
-      price: 1535.69,
-      products: ["Specialized Mountain bike", "Giro Helmet"]
-  },
-  {
-      date: "02/04/2022",
-      price: 155.72,
-      products: ["Chain", "Tube", "Tires"]
-  },
-  {
-      date: "12/16/2022",
-      price: 460.25,
-      products: ["Repair"]
-  }
-];

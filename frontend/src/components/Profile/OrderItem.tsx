@@ -1,30 +1,59 @@
+import { Order } from '@/types/data.types';
 import * as React from 'react';
-import {  Text, StyleSheet, View,} from 'react-native';
+import {  Text, StyleSheet, View, TouchableOpacity, Modal, FlatList} from 'react-native';
 import { color } from 'react-native-reanimated';
-
-const renderProducts = ({item}) => {
-  return item.products.map((product) => {
-    return (
-      <Text>{product}, </Text>
-    );
-  });
-};
+import { useState } from 'react';
+import { ProductItem } from './ProductItem';
 
 export const OrderItem = ({item}) => {
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [order, setOrder] = useState({} as Order);
+
     return (
-      <View style={(styles.itemContainer)}>
+      <View>
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType='slide'
+      >
+        <View style={styles.modalView}>
+          <Text style={styles.modalHeader}>Order #{order._id}</Text>
+
+          <FlatList
+            data={order.items}
+            renderItem={(product) => <ProductItem product={product} />}
+          />
+        
+          <TouchableOpacity
+            onPress={() => setModalVisible(false)}
+            style={styles.closeButton}
+          >
+            <Text style={styles.modalText}>Close</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+
+
+      <TouchableOpacity 
+        style={(styles.itemContainer)}
+        onPress={() => {
+          setOrder(item);
+          setModalVisible(true);
+          console.log(order.items)
+        }}
+      >
         <View style={styles.subContainer}>
-            <Text style={[styles.orderText]}>{item.date}</Text>
+            <Text style={[styles.orderText]}>{item.createdAt}</Text>
         </View>
         <View style={styles.subContainer}>
-        <Text style={[styles.orderText]}>{
-          renderProducts({item})
-        }</Text>
+        <Text style={[styles.orderText]}>{item.items.length}</Text>
         </View>
         <View style={styles.subContainer}>
-            <Text style={[styles.orderText]}>${item.price}</Text>
+            <Text style={[styles.orderText]}>${item.total}</Text>
         </View>
-      </View>  
+      </TouchableOpacity>  
+      </View>
     );
 
 };
@@ -46,6 +75,26 @@ const styles = StyleSheet.create({
   orderText: {
     fontSize: 20,
     color: "#03312E",
+  },
+  modalView: {
+    backgroundColor: "#03312E",
+    alignSelf: 'center',
+    marginTop: 20,
+    padding: 40,
+  },
+  modalHeader: {
+    fontSize: 48,
+    color: "#FFF",
+    alignSelf: "center"
+  },
+  modalText: {
+    fontSize: 32,
+    color: "#FFF"
+  },
+  closeButton: {
+    borderBottomColor: "#FFF",
+    borderBottomWidth: 4,
+    alignSelf: 'center',
   }
 });
 

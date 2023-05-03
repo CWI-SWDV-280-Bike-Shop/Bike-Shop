@@ -107,7 +107,6 @@ const Cart = (props: DrawerHeaderProps) => {
                     textAlign: 'center',
                     margin: 20,
                     fontSize: 24,
-                    fontWeight: 'bold',
                   }}
                 >
                   {cartItem?.quantity}

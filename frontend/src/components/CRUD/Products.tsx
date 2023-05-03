@@ -67,7 +67,7 @@ const AddProduct = () => {
       category,
       subcategory,
       price,
-      ...withNewImage(images, image),
+      ...(await withNewImage(images, image)),
       inStock,
       brand,
       material,

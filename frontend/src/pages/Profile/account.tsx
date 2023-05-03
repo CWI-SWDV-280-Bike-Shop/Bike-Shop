@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { Text, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
+import React, {useState, useEffect, useMemo} from 'react';
+import {  Text, StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { AuthContext } from '@context/auth.context';
 import UserAPI from '@api/user.api';
@@ -18,10 +18,16 @@ export const Account = (props: DrawerHeaderProps) => {
   const [user, setUser] = useState({} as User);
   const [form, setForm] = useState({});
 
-  useEffect(() => {
-    setForm({
-      "username": user.name,
-      "email": user.email,
+    useEffect(() => {
+      UserAPI.getById(authUser._id)
+             .then((res) => {
+               setUser(res.data); 
+              })
+    }, []);
+    
+    useEffect(() => {setForm({
+      "username" : user.name,
+      "email" : user.email,
       "phone": user.phone,
       "street": user.address?.street,
       "state": user.address?.state,
@@ -73,14 +79,14 @@ export const Account = (props: DrawerHeaderProps) => {
             fields.map((item, i) => (
               <View style={styles.row} key={i}>
                 <Text style={styles.label}>{item.label}</Text>
-                <TextInput value={form[item.name] ?? ''} style={styles.editBox} onChangeText={(text) => setForm({ ...form, [item.name]: text })} />
+                <TextInput value={form[item.name] ?? ''} style={styles.editBox} onChangeText={(text) => setForm({ ...form, [item.name]: text })}/>
               </View>
             ))
           }
           <View style={styles.rowBottom}>
-            <TouchableOpacity
+            <TouchableOpacity 
               style={styles.buttonPrimary}
-              onPress={() => SaveChanges()}
+              onPress={() => SaveChanges()} 
             >
               <Text style={styles.btnFont}>Save Changes</Text>
             </TouchableOpacity>

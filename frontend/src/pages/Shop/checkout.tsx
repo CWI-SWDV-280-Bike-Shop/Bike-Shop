@@ -206,7 +206,7 @@ const Checkout = (props: DrawerHeaderProps) => {
               <Text style={Layout.subtitle}>Order Summary</Text>
               <View>
                 {cartItems.map((cartItem: CartItem, index) => {
-                  const firstImage = cartItem?.product?.images[0] ?? {};
+                  const firstImage = cartItem?.product?.images?.[0] ?? {};
 
                   return (
                     <View

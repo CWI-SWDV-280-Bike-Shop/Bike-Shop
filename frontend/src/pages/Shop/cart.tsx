@@ -32,7 +32,7 @@ const Cart = (props: DrawerHeaderProps) => {
       <Text style={[Styles.title, Styles.bold]}>Cart</Text>
       <ScrollView>
         {cartItems.map((cartItem: CartItem, index) => {
-          const firstImage = (cartItem.product.images) ? cartItem?.product?.images[0] ?? {} : {};
+          const firstImage = cartItem?.product?.images?.[0] ?? {};
 
           return (
             <View style={[Styles.itemCard, Styles.row]} key={index}>

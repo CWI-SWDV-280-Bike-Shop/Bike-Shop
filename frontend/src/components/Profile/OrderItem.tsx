@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { ProductItem } from './ProductItem';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-export const OrderItem = ({item, accordian, setAccordian} : {item: Order, accordian: {}; setAccordian: Dispatch<SetStateAction<{}>>}) => {
+export const OrderItem = ({item, accordian, setAccordian} : {item: Order, accordian: object; setAccordian: Dispatch<SetStateAction<object>>}) => {
 
     const date = new Date(item.createdAt);
     const formattedDate = date.toLocaleDateString('en-US', {

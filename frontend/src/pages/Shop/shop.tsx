@@ -297,7 +297,7 @@ const Filters = (props) => {
 }
 
 
-export const Shop = ({ dimensions, navigation, route }: { dimensions: ScaledSize, navigation: DrawerHeaderProps, route: any }) => {
+export const Shop = ({ dimensions, navigation, route }: { dimensions: ScaledSize, navigation: any, route: any }) => {
   console.log(route.params)
   const [asc, setAsc] = useState(true);
   const [sortfield, sortsetField] = useState("price");
@@ -306,9 +306,18 @@ export const Shop = ({ dimensions, navigation, route }: { dimensions: ScaledSize
   const [filterObject, filterSet] = useState<MongoQuery<Product>>({ "category": { $in: ["Bikes"] } });
   const [checkMarks, setCheckMarks] = useState({ "Bikes": true });
 
-  useEffect(() => {
-    filterSet({[route.params.filter] : {$in: [route.params.value]}});
-  }, [route.params]);
+  if(route.params){
+    useEffect(() => {
+      filterSet({[route.params.filter] : {$in: [route.params.value]}});
+    }, [route.params]);
+  }
+
+  /* useEffect(() => {
+    navigation.setParams({
+      filter: '',
+      value: ''
+    });
+  }, [filterObject]); */
 
   const state = {
     asc: asc,

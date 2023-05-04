@@ -10,6 +10,8 @@ import {
 	View,
 	useWindowDimensions,
 	Button,
+	ScaledSize,
+	Platform,
 } from 'react-native';
 import {
 	ScrollView,
@@ -20,7 +22,11 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Layout from '@styles/layout/Layout';
 import { InputModeOptions } from 'react-native';
 
+const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
+
 export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
+	//Window Dimensions
+	const dimensions = useWindowDimensions();
   //Auth connection
   const { authUser, login, message } = useContext(AuthContext);
   //Login Logic
@@ -35,6 +41,18 @@ export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
 			login({ email: email.toLowerCase(), password });
 		}
 	};
+	const mobile = StyleSheet.create({
+		editBox: {
+			paddingTop: 32,
+			padding: 16,
+			marginBottom: 10,
+			margin: 5,
+			borderRadius: 10,
+			borderColor: '#ccc',
+			borderWidth: 1,
+		},
+	})
+
 	return (
 		<View>
 			<Text style={[Layout.header]}>Login</Text>
@@ -42,7 +60,7 @@ export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
 			<View>
 				<Text style={styles.label}>Email</Text>
 				<TextInput
-					style={[styles.editBox]}
+					style={(checkMobile(dimensions)) ? mobile.editBox : styles.editBox}
 					value={email}
 					onChangeText={(value) => setEmail(value)}
 				/>
@@ -50,7 +68,7 @@ export const LoginScreen = ({ props }: { props: DrawerHeaderProps }) => {
 			<View>
 				<Text style={styles.label}>Password</Text>
 				<TextInput
-					style={[styles.editBox]}
+					style={(checkMobile(dimensions)) ? mobile.editBox : styles.editBox}
 					value={password}
 					onChangeText={(value) => setPassword(value)}
 					secureTextEntry={true}
@@ -181,6 +199,18 @@ export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 			stateValue: regAddress.country,
 		},
 	];
+
+	const mobile = StyleSheet.create({
+		editBox: {
+			paddingTop: 32,
+			padding: 16,
+			marginBottom: 10,
+			margin: 5,
+			borderRadius: 10,
+			borderColor: '#ccc',
+			borderWidth: 1,
+		},
+	})
 	return (
 		<View>
 			<Text style={[Layout.header]}>New here?</Text>
@@ -205,7 +235,7 @@ export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 						<View key={i}>
 							<Text style={styles.label}>{item.label}</Text>
 							<TextInput
-								style={styles.editBox}
+								style={(checkMobile(dimensions)) ? mobile.editBox : styles.editBox}
 								inputMode={item.inputMode as InputModeOptions}
 								value={item.stateValue}
 								onChangeText={(value) => item.setState(value)}
@@ -226,7 +256,7 @@ export const RegisterScreen = ({ props }: { props: DrawerHeaderProps }) => {
 						<View key={i}>
 							<Text style={styles.label}>{item.label}</Text>
 							<TextInput
-								style={styles.editBox}
+								style={(checkMobile(dimensions)) ? mobile.editBox : styles.editBox}
 								inputMode={item.inputMode as InputModeOptions}
 								value={item.stateValue}
 								onChangeText={(value) =>
@@ -299,6 +329,21 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		borderRadius: 5,
 	},
+	editBox: {
+		paddingTop: 32,
+		padding: 16,
+		marginBottom: 20,
+		margin: 5,
+		borderRadius: 10,
+		shadowColor: "#000",
+		shadowOffset: {
+			width: 0,
+			height: 2,
+		},
+		shadowOpacity: 0.23,
+		shadowRadius: 2.62,
+		elevation: 4,
+	},
 	btnFont: {
 		fontSize: 18,
 		paddingHorizontal: 10,
@@ -314,21 +359,6 @@ const styles = StyleSheet.create({
 		position: 'relative',
 		bottom: -30,
 		left: 20,
-	},
-	editBox: {
-		paddingTop: 32,
-		padding: 16,
-		marginBottom: 20,
-		margin: 5,
-		borderRadius: 10,
-		shadowColor: '#000',
-		shadowOffset: {
-			width: 0,
-			height: 1,
-		},
-		shadowOpacity: 0.42,
-		shadowRadius: 2.22,
-		elevation: 1,
 	},
 	infoContainer: {
 		marginLeft: 0,

@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: "row",
     justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 10,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: '#ccc',

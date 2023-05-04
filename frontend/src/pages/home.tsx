@@ -7,6 +7,7 @@ import { Slide } from '@components/Slide';
 //Footer Import
 import { Footer } from '@components/Footer';
 import { useState } from 'react';
+import { useLinkTo } from '@react-navigation/native';
 
 const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
 
@@ -83,7 +84,7 @@ const mission = [`Our mission at Wheely Good Bikes is to provide high-quality bi
                 `Our goal is to create a welcoming environment where cyclists of all ages and abilities can come together to share their passion for cycling and enjoy the freedom of the open road.`, 
                 `At the heart of our mission is a dedication to promoting eco-friendly transportation options and helping our community reduce its carbon footprint.`]
 
-export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
+export const Home = ({dimensions, navigation}) => {
   const [scrollPos, setScrollPos] = useState(0);
   //A little helper guy
   const responsiveWizard = (value) => dimensions.width * (value/1920)
@@ -205,19 +206,23 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
     {
       "image": require('../assets/Images/home_bikes.jpg'),
       "hero": "Bicycles",
+      "filter": 'category/Bikes',
       "content": "Our mission is to provide high-quality bicycles and accessories that promote a healthy and sustainable lifestyle. We are committed to offering personalized service and expert advice to help our customers choose the right bike for their needs and skill level."
     },
     {
       "image": require('../assets/Images/home_repair.jpg'),
       "hero": "Services",
+      "filter": 'category/Services',
       "content": "Our goal is to create a welcoming environment where cyclists of all ages and abilities can come together to share their passion for cycling and enjoy the freedom of the open road."
     },
     {
       "image": require('../assets/Images/home_accessories.jpg'),
       "hero": "Accessories",
+      "filter": 'category/Accessories',
       "content": "At the heart of our mission is a dedication to promoting eco-friendly transportation options and helping our community reduce its carbon footprint."
     }
   ]
+  const linkTo = useLinkTo();
   return (
     <>
     <View style={styles.headerBack}></View>
@@ -244,7 +249,7 @@ export const Home = ({dimensions} : {dimensions : ScaledSize}) => {
                     <Text style={styles.basicText}>{item.content}</Text>
                   </View>
                   <View style={styles.buttonGroup}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity style={styles.button} onPress={() => linkTo(`/Shop/${item.filter}`)}>
                       <Text style={styles.buttonText}>View {item.hero}</Text>
                     </TouchableOpacity>
                   </View>

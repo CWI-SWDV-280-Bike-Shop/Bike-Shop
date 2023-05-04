@@ -79,6 +79,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
               'Account',
               'Admin',
               'Checkout',
+              'NotFound',
             ].some((e) => name === e)
           ) {
             return;

@@ -8,6 +8,8 @@ import { Product } from '@/types/data.types';
 import Checkbox from 'expo-checkbox';
 import { ShopContext } from '@/context/shop.context';
 import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import { DrawerHeaderProps } from '@react-navigation/drawer';
+import { Route, RouteProp } from '@react-navigation/native';
 
 type ItemFull = {
   product: Product, dimensions: ScaledSize, setShowPopover : React.Dispatch<React.SetStateAction<boolean>>, productColors: {
@@ -295,13 +297,27 @@ const Filters = (props) => {
 }
 
 
-export const Shop = ({ dimensions }: { dimensions: ScaledSize }) => {
+export const Shop = ({ dimensions, navigation, route }: { dimensions: ScaledSize, navigation: any, route: any }) => {
+  console.log(route.params)
   const [asc, setAsc] = useState(true);
   const [sortfield, sortsetField] = useState("price");
   type MongoQuery<T> = { [K in keyof T] : T[K] | { $in: T[K][] } | { $regex: string } }
 
   const [filterObject, filterSet] = useState<MongoQuery<Product>>({ "category": { $in: ["Bikes"] } });
   const [checkMarks, setCheckMarks] = useState({ "Bikes": true });
+
+  if(route.params){
+    useEffect(() => {
+      filterSet({[route.params.filter] : {$in: [route.params.value]}});
+    }, [route.params]);
+  }
+
+  /* useEffect(() => {
+    navigation.setParams({
+      filter: '',
+      value: ''
+    });
+  }, [filterObject]); */
 
   const state = {
     asc: asc,

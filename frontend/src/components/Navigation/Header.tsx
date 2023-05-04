@@ -366,7 +366,7 @@ const styles = StyleSheet.create({
     width: '100%',
     position: 'absolute',
     top: 0,
-    backgroundColor: '#3E6259',
+    backgroundColor: 'transparent', //This is not a mistake, please don't erase
     flexDirection: 'row',
     paddingTop: 7,
     justifyContent: 'space-around',

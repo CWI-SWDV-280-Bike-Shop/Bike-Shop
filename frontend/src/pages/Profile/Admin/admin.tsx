@@ -421,7 +421,7 @@ const ProductsTableHeader = ({
   );
 }
 
-const ModificationContextMenu = ({ id, objType, state, setIsEditMode, isEditMode, }: { id?: string, objType?: string, state?: any, isEditMode?: {}, setIsEditMode?: Dispatch<SetStateAction<{}>> }) => {
+const ModificationContextMenu = ({ id, objType, state, setIsEditMode, isEditMode, }: { id?: string, objType?: string, state?: any, isEditMode?: boolean, setIsEditMode?: Dispatch<SetStateAction<boolean>> }) => {
   const [showPopover, setShowPopover] = useState(false);
   return (
     <Popover
@@ -500,7 +500,7 @@ const UserElement = ({ user, state }: {
   );
 };
 
-const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setCheckMarks }: { product: Product, isEditMode: {}, setIsEditMode: Dispatch<SetStateAction<{}>>, checkMarks: {}, setCheckMarks: Dispatch<SetStateAction<{}>> }) => {
+const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setCheckMarks }: { product: Product, isEditMode: boolean, setIsEditMode: Dispatch<SetStateAction<boolean>>, checkMarks: {}, setCheckMarks: Dispatch<SetStateAction<{}>> }) => {
   return (
     <Row>
       <View style={styles.col}>
@@ -607,7 +607,7 @@ function ListProducts({ navigation }) {
   const [products, setProducts] = useState([]);
   const [asc, setAsc] = useState(true);
   const [field, setField] = useState("name");
-  const [isEditMode, setIsEditMode] = useState({});
+  const [isEditMode, setIsEditMode] = useState(false);
   const [checkMarks, setCheckMarks] = useState({});
 
   const sortData = (data) => {

@@ -15,6 +15,7 @@ import { Profile } from './pages/Profile/profile';
 import { Orders } from './pages/Profile/orders';
 import { Account } from './pages/Profile/account';
 import { Admin } from './pages/Profile/Admin/admin';
+import { NotFound } from './pages/Profile/NotFound';
 import { useWindowDimensions } from 'react-native';
 import { Shop } from './pages/Shop/shop';
 import Cart from './pages/Shop/cart';
@@ -75,6 +76,10 @@ const AppWrapper = () => {
       name: 'Checkout',
       component: (props) => <Checkout {...props} dimensions={dimensions} />,
     },
+    {
+      name: 'NotFound',
+      component: (props) => <NotFound {...props} dimensions={dimensions} />,
+    },
   ];
 
   const prefix = Linking.createURL('/');
@@ -94,6 +99,7 @@ const AppWrapper = () => {
         CRUDPlayground: 'CRUDPlayground',
         Cart: 'Cart',
         Checkout: 'Checkout',
+        NotFound: '*',
       },
     },
   } as LinkingOptions<ParamListBase>;
@@ -114,7 +120,7 @@ const AppWrapper = () => {
         }}
       >
         {screens.map((item, i) => {
-          return ['Cart', 'Checkout', 'Orders', 'Account', 'Admin'].some(
+          return ['Cart', 'Checkout', 'Orders', 'Account', 'Admin', 'NotFound'].some(
             (name) => name === item.name
           ) ? (
             <Drawer.Screen

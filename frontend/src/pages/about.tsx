@@ -6,7 +6,7 @@ export const About = () => {
   //Responsive
   const dimensions = useWindowDimensions();
   const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 768) ? true : false }
-  const responsive = checkMobile(dimensions) ? mobile : web;
+  const responsive = checkMobile(dimensions) ? web : web;
   const slideNames = ['Testimonials'];
   return (
     <View style={[responsive.container]}>
@@ -32,28 +32,28 @@ export const About = () => {
             </Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
             <Text style={[responsive.testimonialV1]}>"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
             <Text style={[responsive.testimonialV1]}>"This shop opened up down the road from my beet farm, its nice enough."</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"I just wandered into this shop one day and left with a new bike! Thanks man!"</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
             <Text style={[responsive.testimonialV1]}>"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
           </View>
           <View style={{marginBottom: 15}}></View>
           <Footer/>
@@ -182,6 +182,9 @@ const web = StyleSheet.create({
     color: 'white',
   },
   missionStatementRow: {
+    marginHorizontal: 'auto',
+    width: 'auto',
+    maxWidth: 800,
     borderColor: '#3E6259',
     borderWidth: 5,
     margin: 25,
@@ -214,7 +217,7 @@ const web = StyleSheet.create({
     fontSize: 25,
     borderColor: '#6A7B76',
     borderWidth: 5,
-    padding: 8,
+    padding: 16,
     borderRadius: 20,
     color: 'white',
   },
@@ -225,20 +228,20 @@ const web = StyleSheet.create({
     fontSize: 25,
     borderColor: '#8B9D83',
     borderWidth: 5,
-    padding: 8,
+    padding: 16,
     borderRadius: 20,
     color: 'white',
   },
   testimonialContainer: {
+    marginHorizontal: 'auto',
+    width: 'auto',
+    maxWidth: 600,
     flexDirection: 'row',
     paddingLeft: 5,
     paddingRight: 5,
     paddingBottom: 5,
     alignItems: 'center',
-    alignSelf: 'center',
+    //alignSelf: 'center',
   }
 });
 
-const responsive = StyleSheet.create({
-
-});

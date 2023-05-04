@@ -1,14 +1,11 @@
 import { Order } from '@/types/data.types';
 import * as React from 'react';
-import {  Text, StyleSheet, View, TouchableOpacity, Modal, FlatList} from 'react-native';
-import { color } from 'react-native-reanimated';
-import { useState } from 'react';
+import {  Text, StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
+import { Dispatch, SetStateAction } from 'react';
 import { ProductItem } from './ProductItem';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-export const OrderItem = ({item}) => {
-
-    const [modalVisible, setModalVisible] = useState(false);
-    const [order, setOrder] = useState({} as Order);
+export const OrderItem = ({item, accordian, setAccordian} : {item: Order, accordian: object; setAccordian: Dispatch<SetStateAction<object>>}) => {
 
     const date = new Date(item.createdAt);
     const formattedDate = date.toLocaleDateString('en-US', {
@@ -19,59 +16,89 @@ export const OrderItem = ({item}) => {
     
 
     return (
-      <View>
-      <Modal
-        visible={modalVisible}
-        transparent={true}
-        animationType='slide'
-      >
-        <View style={styles.modalView}>
-          <Text style={styles.modalHeader}>Order #{order._id}</Text>
+      <View style={styles.orderItem}>
+        <TouchableOpacity onPress={() => { setAccordian({ ...accordian, [item._id]: !accordian[item._id] }) }}>
+          <View style={styles.itemContainer}>
+            
+              <View style={styles.subContainer}>
+                  <Text style={[styles.orderText]}>{formattedDate}</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text style={[styles.orderText]}>{item.items.length}</Text>
+              </View>
+              <View style={styles.subContainer}>
+                <Text style={[styles.orderText, styles.status, { backgroundColor: (new Date("04/29/2023").getTime() < new Date(item.createdAt).getTime()) ? "#334": "#42b66d"}]}>
+                  {(new Date("04/29/2023").getTime() < new Date(item.createdAt).getTime() ) ? "Pending" : "Complete"}
+                </Text>
+              </View>
+              <View style={[styles.row, styles.priceRow]}>
+                <View style={styles.subContainer}>
+                    <Text style={[styles.orderText, styles.price]}>{item.total.toLocaleString('en-US', {
+                      style: 'currency',
+                      currency: 'USD',
+                    })}</Text>
+                </View>
+                <View style={styles.subContainer}>
+                  {(accordian[item._id]) ? <Icon name="chevron-up" size={18} color="#000" /> : <Icon name="chevron-down" size={18} color="#000" />}
+                </View>
+              </View>
+              
+          </View>
+        </TouchableOpacity>
+        <View style={[styles.modalView, { display: (accordian[item._id]) ? 'flex' : 'none' }]}>
+          <Text style={styles.modalHeader}>Order #{item._id}</Text>
 
           <FlatList
-            data={order.items}
+            data={item.items}
             renderItem={(product) => <ProductItem product={product} />}
           />
-        
-          <TouchableOpacity
-            onPress={() => setModalVisible(false)}
-            style={styles.closeButton}
-          >
-            <Text style={styles.modalText}>Close</Text>
-          </TouchableOpacity>
         </View>
-      </Modal>
-
-
-      <TouchableOpacity 
-        style={(styles.itemContainer)}
-        onPress={() => {
-          setOrder(item);
-          setModalVisible(true);
-          console.log(order.items)
-        }}
-      >
-        <View style={styles.subContainer}>
-            <Text style={[styles.orderText]}>{formattedDate}</Text>
-        </View>
-        <View style={styles.subContainer}>
-        <Text style={[styles.orderText]}>{item.items.length}</Text>
-        </View>
-        <View style={styles.subContainer}>
-            <Text style={[styles.orderText]}>${item.total}</Text>
-        </View>
-      </TouchableOpacity>  
       </View>
     );
 
 };
 
 const styles = StyleSheet.create({
+  priceRow: {
+    width: 150,
+  },
+  status: {
+    backgroundColor: '#334',
+    color: '#fff',
+    padding: 5,
+    textTransform: 'uppercase',
+    fontSize: 14,
+    borderRadius: 5,
+  },
+  complete: {
+    backgroundColor: '#42b66d',
+  },
+  price: {
+    fontWeight: '700'
+  },
+  row: {
+    flexDirection: 'row'
+  },
+  orderItem: {
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.42,
+    shadowRadius: 2.22,
+    elevation: 1,
+    margin: 5,
+    backgroundColor: '#fff',
+    flex: 1,
+  },
   itemContainer: {
+    flex: 1,
     flexDirection: "row",
-    justifyContent: 'space-between',
-    borderColor: "#03312E",
-    borderBottomWidth: 1,
+    justifyContent: 'space-around',
+    //borderColor: "#03312E",
+    //borderBottomWidth: 1,
     paddingVertical: 10,
   },
   subContainer: {
@@ -85,24 +112,19 @@ const styles = StyleSheet.create({
     color: "#03312E",
   },
   modalView: {
-    backgroundColor: "#03312E",
+    backgroundColor: "#fff",
     alignSelf: 'center',
-    marginTop: 20,
-    padding: 40,
+    marginTop: 10,
+    padding: 10,
   },
   modalHeader: {
-    fontSize: 48,
-    color: "#FFF",
+    fontSize: 18,
+    color: "#113",
     alignSelf: "center"
   },
   modalText: {
-    fontSize: 32,
-    color: "#FFF"
+    fontSize: 16,
+    color: "#113"
   },
-  closeButton: {
-    borderBottomColor: "#FFF",
-    borderBottomWidth: 4,
-    alignSelf: 'center',
-  }
 });
 

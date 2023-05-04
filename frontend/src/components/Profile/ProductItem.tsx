@@ -1,8 +1,5 @@
-import { Order } from '@/types/data.types';
 import * as React from 'react';
-import {  Text, StyleSheet, View, TouchableOpacity, Modal, FlatList, ImageBackground} from 'react-native';
-import { color } from 'react-native-reanimated';
-import { useState } from 'react';
+import {  Text, StyleSheet, View, ImageBackground} from 'react-native';
 
 export const ProductItem = ({product}) => {
 

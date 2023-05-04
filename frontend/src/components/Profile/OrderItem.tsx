@@ -1,8 +1,7 @@
 import { Order } from '@/types/data.types';
 import * as React from 'react';
-import {  Text, StyleSheet, View, TouchableOpacity, Modal, FlatList} from 'react-native';
-import { color } from 'react-native-reanimated';
-import { Dispatch, SetStateAction, useState } from 'react';
+import {  Text, StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
+import { Dispatch, SetStateAction } from 'react';
 import { ProductItem } from './ProductItem';
 import Icon from 'react-native-vector-icons/Ionicons';
 

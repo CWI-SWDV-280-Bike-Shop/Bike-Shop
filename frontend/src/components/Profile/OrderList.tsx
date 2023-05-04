@@ -1,6 +1,5 @@
-import { Orders } from '@/pages/Profile/orders';
 import * as React from 'react';
-import {  Text, StyleSheet, View, FlatList } from 'react-native';
+import { StyleSheet, View, FlatList } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { OrderItem } from './OrderItem';
 import { Order } from '@/types/data.types';

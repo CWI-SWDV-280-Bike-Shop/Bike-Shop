@@ -36,9 +36,10 @@ export const Orders = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#dee'
+    backgroundColor: '#dee',
   },
   contentContainer: {
+    marginHorizontal: 'auto',
     flex: 1,
   }, 
   header: {

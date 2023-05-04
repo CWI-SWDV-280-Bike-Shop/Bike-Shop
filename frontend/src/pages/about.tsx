@@ -1,155 +1,24 @@
 import * as React from 'react';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize } from 'react-native';
-import Swiper from 'react-native-swiper/src';
-
-// Slide component imports
-import { Slide } from '../components/Slide'
-
-const checkMobile = (dimensions : ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 1450) ? true : false }
-const onlyMobile = (code) => { if ((Platform.OS === 'android' || Platform.OS === 'ios')){ return code } }
-const onlyWeb = (code) => { if (Platform.OS === 'web'){ return code } }
-
-const CustomSwiper = ({dimensions} : {dimensions : ScaledSize}) => {
-  return (
-    <Swiper 
-    loop
-    timeout={5}
-    springConfig={{ speed: 5, bounciness: 1, }}
-    controlsProps={{
-      prevTitle: '⮜',
-      nextTitle: '⮞',
-      dotsTouchable: true,
-      dotsPos: 'bottom',
-      prevPos: (checkMobile(dimensions)) ? false : 'left', 
-      nextPos: (checkMobile(dimensions)) ? false : 'right', 
-      nextTitleStyle: {
-        fontSize: 38,
-        fontWeight: '900',
-        color: '#fff'
-      },
-      prevTitleStyle: {
-        fontSize: 38,
-        fontWeight: '900',
-        color: '#fff'
-      },
-    }}>
-      <Slide
-            name={'From Michael Scott'}
-            description={
-                '"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"'
-            }
-            imgSrc={require('@assets/Images/background1.png')}
-            btnName={'Shop'}
-          />
-          <Slide
-            name={'From Jim Halpert'}
-            description={
-                '"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"'
-            }
-            imgSrc={require('@assets/Images/background2.png')}
-            btnName={'Accessories'}
-          />
-          <Slide
-            name={'From Dwight Shrute'}
-            description={'"This shop opened up down the road from my beet farm, its nice enough."'}
-            imgSrc={require('@assets/Images/background3.png')}
-            btnName={'Shop'}
-          />
-          <Slide
-            name={'From Creed Bratton'}
-            description={
-                '"I just wandered into this shop one day and left with a new bike! Thanks man!"'
-            }
-            imgSrc={require('@assets/Images/background1.png')}
-            btnName={'Shop'}
-          />
-          <Slide
-            name={'From Stanley Hudson'}
-            description={
-              '"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."'
-            }
-            imgSrc={require('@assets/Images/background2.png')}
-            btnName={'Repair'}
-          />
-            <Slide
-            name={'From David Wallace'}
-            description={
-              '"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."'
-            }
-            imgSrc={require('@assets/Images/background3.png')}
-            btnName={'Repair'}
-          />
-    </Swiper>
-  );
-}
+import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize, Image, useWindowDimensions } from 'react-native';
+import { Footer } from '@/components/Footer';
 
 export const About = () => {
+  //Responsive
+  const dimensions = useWindowDimensions();
+  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 768) ? true : false }
+  const responsive = checkMobile(dimensions) ? web : web;
   const slideNames = ['Testimonials'];
   return (
-    <View style={[styles.container]}>
-      <View style={[styles.slidesContainer]}>
-        <Swiper>
-          <Slide
-            name={'From Michael Scott'}
-            description={
-                '"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"'
-            }
-            imgSrc={require('@assets/Images/background1.png')}
-            btnName={'Shop'}
-          />
-          <Slide
-            name={'From Jim Halpert'}
-            description={
-                '"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"'
-            }
-            imgSrc={require('@assets/Images/background2.png')}
-            btnName={'Accessories'}
-          />
-          <Slide
-            name={'From Dwight Shrute'}
-            description={'"This shop opened up down the road from my beet farm, its nice enough."'}
-            imgSrc={require('@assets/Images/background3.png')}
-            btnName={'Shop'}
-          />
-          <Slide
-            name={'From Creed Bratton'}
-            description={
-                '"I just wandered into this shop one day and left with a new bike! Thanks man!"'
-            }
-            imgSrc={require('@assets/Images/background1.png')}
-            btnName={'Shop'}
-          />
-          <Slide
-            name={'From Stanley Hudson'}
-            description={
-              '"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."'
-            }
-            imgSrc={require('@assets/Images/background2.png')}
-            btnName={'Repair'}
-          />
-            <Slide
-            name={'From David Wallace'}
-            description={
-              '"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."'
-            }
-            imgSrc={require('@assets/Images/background3.png')}
-            btnName={'Repair'}
-          />
-        </Swiper>
-      </View>
-      <View style={[styles.contentContainer]}>
+    <View style={[responsive.container]}>
+      <View style={[responsive.contentContainer]}>
         <ScrollView>
-          {/* <View style={[styles.titleRow]}>
-            <Text style={[styles.title]}>Wheely Good Bikes</Text>
-          </View> */}
-          <View style={[styles.quoteRow]}>
-            <Text style={[styles.quote]}>
+          <View style={[responsive.quoteRow]}>
+            <Text style={[responsive.quote]}>
               "We aren't just a bike shop, we're a community."
             </Text>
           </View>
-          <View style={[styles.missionStatementRow]}>
-            <Text style={[styles.missionStatement]}>
+          <View style={[responsive.missionStatementRow]}>
+            <Text style={[responsive.missionStatement]}>
               Our mission at Wheely Good Bikes is to provide high-quality
               bicycles and accessories that promote a healthy and sustainable
               lifestyle. We are committed to offering personalized service and
@@ -162,31 +31,39 @@ export const About = () => {
               community reduce its carbon footprint.
             </Text>
           </View>
-          <View style={[styles.footer]}>
-            <Text style={[styles.footerText]}>The Bicycle Shop</Text>
-            <Text style={[styles.footerText]}>
-              <Icon name="navigate-outline" size={15} color="#FFF" /> 1234
-              Something Blvd, Boise, ID 83706
-            </Text>
-            <Text style={[styles.footerText]}>Monday - Friday | 9am - 8pm</Text>
-            <Text style={[styles.footerText]}>
-              <Icon name="receipt-outline" size={15} color="#FFF" />{' '}
-              contact@thebicycleshop.com
-            </Text>
-            <Text style={[styles.footerText]}>
-              <Icon name="phone-portrait-outline" size={15} color="#FFF" />{' '}
-              (208)123-4567
-            </Text>
-            <Text style={[styles.footerText]}>© Copyright 2023</Text>
+          <View style={[responsive.testimonialContainer]}>
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+            <Text style={[responsive.testimonialV1]}>"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"</Text>
           </View>
+          <View style={[responsive.testimonialContainer]}>
+            <Text style={[responsive.testimonialV2]}>"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"</Text>
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+          </View>
+          <View style={[responsive.testimonialContainer]}>
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+            <Text style={[responsive.testimonialV1]}>"This shop opened up down the road from my beet farm, its nice enough."</Text>
+          </View>
+          <View style={[responsive.testimonialContainer]}>
+            <Text style={[responsive.testimonialV2]}>"I just wandered into this shop one day and left with a new bike! Thanks man!"</Text>
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+          </View>
+          <View style={[responsive.testimonialContainer]}>
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+            <Text style={[responsive.testimonialV1]}>"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."</Text>
+          </View>
+          <View style={[responsive.testimonialContainer]}>
+            <Text style={[responsive.testimonialV2]}>"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."</Text>
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+          </View>
+          <View style={{marginBottom: 15}}></View>
+          <Footer/>
         </ScrollView>
       </View>
     </View>
   );
 };
 
-
-const styles = StyleSheet.create({
+const mobile = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -218,19 +95,15 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     paddingVertical: 20,
-    backgroundColor: '#6A7B76',
-    borderColor: '#03312E',
-    borderWidth: 15,
     width: '100%',
   },
   quote: {
     fontSize: 27,
-    color: 'white',
-    textShadowColor: 'rgba(0, 0, 0, 0.85)',
-    textShadowOffset: { width: -1, height: 1 },
-    textShadowRadius: 10,
+    color: 'black',
     fontStyle: 'italic',
     textAlign: 'center',
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   missionStatementRow: {
     flexDirection: 'row',
@@ -242,20 +115,133 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     textAlign: 'center',
     fontSize: 20,
-    color: '#03312E',
+    color: 'black',
     paddingLeft: 15,
     paddingRight: 15,
   },
-  footer: {
-    backgroundColor: '#6A7B76',
-    paddingTop: 7,
-    paddingBottom: 7,
+  imageV1: {
+    borderRadius: 100,
+    width: 100,
+    height: 100,
+    marginRight: 20,
+    marginLeft: 20,
   },
-  footerText: {
+  imageV2: {
+    borderRadius: 100,
+    width: 100,
+    height: 100,
+    marginLeft: 35,
+  },
+  testimonialV1: {
+    width: 250,
+    marginLeft: 0,
+    borderWidth: 5,
+    borderColor: 'black',
+  },
+  testimonialV2: {
+    width: 210,
+    marginLeft: 30,
+    marginRight: -15,
+  },
+  testimonialContainer: {
+    flexDirection: 'row',
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingBottom: 5,
+    alignItems: 'center',
+  }
+});
+
+const web = StyleSheet.create({
+  container: {
+    backgroundColor: '#1F302D',
+  },
+  slidesContainer: {
+
+  },
+  contentContainer: {
+
+  },
+  titleRow: {
+
+  },
+  title: {
+    
+  },
+  btn: {
+
+  },
+  quoteRow: {
+
+  },
+  quote: {
+    fontSize: 40,
+    marginTop: 10,
+    padding: 15,
     alignSelf: 'center',
     color: 'white',
-    paddingTop: 1,
-    paddingBottom: 1,
-    fontWeight: 'bold',
   },
+  missionStatementRow: {
+    marginHorizontal: 'auto',
+    width: 'auto',
+    maxWidth: 800,
+    borderColor: '#3E6259',
+    borderWidth: 5,
+    margin: 25,
+  },
+  missionStatement: {
+    fontSize: 25,
+    padding: 25,
+    alignSelf: 'center',
+    textAlign: 'center',
+    color: 'white',
+    fontStyle: 'italic',
+  },
+  imageV1: {
+    borderRadius: 100,
+    width: 100,
+    height: 100,
+    marginLeft: 25,
+    marginRight: 25,
+  },
+  imageV2: {
+    borderRadius: 100,
+    width: 100,
+    height: 100,
+    marginLeft: 25,
+    marginRight: 25,
+  },
+  testimonialV1: {
+    // width: 250,
+    // marginLeft: 0,
+    fontSize: 25,
+    borderColor: '#6A7B76',
+    borderWidth: 5,
+    padding: 16,
+    borderRadius: 20,
+    color: 'white',
+  },
+  testimonialV2: {
+    // width: 210,
+    // marginLeft: 30,
+    // marginRight: -15,
+    fontSize: 25,
+    borderColor: '#8B9D83',
+    borderWidth: 5,
+    padding: 16,
+    borderRadius: 20,
+    color: 'white',
+  },
+  testimonialContainer: {
+    marginHorizontal: 'auto',
+    width: 'auto',
+    maxWidth: 600,
+    flexDirection: 'row',
+    paddingLeft: 5,
+    paddingRight: 5,
+    paddingBottom: 5,
+    alignItems: 'center',
+    //alignSelf: 'center',
+  }
 });
+

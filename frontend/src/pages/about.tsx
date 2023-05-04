@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize, Image, useWindowDimensions } from 'react-native';
+import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize, Image, useWindowDimensions, ImageBackground } from 'react-native';
+import Swiper from 'react-native-web-swiper';
 import { Footer } from '@/components/Footer';
-import { ImageBackground } from 'react-native';
 
 export const About = () => {
   //Responsive
@@ -37,34 +37,55 @@ export const About = () => {
               </View>
             </View>
           </ImageBackground>
-
+          <Swiper
+            loop
+            timeout={5}
+            springConfig={{ speed: 5, bounciness: 1, }}
+            containerStyle={{ height: Math.min(600, Math.max(300, dimensions.width / 2)) }}
+            controlsProps={{
+              prevTitle: '⮜',
+              nextTitle: '⮞',
+              dotsTouchable: true,
+              dotsPos: 'bottom',
+              prevPos: (checkMobile(dimensions)) ? false : 'left',
+              nextPos: (checkMobile(dimensions)) ? false : 'right',
+              nextTitleStyle: {
+                fontSize: 38,
+                fontWeight: '900',
+                color: '#fff'
+              },
+              prevTitleStyle: {
+                fontSize: 38,
+                fontWeight: '900',
+                color: '#fff'
+              },
+            }}>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
+              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
             <Text style={[responsive.testimonialV1]}>"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
+              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
+              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
             <Text style={[responsive.testimonialV1]}>"This shop opened up down the road from my beet farm, its nice enough."</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"I just wandered into this shop one day and left with a new bike! Thanks man!"</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
+              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
+              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
             <Text style={[responsive.testimonialV1]}>"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
+              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
           </View>
-
-          <View style={{ marginBottom: 15 }}></View>
-
+          </Swiper>
+          <View style={{ marginBottom: 10 }}></View>
           <Footer />
         </ScrollView>
       </View>
@@ -201,7 +222,7 @@ const web = StyleSheet.create({
   missionStatementRow: {
     marginHorizontal: 'auto',
     width: 'auto',
-    maxWidth: 900,
+    maxWidth: 1200,
     borderColor: '#3E6259',
     borderWidth: 5,
     margin: 25,

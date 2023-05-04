@@ -500,7 +500,7 @@ const UserElement = ({ user, state }: {
   );
 };
 
-const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setCheckMarks }: { product: Product, isEditMode: boolean, setIsEditMode: Dispatch<SetStateAction<boolean>>, checkMarks: {}, setCheckMarks: Dispatch<SetStateAction<{}>> }) => {
+const ProductElement = ({ product, isEditMode, setIsEditMode }: { product: Product, isEditMode: boolean, setIsEditMode: Dispatch<SetStateAction<boolean>> }) => {
   return (
     <Row>
       <View style={styles.col}>
@@ -513,11 +513,7 @@ const ProductElement = ({ product, isEditMode, setIsEditMode, checkMarks, setChe
       <Column>{isEditMode ? <TextInput value={product?.subcategory} /> : product?.subcategory}</Column>
       <Column>{isEditMode ? <TextInput value={product?.price?.toString()} /> : formatPrice(product?.price)}</Column>
       <Column>product?.images</Column>
-      <Column>{isEditMode ? <Checkbox
-        disabled={false}
-        value={checkMarks[product?._id] || false}
-        onValueChange={() => setCheckMarks({ ...checkMarks, [product?._id]: !checkMarks[product?._id] })}
-      /> : product?.inStock}</Column>
+      <Column><Checkbox disabled={!isEditMode} value={product.inStock} /></Column>
       <View style={[styles.col, { alignItems: "center" }]}>
         <ModificationContextMenu id={product._id} objType={"product"} setIsEditMode={setIsEditMode} />
       </View>
@@ -608,7 +604,6 @@ function ListProducts({ navigation }) {
   const [asc, setAsc] = useState(true);
   const [field, setField] = useState("name");
   const [isEditMode, setIsEditMode] = useState(false);
-  const [checkMarks, setCheckMarks] = useState({});
 
   const sortData = (data) => {
     return data.sort((a, b) => {
@@ -641,7 +636,7 @@ function ListProducts({ navigation }) {
           <FlatList
             data={sortData(products)}
             renderItem={({ item, index }) => (
-              <ProductElement product={item} key={index} isEditMode={isEditMode} setIsEditMode={setIsEditMode} checkMarks={checkMarks} setCheckMarks={setCheckMarks} />
+              <ProductElement product={item} key={index} isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
             )}
             ListHeaderComponent={() => (
               <ProductsTableHeader

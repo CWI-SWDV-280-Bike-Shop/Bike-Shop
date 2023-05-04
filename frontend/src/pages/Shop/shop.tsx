@@ -155,7 +155,7 @@ const Item = ({ product, dimensions }: { product: Product, dimensions: ScaledSiz
     "Green": "lightgreen",
     "Blue": "cornflowerblue",
     "Purple": "purple",
-    "Black": "blakc",
+    "Black": "black",
     "White": "white",
     "Grey": "gray",
     "Pink": "pink"
@@ -339,7 +339,7 @@ export const Shop = ({ dimensions }: { dimensions: ScaledSize }) => {
         <Filters filterState={filterState} dimensions={dimensions} />
       </View>
 
-      <ScrollView>
+      <View style={{flexDirection: 'column'}}>
         <View style={styles.sortBar}>
           <ScrollView horizontal={true}>
             <View style={[styles.sortBarCol, responsive.hideOnDesktop]}>
@@ -382,7 +382,7 @@ export const Shop = ({ dimensions }: { dimensions: ScaledSize }) => {
           </ScrollView>
         </View>
         <ListProducts state={state} dimensions={dimensions} />
-      </ScrollView>
+    </View>
     </View>
   );
 };
@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
   sortBarCol: {
     flexDirection: "row",
     alignItems: "center",
-    padding: ".5rem",
+    padding: 10,
   },
   filterShowBtn: {
     backgroundColor: '#3e6259',
@@ -658,22 +658,3 @@ const styles = StyleSheet.create({
     left: 30,
   },
 })
-
-/*   <View style={[Layout.searchFilter]}>
-    <View style={[Layout.searchbar]}>
-      <Search_Bar />
-    </View>
-    <View>
-      <FilterParams/>
-    </View>
-    <View style={[Layout.text]}>
-      <Text>
-        Showing 1 - 25 out of 100
-      </Text>
-    </View>
-  </View>
-  <View style={[Layout.cardContainer]}>
-    <View style={[Layout.card]}>
-      <ListProducts/>
-    </View>
-  </View> */

@@ -90,7 +90,7 @@ const AppWrapper = () => {
       screens: {
         Home: '/',
         About: 'About',
-        Shop: 'Shop/:q?',
+        Shop: 'Shop/:filter?/:value?',
         Profile: 'Profile',
         Options: 'Options',
         Orders: 'Orders',

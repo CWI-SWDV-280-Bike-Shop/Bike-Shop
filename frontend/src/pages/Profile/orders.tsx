@@ -8,16 +8,16 @@ import { Order } from '@/types/data.types';
 
 export const Orders = () => { 
     const { authUser } = useContext(AuthContext);
-    const [orders, setOrders] = useState([] as Order);
+    const [orders, setOrders] = useState([] as Order[]);
 
     // retrieves orders for user
-    useEffect(() => {
-      OrderAPI.getAll({customer: authUser._id})
-              .then((res) => {
-                setOrders(res.data); 
-              })
-    }, []);
-
+      useEffect(() => {
+        if(authUser) OrderAPI.getAll({customer: authUser._id})
+                .then((res) => {
+                  setOrders(res.data); 
+                })
+      }, [authUser]);
+    
     console.log(orders);
 
     return (
@@ -35,11 +35,11 @@ export const Orders = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    backgroundColor: '#dee'
   },
   contentContainer: {
     flex: 1,
-    backgroundColor: '#D3D5D4',
   }, 
   header: {
     margin: 20,

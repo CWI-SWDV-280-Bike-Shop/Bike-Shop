@@ -3,8 +3,9 @@ import * as React from 'react';
 import {  Text, StyleSheet, View, FlatList } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { OrderItem } from './OrderItem';
+import { Order } from '@/types/data.types';
 
-export const OrderList = ({orders}) => {
+export const OrderList = ({orders}: {orders: Order[]}) => {
 
     return (
       <ScrollView>

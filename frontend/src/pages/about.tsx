@@ -6,7 +6,7 @@ export const About = () => {
   //Responsive
   const dimensions = useWindowDimensions();
   const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 768) ? true : false }
-  const responsive = checkMobile(dimensions) ? web : web;
+  const responsive = checkMobile(dimensions) ? mobile : web;
   const slideNames = ['Testimonials'];
   return (
     <View style={[responsive.container]}>
@@ -32,30 +32,30 @@ export const About = () => {
             </Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
             <Text style={[responsive.testimonialV1]}>"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
             <Text style={[responsive.testimonialV1]}>"This shop opened up down the road from my beet farm, its nice enough."</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"I just wandered into this shop one day and left with a new bike! Thanks man!"</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
             <Text style={[responsive.testimonialV1]}>"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, {display: (dimensions.width > 600) ? 'flex' : 'none'}]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
           </View>
-          <View style={{marginBottom: 15}}></View>
+          <View style={{marginBottom: 10}}></View>
           <Footer/>
         </ScrollView>
       </View>
@@ -65,90 +65,84 @@ export const About = () => {
 
 const mobile = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  slidesContainer: {
-    flexDirection: 'row',
-    flex: 1,
+    backgroundColor: '#1F302D',
   },
   contentContainer: {
-    flexDirection: 'row',
-    flex: 2,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    flex: 1,
-    marginTop: 20,
-    marginBottom: 20,
-  },
-  title: {
-    fontSize: 45,
-    alignSelf: 'center',
-    color: '#03312E',
-  },
-  btn: {
-    backgroundColor: 'white',
+
   },
   quoteRow: {
-    flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'center',
-    paddingVertical: 20,
-    width: '100%',
+
   },
   quote: {
-    fontSize: 27,
-    color: 'black',
-    fontStyle: 'italic',
+    fontSize: 30,
+    marginTop: 10,
+    padding: 15,
     textAlign: 'center',
-    paddingLeft: 15,
-    paddingRight: 15,
+    color: 'white',
   },
   missionStatementRow: {
-    flexDirection: 'row',
-    flex: 1,
-    marginTop: 20,
-    marginBottom: 20,
+    marginHorizontal: 'auto',
+    width: 'auto',
+    maxWidth: 1200,
+    borderColor: '#3E6259',
+    borderWidth: 5,
+    margin: 25,
+    marginTop: 10,
   },
   missionStatement: {
+    fontSize: 25,
+    padding: 15,
     alignSelf: 'center',
     textAlign: 'center',
-    fontSize: 20,
-    color: 'black',
-    paddingLeft: 15,
-    paddingRight: 15,
+    color: 'white',
+    fontStyle: 'italic',
   },
   imageV1: {
     borderRadius: 100,
-    width: 100,
-    height: 100,
-    marginRight: 20,
-    marginLeft: 20,
+    width: 50,
+    height: 50,
+    alignSelf: 'flex-start',
   },
   imageV2: {
     borderRadius: 100,
-    width: 100,
-    height: 100,
-    marginLeft: 35,
+    width: 50,
+    height: 50,
+    alignSelf: 'flex-start',
   },
   testimonialV1: {
-    width: 250,
-    marginLeft: 0,
+    fontSize: 22,
+    borderColor: '#6A7B76',
     borderWidth: 5,
-    borderColor: 'black',
+    padding: 15,
+    borderRadius: 20,
+    color: 'white',
+    width: 325,
+    textAlign: 'center',
+    marginLeft: 5,
   },
   testimonialV2: {
-    width: 210,
-    marginLeft: 30,
-    marginRight: -15,
+    fontSize: 22,
+    borderColor: '#8B9D83',
+    borderWidth: 5,
+    padding: 15,
+    borderRadius: 20,
+    color: 'white',
+    width: 325,
+    height: 145,
+    textAlign: 'center',
+    marginRight: 5,
+    justifyContent: 'center',
   },
   testimonialContainer: {
+    marginHorizontal: 'auto',
+    width: 'auto',
+    maxWidth: 600,
     flexDirection: 'row',
     paddingLeft: 5,
     paddingRight: 5,
     paddingBottom: 5,
     alignItems: 'center',
+    //alignSelf: 'center',
   }
 });
 
@@ -156,19 +150,7 @@ const web = StyleSheet.create({
   container: {
     backgroundColor: '#1F302D',
   },
-  slidesContainer: {
-
-  },
   contentContainer: {
-
-  },
-  titleRow: {
-
-  },
-  title: {
-    
-  },
-  btn: {
 
   },
   quoteRow: {
@@ -184,7 +166,7 @@ const web = StyleSheet.create({
   missionStatementRow: {
     marginHorizontal: 'auto',
     width: 'auto',
-    maxWidth: 800,
+    maxWidth: 1200,
     borderColor: '#3E6259',
     borderWidth: 5,
     margin: 25,
@@ -235,7 +217,6 @@ const web = StyleSheet.create({
   testimonialContainer: {
     marginHorizontal: 'auto',
     width: 'auto',
-    maxWidth: 600,
     flexDirection: 'row',
     paddingLeft: 5,
     paddingRight: 5,
@@ -244,4 +225,3 @@ const web = StyleSheet.create({
     //alignSelf: 'center',
   }
 });
-

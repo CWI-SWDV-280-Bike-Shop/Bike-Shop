@@ -20,6 +20,7 @@ import { Shop } from './pages/Shop/shop';
 import Cart from './pages/Shop/cart';
 import Checkout from '@pages/Shop/checkout';
 import * as Linking from 'expo-linking';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Drawer = createDrawerNavigator();
 
@@ -29,18 +30,22 @@ const AppWrapper = () => {
   const screens = [
     {
       name: 'Home',
+      icon: 'home-outline',
       component: (props) => <Home {...props} dimensions={dimensions} />,
     },
     {
       name: 'About',
+      icon: 'book-outline',
       component: (props) => <About {...props} dimensions={dimensions} />,
     },
     {
       name: 'Shop',
+      icon: 'cart-outline',
       component: (props) => <Shop {...props} dimensions={dimensions} />,
     },
     {
       name: 'Profile',
+      icon: 'person-outline',
       component: (props) => <Profile {...props} dimensions={dimensions} />,
     },
     {
@@ -57,6 +62,7 @@ const AppWrapper = () => {
     },
     {
       name: 'CRUD Playground',
+      icon: 'happy-outline',
       component: (props) => (
         <CRUDPlayground {...props} dimensions={dimensions} />
       ),
@@ -119,7 +125,15 @@ const AppWrapper = () => {
               {item.component}
             </Drawer.Screen>
           ) : (
-            <Drawer.Screen name={item.name} key={i}>
+            <Drawer.Screen
+              name={item.name}
+              key={i}
+              options={{
+                drawerIcon: () => (
+                  <Icon name={item.icon} size={20} color={'white'} />
+                ),
+              }}
+            >
               {item.component}
             </Drawer.Screen>
           );

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize, Image, useWindowDimensions } from 'react-native';
 import { Footer } from '@/components/Footer';
+import { ImageBackground } from 'react-native';
 
 export const About = () => {
   //Responsive
@@ -12,56 +13,86 @@ export const About = () => {
     <View style={[responsive.container]}>
       <View style={[responsive.contentContainer]}>
         <ScrollView>
-          <View style={[responsive.quoteRow]}>
-            <Text style={[responsive.quote]}>
-              "We aren't just a bike shop, we're a community."
-            </Text>
-          </View>
-          <View style={[responsive.missionStatementRow]}>
-            <Text style={[responsive.missionStatement]}>
-              Our mission at Wheely Good Bikes is to provide high-quality
-              bicycles and accessories that promote a healthy and sustainable
-              lifestyle. We are committed to offering personalized service and
-              expert advice to help our customers choose the right bike for
-              their needs and skill level. Our goal is to create a welcoming
-              environment where cyclists of all ages and abilities can come
-              together to share their passion for cycling and enjoy the freedom
-              of the open road. At the heart of our mission is a dedication to
-              promoting eco-friendly transportation options and helping our
-              community reduce its carbon footprint.
-            </Text>
-          </View>
+          <ImageBackground style={styles.backgroundImage} source={require('../assets/Images/bicycle-repair.jpg')}>
+            <View style={styles.overlay} />
+            <View style={styles.hero}>
+              <View style={[responsive.missionStatementRow]}>
+                <View style={[responsive.quoteRow]}>
+                  <Text style={[responsive.quote]}>
+                    "We aren't just a bike shop, we're a community."
+                  </Text>
+                </View>
+                <Text style={[responsive.missionStatement]}>
+                  Our mission at Wheely Good Bikes is to provide high-quality
+                  bicycles and accessories that promote a healthy and sustainable
+                  lifestyle. We are committed to offering personalized service and
+                  expert advice to help our customers choose the right bike for
+                  their needs and skill level. Our goal is to create a welcoming
+                  environment where cyclists of all ages and abilities can come
+                  together to share their passion for cycling and enjoy the freedom
+                  of the open road. At the heart of our mission is a dedication to
+                  promoting eco-friendly transportation options and helping our
+                  community reduce its carbon footprint.
+                </Text>
+              </View>
+            </View>
+          </ImageBackground>
+
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
             <Text style={[responsive.testimonialV1]}>"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
             <Text style={[responsive.testimonialV1]}>"This shop opened up down the road from my beet farm, its nice enough."</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"I just wandered into this shop one day and left with a new bike! Thanks man!"</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
           </View>
           <View style={[responsive.testimonialContainer]}>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
             <Text style={[responsive.testimonialV1]}>"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."</Text>
           </View>
           <View style={[responsive.testimonialContainer]}>
             <Text style={[responsive.testimonialV2]}>"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."</Text>
-            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
+            <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2, { display: (dimensions.width > 600) ? 'flex' : 'none' }]} />
           </View>
-          <View style={{marginBottom: 10}}></View>
-          <Footer/>
+
+          <View style={{ marginBottom: 15 }}></View>
+
+          <Footer />
         </ScrollView>
       </View>
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  overlay: {
+    position: 'absolute',
+    height: '100%',
+    width: '100%',
+    backgroundColor: 'black',
+    opacity: 0.4,
+  },
+  hero: {
+    flex: 1,
+    justifyContent: 'center',
+    minHeight: 400,
+    padding: 5
+  },
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+})
 
 const mobile = StyleSheet.create({
   container: {
@@ -162,14 +193,20 @@ const web = StyleSheet.create({
     padding: 15,
     alignSelf: 'center',
     color: 'white',
+    textAlign: 'center',
+    textShadowColor: 'black',
+    textShadowRadius: 10,
+    textShadowOffset: { width: 2, height: 2 }
   },
   missionStatementRow: {
     marginHorizontal: 'auto',
     width: 'auto',
-    maxWidth: 1200,
+    maxWidth: 900,
     borderColor: '#3E6259',
     borderWidth: 5,
     margin: 25,
+    borderRadius: 20,
+    backgroundColor: 'rgba(0,0,0,0.8)'
   },
   missionStatement: {
     fontSize: 25,
@@ -223,5 +260,6 @@ const web = StyleSheet.create({
     paddingBottom: 5,
     alignItems: 'center',
     //alignSelf: 'center',
+    margin: 10,
   }
 });

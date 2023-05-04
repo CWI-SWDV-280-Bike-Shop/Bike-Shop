@@ -10,6 +10,14 @@ export const OrderItem = ({item}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [order, setOrder] = useState({} as Order);
 
+    const date = new Date(item.createdAt);
+    const formattedDate = date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    
+
     return (
       <View>
       <Modal
@@ -44,7 +52,7 @@ export const OrderItem = ({item}) => {
         }}
       >
         <View style={styles.subContainer}>
-            <Text style={[styles.orderText]}>{item.createdAt}</Text>
+            <Text style={[styles.orderText]}>{formattedDate}</Text>
         </View>
         <View style={styles.subContainer}>
         <Text style={[styles.orderText]}>{item.items.length}</Text>

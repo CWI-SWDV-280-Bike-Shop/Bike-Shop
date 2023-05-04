@@ -4,9 +4,10 @@ import {  Text, StyleSheet, View, FlatList } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { OrderItem } from './OrderItem';
 import { Order } from '@/types/data.types';
+import { useState } from 'react';
 
 export const OrderList = ({orders}: {orders: Order[]}) => {
-
+    const [accordian, setAccordian] = useState({});
     return (
       <ScrollView>
       <View style={(styles.itemContainer)}>
@@ -22,7 +23,7 @@ export const OrderList = ({orders}: {orders: Order[]}) => {
       </View>
           <FlatList
             data={orders}
-            renderItem={({item}) => <OrderItem item={item} />}
+            renderItem={({item}) => <OrderItem item={item} accordian={accordian} setAccordian={setAccordian} />}
           />
       </ScrollView>  
     ); 

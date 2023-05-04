@@ -214,7 +214,7 @@ const Checkout = (props: DrawerHeaderProps) => {
                       key={index}
                     >
                       {/* Product */}
-                      <View style={[Styles.row, { gap: 10 }]}>
+                      <View style={[Styles.row, { gap: 10, flex:1, flexWrap: 'wrap', flexDirection: 'row', borderColor: 'black', borderBottomWidth:1 }]}>
                         <View style={[Styles.center, { padding: 10 }]}>
                           {('url' in firstImage && (
                             <ImageBackground

@@ -37,8 +37,7 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_DBNAME}
     volumes:
       - mongodb:/data/db
-      - ./docker/mongo:/docker-entrypoint-initdb.d/
-      - ./docker/mongo:/etc/
+      - ./docker/mongo:/etc/mongo/
     networks:
       - app-network
     ports:

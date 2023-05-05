@@ -22,14 +22,13 @@ const AddProduct = () => {
   const [category, setCategory] = useState('');
   const [subcategory, setSubcategory] = useState('');
   const [price, setPrice] = useState(0);
-  const [image, setimage] = useState('');
+  const [images, setimages] = useState([]);
   const [inStock, setInStock] = useState(true);
   const [brand, setBrand] = useState('');
   const [material, setMaterial] = useState('');
   const [wheelSize, setWheelSize] = useState('');
   const [color, setColor] = useState('');
   const [size, setSize] = useState('');
-  const [gender, setGender] = useState('');
 
   const [submitted, setSubmitted] = useState(false);
   const [product, setProduct] = useState({} as Product);
@@ -41,14 +40,13 @@ const AddProduct = () => {
       category,
       subcategory,
       price,
-      image,
+      images,
       inStock,
       brand,
       material,
       wheelSize,
       color,
       size,
-      gender,
     };
     ProductAPI.create(newProduct).then((res) => setProduct(res.data));
     setSubmitted(true);
@@ -220,17 +218,6 @@ const AddProduct = () => {
             <Picker.Item label="Medium" value="Medium"></Picker.Item>
             <Picker.Item label="Large" value="Large"></Picker.Item>
           </Picker>
-
-          <Text>Gender</Text>
-          <Picker
-            style={Layout.input}
-            selectedValue={gender}
-            onValueChange={(value) => setGender(value)}
-          >
-            <Picker.Item label="Mens" value="Mens"></Picker.Item>
-            <Picker.Item label="Womens" value="Womens"></Picker.Item>
-            <Picker.Item label="Neutral" value="Neutral"></Picker.Item>
-          </Picker>
         </>
       )}
 
@@ -246,7 +233,7 @@ const AddProduct = () => {
           <Text>category: {product?.category}</Text>
           <Text>subcategory: {product?.subcategory}</Text>
           <Text>price: {formatPrice(product?.price)}</Text>
-          <Text>image: {product?.image}</Text>
+          {/* <Text>image: {product?.image}</Text> */}
           <Text>inStock: {product?.inStock?.toString()}</Text>
           {product?.category === 'Bikes' && (
             <>
@@ -255,7 +242,6 @@ const AddProduct = () => {
               <Text>wheelSize: {product?.wheelSize}</Text>
               <Text>color: {product?.color}</Text>
               <Text>size: {product?.size}</Text>
-              <Text>gender: {product?.gender}</Text>
             </>
           )}
         </View>
@@ -320,7 +306,7 @@ const ListProducts = () => {
             <Text>category: {product?.category}</Text>
             <Text>subcategory: {product?.subcategory}</Text>
             <Text>price: {formatPrice(product?.price)}</Text>
-            <Text>image: {product?.image}</Text>
+            {/* <Text>image: {product?.images?.[0]?.url}</Text> */}
             <Text>inStock: {product?.inStock?.toString()}</Text>
             <>
               {product?.category === 'Bikes' && (
@@ -330,7 +316,6 @@ const ListProducts = () => {
                   <Text>wheelSize: {product?.wheelSize}</Text>
                   <Text>color: {product?.color}</Text>
                   <Text>size: {product?.size}</Text>
-                  <Text>gender: {product?.gender}</Text>
                 </>
               )}
             </>
@@ -383,7 +368,6 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
   const [wheelSize, setWheelSize] = useState('');
   const [color, setColor] = useState('');
   const [size, setSize] = useState('');
-  const [gender, setGender] = useState('');
 
   useEffect(() => {
     // make sure product is NOT undefined, then if a given attribute (name, description, etc.)
@@ -402,7 +386,6 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
       setWheelSize(product?.wheelSize || '');
       setColor(product?.color || '');
       setSize(product?.size || '');
-      setGender(product?.gender || '');
     }
   }, [product]);
 
@@ -421,7 +404,6 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
       wheelSize,
       color,
       size,
-      gender,
     };
     onSave(editedProduct);
     onClose();
@@ -593,17 +575,6 @@ const EditProduct = ({ product, visible, onClose, onSave }) => {
               <Picker.Item label="Medium" value="Medium"></Picker.Item>
               <Picker.Item label="Large" value="Large"></Picker.Item>
             </Picker>
-
-            <Text>Gender</Text>
-            <Picker
-              style={Layout.input}
-              selectedValue={gender}
-              onValueChange={(value) => setGender(value)}
-            >
-              <Picker.Item label="Mens" value="Mens"></Picker.Item>
-              <Picker.Item label="Womens" value="Womens"></Picker.Item>
-              <Picker.Item label="Neutral" value="Neutral"></Picker.Item>
-            </Picker>
           </>
         )}
 
@@ -662,7 +633,6 @@ const DeleteProduct = ({ product, visible, onClose, onDelete }) => {
                 <Text>wheelSize: {product?.wheelSize}</Text>
                 <Text>color: {product?.color}</Text>
                 <Text>size: {product?.size}</Text>
-                <Text>gender: {product?.gender}</Text>
               </>
             )}
           </>

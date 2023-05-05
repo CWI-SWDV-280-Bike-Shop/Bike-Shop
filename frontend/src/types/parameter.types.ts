@@ -11,7 +11,6 @@ export type ProductParams = {
   wheelSize?: string;
   color?: string;
   size?: string;
-  gender?: string;
 };
 
 // Orders

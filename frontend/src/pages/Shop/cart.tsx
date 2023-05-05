@@ -98,10 +98,6 @@ const Cart = (props: DrawerHeaderProps) => {
                           <Text style={Styles.productLabel}>Size: </Text>
                           {cartItem?.product?.size}
                         </Text>
-                        <Text>
-                          <Text style={Styles.productLabel}>Gender: </Text>
-                          {cartItem?.product?.gender}
-                        </Text>
                       </>
                     )}
                   </View>

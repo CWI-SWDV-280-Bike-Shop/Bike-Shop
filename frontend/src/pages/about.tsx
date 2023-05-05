@@ -1,19 +1,38 @@
 import * as React from 'react';
-import { Text, StyleSheet, View, ScrollView, Platform, ScaledSize, Image, useWindowDimensions, ImageBackground } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  ScrollView,
+  Platform,
+  ScaledSize,
+  Image,
+  useWindowDimensions,
+  ImageBackground,
+} from 'react-native';
 import Swiper from 'react-native-web-swiper';
 import { Footer } from '@/components/Footer';
 
 export const About = () => {
   //Responsive
   const dimensions = useWindowDimensions();
-  const checkMobile = (dimensions: ScaledSize) => { return (Platform.OS === 'android' || Platform.OS === 'ios' || dimensions.width <= 768) ? true : false }
+  const checkMobile = (dimensions: ScaledSize) => {
+    return Platform.OS === 'android' ||
+      Platform.OS === 'ios' ||
+      dimensions.width <= 768
+      ? true
+      : false;
+  };
   const responsive = checkMobile(dimensions) ? mobile : web;
   const slideNames = ['Testimonials'];
   return (
     <View style={[responsive.container]}>
       <View style={[responsive.contentContainer]}>
         <ScrollView>
-          <ImageBackground style={styles.backgroundImage} source={require('../assets/Images/bicycle-repair.jpg')}>
+          <ImageBackground
+            style={styles.backgroundImage}
+            source={require('../assets/Images/bicycle-repair.jpg')}
+          >
             <View style={styles.overlay} />
             <View style={styles.hero}>
               <View style={[responsive.missionStatementRow]}>
@@ -24,67 +43,113 @@ export const About = () => {
                 </View>
                 <Text style={[responsive.missionStatement]}>
                   Our mission at Wheely Good Bikes is to provide high-quality
-                  bicycles and accessories that promote a healthy and sustainable
-                  lifestyle. We are committed to offering personalized service and
-                  expert advice to help our customers choose the right bike for
-                  their needs and skill level. Our goal is to create a welcoming
-                  environment where cyclists of all ages and abilities can come
-                  together to share their passion for cycling and enjoy the freedom
-                  of the open road. At the heart of our mission is a dedication to
-                  promoting eco-friendly transportation options and helping our
-                  community reduce its carbon footprint.
+                  bicycles and accessories that promote a healthy and
+                  sustainable lifestyle. We are committed to offering
+                  personalized service and expert advice to help our customers
+                  choose the right bike for their needs and skill level. Our
+                  goal is to create a welcoming environment where cyclists of
+                  all ages and abilities can come together to share their
+                  passion for cycling and enjoy the freedom of the open road. At
+                  the heart of our mission is a dedication to promoting
+                  eco-friendly transportation options and helping our community
+                  reduce its carbon footprint.
                 </Text>
               </View>
             </View>
           </ImageBackground>
-          <Swiper
-            loop
-            timeout={5}
-            springConfig={{ speed: 5, bounciness: 1, }}
-            containerStyle={{ height: Math.min(600, Math.max(300, dimensions.width / 2)) }}
-            controlsProps={{
-              prevTitle: '⮜',
-              nextTitle: '⮞',
-              dotsTouchable: true,
-              dotsPos: 'bottom',
-              prevPos: (checkMobile(dimensions)) ? false : 'left',
-              nextPos: (checkMobile(dimensions)) ? false : 'right',
-              nextTitleStyle: {
-                fontSize: 38,
-                fontWeight: '900',
-                color: '#fff'
-              },
-              prevTitleStyle: {
-                fontSize: 38,
-                fontWeight: '900',
-                color: '#fff'
-              },
-            }}>
-          <View style={[responsive.testimonialContainer]}>
-              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
-            <Text style={[responsive.testimonialV1]}>"After that waitress stole my bike, I needed to buy a new one and this shop had the newest model!"</Text>
+          <View style={styles.swiperContainer}>
+            <Swiper
+              loop
+              timeout={5}
+              springConfig={{ speed: 5, bounciness: 1 }}
+              containerStyle={{ flex: 1 }}
+              swipeAreaStyle={{ flex: 1 }}
+              innerContainerStyle={{ flex: 1 }}
+              slideWrapperStyle={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              controlsProps={{
+                prevTitle: '⮜',
+                nextTitle: '⮞',
+                dotsTouchable: true,
+                dotsPos: 'bottom',
+                prevPos: checkMobile(dimensions) ? false : 'left',
+                nextPos: checkMobile(dimensions) ? false : 'right',
+                nextTitleStyle: {
+                  fontSize: 38,
+                  fontWeight: '900',
+                  color: '#fff',
+                },
+                prevTitleStyle: {
+                  fontSize: 38,
+                  fontWeight: '900',
+                  color: '#fff',
+                },
+              }}
+            >
+              <View style={[responsive.testimonialContainer]}>
+                <Image
+                  source={require('../assets/Branding/profile-white.png')}
+                  style={[responsive.imageV1]}
+                />
+                <Text style={[responsive.testimonialV1]}>
+                  "After that waitress stole my bike, I needed to buy a new one
+                  and this shop had the newest model!"
+                </Text>
+              </View>
+              <View style={[responsive.testimonialContainer]}>
+                <Image
+                  source={require('../assets/Branding/profile-white.png')}
+                  style={[responsive.imageV2]}
+                />
+                <Text style={[responsive.testimonialV2]}>
+                  "Thank you so much for all of your help! I hope to one day
+                  open up a bike shop as nice as yours!"
+                </Text>
+              </View>
+              <View style={[responsive.testimonialContainer]}>
+                <Image
+                  source={require('../assets/Branding/profile-white.png')}
+                  style={[responsive.imageV1]}
+                />
+                <Text style={[responsive.testimonialV1]}>
+                  "This shop opened up down the road from my beet farm, its nice
+                  enough."
+                </Text>
+              </View>
+              <View style={[responsive.testimonialContainer]}>
+                <Image
+                  source={require('../assets/Branding/profile-white.png')}
+                  style={[responsive.imageV2]}
+                />
+                <Text style={[responsive.testimonialV2]}>
+                  "I just wandered into this shop one day and left with a new
+                  bike! Thanks man!"
+                </Text>
+              </View>
+              <View style={[responsive.testimonialContainer]}>
+                <Image
+                  source={require('../assets/Branding/profile-white.png')}
+                  style={[responsive.imageV1]}
+                />
+                <Text style={[responsive.testimonialV1]}>
+                  "This shop has fixed my granddaughters bike 3 times now.
+                  Really appreciate it."
+                </Text>
+              </View>
+              <View style={[responsive.testimonialContainer]}>
+                <Image
+                  source={require('../assets/Branding/profile-white.png')}
+                  style={[responsive.imageV2]}
+                />
+                <Text style={[responsive.testimonialV2]}>
+                  "The owner of this shop is the nicest, most helpful person you
+                  could ask for to help you with all of your bike needs."
+                </Text>
+              </View>
+            </Swiper>
           </View>
-          <View style={[responsive.testimonialContainer]}>
-            <Text style={[responsive.testimonialV2]}>"Thank you so much for all of your help! I hope to one day open up a bike shop as nice as yours!"</Text>
-              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
-          </View>
-          <View style={[responsive.testimonialContainer]}>
-              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
-            <Text style={[responsive.testimonialV1]}>"This shop opened up down the road from my beet farm, its nice enough."</Text>
-          </View>
-          <View style={[responsive.testimonialContainer]}>
-            <Text style={[responsive.testimonialV2]}>"I just wandered into this shop one day and left with a new bike! Thanks man!"</Text>
-              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
-          </View>
-          <View style={[responsive.testimonialContainer]}>
-              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV1]} />
-            <Text style={[responsive.testimonialV1]}>"This shop has fixed my granddaughters bike 3 times now. Really appreciate it."</Text>
-          </View>
-          <View style={[responsive.testimonialContainer]}>
-            <Text style={[responsive.testimonialV2]}>"The owner of this shop is the nicest, most helpful person you could ask for to help you with all of your bike needs."</Text>
-              <Image source={require('../assets/Branding/profile-white.png')} style={[responsive.imageV2]} />
-          </View>
-          </Swiper>
           <View style={{ marginBottom: 10 }}></View>
           <Footer />
         </ScrollView>
@@ -105,26 +170,25 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     minHeight: 400,
-    padding: 5
+    padding: 5,
   },
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
     justifyContent: 'center',
     alignItems: 'center',
-  }
-})
+  },
+  swiperContainer: {
+    minHeight: 400,
+  },
+});
 
 const mobile = StyleSheet.create({
   container: {
     backgroundColor: '#1F302D',
   },
-  contentContainer: {
-
-  },
-  quoteRow: {
-
-  },
+  contentContainer: {},
+  quoteRow: {},
   quote: {
     fontSize: 30,
     marginTop: 10,
@@ -195,19 +259,15 @@ const mobile = StyleSheet.create({
     paddingBottom: 5,
     alignItems: 'center',
     //alignSelf: 'center',
-  }
+  },
 });
 
 const web = StyleSheet.create({
   container: {
     backgroundColor: '#1F302D',
   },
-  contentContainer: {
-
-  },
-  quoteRow: {
-
-  },
+  contentContainer: {},
+  quoteRow: {},
   quote: {
     fontSize: 40,
     marginTop: 10,
@@ -217,7 +277,7 @@ const web = StyleSheet.create({
     textAlign: 'center',
     textShadowColor: 'black',
     textShadowRadius: 10,
-    textShadowOffset: { width: 2, height: 2 }
+    textShadowOffset: { width: 2, height: 2 },
   },
   missionStatementRow: {
     marginHorizontal: 'auto',
@@ -227,7 +287,7 @@ const web = StyleSheet.create({
     borderWidth: 5,
     margin: 25,
     borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.8)'
+    backgroundColor: 'rgba(0,0,0,0.8)',
   },
   missionStatement: {
     fontSize: 25,
@@ -273,14 +333,13 @@ const web = StyleSheet.create({
     color: 'white',
   },
   testimonialContainer: {
-    marginHorizontal: 'auto',
+    marginHorizontal: 40,
     width: 'auto',
     flexDirection: 'row',
     paddingLeft: 5,
     paddingRight: 5,
     paddingBottom: 5,
     alignItems: 'center',
-    //alignSelf: 'center',
-    margin: 10,
-  }
+    alignSelf: 'center',
+  },
 });

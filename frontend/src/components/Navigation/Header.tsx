@@ -80,6 +80,7 @@ export const NavigationHeader = (props: DrawerHeaderProps) => {
               'Admin',
               'Checkout',
               'NotFound',
+              'CRUD Playground'
             ].some((e) => name === e)
           ) {
             return;

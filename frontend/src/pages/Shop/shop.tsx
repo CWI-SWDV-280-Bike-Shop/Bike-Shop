@@ -16,7 +16,7 @@ import ProductAPI from '@/api/product.api';
 import { Product } from '@/types/data.types';
 import Checkbox from 'expo-checkbox';
 import { ShopContext } from '@/context/shop.context';
-import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import Popover, { PopoverMode, PopoverPlacement } from 'react-native-popover-view';
 import { DrawerHeaderProps } from '@react-navigation/drawer';
 import { Route, RouteProp } from '@react-navigation/native';
 
@@ -597,7 +597,9 @@ const OpenFilters = (props) => {
 const FilterPopup = (props) => {
   return (
     <View style={styles.popoverLarge}>
-      <Filters {...props} />
+      <ScrollView>
+        <Filters {...props} />
+      </ScrollView>
     </View>
   );
 };

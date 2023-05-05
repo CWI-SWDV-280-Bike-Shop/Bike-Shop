@@ -1,11 +1,12 @@
 import axios from 'axios';
 import TokenAPI from './token.api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Platform } from 'react-native';
 
-const url = __DEV__ ? "localhost:8081" : "thebikeshop.app"
+const url = (__DEV__ && Platform.OS === 'web') ? "http://localhost:8081" : "https://thebikeshop.app"
 
 const api = axios.create({
-  baseURL: `//${url}/api`,
+  baseURL: `${url}/api`,
   headers: {
     'Content-type': 'application/json',
   },

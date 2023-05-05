@@ -16,7 +16,7 @@ import ProductAPI from '@/api/product.api';
 import { Product } from '@/types/data.types';
 import Checkbox from 'expo-checkbox';
 import { ShopContext } from '@/context/shop.context';
-import Popover, { PopoverPlacement } from 'react-native-popover-view';
+import Popover, { PopoverMode, PopoverPlacement } from 'react-native-popover-view';
 import { DrawerHeaderProps } from '@react-navigation/drawer';
 import { Route, RouteProp } from '@react-navigation/native';
 
@@ -68,14 +68,14 @@ const ItemDetailsPopup = ({
     console.log(wholeStars, partialStars, emptyStars);
     return (
       <View style={details.rating}>
-        {wholeStars.map((e) => (
-          <Icon name={'star'} color={'gold'} size={22} />
+        {wholeStars.map((e, i) => (
+          <Icon key={i} name={'star'} color={'gold'} size={22} />
         ))}
-        {partialStars.map((e) => (
-          <Icon name={'star-half'} color={'gold'} size={22} />
+        {partialStars.map((e, i) => (
+          <Icon key={i} name={'star-half'} color={'gold'} size={22} />
         ))}
-        {emptyStars.map((e) => (
-          <Icon name={'star-outline'} color={'gold'} size={22} />
+        {emptyStars.map((e, i) => (
+          <Icon key={i} name={'star-outline'} color={'gold'} size={22} />
         ))}
       </View>
     );
@@ -142,6 +142,13 @@ const ItemDetailsPopup = ({
           resizeMode="contain"
           style={styles.backgroundimage}
         >
+          <TouchableOpacity
+            onPress={() => {
+              setShowPopover(false);
+            }}
+          >
+            <Icon name="close" size={30} color="#000" />
+          </TouchableOpacity>
           <Text
             style={[
               styles.itemStockText,
@@ -590,7 +597,9 @@ const OpenFilters = (props) => {
 const FilterPopup = (props) => {
   return (
     <View style={styles.popoverLarge}>
-      <Filters {...props} />
+      <ScrollView>
+        <Filters {...props} />
+      </ScrollView>
     </View>
   );
 };
@@ -707,8 +716,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   item: {
-    margin: 15,
-    width: 390,
+    margin: 10,
+    width: 350,
     height: 370,
     padding: 10,
     backgroundColor: '#fff',
@@ -728,24 +737,24 @@ const styles = StyleSheet.create({
     height: 'auto',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 15,
-    paddingTop: 20,
+    padding: 10,
+    paddingTop: 15,
     borderRadius: 10,
     position: 'relative',
-    top: -25,
-    left: -25,
+    top: -20,
+    left: -20,
   },
   priceText: {
     color: '#fff',
     fontWeight: '800',
-    fontSize: 18,
+    fontSize: 16,
   },
   itemName: {
     flexDirection: 'column',
     position: 'relative',
-    top: -60,
+    top: -40,
     left: 100,
-    maxWidth: 370 - 120,
+    maxWidth: 350 - 120,
   },
   itemNameText: {
     fontSize: 30,

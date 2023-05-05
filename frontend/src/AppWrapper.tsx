@@ -120,7 +120,7 @@ const AppWrapper = () => {
         }}
       >
         {screens.map((item, i) => {
-          return ['Cart', 'Checkout', 'Orders', 'Account', 'Admin', 'NotFound'].some(
+          return ['Cart', 'Checkout', 'Orders', 'Account', 'Admin', 'NotFound','CRUD Playground'].some(
             (name) => name === item.name
           ) ? (
             <Drawer.Screen

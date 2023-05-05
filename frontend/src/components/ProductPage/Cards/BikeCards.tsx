@@ -177,7 +177,6 @@ export default ListProducts;
 //                   <Text>wheelSize: {product?.wheelSize}</Text>
 //                   <Text>color: {product?.color}</Text>
 //                   <Text>size: {product?.size}</Text>
-//                   <Text>gender: {product?.gender}</Text>
 //                 </>
 //               )}
 //             </>

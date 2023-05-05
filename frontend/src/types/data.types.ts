@@ -53,7 +53,6 @@ export type Product = Data & {
   wheelSize?: string;
   color?: string;
   size?: string;
-  gender?: string;
 };
 
 // Order

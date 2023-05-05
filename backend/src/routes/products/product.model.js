@@ -80,10 +80,6 @@ const ProductSchema = new Schema(
       type: String,
       enum: ['Small', 'Medium', 'Large', null, ''],
     },
-    gender: {
-      type: String,
-      enum: ['Mens', 'Womens', 'Neutral', null, ''],
-    },
   },
   { timestamps: true }
 );

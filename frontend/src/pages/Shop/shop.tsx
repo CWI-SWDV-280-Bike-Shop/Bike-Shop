@@ -65,7 +65,6 @@ const ItemDetailsPopup = ({
       {}
     );
     [].fill(1, 0);
-    console.log(wholeStars, partialStars, emptyStars);
     return (
       <View style={details.rating}>
         {wholeStars.map((e) => (
@@ -455,7 +454,6 @@ export const Shop = ({
   navigation: any;
   route: any;
 }) => {
-  console.log(route.params);
   const [asc, setAsc] = useState(true);
   const [sortfield, sortsetField] = useState('price');
   type MongoQuery<T> = {

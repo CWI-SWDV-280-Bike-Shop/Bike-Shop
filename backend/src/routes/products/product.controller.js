@@ -11,7 +11,7 @@ const withImageUrls = ({ appBaseURL }) => ({ _doc }) => ({
 const withImageIds = (data) => ({
   ...data, images: data.images?.map((image) => {
     if (image.id) return image;
-    if (typeof image.newImageIndex !== "number") throw new UserError('Image data does not have an existing id or newImageIndex');
+    if (isNaN(image.newImageIndex)) throw new UserError('Image data does not have an existing id or newImageIndex');
     if (!data.files?.newImages) throw new UserError('The multipart field "newImages" does not exist');
     if (!(image.newImageIndex in data.files.newImages)) throw new UserError('newImageIndex is not an index of newImages');
     return {

@@ -22,11 +22,17 @@ const withImageIds = (data) => ({
 
 export class ProductController extends BaseController(Product) {
   static async find(query = {}, options) {
-    return (await super.find(query)).map(withImageUrls(options));
+    return {
+      type: "read",
+      data: (await super.find(query)).data.map(withImageUrls(options)),
+    };
   }
 
   static async getById(data = {}, options) {
-    return withImageUrls(options)(await super.getById(data));
+    return {
+      type: "read",
+      data: withImageUrls(options)(await super.getById(data).data),
+    };
   }
 
   static create(productData) {

@@ -1,27 +1,30 @@
 import jwt from 'jsonwebtoken';
+import { promisify } from 'util';
 import config from '../config/auth.config.js';
-import User from '../models/user.model.js';
-import { Forbidden, Unauthorized } from '../errors.js';
-import { AccessTokenExpired } from '../errors/errors.js';
+import User from '../routes/users/user.model.js';
+import { Unauthorized, InternalError, AccessTokenExpired } from '../errors/errors.js';
+import { AsyncLocalStorage } from 'async_hooks';
 
+export const authContext = new AsyncLocalStorage();
 const { TokenExpiredError } = jwt;
+const jwtVerify = promisify(jwt.verify);
 
-const authToken = {
-  verifyToken(req, res, next) {
-    let token = req.headers['x-access-token'];
+export async function addPermissions(req, _, next) {
+  let token = req.headers['x-access-token'];
 
-    if (!token) throw new Unauthorized('No token provided!');
-
-    jwt.verify(token, config.secret, async (error, decoded) => {
-      if (error instanceof TokenExpiredError) throw new AccessTokenExpired('Access token was expired!');
-
-      const user = User.findById(decoded.userId);
-      if (!user) throw new Forbidden('User not found');
-
-      req.user = user;
-      next();
-    });
-  },
-};
-
-export default authToken;
+  let user, accessTokenExpired;
+  try {
+    user = token && (await jwtVerify(token, config.secret)).user;
+  } catch (error) {
+    if (error instanceof TokenExpiredError) accessTokenExpired = true;
+    else throw error;
+  }
+  const rolePermissions = config.permissions[user?.role ?? "unauthenticated"];
+  authContext.run({
+    user,
+    rolePermissions,
+    accessTokenExpired
+  }, () => {
+    next();
+  })
+}

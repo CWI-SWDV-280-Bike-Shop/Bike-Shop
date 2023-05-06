@@ -35,7 +35,7 @@ api.interceptors.response.use(
     // save the original request that was sent
     const originalConfig = error.config;
 
-    if (originalConfig.url !== 'auth/login' && error.response) {
+    if (!['/auth/login', '/auth/refresh'].includes(originalConfig.url) && error.response) {
       // Access Token was not provided
       if (error.response.status === 403) {
         AsyncStorage.removeItem('user');
@@ -44,16 +44,14 @@ api.interceptors.response.use(
       }
 
       // Access token was expired
-      if (error.response.data.accessTokenExpired && !originalConfig._retry) {
-        originalConfig._retry = true;
-      }
+      originalConfig._retry = error.response.data.accessTokenExpired && !originalConfig._retry;
 
       if (!originalConfig._retry) return Promise.reject(error);
       // use refreshToken to get a new accessToken and update in "localStorage" (AsyncStorage in Expo)
       try {
         const response = await api
           .post('/auth/refresh', {
-            refreshToken: TokenAPI.getLocalRefreshToken(),
+            refreshToken: await TokenAPI.getLocalRefreshToken(),
           })
           .then((res) => res.data);
 

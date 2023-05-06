@@ -1,8 +1,10 @@
 import React, {
   Dispatch,
   SetStateAction,
+  useCallback,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import {
@@ -12,7 +14,9 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
-  Platform
+  Platform,
+  Image,
+  Button
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import UserAPI from "@api/user.api";
@@ -25,14 +29,70 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { Pressable } from "react-native-web-hover";
 import Popover from "react-native-popover-view";
 import { ScaledSize } from 'react-native';
-import { AuthContext } from "@/context/auth.context";
+import { AuthContext } from '@/context/auth.context';
 import Checkbox from 'expo-checkbox';
 import { Picker } from '@react-native-picker/picker';
+import { setProperty, getProperty } from 'dot-prop';
+import { AxiosResponse } from 'axios';
+import * as ImagePicker from 'expo-image-picker';
 
 // Search can be implemented like I did sorting, button needs selector for which field to search
 // Need a wrapper or something that calls this so I can do more complex features
 // Figure out auto option instead of flex 1 so things like description can take up more space
 // Better fonts
+
+type SetState<T> = Dispatch<SetStateAction<T>>;
+
+const withNewImage = async (images: Product['images'], newURL: string) =>
+  newURL
+    ? {
+        images: [{ newImageIndex: 0, url: newURL }],
+        newImages: await (await fetch(newURL)).blob(),
+      }
+    : {};
+function ImageUpload({
+  data,
+  setData,
+  isEditMode,
+}: {
+  data: Product;
+  setData: SetState<Product>;
+  isEditMode: boolean;
+}) {
+  const firstImage = data.images?.[0] ?? {};
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+    if (result.canceled) return;
+    setData({
+      ...data,
+      ...(await withNewImage(data.images, result.assets[0].uri)),
+    });
+  };
+  return (
+    <Row>
+      {'url' in firstImage && firstImage.url && (
+        <Image
+          source={{
+            uri: firstImage.url,
+            width: 42,
+            height: 42,
+          }}
+        />
+      )}
+      <Button
+        title={'url' in firstImage && firstImage.url ? 'Replace' : 'Upload'}
+        onPress={pickImage}
+        disabled={!isEditMode}
+      />
+    </Row>
+  );
+}
 
 //One large object everything can reference so you don't have to go looking for stuff
 const document = {
@@ -40,116 +100,85 @@ const document = {
     {
       route: 'Users',
       icon: 'people-outline',
-      component: ListUsers,
-      labels: [
-        'select',
-        'id',
-        'name',
-        'email',
-        'role',
-        'phone',
-        'orders',
-        'street',
-        'city',
-        'state',
-        'zip',
-        'country',
-        'options',
-      ],
       properties: [
-        '',
-        '_id',
-        'name',
-        'email',
-        'role',
-        'phone',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
-        '',
+        ['id', ({ data }) => data?._id],
+        ['name', ['name', 'string']],
+        ['email', ['email', 'string']],
+        ['role', ['role', 'string']],
+        ['phone', ['phone', 'string']],
+        ['orders', ({ data }) => data?.orders?.length],
+        ['street', ['address.street', 'string']],
+        ['city', ['address.city', 'string']],
+        ['state', ['address.state', 'string']],
+        ['zip', ['address.zip', 'string']],
+        ['country', ['address.country', 'string']],
       ],
+      api: UserAPI,
     },
     {
       route: 'Products',
       icon: 'pricetags-outline',
-      component: ListProducts,
-      labels: [
-        'select',
-        'id',
-        'name',
-        'description',
-        'category',
-        'subcategory',
-        'price',
-        'images',
-        'in stock',
-        'options',
-      ],
       properties: [
-        '',
-        '_id',
-        'name',
-        'description',
-        'category',
-        'subcategory',
-        'price',
-        'image',
-        'inStock',
-        '',
+        ['id', ({ data }) => data?._id],
+        ['name', ['name', 'string']],
+        ['description', ['description', 'string']],
+        ['category', ['category', 'string']],
+        ['subcategory', ['subcategory', 'string']],
+        ['price', ['price', 'number']],
+        ['image', ImageUpload],
+        ['in stock', ['inStock', 'boolean']],
       ],
+      api: ProductAPI,
     },
     {
       route: 'Orders',
       icon: 'receipt-outline',
-      component: ListOrders,
-      labels: [
-        'select',
-        'id',
-        'purchased by',
-        'created at',
-        'items',
-        'total',
-        'updated',
-        'options',
-      ],
       properties: [
-        '',
-        '_id',
-        'customer',
-        'createdAt',
-        'items',
-        'total',
-        'updatedAt',
-        '',
+        ['id', ({ data }) => data?._id],
+        ['purchased by', ({ data }) => data?.customer?.name],
+        ['created at', ['createdAt', 'date']],
+        ['items', ({ data }) => data?.items?.length],
+        ['total', ['total', 'number']],
+        ['updated at', ({ data }) => data?.updatedAt],
       ],
+      api: OrdersAPI,
     },
-  ],
+  ] as const,
 };
 
-type UserState = {
-  asc?: boolean,
-  setAsc?: Dispatch<SetStateAction<boolean>>,
-  field?: string,
-  setField?: Dispatch<SetStateAction<string>>,
-  users?: User[],
-  setUser?: React.Dispatch<React.SetStateAction<User[]>>
-  selectedRows?: string[]
-  setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
-}
+type API<T> = {
+  delete: (id: string) => Promise<AxiosResponse>;
+  create: (newItem: T) => Promise<AxiosResponse>;
+  update: (id: string, newItem: T) => Promise<AxiosResponse>;
+  getAll: () => Promise<AxiosResponse>;
+};
 
-type ProductState = {
-  asc?: boolean,
-  setAsc?: Dispatch<SetStateAction<boolean>>,
-  field?: string,
-  setField?: Dispatch<SetStateAction<string>>,
-  products?: Product[],
-  setProducts?: React.Dispatch<React.SetStateAction<Product[]>>
-  selectedRows?: string[]
-  setSelectedRows?: React.Dispatch<React.SetStateAction<string[]>>
-}
+type State<T> = {
+  sort: {
+    asc: boolean;
+    setAsc: SetState<boolean>;
+    field: string;
+    setField: SetState<string>;
+  };
+  items: T[];
+  setAll: SetState<T[]>;
+  selectedRows?: string[];
+  setSelectedRows?: SetState<string[]>;
+  api: API<T>;
+};
+
+type Properties<T> = ReadonlyArray<
+  readonly [
+    label: string,
+    component:
+      | readonly [key: string, type: string | number]
+      | ((props: {
+          data: T;
+          setData: Dispatch<T>;
+          isEditMode?: boolean;
+        }) => Children)
+  ]
+>;
 
 const NavigationMenu = ({ navigation }) => {
   const checkPage = (page) => {
@@ -159,9 +188,9 @@ const NavigationMenu = ({ navigation }) => {
   };
   return (
     <View style={styles.navigationMenu}>
-      {document.routes.map((item, i) => (
+      {document.routes.map((item) => (
         <TouchableOpacity
-          key={i}
+          key={item.route}
           style={[
             styles.navbutton,
             checkPage(item.route) ? styles.active : styles.inactive,
@@ -176,39 +205,61 @@ const NavigationMenu = ({ navigation }) => {
   );
 };
 
-const TableHeader = ({
-  labels,
+function TableHeader<T extends { _id?: string }>({
   properties,
   state,
 }: {
-  labels: string[];
-  properties: string[];
-  state?: UserState;
-}) => {
+  properties: Properties<T>;
+  state?: State<Partial<T>>;
+}) {
+  const [newItem, setNewItem] = useState({} as Partial<T>);
+
   return (
-    <View style={[styles.row, styles.rowHeader]}>
-      {labels.map((label, i) =>
-        label != "options" && label != "select" ? (
-          <Column header={true} key={i} width={(label === "id" || label === "orders") ? 80 : 150}>
+    <>
+      <Row>
+        <Column></Column>
+        {properties.map(([label], i) => (
+          <Column header={true} key={label}>
             <Text style={styles.rowHeaderText}>{label}</Text>
-            <TouchableOpacity
-              onPressOut={() => {
-                state.setField(properties[i]);
-                state.setAsc(!state.asc);
-              }}
-            >
-              <Icon name="swap-vertical" size={20} color="#000000aa" />
-            </TouchableOpacity>
+            {Array.isArray(properties[1]) && (
+              <TouchableOpacity
+                onPressOut={() => {
+                  state.sort.setField(properties[1][0]);
+                  state.sort.setAsc(!state.sort.asc);
+                }}
+              >
+                <Icon name='swap-vertical' size={20} color='#000000aa' />
+              </TouchableOpacity>
+            )}
           </Column>
-        ) : (
-          <Column header={true} width={50} key={i}>
-            <Text style={styles.rowHeaderText}>{label}</Text>
-          </Column>
-        )
-      )}
-    </View>
+        ))}
+      </Row>
+      <Row>
+        <Column></Column>
+        <DataFields
+          properties={properties}
+          item={newItem}
+          setItem={setNewItem}
+          isEditMode={true}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            state.api.create(newItem).then((res) => {
+              if (res.status == 200) {
+                newItem._id = res.data._id;
+                state.setAll([...state.items, newItem]);
+              }
+            });
+          }}
+        >
+          <View style={[styles.col]}>
+            <Icon name='md-save' size={30} color='#000000aa' />
+          </View>
+        </TouchableOpacity>
+      </Row>
+    </>
   );
-};
+}
 
 const Row = ({ children }: { children?: Children }) => (
   <Pressable style={({ hovered }) => [hovered && styles.hoverOver]}>
@@ -216,212 +267,37 @@ const Row = ({ children }: { children?: Children }) => (
   </Pressable>
 );
 
-const Column = ({ overflow, width = 150, header, children }: { overflow?: boolean; width?: number; header?: boolean; children?: Children; }) => {
+const Column = ({
+  overflow,
+  width = 150,
+  header,
+  children,
+}: {
+  overflow?: boolean;
+  width?: number;
+  header?: boolean;
+  children?: Children;
+}) => {
   return (
-    <View style={[styles.col, { width: width }, (header) ? styles.headerElement : {}]}>
+    <View
+      style={[styles.col, { width: width }, header ? styles.headerElement : {}]}
+    >
       <Text numberOfLines={overflow ? 10 : 1}>{children}</Text>
     </View>
   );
 };
 
-const UsersTableHeader = ({
-  labels,
-  properties,
+function ModificationContextMenu<T extends { _id?: string }>({
+  data,
   state,
+  setIsEditMode,
+  isEditMode,
 }: {
-  labels: string[];
-  properties: string[];
-  state: UserState;
-}) => {
-  const [newUserForm, setUserForm] = useState({
-    "name": "",
-    "email": "",
-    "role": "",
-    "phone": "",
-    "street": "",
-    "city": "",
-    "state": "",
-    "zip": "",
-    "country": "",
-  })
-  const createNewUser = ({ state }: { state: UserState }) => {
-    const user: User = {
-      name: newUserForm.name,
-      email: newUserForm.email,
-      password: 'DEFAULT',
-      role: newUserForm.role,
-      phone: newUserForm.phone,
-      address: {
-        street: newUserForm.street,
-        city: newUserForm.city,
-        state: newUserForm.state,
-        zip: newUserForm.zip,
-        country: newUserForm.country,
-      }
-    }
-    UserAPI.create(user).then((res) => {
-      console.log("User created: ", res);
-      if (res.status == 200) {
-        user._id = res.data._id;
-        state.setUser([...state.users, user])
-      }
-    });
-  }
-  return (
-    <View>
-      <TableHeader labels={labels} properties={properties} state={state} />
-      <View style={styles.row}>
-        {
-          labels.map((label, i) => (
-            (label === "select") ?
-              <Column width={50} key={i}></Column> :
-              (label === "id" || label === "orders") ?
-                <Column key={i} width={80}></Column> :
-                (label === "options") ?
-                  <Column width={50} key={i}>
-                    <TouchableOpacity onPress={() => createNewUser({ state })}>
-                      <View style={[styles.col]}>
-                        <Icon name="md-save" size={30} color="#000000aa" />
-                      </View>
-                    </TouchableOpacity>
-                  </Column>
-                  :
-                  <Column key={i}>
-                    <TextInput style={styles.createNew} placeholder={label} value={newUserForm[label]} onChangeText={(text) => {
-                      setUserForm({ ...newUserForm, [label]: text });
-                    }} />
-                  </Column>
-          ))
-        }
-      </View>
-    </View>
-  );
-};
-
-const ProductsTableHeader = ({
-  labels,
-  properties,
-  state,
-}: {
-  labels: string[];
-  properties: string[];
-  state: ProductState;
-}) => {
-  const categories = {
-    Bikes: {
-      subCategories: ['Electric', 'Mountain', 'Street'],
-    },
-    Accessories: {
-      subCategories: ['Tires',
-        'Brakes',
-        'Lights',
-        'Frames',
-        'Chains',
-        'Pedals',
-        'Tubes',],
-    },
-    Services: {
-      subCategories: ['Tune',
-        'Wheel and Tire Maintenance',
-        'Assembly',
-        'Shifting and Brakes'],
-    },
-  };
-
-  const [category, setCategory] = useState('');
-  const [subcategory, setSubcategory] = useState('');
-  const [name, setName] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState(0);
-  const [inStock, setInStock] = useState(false);
-
-  const handleCategoryChange = (value: string) => {
-    setCategory(value);
-    setSubcategory('');
-  };
-
-  const handleSubCategoryChange = (value: string) => {
-    setSubcategory(value);
-  };
-
-  const createNewProduct = ({ state }: { state: ProductState }) => {
-    const product: Product = {
-      name,
-      description,
-      category,
-      subcategory,
-      price,
-      inStock,
-    }
-    ProductAPI.create(product).then((res) => {
-      console.log("Product created: ", res);
-      if (res.status == 200) {
-        state.setProducts([...state.products, product])
-      }
-    });
-  }
-
-  return (
-    <View>
-      <Row>
-        <TextInput style={styles.createNew}
-          placeholder="Name"
-          value={name}
-          onChangeText={setName}
-        />
-        <TextInput style={styles.createNew}
-          placeholder="Description"
-          value={description}
-          onChangeText={setDescription}
-        />
-        <View>
-          <Text>Category:</Text>
-          <Picker style={styles.createNew}
-            selectedValue={category}
-            onValueChange={handleCategoryChange}
-          >
-            <Picker.Item label="Select a category" value="" />
-            {Object.keys(categories).map((category) => (
-              <Picker.Item key={category} label={category} value={category} />
-            ))}
-          </Picker>
-        </View>
-        {category && categories[category] && (
-          <View>
-            <Text>Subcategory:</Text>
-            <Picker style={styles.createNew}
-              selectedValue={subcategory}
-              onValueChange={handleSubCategoryChange}
-            >
-              <Picker.Item label="Select a subcategory" value="" />
-              {categories[category].subCategories.map((subCategory) => (
-                <Picker.Item
-                  key={subCategory}
-                  label={subCategory}
-                  value={subCategory}
-                />
-              ))}
-            </Picker>
-          </View>
-        )}
-        <TextInput style={styles.createNew}
-          placeholder="Price"
-          value={price.toString()}
-          keyboardType="numeric"
-          onChangeText={(value) => setPrice(isNaN(parseFloat(value)) ? 0 : parseFloat(value))}
-        />
-        <TouchableOpacity onPress={() => createNewProduct({ state })}>
-          <View style={[styles.col]}>
-            <Icon name="md-save" size={30} color="#000000aa" />
-          </View>
-        </TouchableOpacity>
-
-      </Row>
-    </View>
-  );
-}
-
-const ModificationContextMenu = ({ id, objType, state, setIsEditMode, isEditMode, }: { id?: string, objType?: string, state?: any, isEditMode?: boolean, setIsEditMode?: Dispatch<SetStateAction<boolean>> }) => {
+  data?: T;
+  isEditMode?: boolean;
+  setIsEditMode?: SetState<boolean>;
+  state: State<T>;
+}) {
   const [showPopover, setShowPopover] = useState(false);
   return (
     <Popover
@@ -434,274 +310,224 @@ const ModificationContextMenu = ({ id, objType, state, setIsEditMode, isEditMode
       }
     >
       <View style={styles.popIcon}>
-        <TouchableOpacity onPress={() => setIsEditMode(!isEditMode)}>
-          <Icon color="#fff" name="create-outline" size={30} />
+        <TouchableOpacity
+          onPress={async () => {
+            if (isEditMode) await state.api.update(data._id, data);
+            setIsEditMode(!isEditMode);
+          }}
+        >
+          <Icon
+            color='#fff'
+            name={isEditMode ? 'save-outline' : 'create-outline'}
+            size={30}
+          />
         </TouchableOpacity>
 
         <TouchableOpacity>
-          <Icon onPress={() => {
-            (objType == "product") ? () => {
-              ProductAPI.delete(id).then((res) => {
-                state.setProduct(state.products.filter((u) => u._id != id))
-              });
-            } : (objType == "order") ? () => 
-            {
-              OrdersAPI.delete(id).then((res) => {
-                state.setUser(state.orders.filter((u) => u._id != id))
-              });
-            } : () => {
-              UserAPI.delete(id).then((res) => {
-                state.setUser(state.users.filter((u) => u._id != id))
-              });
-            }
-            
-          }} color="#ff3f2e" name="trash-outline" size={30} />
+          <Icon
+            onPress={async () => {
+              await state.api.delete(data._id);
+              state.setAll(
+                state.items.filter((existing) => existing._id !== data._id)
+              );
+            }}
+            color='#ff3f2e'
+            name='trash-outline'
+            size={30}
+          />
         </TouchableOpacity>
       </View>
     </Popover>
-  )
+  );
 }
 
-const UserElement = ({ user, state }: {
-  user: User, state: UserState;
-}) => {
+function DataFields<T extends { _id?: string }>(props: {
+  properties: Properties<T>;
+  item: T;
+  setItem: SetState<T>;
+  isEditMode: boolean;
+}) {
+  const { properties, item, setItem, isEditMode } = props;
+
+  return (
+    <>
+      {properties.map(([label, propertyComponent]) => {
+        if (typeof propertyComponent === 'function') {
+          return (
+            <Column key={label}>
+              {propertyComponent({
+                data: item,
+                setData: setItem,
+                isEditMode,
+              })}
+            </Column>
+          );
+        }
+        const [key, type] = propertyComponent;
+        const onChange = (value: unknown) =>
+          setItem(setProperty(Object.create(item), key, value));
+        const value: unknown = getProperty(item, key);
+        return (
+          <Column key={label}>
+            {
+              {
+                string: (
+                  <TextInput
+                    value={value?.toString() ?? ''}
+                    placeholder={label}
+                    editable={isEditMode}
+                    onChangeText={(text) => onChange(text)}
+                  />
+                ),
+                number: (
+                  <TextInput
+                    value={value?.toString() ?? ''}
+                    placeholder={label}
+                    keyboardType='numeric'
+                    editable={isEditMode}
+                    onChangeText={(text) =>
+                      onChange(isNaN(parseFloat(text)) ? parseFloat(text) : '')
+                    }
+                  />
+                ),
+                boolean: (
+                  <Checkbox
+                    disabled={!isEditMode}
+                    value={value === true}
+                    onValueChange={onChange}
+                  />
+                ),
+              }[type]
+            }
+          </Column>
+        );
+      })}
+    </>
+  );
+}
+
+function DataRow<T extends { _id?: string }>({
+  item,
+  index,
+  state,
+  properties,
+}: {
+  item: T;
+  index: number;
+  state: State<T>;
+  properties: Properties<T>;
+}) {
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [updatedData, setUpdatedData] = useState({});
+  useEffect(() => {
+    setUpdatedData(item);
+  }, [item]);
   const selectRow = (id, remove) => {
     console.log(state.selectedRows);
-    (remove) ?
-      state.setSelectedRows(state.selectedRows.filter((r) => r != id)) :
-      state.setSelectedRows([...state.selectedRows, id]);
-  }
-  const [check, setCheck] = useState(false);
-  return (
-    <Row>
-      <Column width={50}>
-        <TouchableOpacity onPress={() => {
-          setCheck(!check);
-          selectRow(user._id, check);
-        }}>
-          <Icon name={(check) ? "checkbox-outline" : "square-outline"} size={20} color="#000" />
-        </TouchableOpacity>
-      </Column>
-      <Column width={80}>{user?._id}</Column>
-      <Column>{user?.name}</Column>
-      <Column>{user?.email}</Column>
-      <Column>{user?.role}</Column>
-      <Column>{user?.phone}</Column>
-      <Column width={80}>{user?.orders?.length}</Column>
-      <Column>{user?.address?.street}</Column>
-      <Column>{user?.address?.city}</Column>
-      <Column>{user?.address?.state}</Column>
-      <Column>{user?.address?.zip}</Column>
-      <Column>{user?.address?.country}</Column>
-      <Column width={50}>
-        <ModificationContextMenu id={user._id} objType={"user"} state={state} />
-      </Column>
-    </Row>
-  );
-};
-
-const ProductElement = ({ product, isEditMode, setIsEditMode }: { product: Product, isEditMode: boolean, setIsEditMode: Dispatch<SetStateAction<boolean>> }) => {
-  return (
-    <Row>
-      <View style={styles.col}>
-        <Icon name="square-outline" size={20} color="#000" />
-      </View>
-      <Column>{product?._id}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.description} /> : product?.name}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.description} /> : product?.description}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.category} /> : product?.category}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.subcategory} /> : product?.subcategory}</Column>
-      <Column>{isEditMode ? <TextInput value={product?.price?.toString()} /> : formatPrice(product?.price)}</Column>
-      <Column>product?.images</Column>
-      <Column><Checkbox disabled={!isEditMode} value={product.inStock} /></Column>
-      <View style={[styles.col, { alignItems: "center" }]}>
-        <ModificationContextMenu id={product._id} objType={"product"} setIsEditMode={setIsEditMode} />
-      </View>
-    </Row>
-  );
-}
-
-
-function OrderElement({ order }: { order: Order }) {
-  return (
-    <Row>
-      <View style={styles.col}>
-        <Icon name="square-outline" size={20} color="#000" />
-      </View>
-      <Column>{order?._id}</Column>
-      <Column>
-        {typeof order?.customer === "string"
-          ? order?.customer
-          : order?.customer?.name}
-      </Column>
-      <Column>{order?.createdAt}</Column>
-      <Column>{order?.items.length}</Column>
-      <Column>{formatPrice(order?.total)}</Column>
-      <Column>{order?.updatedAt}</Column>
-      <View style={[styles.col, { alignItems: "center" }]}>
-        <ModificationContextMenu id={order._id} objType={"order"}/>
-      </View>
-    </Row>
-  );
-}
-
-function ListUsers({ navigation }) {
-  const [selectedRows, setSelectedRows] = useState([]);
-  const [users, setUser] = useState([{}] as [User]);
-  useEffect(() => {
-    UserAPI.getAll().then((res) => setUser(res.data));
-  }, []);
-
-  const [asc, setAsc] = useState(true);
-  const [field, setField] = useState("name");
-
-  const sortData = (data) => {
-    return data.sort((a, b) =>
-      asc
-        ? b[field]?.localeCompare(a[field])
-        : a[field]?.localeCompare(b[field])
-    );
+    remove
+      ? state.setSelectedRows(state.selectedRows.filter((r) => r != id))
+      : state.setSelectedRows([...state.selectedRows, id]);
   };
+  const [rowSelectionCheck, setRowSelectionCheck] = useState(false);
 
-  const [searchProductsText, _searchProductsText] = useState("Search");
-  const userData = document.routes.find((e) => e.route == "Users");
   return (
-    <View style={styles.rowSimple}>
-      <NavigationMenu navigation={navigation} />
-      <View style={styles.section}>
-        <View style={styles.listFilters}>
-          <Icon name="search-sharp" size={20} color="#000" />
-          <TextInput
-            style={styles.textInput}
-            onChangeText={_searchProductsText}
-            value={searchProductsText}
+    <Row key={item._id ?? index}>
+      <Column>
+        {/* <TouchableOpacity
+          onPress={() => {
+            setRowSelectionCheck(!rowSelectionCheck);
+            selectRow(item._id, rowSelectionCheck);
+          }}
+        >
+          <Icon
+            name={rowSelectionCheck ? 'checkbox-outline' : 'square-outline'}
+            size={20}
+            color='#000'
           />
-        </View>
-        {users && (
-          <FlatList
-            data={sortData(users)}
-            renderItem={({ item, index }) => (
-              <UserElement user={item} key={index} state={{ users, setUser, selectedRows, setSelectedRows }} />
-            )}
-            ListHeaderComponent={() => (
-              <UsersTableHeader
-                state={{ asc, setAsc, field, setField, users, setUser }}
-                labels={userData.labels}
-                properties={
-                  userData.properties
-                }
-              />
-            )}
-          />
-        )}
+        </TouchableOpacity> */}
+        {isEditMode && <Icon name='pencil-outline' size={20} />}
+      </Column>
+      <DataFields
+        properties={properties}
+        item={updatedData}
+        setItem={setUpdatedData}
+        isEditMode={isEditMode}
+      />
+      <View style={[styles.col, { alignItems: 'center' }]}>
+        <ModificationContextMenu
+          data={updatedData}
+          isEditMode={isEditMode}
+          setIsEditMode={setIsEditMode}
+          state={state}
+        />
       </View>
-    </View>
+    </Row>
   );
 }
 
-function ListProducts({ navigation }) {
-  const [products, setProducts] = useState([]);
+function AdminDataTable<T extends { _id?: string }>(props: {
+  properties: Properties<T>;
+  navigation: any;
+  api: API<T>;
+}) {
+  const { properties, navigation, api } = props;
+  const [data, setData] = useState([] as T[]);
+  const [selectedRows, setSelectedRows] = useState([]);
   const [asc, setAsc] = useState(true);
-  const [field, setField] = useState("name");
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [field, setField] = useState('name');
+  const [searchText, setSearchText] = useState('');
 
-  const sortData = (data) => {
+  useEffect(() => {
+    props.api.getAll().then((res) => setData(res.data));
+  }, []);
+  const sortedData = useMemo(() => {
     return data.sort((a, b) => {
-      if (a[field] != undefined && b[field] != undefined) {
+      if (a?.[field] !== undefined && b?.[field] !== undefined) {
         return asc
           ? b[field].localeCompare(a[field])
           : a[field].localeCompare(b[field]);
       }
     });
-  };
+  }, [asc, field, data]);
 
-  useEffect(() => {
-    ProductAPI.getAll().then((res) => setProducts(res.data));
-  }, []);
-  const [searchUserText, _searchUserText] = useState("Search");
-  const productData = document.routes.find((e) => e.route == "Products");
+  const state = {
+    items: data,
+    setAll: setData,
+    selectedRows,
+    setSelectedRows,
+    api,
+    sort: {
+      field,
+      setField,
+      asc,
+      setAsc,
+    },
+  };
   return (
     <View style={styles.rowSimple}>
       <NavigationMenu navigation={navigation} />
       <View style={styles.section}>
-        <View style={styles.listFilters}>
+        {/* <View style={styles.listFilters}>
           <Icon name="search-sharp" size={20} color="#000" />
           <TextInput
             style={styles.textInput}
-            onChangeText={_searchUserText}
-            value={searchUserText}
+            onChangeText={setSearchText}
+            value={searchText}
           />
-        </View>
-        {products && (
+        </View> */}
+        {data && (
           <FlatList
-            data={sortData(products)}
+            data={sortedData}
             renderItem={({ item, index }) => (
-              <ProductElement product={item} key={index} isEditMode={isEditMode} setIsEditMode={setIsEditMode} />
-            )}
-            ListHeaderComponent={() => (
-              <ProductsTableHeader
-                state={{ asc, setAsc, field, setField, products, setProducts }}
-                labels={productData.labels}
-                properties={
-                  productData.properties
-                }
+              <DataRow
+                properties={properties}
+                state={state}
+                item={item}
+                index={index}
               />
             )}
-          />
-        )}
-      </View>
-    </View>
-  );
-}
-
-function ListOrders({ navigation }) {
-  const [orders, setOrders] = useState([]);
-  const [asc, setAsc] = useState(true);
-  const [field, setField] = useState("name");
-
-  const sortData = (data) => {
-    return data.sort((a, b) => {
-      try {
-        return asc
-          ? b[field]?.localeCompare(a[field])
-          : a[field]?.localeCompare(b[field]);
-      } catch (error) {
-        console.log(error);
-        return data;
-      }
-    });
-  };
-
-  useEffect(() => {
-    OrdersAPI.getAll().then((res) => setOrders(res.data));
-  }, []);
-  const [searchOrderText, _searchOrderText] = useState("Search");
-  return (
-    <View style={styles.rowSimple}>
-      <NavigationMenu navigation={navigation} />
-      <View style={styles.section}>
-        <View style={styles.listFilters}>
-          <Icon name="search-sharp" size={20} color="#000" />
-          <TextInput
-            style={styles.textInput}
-            onChangeText={_searchOrderText}
-            value={searchOrderText}
-          />
-        </View>
-        {orders && (
-          <FlatList
-            data={sortData(orders)}
-            renderItem={({ item, index }) => (
-              <OrderElement order={item} key={index} />
-            )}
             ListHeaderComponent={() => (
-              <TableHeader
-                state={{ asc, setAsc, field, setField }}
-                labels={document.routes.find((e) => e.route == "Orders").labels}
-                properties={
-                  document.routes.find((e) => e.route == "Orders").properties
-                }
-              />
+              <TableHeader state={state} properties={properties} />
             )}
           />
         )}
@@ -722,8 +548,16 @@ export const Admin = ({ dimensions }: { dimensions: ScaledSize }) => {
           cardStyle: { backgroundColor: "#fff", flex: 1 },
         }}
       >
-        {document.routes.map((item, i) => (
-          <Stack.Screen name={item.route} key={i} component={item.component} />
+        {document.routes.map((item) => (
+          <Stack.Screen name={item.route} key={item.route}>
+            {({ navigation }) => (
+              <AdminDataTable
+                api={item.api}
+                navigation={navigation}
+                properties={item.properties}
+              />
+            )}
+          </Stack.Screen>
         ))}
       </Stack.Navigator>
     );

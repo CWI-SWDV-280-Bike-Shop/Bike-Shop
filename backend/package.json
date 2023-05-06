@@ -18,6 +18,7 @@
   "dependencies": {
     "bcryptjs": "2.4.3",
     "cors": "^2.8.5",
+    "dot-prop": "^8.0.0",
     "dotenv": "^16.0.3",
     "express": "^5.0.0-beta.1",
     "has-keys": "^0.1.0",

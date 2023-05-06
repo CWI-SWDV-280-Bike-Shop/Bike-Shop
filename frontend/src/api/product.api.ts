@@ -12,7 +12,7 @@ const ProductAPI = {
   },
 
   update(id: string, data: Product) {
-    return api.put('/products', data, {
+    return api.put(`/products/${id}`, data, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }

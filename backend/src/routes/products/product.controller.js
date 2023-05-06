@@ -5,6 +5,7 @@ import Product from './product.model.js';
 const withImageUrls = ({ appBaseURL }) => ({ _doc }) => ({
   ..._doc, images: _doc.images?.map((image) => ({
     url: new URL(`/api/images/${image.id}`, appBaseURL).href,
+    id: image.id,
   }))
 });
 
